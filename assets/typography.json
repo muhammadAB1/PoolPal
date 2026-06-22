@@ -1,0 +1,20 @@
+{
+  "$description": "Pool Pal typography tokens. Font: Plus Jakarta Sans (Google Fonts). iOS/Flutter fallback: SF Pro / system.",
+  "fontFamily": {
+    "primary": "Plus Jakarta Sans",
+    "fallback": "-apple-system, BlinkMacSystemFont, 'SF Pro', Roboto, sans-serif",
+    "weights": { "regular": 400, "semibold": 600, "bold": 700, "extrabold": 800 }
+  },
+  "scale": {
+    "h1":       { "size": 24, "weight": 800, "lineHeight": 1.2,  "usage": "Screen titles" },
+    "h2":       { "size": 22, "weight": 800, "lineHeight": 1.25, "usage": "Hi, [Name] greeting, large headers" },
+    "h3":       { "size": 17, "weight": 800, "lineHeight": 1.3,  "usage": "Card titles, plan names" },
+    "bodyLg":   { "size": 16, "weight": 400, "lineHeight": 1.55, "usage": "Welcome subhead, primary paragraph" },
+    "body":     { "size": 14, "weight": 400, "lineHeight": 1.45, "usage": "Default body, list rows" },
+    "subtitle": { "size": 14, "weight": 400, "lineHeight": 1.45, "usage": "Screen subtitles", "color": "text.sub" },
+    "label":    { "size": 12.5,"weight": 700, "lineHeight": 1.3,  "usage": "Field labels (uppercase optional)", "color": "text.sub" },
+    "small":    { "size": 12.5,"weight": 400, "lineHeight": 1.4,  "usage": "Hints, helper text" },
+    "tiny":     { "size": 10.5,"weight": 800, "lineHeight": 1.2,  "usage": "Badges, nav labels, eyebrows" },
+    "button":   { "size": 16, "weight": 700, "lineHeight": 1.0,  "usage": "Primary button label" }
+  }
+}

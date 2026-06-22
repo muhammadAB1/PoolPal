@@ -1,0 +1,34 @@
+{
+  "$description": "Pool Pal color tokens. Hex is source of truth.",
+  "brand": {
+    "navy":        { "hex": "#0B2E4A", "rgb": "11,46,74",   "usage": "Headers, primary text, dark CTA backgrounds" },
+    "blue":        { "hex": "#0E97DC", "rgb": "14,151,220",  "usage": "Primary buttons, active tab, links, focus" },
+    "blueDark":    { "hex": "#0B82C4", "rgb": "11,130,196",  "usage": "Pressed state of primary blue" },
+    "aqua":        { "hex": "#5ED6D1", "rgb": "94,214,209",  "usage": "Progress rings/bars, highlights, accents" }
+  },
+  "surface": {
+    "softAqua":    { "hex": "#EAF8FF", "rgb": "234,248,255", "usage": "Info cards, hero card backgrounds, chips" },
+    "mint":        { "hex": "#E8FFF7", "rgb": "232,255,247", "usage": "Selected option background" },
+    "mintBorder":  { "hex": "#9FE7D8", "rgb": "159,231,216", "usage": "Selected option border" },
+    "bg":          { "hex": "#F5F7FA", "rgb": "245,247,250", "usage": "App background, neutral fills" },
+    "white":       { "hex": "#FFFFFF", "rgb": "255,255,255", "usage": "Cards, screens" }
+  },
+  "border": {
+    "default":     { "hex": "#E5EAF0", "rgb": "229,234,240", "usage": "Card and input borders, dividers" }
+  },
+  "text": {
+    "charcoal":    { "hex": "#1D2939", "rgb": "29,41,57",    "usage": "Body text" },
+    "sub":         { "hex": "#667085", "rgb": "102,112,133", "usage": "Secondary text, subtitles" },
+    "faint":       { "hex": "#98A2B3", "rgb": "152,162,179", "usage": "Placeholders, hints, inactive icons" }
+  },
+  "status": {
+    "success":     { "hex": "#2EB872", "rgb": "46,184,114",  "usage": "In-range readings, completed states" },
+    "successText": { "hex": "#0B6B53", "rgb": "11,107,83",   "usage": "Text on mint success surfaces" },
+    "warning":     { "hex": "#F6B84B", "rgb": "246,184,75",  "usage": "Caution: out-of-range, green pool" },
+    "warningBg":   { "hex": "#FEF6E7", "rgb": "254,246,231", "usage": "Caution card background" },
+    "error":       { "hex": "#E5484D", "rgb": "229,72,77",   "usage": "Serious warnings only (rare)" }
+  },
+  "accessibility": {
+    "note": "Body charcoal on white = 12.6:1 (AAA). Sub on white = 4.7:1 (AA). White on blue #0E97DC = 3.0:1 — use blue only for >=16px bold button text or large UI, never small body text. faint #98A2B3 is decorative only; never use for essential reading text."
+  }
+}

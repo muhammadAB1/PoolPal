@@ -1,0 +1,309 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
+@import "nativewind/theme";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   POOL PAL DESIGN TOKENS
+   Tailwind v4 @theme — all tokens are available as utility classes.
+
+   Color naming:
+     --color-brand-*         → bg-brand-*  / text-brand-*  / border-brand-*
+     --color-surface-*       → bg-surface-* / text-surface-*
+     --color-border-*        → border-border-*
+     --color-charcoal|sub|faint → text-charcoal / text-sub / text-faint
+     --color-success|warning|error → bg-success / text-warning etc.
+
+   Type scale:
+     --text-h1 … --text-button → text-h1, text-h2, text-body, text-tiny …
+
+   Font families:
+     --font-jakarta*          → font-jakarta, font-jakarta-semibold, etc.
+═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ─── Brand ──────────────────────────────────────────────────────────── */
+  --color-brand-navy: #0B2E4A;
+  --color-brand-blue: #0E97DC;
+  --color-brand-blue-dark: #0B82C4;
+  --color-brand-aqua: #5ED6D1;
+
+  /* ─── Surface ────────────────────────────────────────────────────────── */
+  --color-surface-soft-aqua: #EAF8FF;
+  --color-surface-mint: #E8FFF7;
+  --color-surface-mint-border: #9FE7D8;
+  --color-surface-bg: #F5F7FA;
+  --color-surface-white: #FFFFFF;
+
+  /* ─── Border ─────────────────────────────────────────────────────────── */
+  --color-border-default: #E5EAF0;
+
+  /* ─── Text / Content ─────────────────────────────────────────────────── */
+  /* Named without "text-" prefix to keep utilities clean: text-charcoal ✓ */
+  --color-charcoal: #1D2939;
+  --color-sub: #667085;
+  --color-faint: #98A2B3;
+
+  /* ─── Status ─────────────────────────────────────────────────────────── */
+  --color-success: #2EB872;
+  --color-success-text: #0B6B53;
+  --color-warning: #F6B84B;
+  --color-warning-bg: #FEF6E7;
+  --color-error: #E5484D;
+
+  /* ─── Typography Scale ───────────────────────────────────────────────── */
+  /* Each --text-{name} creates a text-{name} utility with font-size        */
+  /* --text-{name}--line-height sets the paired line-height                 */
+
+  --text-h1: 24px;
+  --text-h1--line-height: 1.2;
+
+  --text-h2: 22px;
+  --text-h2--line-height: 1.25;
+
+  --text-h3: 17px;
+  --text-h3--line-height: 1.3;
+
+  --text-body-lg: 16px;
+  --text-body-lg--line-height: 1.55;
+
+  --text-body: 14px;
+  --text-body--line-height: 1.45;
+
+  --text-label: 12.5px;
+  --text-label--line-height: 1.3;
+
+  --text-small: 12.5px;
+  --text-small--line-height: 1.4;
+
+  --text-tiny: 10.5px;
+  --text-tiny--line-height: 1.2;
+
+  --text-button: 16px;
+  --text-button--line-height: 1;
+
+  /* ─── Font Families ──────────────────────────────────────────────────── */
+  /* These map to the exact font names loaded by expo-font                  */
+  /* Requires: @expo-google-fonts/plus-jakarta-sans                         */
+
+  --font-jakarta: "PlusJakartaSans_400Regular";
+  --font-jakarta-semibold: "PlusJakartaSans_600SemiBold";
+  --font-jakarta-bold: "PlusJakartaSans_700Bold";
+  --font-jakarta-extrabold: "PlusJakartaSans_800ExtraBold";
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BEM COMPONENT UTILITIES
+   Reusable class patterns. Use as className="card", className="btn btn--primary"
+   Follow BEM: .block, .block--modifier, .block__element
+═══════════════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+
+  /* ─── Card ───────────────────────────────────────────────────────────── */
+
+  .card {
+    @apply bg-surface-white rounded-2xl border border-border-default;
+  }
+
+  /* Card modifiers */
+  .card--info {
+    @apply bg-surface-soft-aqua rounded-2xl border border-border-default;
+  }
+
+  .card--success {
+    @apply bg-surface-mint rounded-2xl border border-surface-mint-border;
+  }
+
+  .card--warning {
+    @apply bg-warning-bg rounded-2xl border border-warning;
+  }
+
+  .card--navy {
+    @apply bg-brand-navy rounded-2xl;
+  }
+
+  /* Card elements */
+  .card__header {
+    @apply px-4 pt-4 pb-2;
+  }
+
+  .card__body {
+    @apply px-4 pb-4;
+  }
+
+  /* ─── Button ─────────────────────────────────────────────────────────── */
+
+  .btn {
+    @apply flex-row items-center justify-center rounded-full px-6 py-3.5;
+  }
+
+  /* Button modifiers */
+  .btn--primary {
+    @apply bg-brand-blue;
+  }
+
+  .btn--secondary {
+    @apply bg-surface-white border border-border-default;
+  }
+
+  .btn--outline {
+    @apply bg-transparent border border-brand-blue;
+  }
+
+  .btn--ghost {
+    @apply bg-transparent;
+  }
+
+  .btn--sm {
+    @apply px-4 py-2;
+  }
+
+  .btn--lg {
+    @apply px-8 py-4;
+  }
+
+  /* Button label elements */
+  .btn__label {
+    @apply text-button font-jakarta-bold;
+  }
+
+  .btn__label--primary {
+    @apply text-surface-white;
+  }
+
+  .btn__label--secondary {
+    @apply text-brand-navy;
+  }
+
+  .btn__label--outline {
+    @apply text-brand-blue;
+  }
+
+  /* ─── Screen ─────────────────────────────────────────────────────────── */
+
+  .screen {
+    @apply flex-1 bg-surface-bg;
+  }
+
+  .screen__content {
+    @apply flex-1 px-5;
+  }
+
+  .screen__header {
+    @apply px-5 pt-4 pb-2;
+  }
+
+  /* ─── Section ────────────────────────────────────────────────────────── */
+
+  .section__title {
+    @apply text-h3 font-jakarta-extrabold text-charcoal;
+  }
+
+  .section__subtitle {
+    @apply text-body font-jakarta text-sub;
+  }
+
+  /* ─── Chip / Tag ─────────────────────────────────────────────────────── */
+
+  .chip {
+    @apply rounded-full px-3 py-1 bg-surface-soft-aqua;
+  }
+
+  .chip--success {
+    @apply bg-surface-mint;
+  }
+
+  .chip--warning {
+    @apply bg-warning-bg;
+  }
+
+  .chip__label {
+    @apply text-tiny font-jakarta-extrabold text-brand-blue;
+  }
+
+  .chip__label--success {
+    @apply text-success-text;
+  }
+
+  .chip__label--warning {
+    @apply text-warning;
+  }
+
+  /* ─── Progress bar ───────────────────────────────────────────────────── */
+
+  .progress-bar {
+    @apply h-2 rounded-full bg-border-default overflow-hidden;
+  }
+
+  .progress-bar__fill {
+    @apply h-full rounded-full bg-brand-aqua;
+  }
+
+  .progress-bar__fill--blue {
+    @apply bg-brand-blue;
+  }
+
+  /* ─── List row ───────────────────────────────────────────────────────── */
+
+  .list-row {
+    @apply flex-row items-center py-3 border-b border-border-default;
+  }
+
+  .list-row__label {
+    @apply flex-1 text-body font-jakarta text-charcoal;
+  }
+
+  .list-row__value {
+    @apply text-body font-jakarta-semibold text-charcoal;
+  }
+
+  /* ─── Input field ────────────────────────────────────────────────────── */
+
+  .form-input {
+    @apply border border-border-default rounded-xl px-4 py-3 bg-surface-white text-body font-jakarta text-charcoal;
+  }
+
+  .form-label {
+    @apply text-label font-jakarta-bold text-sub mb-1;
+  }
+
+  /* ─── Divider ────────────────────────────────────────────────────────── */
+
+  .divider {
+    @apply h-px bg-border-default;
+  }
+
+  /* ─── Badge ──────────────────────────────────────────────────────────── */
+
+  .badge {
+    @apply rounded-full px-2 py-0.5 bg-brand-blue;
+  }
+
+  .badge--success {
+    @apply bg-success;
+  }
+
+  .badge--warning {
+    @apply bg-warning;
+  }
+
+  .badge__label {
+    @apply text-tiny font-jakarta-extrabold text-surface-white;
+  }
+
+  /* ─── Avatar / Icon circle ───────────────────────────────────────────── */
+
+  .icon-circle {
+    @apply w-10 h-10 rounded-full items-center justify-center bg-surface-soft-aqua;
+  }
+
+  .icon-circle--navy {
+    @apply bg-brand-navy;
+  }
+
+  .icon-circle--success {
+    @apply bg-surface-mint;
+  }
+}

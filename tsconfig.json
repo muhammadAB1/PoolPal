@@ -1,10 +1,5 @@
 {
-  // The error "File 'expo/tsconfig.base' not found." means that TypeScript cannot locate the base config file you're extending.
-  // Solution options:
-  // 1. If you are not using expo or do not have that file, remove the "extends" line or point it to a valid base tsconfig.
-  // 2. If you want Expo defaults, install expo or copy the expo tsconfig.base file into your project.
-  // Here is a version that removes the bad "extends" reference and otherwise keeps your config:
-
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
     "paths": {
@@ -17,6 +12,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "nativewind-env.d.ts"
   ]
 }
