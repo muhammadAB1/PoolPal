@@ -1,42 +1,28 @@
-import { useEffect } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { useSupabase } from '@/hooks/supabaseHooks';
+import { graphics } from '@/constants/images';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const { user, loading } = useSupabase();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace('/welcome');
-    }
-  }, [loading, user, router]);
-
-  if (loading) {
-    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#0E97DC" />
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-      <View className="flex-1 items-center justify-center px-5">
-        <Text className="text-h2 font-jakarta-extrabold text-charcoal text-center">
-          Welcome back
-        </Text>
-        <Text className="text-body font-jakarta text-sub text-center mt-2">
-          You are signed in.
-        </Text>
+      <View className="flex-1 items-center justify-center gap-6">
+        <Image
+          source={graphics.poolPalLogo}
+          className=" left-[18%]"
+          resizeMode="contain"
+        />
+        <TouchableOpacity
+          className="bg-brand-blue rounded-full py-[14px] px-8 items-center"
+          onPress={() => router.push('/welcome')}
+          activeOpacity={0.85}
+        >
+          <Text className="text-button font-jakarta-bold text-surface-white">
+            Open Welcome Screen
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

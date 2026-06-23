@@ -1,95 +1,50 @@
-import { supabase } from "@/lib/Supabase"
-import { type User } from "@supabase/supabase-js"
+import { useEffect, useState } from "react"
 import * as Linking from "expo-linking"
 import * as WebBrowser from "expo-web-browser"
-import { useEffect, useState } from "react"
+import { supabase } from "@/lib/Supabase"
 
 WebBrowser.maybeCompleteAuthSession()
 
-type SignUpParams = {
-    email: string
-    password: string
-    firstName: string
-    phone: string
-}
-
-function parseAuthParamsFromUrl(url: string): Record<string, string> {
-    const params: Record<string, string> = {}
-    const parsed = Linking.parse(url)
-
-    if (parsed.queryParams) {
-        for (const [key, value] of Object.entries(parsed.queryParams)) {
-            if (typeof value === "string") {
-                params[key] = value
-            }
-        }
-    }
-
-    const hashIndex = url.indexOf("#")
-    if (hashIndex !== -1) {
-        const hashParams = new URLSearchParams(url.substring(hashIndex + 1))
-        hashParams.forEach((value, key) => {
-            params[key] = value
-        })
-    }
-
-    return params
-}
-
-async function createSessionFromUrl(url: string) {
-    const params = parseAuthParamsFromUrl(url)
-
-    if (params.access_token && params.refresh_token) {
-        return supabase.auth.setSession({
-            access_token: params.access_token,
-            refresh_token: params.refresh_token,
-        })
-    }
-
-    if (params.code) {
-        return supabase.auth.exchangeCodeForSession(params.code)
-    }
-
-    return { data: { session: null, user: null }, error: new Error("No auth params in URL") }
-}
-
 export function useSupabase() {
-
-    const [user, setUser] = useState<User | null>(null)
-    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState<any>(null)
+    const [plan, setPlan] = useState<string | null>(null)
     const [accessToken, setAccessToken] = useState<string | null>(null)
+    const [loading, setLoading] = useState(true)
+
+    type SignUpParams = {
+        email: string
+        password: string
+        firstName: string
+        phone: string
+        country: string
+        language: string
+        measurement: string
+    }
 
     useEffect(() => {
-        async function init() {
-            const { data, error } = await supabase.auth.getSession()
-
-            if (error) {
-                console.log(error)
-            }
-
+        supabase.auth.getSession().then(({ data }) => {
             const session = data.session
+
             setUser(session?.user ?? null)
             setAccessToken(session?.access_token ?? null)
+            setPlan(session?.user?.user_metadata.plan ?? null)
             setLoading(false)
-
-            // Web-only redirect when no session (kept for reference):
-            // if (!session) {
-            //     window.history.pushState(null, '', '/auth');
-            //     window.dispatchEvent(new PopStateEvent('popstate'));
-            // }
-        }
-
-        init()
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            setUser(session?.user ?? null)
-            setAccessToken(session?.access_token ?? null)
         })
 
+        const { data: { subscription } } =
+            supabase.auth.onAuthStateChange((_event, session) => {
+                setUser(session?.user ?? null)
+                setAccessToken(session?.access_token ?? null)
+                setPlan(session?.user?.user_metadata.plan ?? null)
+                setLoading(false)
+            })
         return () => subscription.unsubscribe()
     }, [])
 
-    async function signInWithOAuth(provider: "google" | "apple") {
+    async function signInWithOAuth(
+        { provider, country, language, measurement }:
+            { provider: "google" | "apple", country: string, language: string, measurement: string }) {
+
         const redirectTo = Linking.createURL("/")
 
         const { data, error } = await supabase.auth.signInWithOAuth({
@@ -100,32 +55,67 @@ export function useSupabase() {
             },
         })
 
-        if (error) {
-            console.log(error)
+        if (error || !data?.url) {
             return { data: null, error }
         }
 
-        if (!data?.url) {
-            return { data: null, error: new Error("No OAuth URL returned") }
+        const result = await WebBrowser.openAuthSessionAsync(
+            data.url,
+            redirectTo
+        )
+
+        if (result.type !== "success") {
+            return { data: null, error: null }
         }
 
-        const result = await WebBrowser.openAuthSessionAsync(data.url, redirectTo)
+        const code = Linking.parse(result.url).queryParams?.code
+        const authCode = Array.isArray(code) ? code[0] : code
 
-        if (result.type === "success") {
-            return createSessionFromUrl(result.url)
+        if (!authCode) {
+            return { data: null, error: new Error("Missing OAuth code") }
         }
 
-        return { data: null, error: null }
+        const { data: sessionData, error: sessionError } =
+            await supabase.auth.exchangeCodeForSession(authCode)
+
+        if (sessionError || !sessionData.session) {
+            return { data: sessionData, error: sessionError }
+        }
+
+        const { error: updateError } = await supabase.auth.updateUser({
+            email: sessionData.session?.user?.email,
+            data: {
+                plan: "free",
+                country,
+                language,
+                measurement,
+            },
+        })
+
+        return { data: sessionData, error: updateError }
     }
 
-    async function signUp({ email, password, firstName, phone }: SignUpParams) {
+    async function signInWithEmailAndPassword(email: string, password: string) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        })
+
+        return { data, error }
+    }
+
+    async function signUp({ email, password, firstName, phone, country, language, measurement }: SignUpParams) {
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
             options: {
                 data: {
+                    plan: 'free',
                     first_name: firstName,
-                    phone,
+                    country: country,
+                    language: language,
+                    measurement: measurement,
+                    phone: phone,
                 },
             },
         })
@@ -137,50 +127,24 @@ export function useSupabase() {
         return { data, error }
     }
 
-    // async function login() {
-    //
-    //     const { data, error } = await supabase.auth.signInWithOAuth({
-    //         provider: "google"
-    //     })
-    //
-    //     if (error) {
-    //         console.log(error)
-    //     }
-    //
-    //     return { data, error }
-    // }
-
-    async function signInWithGoogle() {
-        return signInWithOAuth("google")
-    }
-
-    async function signInWithApple() {
-        return signInWithOAuth("apple")
-    }
-
     async function logout() {
-
         const { error } = await supabase.auth.signOut()
-
-        if (error) {
-            console.log(error)
-            return
-        }
 
         setUser(null)
         setAccessToken(null)
 
-        // Web-only redirect after logout (kept for reference):
-        // window.location.href = "/auth"
+        return { error }
     }
 
     return {
         user,
         accessToken,
+        plan,
         loading,
+        signInWithGoogle: (country: string, language: string, measurement: string) => signInWithOAuth({ provider: "google", country, language, measurement }),
+        signInWithApple: (country: string, language: string, measurement: string) => signInWithOAuth({ provider: "apple", country, language, measurement }),
+        signInWithEmailAndPassword,
         signUp,
-        signInWithGoogle,
-        signInWithApple,
         logout,
     }
 }

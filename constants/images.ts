@@ -46,6 +46,7 @@ import iconTestStrip from '../assets/icons_1x/test_strip.png';
 import iconUpload from '../assets/icons_1x/upload.png';
 import iconWarning from '../assets/icons_1x/warning.png';
 import iconWaterDrop from '../assets/icons_1x/water_drop.png';
+import selectedCheckBadge from '../assets/poolbasicsimages/poolwise_remaining_ui_assets_pngs/selected_check_badge.png';
 
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
@@ -87,6 +88,7 @@ export const icons = {
     upload: iconUpload,
     warning: iconWarning,
     waterDrop: iconWaterDrop,
+    selectedCheckBadge,
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */
