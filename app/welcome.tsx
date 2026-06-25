@@ -1,10 +1,12 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { icons } from '@/constants/images';
 
 export default function WelcomeScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
@@ -19,13 +21,10 @@ export default function WelcomeScreen() {
 
           <View className="mt-8">
             <Text className="text-h1 font-jakarta-extrabold text-brand-navy leading-tight">
-              Take the guesswork{'\n'}out of pool care
+              {t('welcome_title')}
             </Text>
             <Text className="text-body font-jakarta text-sub mt-3 leading-relaxed">
-              PoolWise gives you a simple weekly plan for{'\n'}
-              testing, cleaning, and maintaining your pool,{'\n'}
-              with clear recommendations based on your{'\n'}
-              pool type, size, and current condition.
+              {t('welcome_subtitle')}
             </Text>
 
             <View className="mt-8 flex-row items-center">
@@ -33,10 +32,7 @@ export default function WelcomeScreen() {
                 <Image source={icons.camera} className="w-8 h-8" resizeMode="contain" />
               </View>
               <Text className="text-body font-jakarta text-sub leading-relaxed ml-3 flex-1">
-                Cloudy water, green water,{'\n'}
-                or something unusual?{'\n'}
-                Snap a photo and get{'\n'}
-                guided help.
+                {t('welcome_photo_tip')}
               </Text>
             </View>
           </View>
@@ -51,24 +47,24 @@ export default function WelcomeScreen() {
             activeOpacity={0.85}
           >
             <Text className="text-button font-jakarta-bold text-surface-white">
-              Get Started
+              {t('welcome_get_started')}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             className="bg-surface-soft-aqua rounded-full h-16 items-center justify-center mt-3"
             onPress={() => {
-              /* TODO: navigate to sign-in */
+              router.push('/signin');
             }}
             activeOpacity={0.85}
           >
             <Text className="text-button font-jakarta-bold text-brand-blue">
-              I already have an account
+              {t('welcome_have_account')}
             </Text>
           </TouchableOpacity>
 
           <Text className="text-small font-jakarta text-faint text-center mt-5">
-            Set up in 2 minutes. Add details anytime.
+            {t('welcome_setup_note')}
           </Text>
         </View>
       </View>

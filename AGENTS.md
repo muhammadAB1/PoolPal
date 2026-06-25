@@ -330,6 +330,8 @@ Lesson content should be typed.
 
 ---
 
+All the text in all the screen should also be typed in /data/translation.ts and added from there using i18n library which is already stted up.
+
 ## store/
 
 Use Zustand stores here.

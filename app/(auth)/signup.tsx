@@ -12,21 +12,35 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { icons } from '@/constants/images';
 import { useSupabase } from '@/hooks/supabaseHooks';
+import { setLanguage as changeAppLanguage } from '@/lib/i18n';
+import { en, es } from '@/data/translations';
 
 type Country = 'us' | 'es';
 type Language = 'en' | 'es';
 type Measurement = 'us' | 'metric';
 
 const COUNTRIES: { id: Country; flag: string; name: string; subtitle: string }[] = [
-    { id: 'us', flag: '🇺🇸', name: 'United States', subtitle: 'US pool care defaults' },
-    { id: 'es', flag: '🇪🇸', name: 'Spain', subtitle: 'Metric pool care defaults' },
+    { id: 'us', flag: '🇺🇸', name: en.signup_country_us_name, subtitle: en.signup_country_us_subtitle },
+    { id: 'es', flag: '🇪🇸', name: es.signup_country_es_name, subtitle: es.signup_country_es_subtitle },
+];
+
+const LANGUAGES: { id: Language; label: string }[] = [
+    { id: 'en', label: en.signup_language_en },
+    { id: 'es', label: es.signup_language_es },
+];
+
+const MEASUREMENTS: { id: Measurement; label: string; units: string }[] = [
+    { id: 'us', label: en.signup_measurement_us, units: en.signup_measurement_us_units },
+    { id: 'metric', label: es.signup_measurement_metric, units: es.signup_measurement_metric_units },
 ];
 
 export default function SignupScreen() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { signUp, signInWithGoogle, signInWithApple } = useSupabase();
 
     const [firstName, setFirstName] = useState('');
@@ -88,6 +102,11 @@ export default function SignupScreen() {
         router.replace('/');
     }
 
+    function handleLanguageChange(lang: Language) {
+        setLanguage(lang);
+        changeAppLanguage(lang);
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
             <KeyboardAvoidingView
@@ -101,7 +120,6 @@ export default function SignupScreen() {
                 >
                     <View className="flex-1 px-5 pt-2">
 
-                        {/* ── Back + Progress ──────────────────────────────────────── */}
                         <TouchableOpacity
                             className="w-10 h-10 items-center justify-center -ml-2"
                             onPress={() => router.back()}
@@ -114,17 +132,16 @@ export default function SignupScreen() {
                             <View className="progress-bar__fill" style={{ width: '25%' }} />
                         </View>
 
-                        {/* ── Account Basics ───────────────────────────────────────── */}
                         <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-6">
-                            Account Basics
+                            {t('signup_account_title')}
                         </Text>
                         <Text className="text-body font-jakarta text-sub mt-2">
-                            Just the essentials to save your progress.
+                            {t('signup_account_subtitle')}
                         </Text>
 
                         <View className="mt-8 gap-5">
                             <View>
-                                <Text className="form-label">First name</Text>
+                                <Text className="form-label">{t('signup_first_name')}</Text>
                                 <TextInput
                                     className="form-input"
                                     value={firstName}
@@ -152,8 +169,8 @@ export default function SignupScreen() {
 
                             <View>
                                 <Text className="form-label">
-                                    Phone number{' '}
-                                    <Text className="font-jakarta text-faint">(optional)</Text>
+                                    {t('signup_phone')}{' '}
+                                    <Text className="font-jakarta text-faint">{t('signup_phone_optional')}</Text>
                                 </Text>
                                 <TextInput
                                     className="form-input"
@@ -166,7 +183,7 @@ export default function SignupScreen() {
                             </View>
 
                             <View>
-                                <Text className="form-label">Password</Text>
+                                <Text className="form-label">{t('signup_password')}</Text>
                                 <View>
                                     <TextInput
                                         className="form-input pr-12"
@@ -197,23 +214,21 @@ export default function SignupScreen() {
                         <View className="card--info flex-row items-start gap-3 px-4 py-3.5 mt-6">
                             <Image source={icons.info} className="w-5 h-5 mt-0.5" resizeMode="contain" />
                             <Text className="flex-1 text-body font-jakarta text-sub leading-relaxed">
-                                We use this to save your pool profile and reminders.
+                                {t('signup_save_note')}
                             </Text>
                         </View>
 
-                        {/* ── App Preferences ──────────────────────────────────────── */}
                         <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-10">
-                            App Preferences
+                            {t('signup_preferences_title')}
                         </Text>
                         <Text className="text-body font-jakarta text-sub mt-2">
-                            You can change these anytime.
+                            {t('signup_preferences_subtitle')}
                         </Text>
 
-                        {/* Country */}
                         <View className="mt-8">
-                            <Text className="text-label font-jakarta-bold text-charcoal">Country</Text>
+                            <Text className="text-label font-jakarta-bold text-charcoal">{t('signup_country')}</Text>
                             <Text className="text-body font-jakarta text-sub mt-1 leading-relaxed">
-                                We&apos;ll use this to suggest units and local recommendations.
+                                {t('signup_country_note')}
                             </Text>
 
                             <View className="flex-row gap-3 mt-4">
@@ -253,14 +268,10 @@ export default function SignupScreen() {
                             </View>
                         </View>
 
-                        {/* Language */}
                         <View className="mt-8">
-                            <Text className="text-label font-jakarta-bold text-charcoal">Language</Text>
+                            <Text className="text-label font-jakarta-bold text-charcoal">{t('signup_language')}</Text>
                             <View className="flex-row gap-3 mt-3">
-                                {([
-                                    { id: 'en' as Language, label: 'English' },
-                                    { id: 'es' as Language, label: 'Spanish' },
-                                ]).map((item) => {
+                                {LANGUAGES.map((item) => {
                                     const selected = language === item.id;
                                     return (
                                         <TouchableOpacity
@@ -269,7 +280,7 @@ export default function SignupScreen() {
                                                 ? 'border-surface-mint-border bg-surface-mint'
                                                 : 'border-border-default bg-surface-white'
                                                 }`}
-                                            onPress={() => setLanguage(item.id)}
+                                            onPress={() => handleLanguageChange(item.id)}
                                             activeOpacity={0.85}
                                         >
                                             <Image
@@ -286,24 +297,12 @@ export default function SignupScreen() {
                             </View>
                         </View>
 
-                        {/* Measurement system */}
                         <View className="mt-8">
                             <Text className="text-label font-jakarta-bold text-charcoal">
-                                Measurement system
+                                {t('signup_measurement')}
                             </Text>
                             <View className="flex-row gap-3 mt-3">
-                                {([
-                                    {
-                                        id: 'us' as Measurement,
-                                        label: 'US System',
-                                        units: 'gal, ft, lb, oz',
-                                    },
-                                    {
-                                        id: 'metric' as Measurement,
-                                        label: 'Metric System',
-                                        units: 'm³, m, kg, L',
-                                    },
-                                ]).map((item) => {
+                                {MEASUREMENTS.map((item) => {
                                     const selected = measurement === item.id;
                                     return (
                                         <TouchableOpacity
@@ -337,7 +336,7 @@ export default function SignupScreen() {
                         <View className="card--info flex-row items-start gap-3 px-4 py-3.5 mt-6">
                             <MaterialCommunityIcons name="ruler" size={20} color="#0E97DC" />
                             <Text className="flex-1 text-body font-jakarta text-sub leading-relaxed">
-                                We&apos;ll use this for pool volume, chemical amounts, and recommendations.
+                                {t('signup_measurement_note')}
                             </Text>
                         </View>
 
@@ -345,7 +344,6 @@ export default function SignupScreen() {
                             <Text className="text-body font-jakarta text-error mt-4">{errorMessage}</Text>
                         ) : null}
 
-                        {/* ── Social sign-up ─────────────────────────────────────── */}
                         <View className="mt-6 gap-3">
                             <TouchableOpacity
                                 className="btn btn--secondary"
@@ -355,7 +353,7 @@ export default function SignupScreen() {
                             >
                                 <AntDesign name="google" size={18} color="#1D2939" />
                                 <Text className="btn__label btn__label--secondary ml-2">
-                                    Sign up with Google
+                                    {t('signup_google')}
                                 </Text>
                             </TouchableOpacity>
 
@@ -367,12 +365,11 @@ export default function SignupScreen() {
                             >
                                 <AntDesign name="apple" size={18} color="#1D2939" />
                                 <Text className="btn__label btn__label--secondary ml-2">
-                                    Sign up with Apple
+                                    {t('signup_apple')}
                                 </Text>
                             </TouchableOpacity>
                         </View>
 
-                        {/* ── Continue ───────────────────────────────────────────── */}
                         <View className="mt-8">
                             <TouchableOpacity
                                 className="bg-brand-blue rounded-full py-[17px] items-center justify-center"
@@ -384,7 +381,7 @@ export default function SignupScreen() {
                                     <ActivityIndicator color="#FFFFFF" />
                                 ) : (
                                     <Text className="text-button font-jakarta-bold text-surface-white">
-                                        Continue
+                                        {t('signup_continue')}
                                     </Text>
                                 )}
                             </TouchableOpacity>
@@ -396,3 +393,4 @@ export default function SignupScreen() {
         </SafeAreaView>
     );
 }
+
