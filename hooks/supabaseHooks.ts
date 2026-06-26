@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import * as Linking from "expo-linking"
 import * as WebBrowser from "expo-web-browser"
 import { supabase } from "@/lib/Supabase"
+import { SignUpParams } from '@/lib/types'
 
 WebBrowser.maybeCompleteAuthSession()
 
@@ -11,15 +12,7 @@ export function useSupabase() {
     const [accessToken, setAccessToken] = useState<string | null>(null)
     const [loading, setLoading] = useState(true)
 
-    type SignUpParams = {
-        email: string
-        password: string
-        firstName: string
-        phone: string
-        country: string
-        language: string
-        measurement: string
-    }
+
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data }) => {
@@ -43,7 +36,7 @@ export function useSupabase() {
 
     async function signInWithOAuth(
         { provider, country, language, measurement }:
-            { provider: "google" | "apple", country: string, language: string, measurement: string }) {
+            { provider: "google" | "apple", country?: string, language?: string, measurement?: string }) {
 
         const redirectTo = Linking.createURL("/")
 
@@ -82,17 +75,21 @@ export function useSupabase() {
             return { data: sessionData, error: sessionError }
         }
 
-        const { error: updateError } = await supabase.auth.updateUser({
-            email: sessionData.session?.user?.email,
-            data: {
-                plan: "free",
-                country,
-                language,
-                measurement,
-            },
-        })
+        if (country || language || measurement) {
+            const { error: updateError } = await supabase.auth.updateUser({
+                email: sessionData.session?.user?.email,
+                data: {
+                    plan: "free",
+                    country,
+                    language,
+                    measurement,
+                },
+            })
+            return { data: sessionData, error: updateError }
+        }
 
-        return { data: sessionData, error: updateError }
+        return { data: sessionData, error: null }
+
     }
 
     async function signInWithEmailAndPassword(email: string, password: string) {
@@ -141,8 +138,8 @@ export function useSupabase() {
         accessToken,
         plan,
         loading,
-        signInWithGoogle: (country: string, language: string, measurement: string) => signInWithOAuth({ provider: "google", country, language, measurement }),
-        signInWithApple: (country: string, language: string, measurement: string) => signInWithOAuth({ provider: "apple", country, language, measurement }),
+        signInWithGoogle: (country?: string, language?: string, measurement?: string) => signInWithOAuth({ provider: "google", country, language, measurement }),
+        signInWithApple: (country?: string, language?: string, measurement?: string) => signInWithOAuth({ provider: "apple", country, language, measurement }),
         signInWithEmailAndPassword,
         signUp,
         logout,

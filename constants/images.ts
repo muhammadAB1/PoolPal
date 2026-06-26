@@ -47,6 +47,21 @@ import iconUpload from '../assets/icons_1x/upload.png';
 import iconWarning from '../assets/icons_1x/warning.png';
 import iconWaterDrop from '../assets/icons_1x/water_drop.png';
 import selectedCheckBadge from '../assets/poolbasicsimages/poolwise_remaining_ui_assets_pngs/selected_check_badge.png';
+import unselectedRadioIndicator from '../assets/poolbasicsimages/poolwise_remaining_ui_assets_pngs/unselected_radio_indicator.png';
+
+// ─── Pool Basics — Pool Type (keyed to DB enum values) ───────────────────────
+import poolTypeChlorine from '../assets/poolbasicsimages/poolbasics/Chlorine.png';
+import poolTypeSaltwater from '../assets/poolbasicsimages/poolbasics/Saltwater.png';
+import poolTypeOther from '../assets/poolbasicsimages/poolbasics/Other.png';
+
+// ─── Pool Basics — Screened ───────────────────────────────────────────────────
+import poolScreenedYes from '../assets/poolbasicsimages/poolbasics/Screened.png';
+import poolScreenedNo from '../assets/poolbasicsimages/poolbasics/Unscreened.png';
+
+// ─── Pool Basics — Use ────────────────────────────────────────────────────────
+import poolUseFamily from '../assets/poolbasicsimages/poolbasics/Family.png';
+import poolUseVacationHome from '../assets/poolbasicsimages/poolbasics/VacationHome.png';
+import poolUseShortTermRental from '../assets/poolbasicsimages/poolbasics/ShortTermRental.png';
 
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
@@ -89,6 +104,29 @@ export const icons = {
     warning: iconWarning,
     waterDrop: iconWaterDrop,
     selectedCheckBadge,
+    unselectedRadioIndicator,
+} as const;
+
+/**
+ * Pool Basics screen images.
+ * Keys for poolType match the Supabase DB enum values exactly:
+ *   Chlorine | Saltwater | Other
+ */
+export const poolBasicsImages = {
+    poolType: {
+        Chlorine: poolTypeChlorine,
+        Saltwater: poolTypeSaltwater,
+        Other: poolTypeOther,
+    },
+    screened: {
+        Screened: poolScreenedYes,
+        Unscreened: poolScreenedNo,
+    },
+    use: {
+        Family: poolUseFamily,
+        VacationHome: poolUseVacationHome,
+        ShortTermRental: poolUseShortTermRental,
+    },
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */

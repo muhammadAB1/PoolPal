@@ -23,11 +23,9 @@ import Preferences from '@/components/Preferences';
 export default function SignupScreen() {
     const router = useRouter();
     const { t } = useTranslation();
-    const { signUp, signInWithApple, signInWithGoogle } = useSupabase();
+    const { signInWithEmailAndPassword, signInWithApple, signInWithGoogle } = useSupabase();
 
-    const [firstName, setFirstName] = useState('');
     const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [country, setCountry] = useState<Country>('us');
@@ -40,7 +38,7 @@ export default function SignupScreen() {
         setErrorMessage(null);
         setSubmitting(true);
 
-        const { error } = await signUp({ email, password, firstName, phone, country, language, measurement });
+        const { error } = await signInWithEmailAndPassword(email, password);
 
         setSubmitting(false);
 
@@ -115,26 +113,13 @@ export default function SignupScreen() {
                         </View>
 
                         <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-6">
-                            {t('signup_account_title')}
+                            {t('signin_account_title')}
                         </Text>
                         <Text className="text-body font-jakarta text-sub mt-2">
-                            {t('signup_account_subtitle')}
+                            {t('signin_account_subtitle')}
                         </Text>
 
                         <View className="mt-8 gap-5">
-                            <View>
-                                <Text className="form-label">{t('signup_first_name')}</Text>
-                                <TextInput
-                                    className="form-input"
-                                    value={firstName}
-                                    onChangeText={setFirstName}
-                                    placeholder="Teresa"
-                                    placeholderTextColor="#98A2B3"
-                                    autoCapitalize="words"
-                                    autoCorrect={false}
-                                />
-                            </View>
-
                             <View>
                                 <Text className="form-label">Email</Text>
                                 <TextInput
@@ -146,21 +131,6 @@ export default function SignupScreen() {
                                     keyboardType="email-address"
                                     autoCapitalize="none"
                                     autoCorrect={false}
-                                />
-                            </View>
-
-                            <View>
-                                <Text className="form-label">
-                                    {t('signup_phone')}{' '}
-                                    <Text className="font-jakarta text-faint">{t('signup_phone_optional')}</Text>
-                                </Text>
-                                <TextInput
-                                    className="form-input"
-                                    value={phone}
-                                    onChangeText={setPhone}
-                                    placeholder="(555) 000-0000"
-                                    placeholderTextColor="#98A2B3"
-                                    keyboardType="phone-pad"
                                 />
                             </View>
 
@@ -215,7 +185,7 @@ export default function SignupScreen() {
                             >
                                 <AntDesign name="google" size={18} color="#1D2939" />
                                 <Text className="btn__label btn__label--secondary ml-2 h-5">
-                                    {t('signup_google')}
+                                    {t('signin_google')}
                                 </Text>
                             </TouchableOpacity>
 
@@ -227,7 +197,7 @@ export default function SignupScreen() {
                             >
                                 <AntDesign name="apple" size={18} color="#1D2939" />
                                 <Text className="btn__label btn__label--secondary ml-2 h-5">
-                                    {t('signup_apple')}
+                                    {t('signin_apple')}
                                 </Text>
                             </TouchableOpacity>
                         </View>
