@@ -3,6 +3,8 @@ import '@/lib/i18n';
 
 import { useEffect } from 'react';
 import { Stack } from 'expo-router';
+import { AuthProvider } from '@/providers/AuthProvider';
+import { PoolProvider } from '@/providers/PoolProvider';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import {
@@ -33,10 +35,14 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
+    <AuthProvider>
+      <PoolProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+      </PoolProvider>
+    </AuthProvider>
   );
 }

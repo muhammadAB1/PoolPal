@@ -74,6 +74,22 @@ export const en = {
   pool_basics_use_rental_desc: 'Guests book it for short stays.',
   pool_basics_continue: 'Continue',
 
+  // pool condition
+  pool_condition_title: 'What does your pool look like today?',
+  pool_condition_subtitle:
+    'Choose the option that looks most like your pool. No testing needed yet.',
+  pool_condition_crystal_clear: 'Crystal clear',
+  pool_condition_crystal_clear_desc: 'Blue, clear water with the bottom easy to see.',
+  pool_condition_a_little_cloudy: 'A little cloudy',
+  pool_condition_a_little_cloudy_desc: 'Slightly hazy water, but the pool is still visible.',
+  pool_condition_green: 'Green',
+  pool_condition_green_desc: 'Green-tinted water, but you can still see into the pool.',
+  pool_condition_very_green_or_dark: 'Very green or dark',
+  pool_condition_very_green_or_dark_desc: 'Dark green water or hard to see the bottom.',
+  pool_condition_not_sure: "I'm not sure",
+  pool_condition_not_sure_desc: 'Not sure which one matches your pool.',
+  pool_condition_continue: 'Continue',
+
   // signup — actions
   signup_google: 'Sign up with Google',
   signup_apple: 'Sign up with Apple',
@@ -82,6 +98,9 @@ export const en = {
   signin_apple: 'Sign in with Apple',
   signin_account_title: 'Welcome back!',
   signin_account_subtitle: 'Enter your email and password to sign in.',
+
+  // dashboard
+  dashboard_welcome_back: 'Welcome back!',
 };
 
 export const es = {
@@ -160,6 +179,22 @@ export const es = {
   pool_basics_use_rental_desc: 'Los huéspedes la reservan para estancias cortas.',
   pool_basics_continue: 'Continuar',
 
+  // pool condition
+  pool_condition_title: '¿Cómo se ve tu piscina hoy?',
+  pool_condition_subtitle:
+    'Elige la opción que más se parezca a tu piscina. Aún no necesitas hacer pruebas.',
+  pool_condition_crystal_clear: 'Cristalina',
+  pool_condition_crystal_clear_desc: 'Agua azul y clara, con el fondo fácil de ver.',
+  pool_condition_a_little_cloudy: 'Un poco turbia',
+  pool_condition_a_little_cloudy_desc: 'Agua ligeramente turbia, pero la piscina sigue visible.',
+  pool_condition_green: 'Verde',
+  pool_condition_green_desc: 'Agua con tinte verde, pero aún puedes ver dentro de la piscina.',
+  pool_condition_very_green_or_dark: 'Muy verde u oscura',
+  pool_condition_very_green_or_dark_desc: 'Agua verde oscura o difícil ver el fondo.',
+  pool_condition_not_sure: 'No estoy seguro',
+  pool_condition_not_sure_desc: 'No estoy seguro cuál coincide con mi piscina.',
+  pool_condition_continue: 'Continuar',
+
   // signup — actions
   signup_google: 'Registrarse con Google',
   signup_apple: 'Registrarse con Apple',
@@ -168,4 +203,7 @@ export const es = {
   signin_apple: 'Iniciar sesión con Apple',
   signin_account_title: 'Bienvenido de nuevo!',
   signin_account_subtitle: 'Ingresa tu correo electrónico y contraseña para iniciar sesión.',
+
+  // dashboard
+  dashboard_welcome_back: '¡Bienvenido de nuevo!',
 };

@@ -63,6 +63,13 @@ import poolUseFamily from '../assets/poolbasicsimages/poolbasics/Family.png';
 import poolUseVacationHome from '../assets/poolbasicsimages/poolbasics/VacationHome.png';
 import poolUseShortTermRental from '../assets/poolbasicsimages/poolbasics/ShortTermRental.png';
 
+// ─── Pool Condition (keyed to DB enum values) ──────────────────────────────────
+import poolConditionCrystalClear from '../assets/pool-condition-images/CrystalClear.png';
+import poolConditionALittleCloudy from '../assets/pool-condition-images/ALittleCloudy.png';
+import poolConditionGreen from '../assets/pool-condition-images/Green.png';
+import poolConditionVeryGreenOrDark from '../assets/pool-condition-images/VeryGreen.png';
+import poolConditionNotSure from '../assets/pool-condition-images/NotSure.png';
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
 export const graphics = {
@@ -127,6 +134,19 @@ export const poolBasicsImages = {
         VacationHome: poolUseVacationHome,
         ShortTermRental: poolUseShortTermRental,
     },
+} as const;
+
+/**
+ * Pool Condition screen images.
+ * Keys match the Supabase DB enum values exactly:
+ *   CRYSTAL_CLEAR | A_LITTLE_CLOUDY | GREEN | VERY_GREEN_OR_DARK | NOT_SURE
+ */
+export const poolConditionImages = {
+    CRYSTAL_CLEAR: poolConditionCrystalClear,
+    A_LITTLE_CLOUDY: poolConditionALittleCloudy,
+    GREEN: poolConditionGreen,
+    VERY_GREEN_OR_DARK: poolConditionVeryGreenOrDark,
+    NOT_SURE: poolConditionNotSure,
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */

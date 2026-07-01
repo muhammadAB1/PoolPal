@@ -3,10 +3,27 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { graphics } from '@/constants/images';
+import { useAuthScreenGuard } from '@/hooks/useAuthScreenGuard';
+import { useAuth } from '@/providers/AuthProvider';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+      <View className="flex-1 items-center justify-center gap-6">
+        <Image
+          source={graphics.poolPalLogo}
+          className=" left-[18%]"
+          resizeMode="contain"
+        />
+      </View>
+    </SafeAreaView>
+  };
+
+  
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>

@@ -1,17 +1,18 @@
+import { icons, poolBasicsImages } from '@/constants/images';
+import { useSupabase } from '@/hooks/supabaseHooks';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
-    View,
-    Text,
     Image,
-    TextInput,
-    ScrollView,
-    TouchableOpacity,
     ImageSourcePropType,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { useTranslation } from 'react-i18next';
-import { icons, poolBasicsImages } from '@/constants/images';
 
 type PoolType = 'Chlorine' | 'Saltwater' | 'Other';
 type ScreenedType = 'Screened' | 'Unscreened';
@@ -26,8 +27,21 @@ export default function PoolBasicsScreen() {
     const [screened, setScreened] = useState<ScreenedType | null>(null);
     const [useType, setUseType] = useState<UseType | null>(null);
 
-    function handleContinue() {
-        router.push('/');
+    const { poolBasicInsert } = useSupabase();
+
+    async function handleContinue() {
+        if (!poolName || !poolType || !screened || !useType) {
+            return;
+        }
+        const { error } = await poolBasicInsert({
+            poolName,
+            poolType,
+            screened,
+            useType,
+            profileCompletionScore: 10,
+        });
+        if (error) return;
+        router.push('/pool-condition');
     }
 
     return (
@@ -52,7 +66,7 @@ export default function PoolBasicsScreen() {
                     </TouchableOpacity>
 
                     <View className="progress-bar mt-2">
-                        <View className="progress-bar__fill" style={{ width: '50%' }} />
+                        <View className="progress-bar__fill" style={{ width: '10%' }} />
                     </View>
 
                     <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-6">
