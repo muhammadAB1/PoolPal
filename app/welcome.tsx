@@ -42,7 +42,7 @@ export default function WelcomeScreen() {
           <TouchableOpacity
             className="bg-brand-blue rounded-full h-16 items-center justify-center"
             onPress={() => {
-              router.push('/signup');
+              router.replace('/signup');
             }}
             activeOpacity={0.85}
           >
@@ -54,7 +54,7 @@ export default function WelcomeScreen() {
           <TouchableOpacity
             className="bg-surface-soft-aqua rounded-full h-16 items-center justify-center mt-3"
             onPress={() => {
-              router.push('/signin');
+              router.replace('/signin');
             }}
             activeOpacity={0.85}
           >

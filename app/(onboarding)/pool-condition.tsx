@@ -37,7 +37,7 @@ export default function PoolConditionScreen() {
             },
         });
 
-        router.push('/dashboard');
+        router.replace('/dashboard');
     }
 
     return (

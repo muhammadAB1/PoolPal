@@ -1,7 +1,6 @@
-import { useAuthScreenGuard } from '@/hooks/useAuthScreenGuard';
+
 import { useAuth } from '@/providers/AuthProvider';
 import { Redirect, Tabs } from 'expo-router';
-import { canGoBack } from 'expo-router/build/global-state/routing';
 import { ActivityIndicator, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 

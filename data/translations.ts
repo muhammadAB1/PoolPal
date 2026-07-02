@@ -73,6 +73,7 @@ export const en = {
   pool_basics_use_rental: 'Short-term rental',
   pool_basics_use_rental_desc: 'Guests book it for short stays.',
   pool_basics_continue: 'Continue',
+  pool_basics_error: 'Please fill in all fields.',
 
   // pool condition
   pool_condition_title: 'What does your pool look like today?',
@@ -178,6 +179,7 @@ export const es = {
   pool_basics_use_rental: 'Alquiler a corto plazo',
   pool_basics_use_rental_desc: 'Los huéspedes la reservan para estancias cortas.',
   pool_basics_continue: 'Continuar',
+  pool_basics_error: 'Por favor, rellena todos los campos.',
 
   // pool condition
   pool_condition_title: '¿Cómo se ve tu piscina hoy?',

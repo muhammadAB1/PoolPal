@@ -7,8 +7,6 @@ import {
 } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/Supabase';
-import { resolvePostAuthRoute } from '@/lib/authRouting';
-import { Href, router } from 'expo-router';
 
 type AuthContextValue = {
   user: User | null;
@@ -43,8 +41,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setAccessToken(session?.access_token ?? null);
       setPlan(session?.user?.user_metadata?.plan ?? null);
       setLoading(false);
+
     });
-    
+
     return () => subscription.unsubscribe();
   }, []);
 

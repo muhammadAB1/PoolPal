@@ -4,36 +4,32 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    TextInput,
     ScrollView,
     KeyboardAvoidingView,
     Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter, type Href } from 'expo-router';
+import { Redirect, useRouter, type Href } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { icons } from '@/constants/images';
 import { useSupabase } from '@/hooks/supabaseHooks';
-import { useAuthScreenGuard } from '@/hooks/useAuthScreenGuard';
 import { setLanguage as changeAppLanguage } from '@/lib/i18n';
 import { Country, Language, Measurement } from '@/lib/types';
 import Preferences from '@/components/Preferences';
+import { useAuthScreenGuard } from '@/hooks/useAuthScreenGuard';
 
 export default function SigninScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const { signInWithGoogle } = useSupabase();
-
-    useAuthScreenGuard();
-
+    
+    const authRedirect = useAuthScreenGuard();
     const [country, setCountry] = useState<Country>('us');
     const [language, setLanguage] = useState<Language>('en');
     const [measurement, setMeasurement] = useState<Measurement>('us');
     const [submitting, setSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-
 
     async function handleGoogleSignUp() {
         setErrorMessage(null);
@@ -46,15 +42,19 @@ export default function SigninScreen() {
             setErrorMessage(error.message);
             return;
         }
-        // if (redirectTo) {
-        //     router.replace(redirectTo as Href);
-        // }
+        if (redirectTo) {
+            router.replace(redirectTo as Href);
+        }
     }
 
 
     function handleLanguageChange(lang: Language) {
         setLanguage(lang);
         changeAppLanguage(lang);
+    }
+
+    if (authRedirect) {
+        return <Redirect href={authRedirect} />;
     }
 
     return (

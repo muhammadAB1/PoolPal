@@ -4,51 +4,32 @@ import {
     Text,
     TouchableOpacity,
     Image,
-    TextInput,
     ScrollView,
     KeyboardAvoidingView,
     Platform,
-    ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router, useRouter, type Href } from 'expo-router';
+import { Redirect, router, type Href } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { icons } from '@/constants/images';
 import { useSupabase } from '@/hooks/supabaseHooks';
-import { useAuthScreenGuard } from '@/hooks/useAuthScreenGuard';
 import { setLanguage as changeAppLanguage } from '@/lib/i18n';
 import { Country, Language, Measurement } from '@/lib/types';
 import Preferences from '@/components/Preferences';
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuthScreenGuard } from '@/hooks/useAuthScreenGuard';
 
 export default function SignupScreen() {
-
-    const { user, loading } = useAuth();
-    if (loading) {
-        return <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-            <View className="flex-1 items-center justify-center gap-6">
-                <ActivityIndicator size="large" color="#0000ff" />
-            </View>
-        </SafeAreaView>
-    }
-
     const { t } = useTranslation();
     const { signInWithGoogle } = useSupabase();
 
-    useAuthScreenGuard();
-
-    const [firstName, setFirstName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
     const [country, setCountry] = useState<Country>('us');
     const [language, setLanguage] = useState<Language>('en');
     const [measurement, setMeasurement] = useState<Measurement>('us');
     const [submitting, setSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+    const authRedirect = useAuthScreenGuard();
 
     async function handleGoogleSignUp() {
         setErrorMessage(null);
@@ -70,6 +51,10 @@ export default function SignupScreen() {
     function handleLanguageChange(lang: Language) {
         setLanguage(lang);
         changeAppLanguage(lang);
+    }
+
+    if (authRedirect) {
+        return <Redirect href={authRedirect} />;
     }
 
     return (
