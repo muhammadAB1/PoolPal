@@ -23,7 +23,7 @@ export default function SigninScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const { signInWithGoogle } = useSupabase();
-    
+
     const authRedirect = useAuthScreenGuard();
     const [country, setCountry] = useState<Country>('us');
     const [language, setLanguage] = useState<Language>('en');
@@ -54,7 +54,7 @@ export default function SigninScreen() {
     }
 
     if (authRedirect) {
-        return <Redirect href={authRedirect} />;
+        return <Redirect href={authRedirect as Href} />;
     }
 
     return (
@@ -72,7 +72,7 @@ export default function SigninScreen() {
 
                         <TouchableOpacity
                             className="w-10 h-10 items-center justify-center -ml-2"
-                            onPress={() => router.back()}
+                            onPress={() => router.replace('/welcome')}
                             activeOpacity={0.7}
                         >
                             <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
