@@ -70,6 +70,39 @@ import poolConditionGreen from '../assets/pool-condition-images/Green.png';
 import poolConditionVeryGreenOrDark from '../assets/pool-condition-images/VeryGreen.png';
 import poolConditionNotSure from '../assets/pool-condition-images/NotSure.png';
 
+// ─── Equipment Basics — Filter & Pump examples (keyed to DB enum values) ─────
+import filterSand from '../assets/equipment-basic-images/filter_sand.png';
+import filterCartridge from '../assets/equipment-basic-images/filter_cartridge.png';
+import filterDe from '../assets/equipment-basic-images/filter_de.png';
+import pumpSingleSpeed from '../assets/equipment-basic-images/pump_single_speed.png';
+import pumpDualSpeed from '../assets/equipment-basic-images/pump_dual_speed.png';
+import pumpVariableSpeed from '../assets/equipment-basic-images/pump_variable_speed.png';
+
+// ─── Pool Surface Type (keyed to DB enum values) ─────────────────────────────
+import surfacePlaster from '../assets/pool-surface-images/plaster.png';
+import surfacePebble from '../assets/pool-surface-images/pebble.png';
+import surfaceVinyl from '../assets/pool-surface-images/vinyl.png';
+import surfaceFiberglass from '../assets/pool-surface-images/fiberglass.png';
+import surfaceTile from '../assets/pool-surface-images/tile.png';
+import surfaceNotSure from '../assets/pool-surface-images/pool_surface_not_sure_icon.png';
+
+// ─── Cleaning Setup (keyed to CleaningType values) ────────────────────────────
+import cleaningRobotic from '../assets/cleaning-setup-images/robotic-cleaner.png';
+import cleaningSuctionSide from '../assets/cleaning-setup-images/suction-side-cleaner.png';
+import cleaningPressureSide from '../assets/cleaning-setup-images/pressure-side-cleaner.png';
+import cleaningManualVacuum from '../assets/cleaning-setup-images/manual-vaccum.png';
+import cleaningNoVacuum from '../assets/cleaning-setup-images/no-vaccum.png';
+import cleaningNotSure from '../assets/cleaning-setup-images/pool_surface_not_sure_icon.png';
+
+// ─── Test Readings (keyed to TestReadingsMethod values) ───────────────────────
+import testReadingsResultsIcon from '../assets/pool-reading-images/test_results_flask.png';
+import testReadingsPhotoIcon from '../assets/pool-reading-images/test_strip_photo_camera.png';
+import testReadingsNoneIcon from '../assets/pool-reading-images/no_results_calendar.png';
+import testReadingsInfoIcon from '../assets/pool-reading-images/info_icon.png';
+import testReadingsStripPhoto from '../assets/pool-reading-images/test_strips.png';
+import testReadingsBackyardPhoto from '../assets/pool-reading-images/pool-backyard.png';
+import reminderShield from '../assets/pool-reading-images/reminder_shield.png';
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
 export const graphics = {
@@ -147,6 +180,75 @@ export const poolConditionImages = {
     GREEN: poolConditionGreen,
     VERY_GREEN_OR_DARK: poolConditionVeryGreenOrDark,
     NOT_SURE: poolConditionNotSure,
+} as const;
+
+/**
+ * Equipment Basics screen images.
+ * Keys match the FilterType / PumpType values exactly:
+ *   filter: Sand | Cartridge | DE
+ *   pump:   Single | Dual | Variable
+ */
+export const equipmentImages = {
+    filter: {
+        Sand: filterSand,
+        Cartridge: filterCartridge,
+        DE: filterDe,
+    },
+    pump: {
+        Single: pumpSingleSpeed,
+        Dual: pumpDualSpeed,
+        Variable: pumpVariableSpeed,
+    },
+} as const;
+
+/**
+ * Pool Surface Type screen images.
+ * Keys match the Supabase DB enum values exactly:
+ *   Plaster | Pebble | Vinyl | Fiberglass | Tile | NotSure
+ */
+export const poolSurfaceImages = {
+    Plaster: surfacePlaster,
+    Pebble: surfacePebble,
+    Vinyl: surfaceVinyl,
+    Fiberglass: surfaceFiberglass,
+    Tile: surfaceTile,
+    NotSure: surfaceNotSure,
+} as const;
+
+/**
+ * Cleaning Setup screen images.
+ * Keys match the CleaningType values exactly:
+ *   Robotic | SuctionSide | PressureSide | ManualVacuum | NoVacuum | NotSure
+ */
+export const cleaningSetupImages = {
+    Robotic: cleaningRobotic,
+    SuctionSide: cleaningSuctionSide,
+    PressureSide: cleaningPressureSide,
+    ManualVacuum: cleaningManualVacuum,
+    NoVacuum: cleaningNoVacuum,
+    NotSure: cleaningNotSure,
+} as const;
+
+/**
+ * Test Readings screen images.
+ * Keys match the TestReadingsMethod values exactly:
+ *   Readings | Photo | None
+ */
+export const testReadingsImages = {
+    Readings: testReadingsResultsIcon,
+    Photo: testReadingsPhotoIcon,
+    None: testReadingsNoneIcon,
+} as const;
+
+export const testReadingsGraphics = {
+    infoIcon: testReadingsInfoIcon,
+    stripPhoto: testReadingsStripPhoto,
+    backyardPhoto: testReadingsBackyardPhoto,
+} as const;
+
+export const poolSizeGraphics = {
+    reminderShield,
+    infoIcon: testReadingsInfoIcon,
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */

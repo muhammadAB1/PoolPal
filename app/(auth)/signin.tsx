@@ -7,6 +7,7 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     Platform,
+    ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Redirect, useRouter, type Href } from 'expo-router';
@@ -18,12 +19,13 @@ import { setLanguage as changeAppLanguage } from '@/lib/i18n';
 import { Country, Language, Measurement } from '@/lib/types';
 import Preferences from '@/components/Preferences';
 import { useAuthScreenGuard } from '@/hooks/useAuthScreenGuard';
+import { usePool } from '@/providers/PoolProvider';
 
 export default function SigninScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const { signInWithGoogle } = useSupabase();
-    
+
     const authRedirect = useAuthScreenGuard();
     const [country, setCountry] = useState<Country>('us');
     const [language, setLanguage] = useState<Language>('en');
@@ -54,7 +56,7 @@ export default function SigninScreen() {
     }
 
     if (authRedirect) {
-        return <Redirect href={authRedirect} />;
+        return <Redirect href={authRedirect as Href} />;
     }
 
     return (
@@ -72,7 +74,7 @@ export default function SigninScreen() {
 
                         <TouchableOpacity
                             className="w-10 h-10 items-center justify-center -ml-2"
-                            onPress={() => router.back()}
+                            onPress={() => router.replace('/welcome')}
                             activeOpacity={0.7}
                         >
                             <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />

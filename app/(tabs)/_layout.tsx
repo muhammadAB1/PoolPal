@@ -1,12 +1,14 @@
 
 import { useAuth } from '@/providers/AuthProvider';
+import { usePool } from '@/providers/PoolProvider';
 import { Redirect, Tabs } from 'expo-router';
 import { ActivityIndicator, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
   const { user, loading } = useAuth();
-  if (loading) {
+  const { loading: poolLoading } = usePool();
+  if (loading || poolLoading) {
     return <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <View className="flex-1 items-center justify-center gap-6">
         <ActivityIndicator size="large" color="#0000ff" />

@@ -7,12 +7,15 @@ import {
 } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/Supabase';
+import { Measurement } from '@/lib/types';
 
 type AuthContextValue = {
   user: User | null;
   accessToken: string | null;
   plan: string | null;
   loading: boolean;
+  setUser: (user: User | null) => void;
+  measurement: Measurement;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -22,6 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [plan, setPlan] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [measurement, setMeasurement] = useState<Measurement>('us');
 
   useEffect(() => {
     console.log('Ran from auth provider')
@@ -31,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(session?.user ?? null);
       setAccessToken(session?.access_token ?? null);
       setPlan(session?.user?.user_metadata?.plan ?? null);
+      setMeasurement(session?.user?.user_metadata?.measurement);
       setLoading(false);
     });
 
@@ -40,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(session?.user ?? null);
       setAccessToken(session?.access_token ?? null);
       setPlan(session?.user?.user_metadata?.plan ?? null);
+      setMeasurement(session?.user?.user_metadata?.measurement);
       setLoading(false);
 
     });
@@ -48,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, accessToken, plan, loading }}>
+    <AuthContext.Provider value={{ user, accessToken, plan, loading, setUser, measurement }}>
       {children}
     </AuthContext.Provider>
   );
