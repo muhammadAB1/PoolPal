@@ -42,7 +42,7 @@ export default function CleaningSetupScreen() {
         //         return;
         //     }
 
-            router.replace('/(tabs)/dashboard' as Href);
+            router.replace('/test-readings' as Href);
         // } catch (error) {
         //     setErrorMessage(
         //         error instanceof Error ? error.message : t('pool_basics_error')
@@ -53,13 +53,13 @@ export default function CleaningSetupScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace('/(tabs)/dashboard' as Href);
+        router.replace('/test-readings' as Href);
     }
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
             <ScrollView
-                contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
+                contentContainerStyle={{ paddingBottom: 120 }}
                 showsVerticalScrollIndicator={false}
                 ref={scrollViewRef}
             >
@@ -121,8 +121,6 @@ export default function CleaningSetupScreen() {
                             </TouchableOpacity>
                         ) : null}
                     </View>
-
-                    <View className="h-36" />
                 </View>
             </ScrollView>
 
@@ -144,7 +142,7 @@ export default function CleaningSetupScreen() {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    className="items-center justify-center py-3.5"
+                    className="items-center justify-center mt-3.5 py-1"
                     onPress={handleSkipForNow}
                     activeOpacity={0.7}
                 >

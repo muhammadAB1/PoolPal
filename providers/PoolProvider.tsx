@@ -1,3 +1,7 @@
+import { supabase } from '@/lib/Supabase';
+import type { Pool } from '@/lib/types';
+import { useAuth } from '@/providers/AuthProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   createContext,
   useContext,
@@ -5,10 +9,6 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { supabase } from '@/lib/Supabase';
-import type { Pool } from '@/lib/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAuth } from '@/providers/AuthProvider';
 
 type PoolContextValue = {
   poolId: string | null;
@@ -41,6 +41,7 @@ export function PoolProvider({ children }: { children: ReactNode }) {
         setLoading(false);
         return;
       }
+
 
       const activePoolId = await AsyncStorage.getItem('activePoolId');
       if (activePoolId) {

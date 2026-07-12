@@ -39,7 +39,7 @@ export default function HomeScreen() {
         />
         <TouchableOpacity
           className="bg-brand-blue rounded-full py-[14px] px-8 items-center"
-          onPress={() => router.replace('/(onboarding)/pool-basics')}
+          onPress={() => router.replace('/pool-basics')}
           activeOpacity={0.85}
         >
           <Text className="text-button font-jakarta-bold text-surface-white">

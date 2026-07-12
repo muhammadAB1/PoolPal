@@ -47,6 +47,10 @@ export default function PoolConditionScreen() {
         router.replace('/pool-size-gallons' as Href);
     }
 
+    function handleSkipForNow() {
+        router.replace('/pool-size-gallons' as Href);
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
             <ScrollView
@@ -100,6 +104,15 @@ export default function PoolConditionScreen() {
                         {t('pool_condition_continue')}
                     </Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    className="items-center justify-center mt-3.5 py-1"
+                    onPress={handleSkipForNow}
+                    activeOpacity={0.7}
+                >
+                    <Text className="text-body font-jakarta-bold text-brand-blue">
+                        {t('pool_condition_skip_for_now')}
+                    </Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );
@@ -131,15 +144,15 @@ function ConditionOptionCard({
         >
             <Image
                 source={image}
-                className="w-[50px] h-[50px] rounded-full"
+                className="w-[60px] h-[60px] rounded-full"
                 resizeMode="cover"
             />
 
             <View className="flex-1 pr-1">
-                <Text className="text-body font-jakarta-bold text-charcoal">
+                <Text className="text-body-lg font-jakarta-bold text-charcoal">
                     {label}
                 </Text>
-                <Text className="mt-0.5 text-small font-jakarta text-sub">
+                <Text className="mt-0.5 text-body font-jakarta text-sub">
                     {description}
                 </Text>
             </View>

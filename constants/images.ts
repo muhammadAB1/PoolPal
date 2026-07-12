@@ -94,6 +94,15 @@ import cleaningManualVacuum from '../assets/cleaning-setup-images/manual-vaccum.
 import cleaningNoVacuum from '../assets/cleaning-setup-images/no-vaccum.png';
 import cleaningNotSure from '../assets/cleaning-setup-images/pool_surface_not_sure_icon.png';
 
+// ─── Test Readings (keyed to TestReadingsMethod values) ───────────────────────
+import testReadingsResultsIcon from '../assets/pool-reading-images/test_results_flask.png';
+import testReadingsPhotoIcon from '../assets/pool-reading-images/test_strip_photo_camera.png';
+import testReadingsNoneIcon from '../assets/pool-reading-images/no_results_calendar.png';
+import testReadingsInfoIcon from '../assets/pool-reading-images/info_icon.png';
+import testReadingsStripPhoto from '../assets/pool-reading-images/test_strips.png';
+import testReadingsBackyardPhoto from '../assets/pool-reading-images/pool-backyard.png';
+import reminderShield from '../assets/pool-reading-images/reminder_shield.png';
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
 export const graphics = {
@@ -218,6 +227,28 @@ export const cleaningSetupImages = {
     ManualVacuum: cleaningManualVacuum,
     NoVacuum: cleaningNoVacuum,
     NotSure: cleaningNotSure,
+} as const;
+
+/**
+ * Test Readings screen images.
+ * Keys match the TestReadingsMethod values exactly:
+ *   Readings | Photo | None
+ */
+export const testReadingsImages = {
+    Readings: testReadingsResultsIcon,
+    Photo: testReadingsPhotoIcon,
+    None: testReadingsNoneIcon,
+} as const;
+
+export const testReadingsGraphics = {
+    infoIcon: testReadingsInfoIcon,
+    stripPhoto: testReadingsStripPhoto,
+    backyardPhoto: testReadingsBackyardPhoto,
+} as const;
+
+export const poolSizeGraphics = {
+    reminderShield,
+    infoIcon: testReadingsInfoIcon,
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */

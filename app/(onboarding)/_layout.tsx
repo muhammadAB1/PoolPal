@@ -3,8 +3,9 @@ import { Redirect, Stack } from 'expo-router';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { icons } from '@/constants/images';
+import { usePool } from '@/providers/PoolProvider';
 
-const onboardingSteps = ['pool-basics', 'pool-condition', 'pool-size-gallons', 'equipment-basics', 'surface-type', 'cleaning-setup'] as const;
+const onboardingSteps = ['pool-basics', 'pool-condition', 'pool-size-gallons', 'equipment-basics', 'surface-type', 'cleaning-setup', 'test-readings', 'weekly-reminder'] as const;
 
 const previousRouteByScreen: Partial<Record<(typeof onboardingSteps)[number], (typeof onboardingSteps)[number]>> = {
   'pool-condition': 'pool-basics',
@@ -12,6 +13,8 @@ const previousRouteByScreen: Partial<Record<(typeof onboardingSteps)[number], (t
   'equipment-basics': 'pool-size-gallons',
   'surface-type': 'equipment-basics',
   'cleaning-setup': 'surface-type',
+  'test-readings': 'cleaning-setup',
+  'weekly-reminder': 'test-readings',
 };
 
 function OnboardingHeader({
@@ -50,8 +53,9 @@ function OnboardingHeader({
 
 export default function OnboardingLayout() {
   const { user, loading } = useAuth();
+  const { poolId, loading: poolLoading } = usePool();
 
-  if (loading) {
+  if (loading || poolLoading) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
         <View className="flex-1 items-center justify-center gap-6">
@@ -63,6 +67,10 @@ export default function OnboardingLayout() {
 
   // if (!user) {
   //   return <Redirect href="/" />;
+  // }
+
+  // if (poolId) {
+  //   return <Redirect href="/(tabs)/dashboard" />;
   // }
 
   return (
@@ -93,6 +101,8 @@ export default function OnboardingLayout() {
       <Stack.Screen name="surface-type" />
       <Stack.Screen name="equipment-basics" />
       <Stack.Screen name="cleaning-setup" />
+      <Stack.Screen name="test-readings" />
+      <Stack.Screen name="weekly-reminder" />
     </Stack>
   );
 }

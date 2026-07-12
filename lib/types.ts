@@ -13,7 +13,8 @@ export type PoolCondition =
     | 'VERY_GREEN_OR_DARK'
     | 'NOT_SURE';
 
-export type PoolShape = 'Rectangle' | 'Oval' | 'Round' | 'Kidney' | 'Freeform';
+export type PoolShape = 'Rectangle' | 'Round' | 'Oval' | 'Freeform' | 'Kidney';
+export type PoolDepthProfile = 'Flat' | 'ShallowDeep' | 'NotSure';
 export type MeasurementMethod = 'Known' | 'Estimate';
 export type MeasurementUnit = 'us' | 'metric';
 
@@ -69,4 +70,29 @@ export type poolSurfaceInsertProps = {
 
 export type poolCleaningInsertProps = {
     cleaningType?: CleaningType
+}
+
+export type TestReadingsMethod = 'Readings' | 'Photo' | 'None';
+
+export type testReadingsInsertProps = {
+    testing_preference: TestReadingsMethod
+    free_chlorine: number
+    ph: number
+    total_alkalinity: number
+    cyanuric_acid: number
+    calcium_hardness: number
+}
+
+export type Weekday =
+    | 'Sunday'
+    | 'Monday'
+    | 'Tuesday'
+    | 'Wednesday'
+    | 'Thursday'
+    | 'Friday'
+    | 'Saturday'
+
+export type poolReminderInsertProps = {
+    reminderDay: Weekday
+    reminderTime: string
 }

@@ -1,7 +1,7 @@
 import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
 
 import { supabase } from "@/lib/Supabase"
-import { poolBasicUpdateProps, PoolCondition, poolCleaningInsertProps, poolEquipmentInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, UseType } from "@/lib/types"
+import { poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, testReadingsInsertProps, UseType } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
 import { usePool } from "@/providers/PoolProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -24,7 +24,7 @@ export function useSupabase() {
 
     const { user, setUser } = useAuth();
 
-    const { poolId, setPoolId } = usePool();
+    const { poolId } = usePool();
 
     async function signInWithOAuth(
 
@@ -32,7 +32,6 @@ export function useSupabase() {
             { provider: "google" | "apple", country?: string, language?: string, measurement?: string }): Promise<OAuthResult> {
 
         const redirectTo = Linking.createURL("/")
-        console.log('redirectTo:', redirectTo)
         const { data, error } = await supabase.auth.signInWithOAuth({
 
             provider,
@@ -66,12 +65,12 @@ export function useSupabase() {
         const { data: sessionData, error: sessionError } =
             await supabase.auth.exchangeCodeForSession(authCode)
 
+        await AsyncStorage.removeItem('activePoolId')
         setUser(sessionData.session?.user || null)
 
         if (sessionError || !sessionData.session) {
             return { data: null, redirectTo: null, error: sessionError }
         }
-
         const isNewUser = poolId ? false : true;
 
         if (isNewUser && (country || language || measurement)) {
@@ -92,6 +91,7 @@ export function useSupabase() {
         }
 
         const postAuthRoute = isNewUser ? '/(onboarding)/pool-basics' : '/(tabs)/dashboard'
+        console.log(postAuthRoute)
 
         return { data: sessionData, redirectTo: postAuthRoute, error: null }
     }
@@ -106,25 +106,24 @@ export function useSupabase() {
     async function poolBasicInsert({ poolName, poolType, screened, useType }:
         { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType }) {
 
-        if (poolId) {
+        const id = await AsyncStorage.getItem('activePoolId');
+        if (id) {
             const { data, error } = await supabase
                 .from('pools')
                 .update({ pool_name: poolName, pool_type: poolType, pool_screen: screened, pool_use_type: useType })
-                .eq('id', poolId)
+                .eq('id', id)
                 .select()
                 .single()
             return { data, error }
         }
-        else {
 
+        else {
             const { data, error } = await supabase
                 .from('pools')
                 .insert({ owner_user_id: user?.id, pool_name: poolName, pool_type: poolType, pool_screen: screened, pool_use_type: useType })
                 .select()
                 .single();
-
             if (data) {
-                setPoolId(data.id);
                 await AsyncStorage.setItem('activePoolId', data.id);
             }
             return { data, error }
@@ -134,10 +133,12 @@ export function useSupabase() {
     async function poolBasicUpdate({ props }:
         { props: poolBasicUpdateProps }) {
 
+        const id = await AsyncStorage.getItem('activePoolId');
+
         const { data, error } = await supabase
             .from('pools')
             .update({ pool_condition: props.poolCondition })
-            .eq('id', poolId);
+            .eq('id', id);
 
         return { data, error }
 
@@ -145,11 +146,12 @@ export function useSupabase() {
 
     async function poolSizeInsert({ props }: { props: poolSizeInsertProps }) {
         try {
-            if (poolId) {
+            const id = await AsyncStorage.getItem('activePoolId');
+            if (id) {
                 const { error } = await supabase
                     .from('pools')
                     .update({ length: props.length, width: props.width, shallow_depth: props.shallowDepth, deep_depth: props.deepDepth, shape: props.shape, gallons: props.gallons })
-                    .eq('id', poolId)
+                    .eq('id', id)
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -160,12 +162,12 @@ export function useSupabase() {
 
     async function poolEquipmentInsert({ props }: { props: poolEquipmentInsertProps }) {
         try {
-            console.log(poolId)
-            if (poolId) {
+            const id = await AsyncStorage.getItem('activePoolId');
+            if (id) {
                 const { error } = await supabase
                     .from('pools')
                     .update({ filter_type: props.filterType, pump_type: props.pumpType, heater: props.heaterOption })
-                    .eq('id', poolId)
+                    .eq('id', id)
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -177,11 +179,12 @@ export function useSupabase() {
 
     async function poolSurfaceInsert({ props }: { props: poolSurfaceInsertProps }) {
         try {
-            if (poolId) {
+            const id = await AsyncStorage.getItem('activePoolId');
+            if (id) {
                 const { error } = await supabase
                     .from('pools')
                     .update({ surface_type: props.surfaceType })
-                    .eq('id', poolId)
+                    .eq('id', id)
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -192,11 +195,12 @@ export function useSupabase() {
 
     async function poolCleaningInsert({ props }: { props: poolCleaningInsertProps }) {
         try {
-            if (poolId) {
+            const id = await AsyncStorage.getItem('activePoolId');
+            if (id) {
                 const { error } = await supabase
                     .from('pools')
                     .update({ cleaning_type: props.cleaningType })
-                    .eq('id', poolId)
+                    .eq('id', id)
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -205,6 +209,38 @@ export function useSupabase() {
         }
     }
 
+    async function testReadingsInsert({ props }: { props: testReadingsInsertProps }) {
+
+        try {
+            const id = await AsyncStorage.getItem('activePoolId');
+            if (id) {
+                const { error } = await supabase
+                    .from('pools')
+                    .update({ testing_preference: props.testing_preference, free_chlorine: props.free_chlorine, ph: props.ph, total_alkalinity: props.total_alkalinity, cyanuric_acid: props.cyanuric_acid, calcium_hardness: props.calcium_hardness, })
+                    .eq('id', id)
+                return { error }
+            }
+            return { error: new Error('Pool ID not found') }
+        } catch (error) {
+            return { error: error as Error }
+        }
+    }
+
+    async function weeklyReminderInsert({ props }: { props: poolReminderInsertProps }) {
+        try {
+            const id = await AsyncStorage.getItem('activePoolId');
+            if (id) {
+                const { error } = await supabase
+                    .from('pools')
+                    .update({ reminder_day: props.reminderDay, reminder_time: props.reminderTime })
+                    .eq('id', id)
+                return { error }
+            }
+            return { error: new Error('Pool ID not found') }
+        } catch (error) {
+            return { error: error as Error }
+        }
+    }
     return {
         signInWithGoogle: (country?: string, language?: string, measurement?: string) => signInWithOAuth({ provider: "google", country, language, measurement }),
         logout,
@@ -214,6 +250,8 @@ export function useSupabase() {
         poolEquipmentInsert,
         poolSurfaceInsert,
         poolCleaningInsert,
+        testReadingsInsert,
+        weeklyReminderInsert,
     }
 
 }

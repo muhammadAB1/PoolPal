@@ -91,7 +91,7 @@ export default function EquipmentBasicsScreen() {
         //         setErrorMessage(error.message);
         //         return;
         //     }
-        router.replace('/surface-type' as Href);
+            router.replace('/surface-type' as Href);
         // } catch (error) {
         //     setErrorMessage(error instanceof Error ? error.message : t('pool_basics_error'));
         // } finally {
@@ -187,10 +187,10 @@ export default function EquipmentBasicsScreen() {
                             activeOpacity={0.7}
                             onPress={() => { }}
                         >
-                            <View className="w-11 h-11 rounded-xl bg-surface-white items-center justify-center">
+                            <View className="w-14 h-14 rounded-xl bg-surface-white items-center justify-center">
                                 <Image
                                     source={icons.camera}
-                                    className="w-5 h-5"
+                                    className="w-7 h-7"
                                     resizeMode="contain"
                                 />
                             </View>
@@ -281,10 +281,10 @@ export default function EquipmentBasicsScreen() {
                             activeOpacity={0.7}
                             onPress={() => { }}
                         >
-                            <View className="w-11 h-11 rounded-xl bg-surface-white items-center justify-center">
+                            <View className="w-14 h-14 rounded-xl bg-surface-white items-center justify-center">
                                 <Image
                                     source={icons.camera}
-                                    className="w-5 h-5"
+                                    className="w-7 h-7"
                                     resizeMode="contain"
                                 />
                             </View>
@@ -354,15 +354,15 @@ export default function EquipmentBasicsScreen() {
                     </Text>
                 </TouchableOpacity>
 
-                {/* <TouchableOpacity
-                    className="items-center justify-center py-3.5"
+                <TouchableOpacity
+                    className="items-center justify-center mt-3.5 py-1"
                     onPress={handleSkipForNow}
                     activeOpacity={0.7}
                 >
                     <Text className="text-body font-jakarta-bold text-brand-blue">
                         {t('equipment_basics_skip_for_now')}
                     </Text>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
             </View>
 
             <EquipmentExamplesModal

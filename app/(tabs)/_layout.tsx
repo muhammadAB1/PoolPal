@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
   const { user, loading } = useAuth();
-  const { poolId, loading: poolLoading } = usePool();
+  const { loading: poolLoading } = usePool();
   if (loading || poolLoading) {
     return <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <View className="flex-1 items-center justify-center gap-6">
@@ -17,9 +17,6 @@ export default function TabLayout() {
   }
   if (!user) {
     return <Redirect href="/" />
-  }
-  if (poolId) {
-    return <Redirect href="/pool-basics" />
   }
 
   return (

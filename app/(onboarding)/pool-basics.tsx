@@ -57,6 +57,10 @@ export default function PoolBasicsScreen() {
         router.replace('/pool-condition');
     }
 
+    function handleSkipForNow() {
+        router.replace('/pool-condition');
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
             <ScrollView
@@ -224,6 +228,15 @@ export default function PoolBasicsScreen() {
                 >
                     <Text className="text-button font-jakarta-bold text-surface-white">
                         {t('pool_basics_continue')}
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    className="items-center justify-center mt-3.5 py-1"
+                    onPress={handleSkipForNow}
+                    activeOpacity={0.7}
+                >
+                    <Text className="text-body font-jakarta-bold text-brand-blue">
+                        {t('pool_basics_skip_for_now')}
                     </Text>
                 </TouchableOpacity>
             </View>

@@ -56,6 +56,10 @@ export default function SurfaceTypeScreen() {
         // }
     }
 
+    function handleSkipForNow() {
+        router.replace('/cleaning-setup' as Href);
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
             <ScrollView
@@ -86,9 +90,9 @@ export default function SurfaceTypeScreen() {
                                         setSurfaceType(value);
                                         setErrorMessage(null);
                                         value === 'NotSure' && //scroll to bottom of the screen
-                                        setTimeout(() => {
-                                            scrollViewRef.current?.scrollToEnd({ animated: true });
-                                        }, 100);
+                                            setTimeout(() => {
+                                                scrollViewRef.current?.scrollToEnd({ animated: true });
+                                            }, 100);
                                     }}
                                 />
                             );
@@ -139,6 +143,15 @@ export default function SurfaceTypeScreen() {
                         {t('surface_type_continue')}
                     </Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    className="items-center justify-center mt-3.5 py-1"
+                    onPress={handleSkipForNow}
+                    activeOpacity={0.7}
+                >
+                    <Text className="text-body font-jakarta-bold text-brand-blue">
+                        {t('surface_type_skip_for_now')}
+                    </Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     );
@@ -170,15 +183,15 @@ function SurfaceOptionCard({
         >
             <Image
                 source={image}
-                className="w-[50px] h-[50px] rounded-xl"
+                className="w-[60px] h-[60px] rounded-xl"
                 resizeMode="cover"
             />
 
             <View className="flex-1 pr-1">
-                <Text className="text-body font-jakarta-bold text-charcoal">
+                <Text className="text-body-lg font-jakarta-bold text-charcoal">
                     {label}
                 </Text>
-                <Text className="mt-0.5 text-small font-jakarta text-sub">
+                <Text className="mt-0.5 text-body font-jakarta text-sub">
                     {description}
                 </Text>
             </View>
