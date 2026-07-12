@@ -1,5 +1,5 @@
-import type { PostAuthRoute } from "@/lib/authRouting"
-import { userHasPool } from "@/lib/authRouting"
+import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
+
 import { supabase } from "@/lib/Supabase"
 import { poolBasicUpdateProps, PoolCondition } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
@@ -24,7 +24,7 @@ export function useSupabase() {
 
     const { user } = useAuth();
 
-    const { poolId } = usePool();
+    const { poolId, setPoolId } = usePool();
 
     async function signInWithOAuth(
 
@@ -69,9 +69,7 @@ export function useSupabase() {
             return { data: null, redirectTo: null, error: sessionError }
         }
 
-        const sessionUser = sessionData.session.user
-
-        const isNewUser = !(await userHasPool(sessionUser.id))
+        const isNewUser = poolId ? false : true;
 
         if (isNewUser && (country || language || measurement)) {
             const { error: updateError } = await supabase.auth.updateUser({
@@ -107,23 +105,25 @@ export function useSupabase() {
             const { data, error } = await supabase
                 .from('pools')
                 .update({ pool_name: poolName, pool_type: poolType, pool_screen: screened, pool_use_type: useType, profile_completion_score: profileCompletionScore })
-                .eq('id', poolId);
+                .eq('id', poolId)
+                .select()
+                .single()
             return { data, error }
         }
         else {
-  
+
             const { data, error } = await supabase
                 .from('pools')
                 .insert({ owner_user_id: user?.id, pool_name: poolName, pool_type: poolType, pool_screen: screened, pool_use_type: useType, profile_completion_score: profileCompletionScore })
                 .select()
                 .single();
 
+            if (data) {
+                setPoolId(data.id);
+                await AsyncStorage.setItem('activePoolId', data.id);
+            }
             return { data, error }
         }
-
-
-
-
     }
 
     async function poolBasicUpdate({ props }:

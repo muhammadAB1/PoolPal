@@ -1,25 +1,14 @@
-import { useEffect } from 'react';
-import { useRouter, type Href } from 'expo-router';
-import { resolvePostAuthRoute } from '@/lib/authRouting';
+import { type Href } from 'expo-router';
 import { useAuth } from '@/providers/AuthProvider';
+import { usePool } from '@/providers/PoolProvider';
 
-export function useAuthScreenGuard() {
-  const router = useRouter();
-  const { user, loading } = useAuth();
+export type PostAuthRoute = '/pool-basics' | '/dashboard';
 
-  useEffect(() => {
-    console.log('Ran from auth screen guard')
-    if (loading || !user) return;
+export function useAuthScreenGuard(): Href | null {
+  const { user, loading: authLoading } = useAuth();
+  const { poolId, loading: poolLoading } = usePool();
 
-    async function redirectIfAuthenticated() {
-      try {
-        const route = await resolvePostAuthRoute(user!.id);
-        router.replace(route as Href);
-      } catch {
-        // Stay on auth screen if pool check fails
-      }
-    }
+  if (authLoading || poolLoading || !user) return null;
 
-    redirectIfAuthenticated();
-  }, [user, loading]);
+  return poolId ? '/dashboard' : '/pool-basics';
 }

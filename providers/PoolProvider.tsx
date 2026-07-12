@@ -50,6 +50,8 @@ export function PoolProvider({ children }: { children: ReactNode }) {
           .select('*')
           .eq('id', activePoolId)
           .single();
+        const userPools = activePool.data ?? [];
+        setPools([userPools]);
 
         if (activePool.error) {
           setError(activePool.error);

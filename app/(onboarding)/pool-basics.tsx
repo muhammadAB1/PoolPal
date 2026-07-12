@@ -26,22 +26,37 @@ export default function PoolBasicsScreen() {
     const [poolType, setPoolType] = useState<PoolType | null>(null);
     const [screened, setScreened] = useState<ScreenedType | null>(null);
     const [useType, setUseType] = useState<UseType | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const { poolBasicInsert } = useSupabase();
 
     async function handleContinue() {
-        if (!poolName || !poolType || !screened || !useType) {
+        setErrorMessage(null);
+
+        if (
+            !poolName.trim() ||
+            !poolType ||
+            !screened ||
+            !useType
+        ) {
+            setErrorMessage(t('pool_basics_error'));
             return;
         }
-        const { error } = await poolBasicInsert({
+
+
+        const { data,error } = await poolBasicInsert({
             poolName,
             poolType,
             screened,
             useType,
             profileCompletionScore: 10,
         });
-        if (error) return;
-        router.push('/pool-condition');
+        if (error) {
+            setErrorMessage(error.message);
+            return;
+        }
+        
+        router.replace('/pool-condition');
     }
 
     return (
@@ -81,7 +96,10 @@ export default function PoolBasicsScreen() {
                         <TextInput
                             className="form-input"
                             value={poolName}
-                            onChangeText={setPoolName}
+                            onChangeText={(text) => {
+                                setPoolName(text);
+                                setErrorMessage(null);
+                            }}
                             placeholder={t('pool_basics_pool_name_placeholder')}
                             placeholderTextColor="#98A2B3"
                         />
@@ -119,7 +137,10 @@ export default function PoolBasicsScreen() {
                                     label={item.label}
                                     description={item.desc}
                                     selected={poolType === item.value}
-                                    onPress={() => setPoolType(item.value)}
+                                    onPress={() => {
+                                        setPoolType(item.value);
+                                        setErrorMessage(null);
+                                    }}
                                     imageClassName="w-[52px] h-[52px] rounded-full"
                                 />
                             ))}
@@ -153,7 +174,10 @@ export default function PoolBasicsScreen() {
                                     label={item.label}
                                     description={item.desc}
                                     selected={screened === item.value}
-                                    onPress={() => setScreened(item.value)}
+                                    onPress={() => {
+                                        setScreened(item.value);
+                                        setErrorMessage(null);
+                                    }}
                                     imageClassName="w-[72px] h-[72px] rounded-full"
                                 />
                             ))}
@@ -192,7 +216,10 @@ export default function PoolBasicsScreen() {
                                     label={item.label}
                                     description={item.desc}
                                     selected={useType === item.value}
-                                    onPress={() => setUseType(item.value)}
+                                    onPress={() => {
+                                        setUseType(item.value);
+                                        setErrorMessage(null);
+                                    }}
                                     imageClassName="w-[52px] h-[52px] rounded-full"
                                 />
                             ))}
@@ -204,6 +231,11 @@ export default function PoolBasicsScreen() {
             </ScrollView>
 
             <View className="absolute bottom-0 left-0 right-0 bg-surface-white px-5 pt-3 pb-7 border-t border-border-default">
+                {errorMessage ? (
+                    <Text className="text-body font-jakarta text-error mb-3 text-center">
+                        {errorMessage}
+                    </Text>
+                ) : null}
                 <TouchableOpacity
                     className="bg-brand-blue rounded-full py-[17px] items-center justify-center"
                     onPress={handleContinue}
