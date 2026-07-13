@@ -31,28 +31,28 @@ export default function PoolBasicsScreen() {
     const { poolBasicInsert } = useSupabase();
 
     async function handleContinue() {
-        // setErrorMessage(null);
+        setErrorMessage(null);
 
-        // if (
-        //     !poolName.trim()
-        //     // !poolType ||
-        //     // !screened ||
-        //     // !useType
-        // ) {
-        //     setErrorMessage(t('pool_basics_error'));
-        //     return;
-        // }
+        if (
+            !poolName.trim()
+            // !poolType ||
+            // !screened ||
+            // !useType
+        ) {
+            setErrorMessage(t('pool_basics_error'));
+            return;
+        }
 
-        // const { error } = await poolBasicInsert({
-        //     poolName,
-        //     poolType,
-        //     screened,
-        //     useType,
-        // });
-        // if (error) {
-        //     setErrorMessage(error.message);
-        //     return;
-        // }
+        const { error } = await poolBasicInsert({
+            poolName,
+            poolType,
+            screened,
+            useType,
+        });
+        if (error) {
+            setErrorMessage(error.message);
+            return;
+        }
 
         router.replace('/pool-condition');
     }

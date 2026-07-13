@@ -38,36 +38,36 @@ export default function WeeklyReminderScreen() {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     async function handleComplete() {
-        // setErrorMessage(null);
+        setErrorMessage(null);
 
-        // if (!day || !hour || !period) {
-        //     setErrorMessage(t('pool_basics_error'));
-        //     return;
-        // }
+        if (!day || !hour || !period) {
+            setErrorMessage(t('pool_basics_error'));
+            return;
+        }
 
-        // setIsSubmitting(true);
+        setIsSubmitting(true);
 
-        // try {
-        //     const { error } = await weeklyReminderInsert({
-        //         props: {
-        //             reminderDay: day,
-        //             reminderTime: `${hour}:${period}`,
-        //         },
-        //     });
+        try {
+            const { error } = await weeklyReminderInsert({
+                props: {
+                    reminderDay: day,
+                    reminderTime: `${hour}:${period}`,
+                },
+            });
 
-        //     if (error) {
-        //         setErrorMessage(error.message);
-        //         return;
-        //     }
+            if (error) {
+                setErrorMessage(error.message);
+                return;
+            }
 
             router.replace('/(tabs)/dashboard' as Href);
-        // } catch (error) {
-        //     setErrorMessage(
-        //         error instanceof Error ? error.message : t('pool_basics_error')
-        //     );
-        // } finally {
-        //     setIsSubmitting(false);
-        // }
+        } catch (error) {
+            setErrorMessage(
+                error instanceof Error ? error.message : t('pool_basics_error')
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     function handleSkipForNow() {

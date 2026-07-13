@@ -19,7 +19,6 @@ import { setLanguage as changeAppLanguage } from '@/lib/i18n';
 import { Country, Language, Measurement } from '@/lib/types';
 import Preferences from '@/components/Preferences';
 import { useAuthScreenGuard } from '@/hooks/useAuthScreenGuard';
-import { usePool } from '@/providers/PoolProvider';
 
 export default function SignupScreen() {
     const { t } = useTranslation();

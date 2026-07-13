@@ -27,22 +27,22 @@ export default function PoolConditionScreen() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     async function handleContinue() {
-        // setErrorMessage(null);
+        setErrorMessage(null);
 
-        // if (!poolCondition) {
-        //     return;
-        // }
+        if (!poolCondition) {
+            return;
+        }
 
-        // const { error } = await poolBasicUpdate({
-        //     props: {
-        //         poolCondition,
-        //     },
-        // });
+        const { error } = await poolBasicUpdate({
+            props: {
+                poolCondition,
+            },
+        });
 
-        // if (error) {
-        //     setErrorMessage(error.message);
-        //     return;
-        // }
+        if (error) {
+            setErrorMessage(error.message);
+            return;
+        }
 
         router.replace('/pool-size-gallons' as Href);
     }

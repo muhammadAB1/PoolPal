@@ -40,38 +40,38 @@ export default function TestReadingsScreen() {
 
 
     async function handleContinue() {
-        // setErrorMessage(null);
+        setErrorMessage(null);
 
-        // if (!method) {
-        //     return;
-        // }
+        if (!method) {
+            return;
+        }
 
-        // setIsSubmitting(true);
+        setIsSubmitting(true);
 
-        // try {
-        //     const { error } = await testReadingsInsert({
-        //         props: {
-        //             testing_preference: method,
-        //             free_chlorine: parseFloat(readings.freeChlorine),
-        //             ph: parseFloat(readings.ph),
-        //             total_alkalinity: parseFloat(readings.totalAlkalinity),
-        //             cyanuric_acid: parseFloat(readings.cyanuricAcid),
-        //             calcium_hardness: parseFloat(readings.calciumHardness),
-        //         },
-        //     });
+        try {
+            const { error } = await testReadingsInsert({
+                props: {
+                    testing_preference: method,
+                    free_chlorine: parseFloat(readings.freeChlorine),
+                    ph: parseFloat(readings.ph),
+                    total_alkalinity: parseFloat(readings.totalAlkalinity),
+                    cyanuric_acid: parseFloat(readings.cyanuricAcid),
+                    calcium_hardness: parseFloat(readings.calciumHardness),
+                },
+            });
 
-        //     if (error) {
-        //         setErrorMessage(error.message);
-        //         return;
-        //     }
+            if (error) {
+                setErrorMessage(error.message);
+                return;
+            }
             router.replace('/weekly-reminder' as Href);
-        // } catch (error) {
-        //     setErrorMessage(
-        //         error instanceof Error ? error.message : t('pool_basics_error')
-        //     );
-        // } finally {
-        //     setIsSubmitting(false);
-        // }
+        } catch (error) {
+            setErrorMessage(
+                error instanceof Error ? error.message : t('pool_basics_error')
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     function handleSkipForNow() {
