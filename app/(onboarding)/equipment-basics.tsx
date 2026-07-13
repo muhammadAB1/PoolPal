@@ -70,33 +70,33 @@ export default function EquipmentBasicsScreen() {
     });
 
     async function handleContinue() {
-        // setErrorMessage(null);
+        setErrorMessage(null);
 
-        // if (!filterType || !pumpType || !heater) {
-        //     setErrorMessage(t('pool_basics_error'));
-        //     return;
-        // }
+        if (!filterType || !pumpType || !heater) {
+            setErrorMessage(t('pool_basics_error'));
+            return;
+        }
 
-        // setIsSubmitting(true);
+        setIsSubmitting(true);
 
-        // try {
-        //     const { error } = await poolEquipmentInsert({
-        //         props: {
-        //             filterType,
-        //             pumpType,
-        //             heaterOption: heater,
-        //         },
-        //     });
-        //     if (error) {
-        //         setErrorMessage(error.message);
-        //         return;
-        //     }
+        try {
+            const { error } = await poolEquipmentInsert({
+                props: {
+                    filterType,
+                    pumpType,
+                    heaterOption: heater,
+                },
+            });
+            if (error) {
+                setErrorMessage(error.message);
+                return;
+            }
             router.replace('/surface-type' as Href);
-        // } catch (error) {
-        //     setErrorMessage(error instanceof Error ? error.message : t('pool_basics_error'));
-        // } finally {
-        //     setIsSubmitting(false);
-        // }
+        } catch (error) {
+            setErrorMessage(error instanceof Error ? error.message : t('pool_basics_error'));
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     function handleSkipForNow() {

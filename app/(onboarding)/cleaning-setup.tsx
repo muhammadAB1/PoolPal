@@ -29,27 +29,27 @@ export default function CleaningSetupScreen() {
     const scrollViewRef = useRef<ScrollView>(null);
 
     async function handleContinue() {
-        // setErrorMessage(null);
-        // setIsSubmitting(true);
+        setErrorMessage(null);
+        setIsSubmitting(true);
 
-        // try {
-        //     const { error } = await poolCleaningInsert({
-        //         props: { cleaningType },
-        //     });
+        try {
+            const { error } = await poolCleaningInsert({
+                props: { cleaningType },
+            });
 
-        //     if (error) {
-        //         setErrorMessage(error.message);
-        //         return;
-        //     }
+            if (error) {
+                setErrorMessage(error.message);
+                return;
+            }
 
             router.replace('/test-readings' as Href);
-        // } catch (error) {
-        //     setErrorMessage(
-        //         error instanceof Error ? error.message : t('pool_basics_error')
-        //     );
-        // } finally {
-        //     setIsSubmitting(false);
-        // }
+        } catch (error) {
+            setErrorMessage(
+                error instanceof Error ? error.message : t('pool_basics_error')
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     function handleSkipForNow() {

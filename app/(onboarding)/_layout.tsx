@@ -65,13 +65,13 @@ export default function OnboardingLayout() {
     );
   }
 
-  // if (!user) {
-  //   return <Redirect href="/" />;
-  // }
+  if (!user) {
+    return <Redirect href="/" />;
+  }
 
-  // if (poolId) {
-  //   return <Redirect href="/(tabs)/dashboard" />;
-  // }
+  if (poolId) {
+    return <Redirect href="/(tabs)/dashboard" />;
+  }
 
   return (
     <Stack

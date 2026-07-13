@@ -90,58 +90,58 @@ export default function PoolSizeGallonsScreen() {
     }
 
     async function handleContinue() {
-        // setErrorMessage(null);
+        setErrorMessage(null);
 
-        // const numericLength = parseFloat(length);
-        // const numericWidth = parseFloat(width);
-        // const numericShallowDepth = parseFloat(shallowDepth);
-        // const numericDeepDepth = parseFloat(deepDepth);
+        const numericLength = parseFloat(length);
+        const numericWidth = parseFloat(width);
+        const numericShallowDepth = parseFloat(shallowDepth);
+        const numericDeepDepth = parseFloat(deepDepth);
 
-        // if (
-        //     !length.trim() ||
-        //     !width.trim() ||
-        //     !shallowDepth.trim() ||
-        //     !deepDepth.trim() ||
-        //     Number.isNaN(numericLength) ||
-        //     Number.isNaN(numericWidth) ||
-        //     Number.isNaN(numericShallowDepth) ||
-        //     Number.isNaN(numericDeepDepth) ||
-        //     numericLength <= 0 ||
-        //     numericWidth <= 0 ||
-        //     numericShallowDepth <= 0 ||
-        //     numericDeepDepth <= 0
-        // ) {
-        //     setErrorMessage(t('pool_basics_error'));
-        //     return;
-        // }
+        if (
+            !length.trim() ||
+            !width.trim() ||
+            !shallowDepth.trim() ||
+            !deepDepth.trim() ||
+            Number.isNaN(numericLength) ||
+            Number.isNaN(numericWidth) ||
+            Number.isNaN(numericShallowDepth) ||
+            Number.isNaN(numericDeepDepth) ||
+            numericLength <= 0 ||
+            numericWidth <= 0 ||
+            numericShallowDepth <= 0 ||
+            numericDeepDepth <= 0
+        ) {
+            setErrorMessage(t('pool_basics_error'));
+            return;
+        }
 
-        // setIsSubmitting(true);
+        setIsSubmitting(true);
 
-        // try {
-        //     const { error } = await poolSizeInsert({
-        //         props: {
-        //             length: numericLength,
-        //             width: numericWidth,
-        //             shallowDepth: numericShallowDepth,
-        //             deepDepth: numericDeepDepth,
-        //             shape,
-        //             gallons: estimatedVolume,
-        //         },
-        //     });
+        try {
+            const { error } = await poolSizeInsert({
+                props: {
+                    length: numericLength,
+                    width: numericWidth,
+                    shallowDepth: numericShallowDepth,
+                    deepDepth: numericDeepDepth,
+                    shape,
+                    gallons: estimatedVolume,
+                },
+            });
 
-        //     if (error) {
-        //         setErrorMessage(error.message);
-        //         return;
-        //     }
+            if (error) {
+                setErrorMessage(error.message);
+                return;
+            }
 
         router.replace('/equipment-basics' as Href);
-        // } catch (error) {
-        //     setErrorMessage(
-        //         error instanceof Error ? error.message : t('pool_basics_error')
-        //     );
-        // } finally {
-        //     setIsSubmitting(false);
-        // }
+        } catch (error) {
+            setErrorMessage(
+                error instanceof Error ? error.message : t('pool_basics_error')
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     function handleSkipForNow() {

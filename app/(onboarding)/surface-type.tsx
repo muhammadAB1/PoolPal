@@ -28,32 +28,32 @@ export default function SurfaceTypeScreen() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const scrollViewRef = useRef<ScrollView>(null);
     async function handleContinue() {
-        // setErrorMessage(null);
+        setErrorMessage(null);
 
-        // if (!surfaceType) {
-        //     return;
-        // }
+        if (!surfaceType) {
+            return;
+        }
 
-        // setIsSubmitting(true);
+        setIsSubmitting(true);
 
-        // try {
-        //     const { error } = await poolSurfaceInsert({
-        //         props: { surfaceType },
-        //     });
+        try {
+            const { error } = await poolSurfaceInsert({
+                props: { surfaceType },
+            });
 
-        //     if (error) {
-        //         setErrorMessage(error.message);
-        //         return;
-        //     }
+            if (error) {
+                setErrorMessage(error.message);
+                return;
+            }
 
             router.replace('/cleaning-setup' as Href);
-        // } catch (error) {
-        //     setErrorMessage(
-        //         error instanceof Error ? error.message : t('pool_basics_error')
-        //     );
-        // } finally {
-        //     setIsSubmitting(false);
-        // }
+        } catch (error) {
+            setErrorMessage(
+                error instanceof Error ? error.message : t('pool_basics_error')
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     function handleSkipForNow() {
