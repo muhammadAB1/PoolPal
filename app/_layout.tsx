@@ -1,18 +1,20 @@
-import '../global.css';
 import '@/lib/i18n';
+import '../global.css';
 
-import { useEffect } from 'react';
-import { Stack } from 'expo-router';
 import { AuthProvider } from '@/providers/AuthProvider';
 import { PoolProvider } from '@/providers/PoolProvider';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 import {
   PlusJakartaSans_400Regular,
   PlusJakartaSans_600SemiBold,
   PlusJakartaSans_700Bold,
   PlusJakartaSans_800ExtraBold,
 } from '@expo-google-fonts/plus-jakarta-sans';
+import { useFonts } from 'expo-font';
+import * as NavigationBar from 'expo-navigation-bar';
+import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
+import { Platform } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,6 +31,15 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded, fontError]);
+
+  useEffect(() => {
+    if (Platform.OS !== 'android') {
+      return;
+    }
+
+    void NavigationBar.setVisibilityAsync('hidden');
+    void NavigationBar.setBehaviorAsync('overlay-swipe');
+  }, []);
 
   if (!fontsLoaded && !fontError) {
     return null;

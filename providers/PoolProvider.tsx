@@ -1,3 +1,7 @@
+import { supabase } from '@/lib/Supabase';
+import type { Pool } from '@/lib/types';
+import { useAuth } from '@/providers/AuthProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   createContext,
   useContext,
@@ -5,15 +9,11 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { supabase } from '@/lib/Supabase';
-import type { Pool } from '@/lib/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAuth } from '@/providers/AuthProvider';
 
 type PoolContextValue = {
   poolId: string | null;
   setPoolId: (poolId: string | null) => void;
-  pools: Pool[];
+  pools: Pool | null;
   loading: boolean;
   error: Error | null;
 };
@@ -23,7 +23,7 @@ const PoolContext = createContext<PoolContextValue | undefined>(undefined);
 export function PoolProvider({ children }: { children: ReactNode }) {
   const { user, loading: authLoading } = useAuth();
   const [poolId, setPoolId] = useState<string | null>(null);
-  const [pools, setPools] = useState<Pool[]>([]);
+  const [pools, setPools] = useState<Pool | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -36,11 +36,12 @@ export function PoolProvider({ children }: { children: ReactNode }) {
       setError(null);
 
       if (!user) {
-        setPools([]);
+        setPools(null);
         setPoolId(null);
         setLoading(false);
         return;
       }
+
 
       const activePoolId = await AsyncStorage.getItem('activePoolId');
       if (activePoolId) {
@@ -50,8 +51,8 @@ export function PoolProvider({ children }: { children: ReactNode }) {
           .select('*')
           .eq('id', activePoolId)
           .single();
-        const userPools = activePool.data ?? [];
-        setPools([userPools]);
+        const userPools = activePool.data ?? null;
+        setPools(userPools);
 
         if (activePool.error) {
           setError(activePool.error);
@@ -61,18 +62,19 @@ export function PoolProvider({ children }: { children: ReactNode }) {
         const { data, error: fetchError } = await supabase
           .from('pools')
           .select('*')
-          .eq('owner_user_id', user.id);
+          .eq('owner_user_id', user.id)
+          .single();
 
         if (fetchError) {
           setError(fetchError);
-          setPools([]);
+          setPools(null);
           setPoolId(null);
         } else {
-          const userPools = data ?? [];
+          const userPools = data ?? null;
           setPools(userPools);
 
-          const validActiveId = userPools.find((pool) => pool.id === activePoolId)?.id;
-          const resolvedId = validActiveId ?? userPools[0]?.id ?? null;
+
+          const resolvedId = userPools?.id ?? null;
           setPoolId(resolvedId);
 
           if (resolvedId) {

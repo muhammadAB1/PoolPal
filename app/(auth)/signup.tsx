@@ -7,6 +7,7 @@ import {
     ScrollView,
     KeyboardAvoidingView,
     Platform,
+    ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Redirect, router, type Href } from 'expo-router';

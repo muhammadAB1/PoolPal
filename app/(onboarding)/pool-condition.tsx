@@ -5,7 +5,7 @@ import {
 } from '@/data/poolConditions';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import type { PoolCondition } from '@/lib/types';
-import { useRouter } from 'expo-router';
+import { Href, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -24,20 +24,31 @@ export default function PoolConditionScreen() {
     const { poolBasicUpdate } = useSupabase();
 
     const [poolCondition, setPoolCondition] = useState<PoolCondition>('CRYSTAL_CLEAR');
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     async function handleContinue() {
+        setErrorMessage(null);
+
         if (!poolCondition) {
             return;
         }
 
-        await poolBasicUpdate({
+        const { error } = await poolBasicUpdate({
             props: {
-                profileCompletionScore: 20,
                 poolCondition,
             },
         });
 
-        router.replace('/dashboard');
+        if (error) {
+            setErrorMessage(error.message);
+            return;
+        }
+
+        router.replace('/pool-size-gallons' as Href);
+    }
+
+    function handleSkipForNow() {
+        router.replace('/pool-size-gallons' as Href);
     }
 
     return (
@@ -46,23 +57,7 @@ export default function PoolConditionScreen() {
                 contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
                 showsVerticalScrollIndicator={false}
             >
-                <View className="flex-1 px-5 pt-2">
-                    <TouchableOpacity
-                        className="w-10 h-10 items-center justify-center -ml-2"
-                        onPress={() => router.back()}
-                        activeOpacity={0.7}
-                    >
-                        <Image
-                            source={icons.backArrow}
-                            className="w-5 h-5"
-                            resizeMode="contain"
-                        />
-                    </TouchableOpacity>
-
-                    <View className="progress-bar mt-2">
-                        <View className="progress-bar__fill" style={{ width: '20%' }} />
-                    </View>
-
+                <View className="flex-1 px-5 pt-2 -mt-6">
                     <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-6">
                         {t('pool_condition_title')}
                     </Text>
@@ -81,7 +76,10 @@ export default function PoolConditionScreen() {
                                     label={t(keys.label)}
                                     description={t(keys.description)}
                                     selected={poolCondition === value}
-                                    onPress={() => setPoolCondition(value)}
+                                    onPress={() => {
+                                        setPoolCondition(value);
+                                        setErrorMessage(null);
+                                    }}
                                 />
                             );
                         })}
@@ -92,6 +90,11 @@ export default function PoolConditionScreen() {
             </ScrollView>
 
             <View className="absolute bottom-0 left-0 right-0 bg-surface-white px-5 pt-3 pb-7 border-t border-border-default">
+                {errorMessage ? (
+                    <Text className="text-body font-jakarta text-error mb-3 text-center">
+                        {errorMessage}
+                    </Text>
+                ) : null}
                 <TouchableOpacity
                     className="bg-brand-blue rounded-full py-[17px] items-center justify-center"
                     onPress={handleContinue}
@@ -99,6 +102,15 @@ export default function PoolConditionScreen() {
                 >
                     <Text className="text-button font-jakarta-bold text-surface-white">
                         {t('pool_condition_continue')}
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    className="items-center justify-center mt-3.5 py-1"
+                    onPress={handleSkipForNow}
+                    activeOpacity={0.7}
+                >
+                    <Text className="text-body font-jakarta-bold text-brand-blue">
+                        {t('pool_condition_skip_for_now')}
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -132,15 +144,15 @@ function ConditionOptionCard({
         >
             <Image
                 source={image}
-                className="w-[50px] h-[50px] rounded-full"
+                className="w-[60px] h-[60px] rounded-full"
                 resizeMode="cover"
             />
 
             <View className="flex-1 pr-1">
-                <Text className="text-body font-jakarta-bold text-charcoal">
+                <Text className="text-body-lg font-jakarta-bold text-charcoal">
                     {label}
                 </Text>
-                <Text className="mt-0.5 text-small font-jakarta text-sub">
+                <Text className="mt-0.5 text-body font-jakarta text-sub">
                     {description}
                 </Text>
             </View>

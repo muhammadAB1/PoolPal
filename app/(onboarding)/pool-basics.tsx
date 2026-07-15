@@ -23,9 +23,9 @@ export default function PoolBasicsScreen() {
     const { t } = useTranslation();
 
     const [poolName, setPoolName] = useState('');
-    const [poolType, setPoolType] = useState<PoolType | null>(null);
-    const [screened, setScreened] = useState<ScreenedType | null>(null);
-    const [useType, setUseType] = useState<UseType | null>(null);
+    const [poolType, setPoolType] = useState<PoolType>();
+    const [screened, setScreened] = useState<ScreenedType>();
+    const [useType, setUseType] = useState<UseType>();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const { poolBasicInsert } = useSupabase();
@@ -34,28 +34,30 @@ export default function PoolBasicsScreen() {
         setErrorMessage(null);
 
         if (
-            !poolName.trim() ||
-            !poolType ||
-            !screened ||
-            !useType
+            !poolName.trim()
+            // !poolType ||
+            // !screened ||
+            // !useType
         ) {
             setErrorMessage(t('pool_basics_error'));
             return;
         }
 
-
-        const { data,error } = await poolBasicInsert({
+        const { error } = await poolBasicInsert({
             poolName,
             poolType,
             screened,
             useType,
-            profileCompletionScore: 10,
         });
         if (error) {
             setErrorMessage(error.message);
             return;
         }
-        
+
+        router.replace('/pool-condition');
+    }
+
+    function handleSkipForNow() {
         router.replace('/pool-condition');
     }
 
@@ -66,24 +68,7 @@ export default function PoolBasicsScreen() {
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
             >
-                <View className="flex-1 px-5 pt-2">
-
-                    <TouchableOpacity
-                        className="w-10 h-10 items-center justify-center -ml-2"
-                        onPress={() => router.back()}
-                        activeOpacity={0.7}
-                    >
-                        <Image
-                            source={icons.backArrow}
-                            className="w-5 h-5"
-                            resizeMode="contain"
-                        />
-                    </TouchableOpacity>
-
-                    <View className="progress-bar mt-2">
-                        <View className="progress-bar__fill" style={{ width: '10%' }} />
-                    </View>
-
+                <View className="flex-1 px-5 pt-2 -mt-6">
                     <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-6">
                         {t('pool_basics_title')}
                     </Text>
@@ -243,6 +228,15 @@ export default function PoolBasicsScreen() {
                 >
                     <Text className="text-button font-jakarta-bold text-surface-white">
                         {t('pool_basics_continue')}
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    className="items-center justify-center mt-3.5 py-1"
+                    onPress={handleSkipForNow}
+                    activeOpacity={0.7}
+                >
+                    <Text className="text-body font-jakarta-bold text-brand-blue">
+                        {t('pool_basics_skip_for_now')}
                     </Text>
                 </TouchableOpacity>
             </View>
