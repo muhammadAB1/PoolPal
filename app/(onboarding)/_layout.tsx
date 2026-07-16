@@ -103,7 +103,8 @@ export default function OnboardingLayout() {
       <Stack.Screen name="cleaning-setup" />
       <Stack.Screen name="test-readings" />
       <Stack.Screen name="weekly-reminder" />
-      <Stack.Screen name="onboarding-complete" />
+      <Stack.Screen name="onboarding-complete"
+        options={{ headerShown: false }} />
     </Stack>
   );
 }
