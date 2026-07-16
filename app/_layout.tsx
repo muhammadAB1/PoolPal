@@ -10,11 +10,9 @@ import {
   PlusJakartaSans_800ExtraBold,
 } from '@expo-google-fonts/plus-jakarta-sans';
 import { useFonts } from 'expo-font';
-import * as NavigationBar from 'expo-navigation-bar';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { Platform } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,27 +30,16 @@ export default function RootLayout() {
     }
   }, [fontsLoaded, fontError]);
 
-  useEffect(() => {
-    if (Platform.OS !== 'android') {
-      return;
-    }
-
-    void NavigationBar.setVisibilityAsync('hidden');
-    void NavigationBar.setBehaviorAsync('overlay-swipe');
-  }, []);
-
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
-
   return (
     <AuthProvider>
       <PoolProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        />
+        {!fontsLoaded && !fontError ? null : (
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          />
+        )}
       </PoolProvider>
     </AuthProvider>
   );
