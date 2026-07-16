@@ -230,11 +230,11 @@ export function useSupabase() {
         try {
             const id = await AsyncStorage.getItem('activePoolId');
             if (id) {
-                const { error } = await supabase
+                const { data, error } = await supabase
                     .from('pools')
                     .update({ reminder_day: props.reminderDay, reminder_time: props.reminderTime })
-                    .eq('id', id)
-                return { error }
+                    .eq('id', id).select('profile_completion_score').single()
+                return { data, error }
             }
             return { error: new Error('Pool ID not found') }
         } catch (error) {

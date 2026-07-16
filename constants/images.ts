@@ -103,6 +103,14 @@ import testReadingsStripPhoto from '../assets/pool-reading-images/test_strips.pn
 import testReadingsBackyardPhoto from '../assets/pool-reading-images/pool-backyard.png';
 import reminderShield from '../assets/pool-reading-images/reminder_shield.png';
 
+// ─── Onboarding completion (pool profile) ────────────────────────────────────
+import poolProfileWaterDrop from '../assets/onboardin-screen-images/pool-profile-water-drop.png';
+import poolProfileTestTube from '../assets/onboardin-screen-images/pool-profile-test-tube.png';
+import poolProfilePhoto from '../assets/onboardin-screen-images/pool-profile-photo.png';
+import poolProfileCalculator from '../assets/onboardin-screen-images/pool-profile-calculator.png';
+import poolProfileInfo from '../assets/onboardin-screen-images/pool-profile-info.png';
+import poolProfileStar from '../assets/onboardin-screen-images/pool-profile-star.png';
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
 export const graphics = {
@@ -249,6 +257,18 @@ export const testReadingsGraphics = {
 export const poolSizeGraphics = {
     reminderShield,
     infoIcon: testReadingsInfoIcon,
+} as const;
+
+/**
+ * Onboarding completion screen images.
+ */
+export const onboardingCompleteImages = {
+    waterDrop: poolProfileWaterDrop,
+    testTube: poolProfileTestTube,
+    photo: poolProfilePhoto,
+    calculator: poolProfileCalculator,
+    info: poolProfileInfo,
+    star: poolProfileStar,
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */

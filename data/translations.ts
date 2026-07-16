@@ -332,6 +332,32 @@ export const en = {
   weekly_reminder_complete: 'Complete',
   weekly_reminder_skip_for_now: 'Skip for now',
 
+  // onboarding complete
+  onboarding_complete_profile_label: 'profile complete',
+  onboarding_complete_title: 'Your Pool Care Plan Is Ready',
+  onboarding_complete_badge: 'Weekly plan ready',
+  onboarding_complete_info_bold: 'You can start using PoolWise now.',
+  onboarding_complete_info_rest:
+    'Add more details later to improve your recommendations.',
+  onboarding_complete_improve_title: 'Improve your setup',
+  onboarding_complete_improve_subtitle:
+    'These steps are optional, but they help PoolWise personalize your care plan.',
+  onboarding_complete_water_title: 'Add first water readings',
+  onboarding_complete_water_desc:
+    'Helps PoolWise understand your current water balance.',
+  onboarding_complete_kit_title: 'Choose a testing kit',
+  onboarding_complete_kit_desc:
+    'Get better weekly guidance with the right test kit.',
+  onboarding_complete_photos_title: 'Upload equipment photos',
+  onboarding_complete_photos_desc:
+    'Helps identify your filter, pump, and equipment setup.',
+  onboarding_complete_gallons_title: 'Confirm pool gallons',
+  onboarding_complete_gallons_desc:
+    'Improves volume and product amount estimates.',
+  onboarding_complete_tip:
+    'The more details you add, the more accurate your water care, reminders, and product recommendations become.',
+  onboarding_complete_cta: 'Go to Dashboard',
+
   // signup — actions
   signup_google: 'Sign up with Google',
   signup_apple: 'Sign up with Apple',
@@ -683,6 +709,32 @@ export const es = {
   weekly_reminder_dashboard_note: 'Puedes cambiarlo más adelante desde tu panel.',
   weekly_reminder_complete: 'Completar',
   weekly_reminder_skip_for_now: 'Saltar por ahora',
+
+  // onboarding complete
+  onboarding_complete_profile_label: 'perfil completo',
+  onboarding_complete_title: 'Tu plan de cuidado de piscina está listo',
+  onboarding_complete_badge: 'Plan semanal listo',
+  onboarding_complete_info_bold: 'Ya puedes empezar a usar PoolWise.',
+  onboarding_complete_info_rest:
+    'Añade más detalles más adelante para mejorar tus recomendaciones.',
+  onboarding_complete_improve_title: 'Mejora tu configuración',
+  onboarding_complete_improve_subtitle:
+    'Estos pasos son opcionales, pero ayudan a PoolWise a personalizar tu plan de cuidado.',
+  onboarding_complete_water_title: 'Añade los primeros valores del agua',
+  onboarding_complete_water_desc:
+    'Ayuda a PoolWise a entender el equilibrio actual del agua.',
+  onboarding_complete_kit_title: 'Elige un kit de análisis',
+  onboarding_complete_kit_desc:
+    'Recibe mejores recomendaciones semanales con el kit adecuado.',
+  onboarding_complete_photos_title: 'Sube fotos del equipo',
+  onboarding_complete_photos_desc:
+    'Ayuda a identificar tu filtro, bomba y configuración del equipo.',
+  onboarding_complete_gallons_title: 'Confirma los galones de la piscina',
+  onboarding_complete_gallons_desc:
+    'Mejora las estimaciones de volumen y cantidades de producto.',
+  onboarding_complete_tip:
+    'Cuantos más detalles añadas, más precisas serán tus recomendaciones de cuidado del agua, recordatorios y productos.',
+  onboarding_complete_cta: 'Ir al panel',
 
   // signup — actions
   signup_google: 'Registrarse con Google',

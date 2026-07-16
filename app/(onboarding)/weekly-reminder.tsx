@@ -48,7 +48,7 @@ export default function WeeklyReminderScreen() {
         setIsSubmitting(true);
 
         try {
-            const { error } = await weeklyReminderInsert({
+            const { data, error } = await weeklyReminderInsert({
                 props: {
                     reminderDay: day,
                     reminderTime: `${hour}:${period}`,
@@ -60,7 +60,11 @@ export default function WeeklyReminderScreen() {
                 return;
             }
 
-            router.replace('/(tabs)/dashboard' as Href);
+            router.replace({
+                pathname: '/(onboarding)/onboarding-complete',
+                params: { percentage: data?.profile_completion_score?.toString() ?? '0' },
+            } as Href);
+
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
