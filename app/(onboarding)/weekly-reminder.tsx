@@ -74,8 +74,30 @@ export default function WeeklyReminderScreen() {
         }
     }
 
-    function handleSkipForNow() {
-        router.replace('/(tabs)/dashboard' as Href);
+    async function handleSkipForNow() {
+        setErrorMessage(null);
+        setIsSubmitting(true);
+
+        try {
+            const { data, error } = await weeklyReminderInsert({});
+
+            if (error) {
+                setErrorMessage(error.message);
+                return;
+            }
+
+            router.replace({
+                pathname: '/(onboarding)/onboarding-complete',
+                params: { percentage: data?.profile_completion_score?.toString() ?? '0' },
+            } as Href);
+
+        } catch (error) {
+            setErrorMessage(
+                error instanceof Error ? error.message : t('pool_basics_error')
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     return (

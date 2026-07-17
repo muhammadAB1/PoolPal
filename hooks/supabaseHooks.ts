@@ -226,15 +226,26 @@ export function useSupabase() {
         }
     }
 
-    async function weeklyReminderInsert({ props }: { props: poolReminderInsertProps }) {
+    async function weeklyReminderInsert({ props }: { props?: poolReminderInsertProps }) {
         try {
             const id = await AsyncStorage.getItem('activePoolId');
             if (id) {
-                const { data, error } = await supabase
-                    .from('pools')
-                    .update({ reminder_day: props.reminderDay, reminder_time: props.reminderTime })
-                    .eq('id', id).select('profile_completion_score').single()
-                return { data, error }
+                if (props) {
+                    const { data, error } = await supabase
+                        .from('pools')
+                        .update({ reminder_day: props.reminderDay, reminder_time: props.reminderTime })
+                        .eq('id', id).select('profile_completion_score').single()
+                    return { data, error }
+                }
+                else {
+                    const { data, error } = await supabase
+                        .from('pools')
+                        .select('profile_completion_score')
+                        .eq('id', id)
+                        .single()
+
+                    return { data, error }
+                }
             }
             return { error: new Error('Pool ID not found') }
         } catch (error) {
