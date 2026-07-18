@@ -14,9 +14,10 @@ import {
     pumpTypeTranslationKeys,
 } from '@/data/poolEquipment';
 import { useSupabase } from '@/hooks/supabaseHooks';
+import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { FilterType, HeaterOption, PumpType } from '@/lib/types';
 import { Ionicons } from '@expo/vector-icons';
-import { Href, useRouter } from 'expo-router';
+import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -32,6 +33,9 @@ export default function EquipmentBasicsScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const { poolEquipmentInsert } = useSupabase();
+    const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
+    const isResuming = resume === '1';
+    const remainingSteps = parseRemainingSteps(remaining);
 
     const [filterType, setFilterType] = useState<FilterType>('Sand');
     const [filterMenuOpen, setFilterMenuOpen] = useState(false);
@@ -91,7 +95,7 @@ export default function EquipmentBasicsScreen() {
                 setErrorMessage(error.message);
                 return;
             }
-            router.replace('/surface-type' as Href);
+            router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/surface-type' as Href));
         } catch (error) {
             setErrorMessage(error instanceof Error ? error.message : t('pool_basics_error'));
         } finally {
@@ -100,7 +104,7 @@ export default function EquipmentBasicsScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace('/surface-type' as Href);
+        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/surface-type' as Href));
     }
 
     return (

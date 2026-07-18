@@ -32,14 +32,14 @@ export default function RootLayout() {
     }
   }, [fontsLoaded, fontError]);
 
-  useEffect(() => {
-    if (Platform.OS !== 'android') {
-      return;
-    }
+  // useEffect(() => {
+  //   if (Platform.OS !== 'android') {
+  //     return;
+  //   }
 
-    void NavigationBar.setVisibilityAsync('hidden');
-    void NavigationBar.setBehaviorAsync('overlay-swipe');
-  }, []);
+  //   void NavigationBar.setVisibilityAsync('hidden');
+  //   void NavigationBar.setBehaviorAsync('overlay-swipe');
+  // }, []);
 
   if (!fontsLoaded && !fontError) {
     return null;

@@ -1,5 +1,6 @@
 import { useAuth } from '@/providers/AuthProvider';
-import { Redirect, Stack } from 'expo-router';
+import { Redirect, Stack, useGlobalSearchParams } from 'expo-router';
+import { useRef } from 'react';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { icons } from '@/constants/images';
@@ -54,6 +55,16 @@ function OnboardingHeader({
 export default function OnboardingLayout() {
   const { user, loading } = useAuth();
   const { poolId, loading: poolLoading } = usePool();
+  const { resume } = useGlobalSearchParams<{ resume?: string }>();
+
+  // Once a user enters via the dashboard's "resume" link, keep letting them
+  // move between onboarding steps for the rest of this session, even though
+  // internal navigation (e.g. navigation.replace) won't keep re-sending the
+  // `resume` param on every screen.
+  const resumingRef = useRef(false);
+  if (resume === '1') {
+    resumingRef.current = true;
+  }
 
   if (loading || poolLoading) {
     return (
@@ -69,7 +80,7 @@ export default function OnboardingLayout() {
     return <Redirect href="/" />;
   }
 
-  if (poolId) {
+  if (poolId && !resumingRef.current) {
     return <Redirect href="/(tabs)/dashboard" />;
   }
 

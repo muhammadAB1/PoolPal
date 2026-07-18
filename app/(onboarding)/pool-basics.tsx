@@ -1,6 +1,7 @@
 import { icons, poolBasicsImages } from '@/constants/images';
 import { useSupabase } from '@/hooks/supabaseHooks';
-import { useRouter } from 'expo-router';
+import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
+import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -21,6 +22,9 @@ type UseType = 'Family' | 'VacationHome' | 'ShortTermRental';
 export default function PoolBasicsScreen() {
     const router = useRouter();
     const { t } = useTranslation();
+    const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
+    const isResuming = resume === '1';
+    const remainingSteps = parseRemainingSteps(remaining);
 
     const [poolName, setPoolName] = useState('');
     const [poolType, setPoolType] = useState<PoolType>();
@@ -54,11 +58,11 @@ export default function PoolBasicsScreen() {
             return;
         }
 
-        router.replace('/pool-condition');
+        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
     }
 
     function handleSkipForNow() {
-        router.replace('/pool-condition');
+        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
     }
 
     return (

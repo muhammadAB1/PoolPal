@@ -4,8 +4,9 @@ import {
     cleaningTypeTranslationKeys,
 } from '@/data/poolCleaningSetup';
 import { useSupabase } from '@/hooks/supabaseHooks';
+import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { CleaningType } from '@/lib/types';
-import { Href, useRouter } from 'expo-router';
+import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -22,6 +23,9 @@ export default function CleaningSetupScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const { poolCleaningInsert } = useSupabase();
+    const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
+    const isResuming = resume === '1';
+    const remainingSteps = parseRemainingSteps(remaining);
 
     const [cleaningType, setCleaningType] = useState<CleaningType>('Robotic');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -42,7 +46,7 @@ export default function CleaningSetupScreen() {
                 return;
             }
 
-            router.replace('/test-readings' as Href);
+            router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/test-readings' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -53,7 +57,7 @@ export default function CleaningSetupScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace('/test-readings' as Href);
+        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/test-readings' as Href));
     }
 
     return (
