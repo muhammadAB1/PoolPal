@@ -62,7 +62,7 @@ export default function WeeklyReminderScreen() {
 
             router.replace({
                 pathname: '/(onboarding)/onboarding-complete',
-                params: { percentage: data?.profile_completion_score?.toString() ?? '0' },
+                params: { percentage: data?.profile_completion_score?.toString() ?? '0', poolId: data?.id ?? '' },
             } as Href);
 
         } catch (error) {
@@ -88,7 +88,7 @@ export default function WeeklyReminderScreen() {
 
             router.replace({
                 pathname: '/(onboarding)/onboarding-complete',
-                params: { percentage: data?.profile_completion_score?.toString() ?? '0' },
+                params: { percentage: data?.profile_completion_score?.toString() ?? '0', poolId: data?.id ?? '' },
             } as Href);
 
         } catch (error) {

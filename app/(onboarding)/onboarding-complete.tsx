@@ -1,6 +1,7 @@
 import ProfileCompletionRing from '@/components/ProfileCompletionRing';
 import { onboardingCompleteImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
+import { usePool } from '@/providers/PoolProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -46,7 +47,8 @@ const IMPROVE_STEPS: ImproveStep[] = [
 export default function OnboardingCompleteScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { percentage } = useLocalSearchParams<{ percentage?: string }>();
+  const { percentage, poolId } = useLocalSearchParams<{ percentage?: string, poolId?: string }>();
+  const { setPoolId } = usePool();
 
   const completionScore = Number.parseInt(percentage ?? '0', 10);
   const safePercentage = Number.isFinite(completionScore)
@@ -55,6 +57,7 @@ export default function OnboardingCompleteScreen() {
 
   function handleGoToDashboard() {
     router.replace('/(tabs)/dashboard' as Href);
+    setPoolId(poolId as string);
   }
 
   return (

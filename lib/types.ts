@@ -41,6 +41,7 @@ export type Pool = {
     surface_type?: SurfaceType | null
     cleaning_type?: CleaningType | null
     profile_completion_score: number
+    missing_details?: string[] | null
     created_at?: string
     updated_at?: string
 }

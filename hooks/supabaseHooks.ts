@@ -234,13 +234,13 @@ export function useSupabase() {
                     const { data, error } = await supabase
                         .from('pools')
                         .update({ reminder_day: props.reminderDay, reminder_time: props.reminderTime })
-                        .eq('id', id).select('profile_completion_score').single()
+                        .eq('id', id).select('id, profile_completion_score').single()
                     return { data, error }
                 }
                 else {
                     const { data, error } = await supabase
                         .from('pools')
-                        .select('profile_completion_score')
+                        .select('id, profile_completion_score')
                         .eq('id', id)
                         .single()
 

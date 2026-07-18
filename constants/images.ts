@@ -111,6 +111,32 @@ import poolProfileCalculator from '../assets/onboardin-screen-images/pool-profil
 import poolProfileInfo from '../assets/onboardin-screen-images/pool-profile-info.png';
 import poolProfileStar from '../assets/onboardin-screen-images/pool-profile-star.png';
 
+// ─── Dashboard ────────────────────────────────────────────────────────────────
+import dashboardHelloEmoji from '../assets/dashboard-images/hello_emoji.png';
+import dashboardNotificationBell from '../assets/dashboard-images/notification_bell_with_dot.png';
+import dashboardPoolIllustration from '../assets/dashboard-images/pool_summary_illustration.png';
+import dashboardGreenCheckIcon from '../assets/dashboard-images/green_check_icon.png';
+import dashboardSmallInfoIcon from '../assets/dashboard-images/small_info_icon.png';
+import dashboardStarBadge from '../assets/dashboard-images/recommended_star_badge.png';
+import dashboardTestingKitGraphic from '../assets/dashboard-images/testing_kit_recommendation_graphic.png';
+import dashboardChevronRight from '../assets/dashboard-images/chevron_right.png';
+import dashboardProfileIcon from '../assets/dashboard-images/profile_person_icon.png';
+import dashboardNextStepIcon from '../assets/dashboard-images/next_step_flag_icon.png';
+import dashboardChecklistIcon from '../assets/dashboard-images/checklist_clipboard_icon_active.png';
+import dashboardReadingsIcon from '../assets/dashboard-images/latest_readings_flask_icon.png';
+import dashboardUploadPhotoIcon from '../assets/dashboard-images/upload_pool_photo_camera_icon_2.png';
+import dashboardAskPoolwiseIcon from '../assets/dashboard-images/ask_poolwise_chat_icon.png';
+import dashboardLearnIcon from '../assets/dashboard-images/learn_play_icon.png';
+import navHomeActive from '../assets/dashboard-images/nav_home_icon_active.png';
+import navHomeInactive from '../assets/dashboard-images/nav_home_icon_inactive.png';
+import navPoolActive from '../assets/dashboard-images/nav_pool_waves_icon_active.png';
+import navPoolInactive from '../assets/dashboard-images/nav_pool_waves_icon_inactive.png';
+import navReadingsActive from '../assets/dashboard-images/nav_readings_drop_icon_active.png';
+import navReadingsInactive from '../assets/dashboard-images/nav_readings_drop_icon_inactive.png';
+import navChecklist from '../assets/dashboard-images/nav_checklist_icon.png';
+import navLearnActive from '../assets/dashboard-images/nav_learn_book_icon_active.png';
+import navLearnInactive from '../assets/dashboard-images/nav_learn_book_icon_inactive.png';
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
 export const graphics = {
@@ -269,6 +295,39 @@ export const onboardingCompleteImages = {
     calculator: poolProfileCalculator,
     info: poolProfileInfo,
     star: poolProfileStar,
+} as const;
+
+/**
+ * Dashboard screen images.
+ */
+export const dashboardImages = {
+    helloEmoji: dashboardHelloEmoji,
+    notificationBell: dashboardNotificationBell,
+    poolIllustration: dashboardPoolIllustration,
+    greenCheckIcon: dashboardGreenCheckIcon,
+    smallInfoIcon: dashboardSmallInfoIcon,
+    starBadge: dashboardStarBadge,
+    testingKitGraphic: dashboardTestingKitGraphic,
+    chevronRight: dashboardChevronRight,
+    profileIcon: dashboardProfileIcon,
+    nextStepIcon: dashboardNextStepIcon,
+    checklistIcon: dashboardChecklistIcon,
+    readingsIcon: dashboardReadingsIcon,
+    uploadPhotoIcon: dashboardUploadPhotoIcon,
+    askPoolwiseIcon: dashboardAskPoolwiseIcon,
+    learnIcon: dashboardLearnIcon,
+} as const;
+
+/**
+ * Bottom tab bar icons.
+ * `checklist` has a single flat icon — tint it programmatically for the active state.
+ */
+export const navImages = {
+    home: { active: navHomeActive, inactive: navHomeInactive },
+    pool: { active: navPoolActive, inactive: navPoolInactive },
+    readings: { active: navReadingsActive, inactive: navReadingsInactive },
+    checklist: { active: navChecklist, inactive: navChecklist },
+    learn: { active: navLearnActive, inactive: navLearnInactive },
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */

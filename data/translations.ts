@@ -369,6 +369,38 @@ export const en = {
 
   // dashboard
   dashboard_welcome_back: 'Welcome back!',
+  dashboard_greeting: 'Hi, {{name}}',
+  dashboard_plan_ready_badge: 'Weekly plan ready',
+  dashboard_profile_percent_complete: '{{percent}}% profile complete',
+  dashboard_recommended_badge: 'Recommended first step',
+  dashboard_testing_kit_title: 'Choose your testing kit',
+  dashboard_testing_kit_desc:
+    "PoolWise works best when you test your water weekly. We'll help you choose a simple or pro kit based on your pool.",
+  dashboard_choose_kit_cta: 'Choose Kit',
+  dashboard_profile_label: 'Profile',
+  dashboard_profile_percent_label: '{{percent}}% complete',
+  dashboard_details_left: '{{count}} details left',
+  dashboard_next_step_label: 'Next Step',
+  dashboard_checklist_title: 'Weekly Care Checklist',
+  dashboard_checklist_progress: '{{completed}} of {{total}} complete',
+  dashboard_readings_title: 'Latest Readings',
+  dashboard_readings_empty_title: 'No readings yet',
+  dashboard_readings_cta: 'Add your first readings',
+  dashboard_readings_or_upload: ' or upload a test strip photo.',
+  dashboard_upload_photo_title: 'Upload Pool Photo',
+  dashboard_upload_photo_desc: 'Track progress and get better guidance',
+  dashboard_ask_poolwise_title: 'Ask PoolWise',
+  dashboard_ask_poolwise_desc: 'Get help anytime',
+  dashboard_learn_title: 'Learn',
+  dashboard_learn_desc: 'Videos, guides, and tips',
+  dashboard_coming_soon: 'Coming soon',
+
+  // bottom navigation
+  nav_home: 'Home',
+  nav_pool: 'Pool',
+  nav_readings: 'Readings',
+  nav_checklist: 'Checklist',
+  nav_learn: 'Learn',
 };
 
 export const es = {
@@ -747,4 +779,36 @@ export const es = {
 
   // dashboard
   dashboard_welcome_back: '¡Bienvenido de nuevo!',
+  dashboard_greeting: 'Hola, {{name}}',
+  dashboard_plan_ready_badge: 'Plan semanal listo',
+  dashboard_profile_percent_complete: '{{percent}}% del perfil completado',
+  dashboard_recommended_badge: 'Primer paso recomendado',
+  dashboard_testing_kit_title: 'Elige tu kit de análisis',
+  dashboard_testing_kit_desc:
+    'PoolWise funciona mejor cuando analizas el agua cada semana. Te ayudaremos a elegir un kit sencillo o pro según tu piscina.',
+  dashboard_choose_kit_cta: 'Elegir kit',
+  dashboard_profile_label: 'Perfil',
+  dashboard_profile_percent_label: '{{percent}}% completado',
+  dashboard_details_left: 'Quedan {{count}} detalles',
+  dashboard_next_step_label: 'Siguiente paso',
+  dashboard_checklist_title: 'Checklist semanal de cuidado',
+  dashboard_checklist_progress: '{{completed}} de {{total}} completados',
+  dashboard_readings_title: 'Últimos valores',
+  dashboard_readings_empty_title: 'Aún no hay valores',
+  dashboard_readings_cta: 'Añade tus primeros valores',
+  dashboard_readings_or_upload: ' o sube una foto de una tira de prueba.',
+  dashboard_upload_photo_title: 'Subir foto de la piscina',
+  dashboard_upload_photo_desc: 'Haz seguimiento del progreso y recibe mejores recomendaciones',
+  dashboard_ask_poolwise_title: 'Preguntar a PoolWise',
+  dashboard_ask_poolwise_desc: 'Recibe ayuda cuando quieras',
+  dashboard_learn_title: 'Aprender',
+  dashboard_learn_desc: 'Vídeos, guías y consejos',
+  dashboard_coming_soon: 'Próximamente',
+
+  // bottom navigation
+  nav_home: 'Inicio',
+  nav_pool: 'Piscina',
+  nav_readings: 'Valores',
+  nav_checklist: 'Checklist',
+  nav_learn: 'Aprender',
 };
