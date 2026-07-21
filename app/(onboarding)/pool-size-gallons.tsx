@@ -284,7 +284,7 @@ export default function PoolSizeGallonsScreen() {
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-[17px] items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
+                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
                     onPress={handleContinue}
                     activeOpacity={0.85}
                     disabled={isSubmitting}
@@ -781,7 +781,7 @@ function MethodCard({ icon, label, description, selected, onPress }: MethodCardP
             <View className="absolute top-2.5 left-2.5">
                 <Image
                     source={selected ? icons.selectedCheckBadge : icons.unselectedRadioIndicator}
-                    className="w-[20px] h-[20px]"
+                    className="w-5 h-5"
                     resizeMode="contain"
                 />
             </View>

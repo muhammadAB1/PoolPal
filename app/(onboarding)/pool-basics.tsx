@@ -226,7 +226,7 @@ export default function PoolBasicsScreen() {
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className="bg-brand-blue rounded-full py-[17px] items-center justify-center"
+                    className="bg-brand-blue rounded-full py-4.25 items-center justify-center"
                     onPress={handleContinue}
                     activeOpacity={0.85}
                 >
@@ -277,7 +277,7 @@ function SelectionCard({
             <View className="absolute top-1 right-1">
                 <Image
                     source={selected ? icons.selectedCheckBadge : icons.unselectedRadioIndicator}
-                    className="w-[22px] h-[22px]"
+                    className="w-5.5 h-5.5"
                     resizeMode="contain"
                 />
             </View>

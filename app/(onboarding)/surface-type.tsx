@@ -138,7 +138,7 @@ export default function SurfaceTypeScreen() {
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-[17px] items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
+                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
                     onPress={handleContinue}
                     activeOpacity={0.85}
                     disabled={isSubmitting}
@@ -187,7 +187,7 @@ function SurfaceOptionCard({
         >
             <Image
                 source={image}
-                className="w-[60px] h-[60px] rounded-xl"
+                className="w-15 h-15 rounded-xl"
                 resizeMode="cover"
             />
 
@@ -202,7 +202,7 @@ function SurfaceOptionCard({
 
             <Image
                 source={selected ? icons.selectedCheckBadge : icons.unselectedRadioIndicator}
-                className="w-[22px] h-[22px]"
+                className="w-5.5 h-5.5"
                 resizeMode="contain"
             />
         </TouchableOpacity>

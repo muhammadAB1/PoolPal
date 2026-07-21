@@ -100,7 +100,7 @@ export default function PoolConditionScreen() {
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className="bg-brand-blue rounded-full py-[17px] items-center justify-center"
+                    className="bg-brand-blue rounded-full py-4.25 items-center justify-center"
                     onPress={handleContinue}
                     activeOpacity={0.85}
                 >
@@ -148,7 +148,7 @@ function ConditionOptionCard({
         >
             <Image
                 source={image}
-                className="w-[60px] h-[60px] rounded-full"
+                className="w-15 h-15 rounded-full"
                 resizeMode="cover"
             />
 
@@ -163,7 +163,7 @@ function ConditionOptionCard({
 
             <Image
                 source={selected ? icons.selectedCheckBadge : icons.unselectedRadioIndicator}
-                className="w-[22px] h-[22px]"
+                className="w-5.5 h-5.5"
                 resizeMode="contain"
             />
         </TouchableOpacity>

@@ -180,7 +180,7 @@ export default function TestReadingsScreen() {
 
                             <Image
                                 source={testReadingsGraphics.stripPhoto}
-                                className="w-full h-[180px] rounded-2xl mt-4"
+                                className="w-full h-45 rounded-2xl mt-4"
                                 resizeMode="cover"
                             />
 
@@ -245,7 +245,7 @@ export default function TestReadingsScreen() {
 
                             <Image
                                 source={testReadingsGraphics.backyardPhoto}
-                                className="w-full h-[180px] rounded-2xl mt-4"
+                                className="w-full h-45 rounded-2xl mt-4"
                                 resizeMode="cover"
                             />
 
@@ -293,7 +293,7 @@ export default function TestReadingsScreen() {
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-[17px] items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
+                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
                     onPress={handleContinue}
                     activeOpacity={0.85}
                     disabled={isSubmitting}
@@ -365,7 +365,7 @@ function MethodOptionCard({ method, label, description, selected, onPress }: Met
 
             <Image
                 source={selected ? icons.selectedCheckBadge : icons.unselectedRadioIndicator}
-                className="w-[22px] h-[22px]"
+                className="w-5.5 h-5.5"
                 resizeMode="contain"
             />
         </TouchableOpacity>
@@ -400,7 +400,7 @@ function ReadingField({ label, value, onChangeText, placeholder, unit, onInfoPre
                 />
             </TouchableOpacity>
             <View className="flex-row items-center gap-2">
-                <View className="form-input w-[80px]">
+                <View className="form-input w-20">
                     <TextInput
                         className="text-body font-jakarta text-charcoal p-0"
                         style={{ textAlign: 'center' }}
