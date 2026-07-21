@@ -4,8 +4,9 @@ import {
     poolConditionTranslationKeys,
 } from '@/data/poolConditions';
 import { useSupabase } from '@/hooks/supabaseHooks';
+import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { PoolCondition } from '@/lib/types';
-import { Href, useRouter } from 'expo-router';
+import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -22,6 +23,9 @@ export default function PoolConditionScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const { poolBasicUpdate } = useSupabase();
+    const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
+    const isResuming = resume === '1';
+    const remainingSteps = parseRemainingSteps(remaining);
 
     const [poolCondition, setPoolCondition] = useState<PoolCondition>('CRYSTAL_CLEAR');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -44,11 +48,11 @@ export default function PoolConditionScreen() {
             return;
         }
 
-        router.replace('/pool-size-gallons' as Href);
+        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-size-gallons' as Href));
     }
 
     function handleSkipForNow() {
-        router.replace('/pool-size-gallons' as Href);
+        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-size-gallons' as Href));
     }
 
     return (

@@ -3,9 +3,11 @@ import { dashboardImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import { useAuth } from '@/providers/AuthProvider';
 import { usePool } from '@/providers/PoolProvider';
+import { useSupabase } from '@/hooks/supabaseHooks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Href, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Image, ImageSourcePropType, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Image, ImageSourcePropType, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type QuickAction = {
@@ -49,6 +51,7 @@ export default function DashboardScreen() {
   const router = useRouter();
   const { user } = useAuth();
   const { pools } = usePool();
+  const { logout } = useSupabase();
 
   const displayName = getDisplayName(user);
   const completionScore = pools?.profile_completion_score ?? 0;
@@ -152,7 +155,14 @@ export default function DashboardScreen() {
             <TouchableOpacity
               className="card flex-1 p-4"
               activeOpacity={0.7}
-            // onPress={() => router.push('/(tabs)/profile' as Href)}
+              onPress={() => {
+                const [firstStep, ...rest] = pools?.missing_details ?? [];
+                if (!firstStep) return;
+                router.push({
+                  pathname: `/(onboarding)/${firstStep}`,
+                  params: { resume: '1', remaining: rest.join(',') },
+                } as Href);
+              }}
             >
               <View className="flex-row items-start justify-between">
                 <Image source={dashboardImages.profileIcon} className="w-12 h-12 -ml-2" />
@@ -257,6 +267,12 @@ export default function DashboardScreen() {
             })}
           </View>
         </View>
+        <View className="flex-1 items-center justify-center px-5">
+                <Text className="text-h1 font-jakarta-extrabold text-brand-navy text-center">
+                    {t('dashboard_welcome_back')}
+                </Text>
+                <Button title="Logout" onPress={async () => { await logout(); await AsyncStorage.removeItem('activePoolId'); router.replace('/welcome'); }} />
+            </View>
       </ScrollView>
     </SafeAreaView>
   );

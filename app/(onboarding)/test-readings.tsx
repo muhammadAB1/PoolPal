@@ -7,9 +7,10 @@ import {
     TEST_READINGS_PHOTO_TIPS,
     testReadingsMethodTranslationKeys,
 } from '@/data/poolReadings';
+import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { TestReadingsMethod } from '@/lib/types';
 import { Ionicons } from '@expo/vector-icons';
-import { Href, useRouter } from 'expo-router';
+import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -26,6 +27,9 @@ import { useSupabase } from '@/hooks/supabaseHooks';
 export default function TestReadingsScreen() {
     const router = useRouter();
     const { t } = useTranslation();
+    const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
+    const isResuming = resume === '1';
+    const remainingSteps = parseRemainingSteps(remaining);
 
     const [method, setMethod] = useState<TestReadingsMethod | null>(null);
     const [readings, setReadings] = useState<Record<string, string>>({});
@@ -64,7 +68,7 @@ export default function TestReadingsScreen() {
                 setErrorMessage(error.message);
                 return;
             }
-            router.replace('/weekly-reminder' as Href);
+            router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -75,7 +79,7 @@ export default function TestReadingsScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace('/weekly-reminder' as Href);
+        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
     }
 
     return (

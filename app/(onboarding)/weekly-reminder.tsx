@@ -11,8 +11,9 @@ import {
     type Weekday,
 } from '@/data/poolWeeklyReminder';
 import { useSupabase } from '@/hooks/supabaseHooks';
+import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import { Ionicons } from '@expo/vector-icons';
-import { Href, useRouter } from 'expo-router';
+import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -28,6 +29,9 @@ export default function WeeklyReminderScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const { weeklyReminderInsert } = useSupabase();
+    const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
+    const isResuming = resume === '1';
+    const remainingSteps = parseRemainingSteps(remaining);
 
     const [day, setDay] = useState<Weekday>('Saturday');
     const [hour, setHour] = useState<ReminderHour>(9);
@@ -60,10 +64,14 @@ export default function WeeklyReminderScreen() {
                 return;
             }
 
-            router.replace({
-                pathname: '/(onboarding)/onboarding-complete',
-                params: { percentage: data?.profile_completion_score?.toString() ?? '0', poolId: data?.id ?? '' },
-            } as Href);
+            router.replace(
+                isResuming
+                    ? resumeOnboardingHref(remainingSteps)
+                    : ({
+                        pathname: '/(onboarding)/onboarding-complete',
+                        params: { percentage: data?.profile_completion_score?.toString() ?? '0', poolId: data?.id ?? '' },
+                    } as Href)
+            );
 
         } catch (error) {
             setErrorMessage(
@@ -86,10 +94,14 @@ export default function WeeklyReminderScreen() {
                 return;
             }
 
-            router.replace({
-                pathname: '/(onboarding)/onboarding-complete',
-                params: { percentage: data?.profile_completion_score?.toString() ?? '0', poolId: data?.id ?? '' },
-            } as Href);
+            router.replace(
+                isResuming
+                    ? resumeOnboardingHref(remainingSteps)
+                    : ({
+                        pathname: '/(onboarding)/onboarding-complete',
+                        params: { percentage: data?.profile_completion_score?.toString() ?? '0', poolId: data?.id ?? '' },
+                    } as Href)
+            );
 
         } catch (error) {
             setErrorMessage(

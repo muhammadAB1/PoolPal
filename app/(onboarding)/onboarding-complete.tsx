@@ -47,17 +47,22 @@ const IMPROVE_STEPS: ImproveStep[] = [
 export default function OnboardingCompleteScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { percentage, poolId } = useLocalSearchParams<{ percentage?: string, poolId?: string }>();
-  const { setPoolId } = usePool();
+  const { percentage, poolId: routePoolId } = useLocalSearchParams<{ percentage?: string, poolId?: string }>();
+  const { poolId: contextPoolId, pools, setPoolId } = usePool();
 
-  const completionScore = Number.parseInt(percentage ?? '0', 10);
+  // When arriving here from the dashboard's "resume" flow (finishing off the
+  // last missing detail), no params are passed - fall back to what's already
+  // in context instead.
+  const resolvedPoolId = routePoolId || contextPoolId;
+  const rawPercentage = percentage ?? pools?.profile_completion_score?.toString();
+  const completionScore = Number.parseInt(rawPercentage ?? '0', 10);
   const safePercentage = Number.isFinite(completionScore)
     ? Math.min(100, Math.max(0, completionScore))
     : 0;
 
   function handleGoToDashboard() {
     router.replace('/(tabs)/dashboard' as Href);
-    setPoolId(poolId as string);
+    setPoolId(resolvedPoolId as string);
   }
 
   return (

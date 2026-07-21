@@ -4,8 +4,9 @@ import {
     surfaceTypeTranslationKeys,
 } from '@/data/poolSurfaceTypes';
 import { useSupabase } from '@/hooks/supabaseHooks';
+import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { SurfaceType } from '@/lib/types';
-import { Href, useRouter } from 'expo-router';
+import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -22,6 +23,9 @@ export default function SurfaceTypeScreen() {
     const router = useRouter();
     const { t } = useTranslation();
     const { poolSurfaceInsert } = useSupabase();
+    const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
+    const isResuming = resume === '1';
+    const remainingSteps = parseRemainingSteps(remaining);
 
     const [surfaceType, setSurfaceType] = useState<SurfaceType>('Plaster');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -46,7 +50,7 @@ export default function SurfaceTypeScreen() {
                 return;
             }
 
-            router.replace('/cleaning-setup' as Href);
+            router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/cleaning-setup' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -57,7 +61,7 @@ export default function SurfaceTypeScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace('/cleaning-setup' as Href);
+        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/cleaning-setup' as Href));
     }
 
     return (

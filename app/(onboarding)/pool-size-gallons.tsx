@@ -8,6 +8,7 @@ import {
     poolShapeTranslationKeys,
 } from '@/data/poolShapes';
 import { useSupabase } from '@/hooks/supabaseHooks';
+import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type {
     MeasurementMethod,
     MeasurementUnit,
@@ -16,7 +17,7 @@ import type {
 } from '@/lib/types';
 import { useAuth } from '@/providers/AuthProvider';
 import { Ionicons } from '@expo/vector-icons';
-import { Href, useRouter } from 'expo-router';
+import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -34,6 +35,9 @@ export default function PoolSizeGallonsScreen() {
     const { t, i18n } = useTranslation();
     const { measurement } = useAuth();
     const { poolSizeInsert } = useSupabase();
+    const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
+    const isResuming = resume === '1';
+    const remainingSteps = parseRemainingSteps(remaining);
     const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('Known');
     const [units, setUnits] = useState<MeasurementUnit>(measurement || 'us');
     const [length, setLength] = useState('0');
@@ -134,7 +138,7 @@ export default function PoolSizeGallonsScreen() {
                 return;
             }
 
-        router.replace('/equipment-basics' as Href);
+        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/equipment-basics' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -145,7 +149,7 @@ export default function PoolSizeGallonsScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace('/equipment-basics' as Href);
+        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/equipment-basics' as Href));
     }
 
     const methodOptions: {
