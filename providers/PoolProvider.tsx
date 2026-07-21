@@ -42,13 +42,13 @@ export function PoolProvider({ children }: { children: ReactNode }) {
     }
     setError(null);
 
-      if (!user && !authLoading) {
-        setPools(null);
-        setPoolId(null);
-        setLoading(false);
-        await AsyncStorage.removeItem('activePoolId');
-        return;
-      }
+    if (!user) {
+      setPools(null);
+      setPoolId(null);
+      setLoading(false);
+      await AsyncStorage.removeItem('activePoolId');
+      return;
+    }
 
 
     const activePoolId = await AsyncStorage.getItem('activePoolId');
@@ -62,16 +62,16 @@ export function PoolProvider({ children }: { children: ReactNode }) {
       const userPools = activePool.data ?? null;
       setPools(userPools);
 
-        if (activePool.error) {
-          setError(activePool.error);
-        }
+      if (activePool.error) {
+        setError(activePool.error);
       }
-      else {
-        const { data, error: fetchError } = await supabase
-          .from('pools')
-          .select('*')
-          .eq('owner_user_id', user.id)
-          .single();
+    }
+    else {
+      const { data, error: fetchError } = await supabase
+        .from('pools')
+        .select('*')
+        .eq('owner_user_id', user.id)
+        .single();
 
       if (fetchError) {
         setError(fetchError);
