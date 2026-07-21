@@ -9,6 +9,7 @@ import { Href, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Button, Image, ImageSourcePropType, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { type User } from '@supabase/supabase-js';
 
 type QuickAction = {
   icon: ImageSourcePropType;
@@ -34,16 +35,8 @@ const QUICK_ACTIONS: QuickAction[] = [
   },
 ];
 
-function getDisplayName(user: { user_metadata?: Record<string, unknown>; email?: string } | null) {
-  const metadata = user?.user_metadata;
-  const fullName =
-    (metadata?.full_name as string | undefined) ??
-    (metadata?.name as string | undefined) ??
-    (metadata?.first_name as string | undefined);
-
-  if (fullName) return fullName.split(' ')[0];
-  if (user?.email) return user.email.split('@')[0];
-  return '';
+function getDisplayName(user: User | null) {
+  return user?.user_metadata?.full_name.split(' ')[0]
 }
 
 export default function DashboardScreen() {
@@ -268,11 +261,11 @@ export default function DashboardScreen() {
           </View>
         </View>
         <View className="flex-1 items-center justify-center px-5">
-                <Text className="text-h1 font-jakarta-extrabold text-brand-navy text-center">
-                    {t('dashboard_welcome_back')}
-                </Text>
-                <Button title="Logout" onPress={async () => { await logout(); await AsyncStorage.removeItem('activePoolId'); router.replace('/welcome'); }} />
-            </View>
+          <Text className="text-h1 font-jakarta-extrabold text-brand-navy text-center">
+            {t('dashboard_welcome_back')}
+          </Text>
+          <Button title="Logout" onPress={async () => { await logout(); await AsyncStorage.removeItem('activePoolId'); router.replace('/welcome'); }} />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
