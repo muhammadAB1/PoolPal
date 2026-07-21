@@ -50,7 +50,7 @@ export default function SurfaceTypeScreen() {
                 return;
             }
 
-            router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/cleaning-setup' as Href));
+            router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/cleaning-setup' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -61,7 +61,7 @@ export default function SurfaceTypeScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/cleaning-setup' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/cleaning-setup' as Href));
     }
 
     return (

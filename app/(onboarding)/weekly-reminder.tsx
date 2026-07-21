@@ -64,7 +64,7 @@ export default function WeeklyReminderScreen() {
                 return;
             }
 
-            router.replace(
+            router.push(
                 isResuming
                     ? resumeOnboardingHref(remainingSteps)
                     : ({
@@ -94,7 +94,7 @@ export default function WeeklyReminderScreen() {
                 return;
             }
 
-            router.replace(
+            router.push(
                 isResuming
                     ? resumeOnboardingHref(remainingSteps)
                     : ({

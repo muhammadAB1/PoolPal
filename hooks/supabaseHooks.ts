@@ -71,7 +71,7 @@ export function useSupabase() {
         if (sessionError || !sessionData.session) {
             return { data: null, redirectTo: null, error: sessionError }
         }
-        const isNewUser = poolId ? false : true;
+        const isNewUser = await AsyncStorage.getItem('activePoolId') ? false : true;
 
         if (isNewUser && (country || language || measurement)) {
             const { data, error: updateError } = await supabase.auth.updateUser({

@@ -68,7 +68,7 @@ export default function TestReadingsScreen() {
                 setErrorMessage(error.message);
                 return;
             }
-            router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
+            router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -79,7 +79,7 @@ export default function TestReadingsScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
     }
 
     return (

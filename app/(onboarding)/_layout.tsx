@@ -1,5 +1,5 @@
 import { useAuth } from '@/providers/AuthProvider';
-import { Redirect, Stack, useGlobalSearchParams } from 'expo-router';
+import { Redirect, Stack, useGlobalSearchParams, useRouter } from 'expo-router';
 import { useRef } from 'react';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,16 +7,6 @@ import { icons } from '@/constants/images';
 import { usePool } from '@/providers/PoolProvider';
 
 const onboardingSteps = ['pool-basics', 'pool-condition', 'pool-size-gallons', 'equipment-basics', 'surface-type', 'cleaning-setup', 'test-readings', 'weekly-reminder'] as const;
-
-const previousRouteByScreen: Partial<Record<(typeof onboardingSteps)[number], (typeof onboardingSteps)[number]>> = {
-  'pool-condition': 'pool-basics',
-  'pool-size-gallons': 'pool-condition',
-  'equipment-basics': 'pool-size-gallons',
-  'surface-type': 'equipment-basics',
-  'cleaning-setup': 'surface-type',
-  'test-readings': 'cleaning-setup',
-  'weekly-reminder': 'test-readings',
-};
 
 function OnboardingHeader({
   routeName,
@@ -53,14 +43,14 @@ function OnboardingHeader({
 }
 
 export default function OnboardingLayout() {
+  const router = useRouter();
   const { user, loading } = useAuth();
   const { poolId, loading: poolLoading } = usePool();
   const { resume } = useGlobalSearchParams<{ resume?: string }>();
 
   // Once a user enters via the dashboard's "resume" link, keep letting them
   // move between onboarding steps for the rest of this session, even though
-  // internal navigation (e.g. navigation.replace) won't keep re-sending the
-  // `resume` param on every screen.
+  // internal navigation won't keep re-sending the `resume` param on every screen.
   const resumingRef = useRef(false);
   if (resume === '1') {
     resumingRef.current = true;
@@ -86,7 +76,7 @@ export default function OnboardingLayout() {
 
   return (
     <Stack
-      screenOptions={({ route, navigation }) => ({
+      screenOptions={({ route }) => ({
         headerShown: true,
         headerShadowVisible: false,
         headerTitle: '',
@@ -95,11 +85,8 @@ export default function OnboardingLayout() {
           <OnboardingHeader
             routeName={route.name}
             onBackPress={() => {
-              const previousRoute = previousRouteByScreen[route.name as keyof typeof previousRouteByScreen];
-              if (previousRoute) {
-                navigation.replace(previousRoute);
-              } else if (navigation.canGoBack()) {
-                navigation.goBack();
+              if (router.canGoBack()) {
+                router.back();
               }
             }}
           />
