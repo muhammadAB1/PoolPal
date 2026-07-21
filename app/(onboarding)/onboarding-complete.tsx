@@ -151,7 +151,7 @@ export default function OnboardingCompleteScreen() {
 
       <View className="absolute bottom-0 left-0 right-0 bg-surface-white px-5 pt-3 pb-7 border-t border-border-default">
         <TouchableOpacity
-          className="bg-brand-blue rounded-full py-[17px] items-center justify-center"
+          className="bg-brand-blue rounded-full py-4.25 items-center justify-center"
           onPress={handleGoToDashboard}
           activeOpacity={0.85}
         >
