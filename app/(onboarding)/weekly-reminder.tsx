@@ -339,7 +339,7 @@ export default function WeeklyReminderScreen() {
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-[17px] items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
+                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
                     onPress={handleComplete}
                     activeOpacity={0.85}
                     disabled={isSubmitting}

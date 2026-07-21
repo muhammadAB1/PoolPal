@@ -349,7 +349,7 @@ export default function EquipmentBasicsScreen() {
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className="bg-brand-blue rounded-full py-[17px] items-center justify-center"
+                    className="bg-brand-blue rounded-full py-4.25 items-center justify-center"
                     onPress={handleContinue}
                     activeOpacity={0.85}
                 >
