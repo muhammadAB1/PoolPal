@@ -99,7 +99,7 @@ export default function WeeklyReminderScreen() {
                     ? resumeOnboardingHref(remainingSteps)
                     : ({
                         pathname: '/(onboarding)/onboarding-complete',
-                        params: { percentage: data?.profile_completion_score?.toString() ?? '0', poolId: data?.id ?? '' },
+                        params: { percentage: data?.profile_completion_score?.toString() ?? '0' },
                     } as Href)
             );
 

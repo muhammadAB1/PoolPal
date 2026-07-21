@@ -4,6 +4,7 @@ import { colors } from '@/constants/theme';
 import { usePool } from '@/providers/PoolProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Image,
@@ -47,22 +48,28 @@ const IMPROVE_STEPS: ImproveStep[] = [
 export default function OnboardingCompleteScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { percentage, poolId: routePoolId } = useLocalSearchParams<{ percentage?: string, poolId?: string }>();
-  const { poolId: contextPoolId, pools, setPoolId } = usePool();
+  const { percentage } = useLocalSearchParams<{ percentage?: string }>();
+  const { pools, refreshPools } = usePool();
+  // Resume flow often skips weekly-reminder (or lands here with an empty
+  // remaining queue), so no `percentage` param is passed. Refresh so we
+  // always have the latest score from context.
+  useEffect(() => {
+    void refreshPools({ silent: true });
+  }, [refreshPools]);
 
-  // When arriving here from the dashboard's "resume" flow (finishing off the
-  // last missing detail), no params are passed - fall back to what's already
-  // in context instead.
-  const resolvedPoolId = routePoolId || contextPoolId;
-  const rawPercentage = percentage ?? pools?.profile_completion_score?.toString();
-  const completionScore = Number.parseInt(rawPercentage ?? '0', 10);
+  // Prefer live pool data; route param is only a first-paint fallback when
+  // coming from the initial weekly-reminder → complete path.
+  const rawPercentage =
+    pools?.profile_completion_score?.toString() ?? percentage ?? '0';
+  const completionScore = Number.parseInt(rawPercentage, 10);
   const safePercentage = Number.isFinite(completionScore)
     ? Math.min(100, Math.max(0, completionScore))
     : 0;
 
-  function handleGoToDashboard() {
+  async function handleGoToDashboard() {
+    // Silent refresh so this screen stays mounted (onboarding layout
+    // unmounts on poolLoading). Fresh pools land in context before dashboard.
     router.replace('/(tabs)/dashboard' as Href);
-    setPoolId(resolvedPoolId as string);
   }
 
   return (
