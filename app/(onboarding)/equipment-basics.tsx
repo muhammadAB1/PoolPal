@@ -30,6 +30,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function EquipmentBasicsScreen() {
+    console.log('I was ran EquipmentBasicsScreen')
     const router = useRouter();
     const { t } = useTranslation();
     const { poolEquipmentInsert } = useSupabase();

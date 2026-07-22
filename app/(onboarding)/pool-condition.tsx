@@ -19,7 +19,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function PoolConditionScreen() {
+export default function PoolConditionScreen() { 
+    console.log('I was ran PoolConditionScreen')
     const router = useRouter();
     const { t } = useTranslation();
     const { poolBasicUpdate } = useSupabase();

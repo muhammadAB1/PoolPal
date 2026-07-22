@@ -20,6 +20,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SurfaceTypeScreen() {
+    console.log('I was ran SurfaceTypeScreen')
     const router = useRouter();
     const { t } = useTranslation();
     const { poolSurfaceInsert } = useSupabase();

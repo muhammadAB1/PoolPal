@@ -25,6 +25,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSupabase } from '@/hooks/supabaseHooks';
 
 export default function TestReadingsScreen() {
+    console.log('I was ran TestReadingsScreen')
     const router = useRouter();
     const { t } = useTranslation();
     const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();

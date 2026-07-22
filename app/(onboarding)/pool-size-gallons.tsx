@@ -31,6 +31,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function PoolSizeGallonsScreen() {
+    console.log('I was ran PoolSizeGallonsScreen')
     const router = useRouter();
     const { t, i18n } = useTranslation();
     const { measurement } = useAuth();
