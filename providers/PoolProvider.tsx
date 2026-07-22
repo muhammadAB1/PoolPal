@@ -46,8 +46,10 @@ export function PoolProvider({ children }: { children: ReactNode }) {
       setPools(null);
       setPoolId(null);
       setLoading(false);
+      await AsyncStorage.removeItem('activePoolId');
       return;
     }
+
 
     const activePoolId = await AsyncStorage.getItem('activePoolId');
     if (activePoolId) {
@@ -63,7 +65,8 @@ export function PoolProvider({ children }: { children: ReactNode }) {
       if (activePool.error) {
         setError(activePool.error);
       }
-    } else {
+    }
+    else {
       const { data, error: fetchError } = await supabase
         .from('pools')
         .select('*')

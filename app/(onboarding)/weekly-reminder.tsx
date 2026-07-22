@@ -26,6 +26,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function WeeklyReminderScreen() {
+    console.log('I was ran WeeklyReminderScreen')
     const router = useRouter();
     const { t } = useTranslation();
     const { weeklyReminderInsert } = useSupabase();
@@ -64,7 +65,7 @@ export default function WeeklyReminderScreen() {
                 return;
             }
 
-            router.replace(
+            router.push(
                 isResuming
                     ? resumeOnboardingHref(remainingSteps)
                     : ({
@@ -94,7 +95,7 @@ export default function WeeklyReminderScreen() {
                 return;
             }
 
-            router.replace(
+            router.push(
                 isResuming
                     ? resumeOnboardingHref(remainingSteps)
                     : ({

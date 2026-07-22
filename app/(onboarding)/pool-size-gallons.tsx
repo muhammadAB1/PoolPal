@@ -31,6 +31,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function PoolSizeGallonsScreen() {
+    console.log('I was ran PoolSizeGallonsScreen')
     const router = useRouter();
     const { t, i18n } = useTranslation();
     const { measurement } = useAuth();
@@ -138,7 +139,7 @@ export default function PoolSizeGallonsScreen() {
                 return;
             }
 
-        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/equipment-basics' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/equipment-basics' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -149,7 +150,7 @@ export default function PoolSizeGallonsScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/equipment-basics' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/equipment-basics' as Href));
     }
 
     const methodOptions: {

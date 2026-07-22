@@ -3,7 +3,6 @@ import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
 import { supabase } from "@/lib/Supabase"
 import { poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, testReadingsInsertProps, UseType } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
-import { usePool } from "@/providers/PoolProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Linking from "expo-linking"
 import * as WebBrowser from "expo-web-browser"
@@ -23,8 +22,6 @@ type OAuthResult = {
 export function useSupabase() {
 
     const { user, setUser } = useAuth();
-
-    const { poolId } = usePool();
 
     async function signInWithOAuth(
 
@@ -71,7 +68,7 @@ export function useSupabase() {
         if (sessionError || !sessionData.session) {
             return { data: null, redirectTo: null, error: sessionError }
         }
-        const isNewUser = poolId ? false : true;
+        const isNewUser = await AsyncStorage.getItem('activePoolId') ? false : true;
 
         if (isNewUser && (country || language || measurement)) {
             const { data, error: updateError } = await supabase.auth.updateUser({

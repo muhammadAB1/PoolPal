@@ -20,6 +20,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SurfaceTypeScreen() {
+    console.log('I was ran SurfaceTypeScreen')
     const router = useRouter();
     const { t } = useTranslation();
     const { poolSurfaceInsert } = useSupabase();
@@ -50,7 +51,7 @@ export default function SurfaceTypeScreen() {
                 return;
             }
 
-            router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/cleaning-setup' as Href));
+            router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/cleaning-setup' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -61,7 +62,7 @@ export default function SurfaceTypeScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/cleaning-setup' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/cleaning-setup' as Href));
     }
 
     return (

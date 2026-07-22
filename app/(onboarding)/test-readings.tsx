@@ -25,6 +25,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSupabase } from '@/hooks/supabaseHooks';
 
 export default function TestReadingsScreen() {
+    console.log('I was ran TestReadingsScreen')
     const router = useRouter();
     const { t } = useTranslation();
     const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
@@ -68,7 +69,7 @@ export default function TestReadingsScreen() {
                 setErrorMessage(error.message);
                 return;
             }
-            router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
+            router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -79,7 +80,7 @@ export default function TestReadingsScreen() {
     }
 
     function handleSkipForNow() {
-        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
     }
 
     return (

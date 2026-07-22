@@ -20,6 +20,7 @@ type ScreenedType = 'Screened' | 'Unscreened';
 type UseType = 'Family' | 'VacationHome' | 'ShortTermRental';
 
 export default function PoolBasicsScreen() {
+    console.log('I was ran PoolBasicsScreen')
     const router = useRouter();
     const { t } = useTranslation();
     const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
@@ -58,11 +59,11 @@ export default function PoolBasicsScreen() {
             return;
         }
 
-        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
     }
 
     function handleSkipForNow() {
-        router.replace(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
     }
 
     return (
