@@ -49,6 +49,13 @@ export function PoolProvider({ children }: { children: ReactNode }) {
       await AsyncStorage.removeItem('activePoolId');
       return;
     }
+    if (!user) {
+      setPools(null);
+      setPoolId(null);
+      setLoading(false);
+      await AsyncStorage.removeItem('activePoolId');
+      return;
+    }
 
 
     const activePoolId = await AsyncStorage.getItem('activePoolId');

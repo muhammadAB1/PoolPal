@@ -5,7 +5,8 @@ import { useAuth } from '@/providers/AuthProvider';
 import { usePool } from '@/providers/PoolProvider';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Href, useRouter } from 'expo-router';
+import { Href, useFocusEffect, useRouter } from 'expo-router';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Image, ImageSourcePropType, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -43,8 +44,15 @@ export default function DashboardScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { user } = useAuth();
-  const { pools } = usePool();
+  const { pools, refreshPools } = usePool();
   const { logout } = useSupabase();
+
+  // Keep pool context fresh when landing on dashboard (e.g. after onboarding).
+  useFocusEffect(
+    useCallback(() => {
+      void refreshPools({ silent: true });
+    }, [refreshPools]),
+  );
 
   const displayName = getDisplayName(user);
   const completionScore = pools?.profile_completion_score ?? 0;
@@ -88,11 +96,6 @@ export default function DashboardScreen() {
                 <Image source={dashboardImages.greenCheckIcon} className="w-8 h-8 mt-1 -mr-2" />
                 <Text className="text-small font-jakarta-bold text-success-text mr-2">
                   {t('dashboard_plan_ready_badge')}
-                </Text>
-              </View>
-              <View className="flex-row items-center gap-1 mt-1.5">
-                <Text className="text-small font-jakarta text-sub">
-                  {t('dashboard_profile_percent_complete', { percent: completionScore })}
                 </Text>
               </View>
             </View>
