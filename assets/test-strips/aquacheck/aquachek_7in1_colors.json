@@ -1,0 +1,604 @@
+{
+  "brand": "AquaChek",
+  "model": "7-in-1",
+  "source_image": "58a3273e-e2f1-4562-a43e-5a64465adf5f.png",
+  "component": {
+    "viewBox": "0 0 358 776",
+    "master_width_px": 358,
+    "master_height_px": 776,
+    "transparent_background": true
+  },
+  "tests": [
+    {
+      "name": "TOTAL HARDNESS",
+      "unit": "ppm",
+      "note": null,
+      "statuses": [
+        {
+          "label": "LOW",
+          "first": 0,
+          "last": 1,
+          "style": "span"
+        },
+        {
+          "label": "OK",
+          "first": 2,
+          "last": 3,
+          "style": "span"
+        },
+        {
+          "label": "HIGH",
+          "first": 4,
+          "last": 4,
+          "style": "single"
+        }
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "secondary_total_bromine_value": null,
+          "hex": "#382598",
+          "rgb": {
+            "r": 56,
+            "g": 37,
+            "b": 152
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 2,
+          "value": "100",
+          "secondary_total_bromine_value": null,
+          "hex": "#001C96",
+          "rgb": {
+            "r": 0,
+            "g": 28,
+            "b": 150
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 3,
+          "value": "250",
+          "secondary_total_bromine_value": null,
+          "hex": "#3D2D9F",
+          "rgb": {
+            "r": 61,
+            "g": 45,
+            "b": 159
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 4,
+          "value": "500",
+          "secondary_total_bromine_value": null,
+          "hex": "#82339A",
+          "rgb": {
+            "r": 130,
+            "g": 51,
+            "b": 154
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 5,
+          "value": "1000",
+          "secondary_total_bromine_value": null,
+          "hex": "#94218C",
+          "rgb": {
+            "r": 148,
+            "g": 33,
+            "b": 140
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        }
+      ]
+    },
+    {
+      "name": "TOTAL CHLORINE / TOTAL BROMINE",
+      "unit": "ppm",
+      "note": null,
+      "statuses": [
+        {
+          "label": "OK",
+          "column": 2
+        },
+        {
+          "label": "IDEAL",
+          "column": 3
+        },
+        {
+          "label": "OK",
+          "column": 4
+        }
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "secondary_total_bromine_value": "0",
+          "hex": "#FEFA9C",
+          "rgb": {
+            "r": 254,
+            "g": 250,
+            "b": 156
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 2,
+          "value": ".5",
+          "secondary_total_bromine_value": ".5",
+          "hex": "#F7FBA6",
+          "rgb": {
+            "r": 247,
+            "g": 251,
+            "b": 166
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 3,
+          "value": "1",
+          "secondary_total_bromine_value": "1",
+          "hex": "#E8F195",
+          "rgb": {
+            "r": 232,
+            "g": 241,
+            "b": 149
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 4,
+          "value": "3",
+          "secondary_total_bromine_value": "3",
+          "hex": "#B9DA86",
+          "rgb": {
+            "r": 185,
+            "g": 218,
+            "b": 134
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 5,
+          "value": "5",
+          "secondary_total_bromine_value": "5",
+          "hex": "#87C270",
+          "rgb": {
+            "r": 135,
+            "g": 194,
+            "b": 112
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 6,
+          "value": "10",
+          "secondary_total_bromine_value": "10",
+          "hex": "#4BA25C",
+          "rgb": {
+            "r": 75,
+            "g": 162,
+            "b": 92
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        }
+      ]
+    },
+    {
+      "name": "FREE CHLORINE",
+      "unit": "ppm",
+      "note": null,
+      "statuses": [
+        {
+          "label": "LOW",
+          "first": 0,
+          "last": 1,
+          "style": "span"
+        },
+        {
+          "label": "POOL OK",
+          "first": 2,
+          "last": 3,
+          "style": "text_span"
+        },
+        {
+          "label": "SPA OK",
+          "first": 4,
+          "last": 4,
+          "style": "single"
+        },
+        {
+          "label": "HIGH",
+          "first": 5,
+          "last": 5,
+          "style": "single"
+        }
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "secondary_total_bromine_value": null,
+          "hex": "#FEFCC3",
+          "rgb": {
+            "r": 254,
+            "g": 252,
+            "b": 195
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 2,
+          "value": ".5",
+          "secondary_total_bromine_value": null,
+          "hex": "#F7F6E1",
+          "rgb": {
+            "r": 247,
+            "g": 246,
+            "b": 225
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 3,
+          "value": "1",
+          "secondary_total_bromine_value": null,
+          "hex": "#EBE3DA",
+          "rgb": {
+            "r": 235,
+            "g": 227,
+            "b": 218
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 4,
+          "value": "3",
+          "secondary_total_bromine_value": null,
+          "hex": "#B28BD3",
+          "rgb": {
+            "r": 178,
+            "g": 139,
+            "b": 211
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 5,
+          "value": "5",
+          "secondary_total_bromine_value": null,
+          "hex": "#A168C0",
+          "rgb": {
+            "r": 161,
+            "g": 104,
+            "b": 192
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 6,
+          "value": "10",
+          "secondary_total_bromine_value": null,
+          "hex": "#7A1C96",
+          "rgb": {
+            "r": 122,
+            "g": 28,
+            "b": 150
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        }
+      ]
+    },
+    {
+      "name": "pH",
+      "unit": "",
+      "note": null,
+      "statuses": [
+        {
+          "label": "LOW",
+          "first": 0,
+          "last": 1,
+          "style": "span"
+        },
+        {
+          "label": "OK",
+          "first": 2,
+          "last": 3,
+          "style": "span"
+        },
+        {
+          "label": "HIGH",
+          "first": 4,
+          "last": 4,
+          "style": "single"
+        }
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "6.2",
+          "secondary_total_bromine_value": null,
+          "hex": "#FEC707",
+          "rgb": {
+            "r": 254,
+            "g": 199,
+            "b": 7
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 2,
+          "value": "6.8",
+          "secondary_total_bromine_value": null,
+          "hex": "#FDA310",
+          "rgb": {
+            "r": 253,
+            "g": 163,
+            "b": 16
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 3,
+          "value": "7.2",
+          "secondary_total_bromine_value": null,
+          "hex": "#FC700D",
+          "rgb": {
+            "r": 252,
+            "g": 112,
+            "b": 13
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 4,
+          "value": "7.8",
+          "secondary_total_bromine_value": null,
+          "hex": "#EE3A17",
+          "rgb": {
+            "r": 238,
+            "g": 58,
+            "b": 23
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 5,
+          "value": "8.4",
+          "secondary_total_bromine_value": null,
+          "hex": "#E3131B",
+          "rgb": {
+            "r": 227,
+            "g": 19,
+            "b": 27
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        }
+      ]
+    },
+    {
+      "name": "TOTAL ALKALINITY",
+      "unit": "ppm",
+      "note": null,
+      "statuses": [
+        {
+          "label": "LOW",
+          "first": 0,
+          "last": 1,
+          "style": "span"
+        },
+        {
+          "label": "OK",
+          "first": 2,
+          "last": 3,
+          "style": "span"
+        },
+        {
+          "label": "HIGH",
+          "first": 4,
+          "last": 5,
+          "style": "span"
+        }
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "secondary_total_bromine_value": null,
+          "hex": "#F3CB37",
+          "rgb": {
+            "r": 243,
+            "g": 203,
+            "b": 55
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 2,
+          "value": "40",
+          "secondary_total_bromine_value": null,
+          "hex": "#CEBF36",
+          "rgb": {
+            "r": 206,
+            "g": 191,
+            "b": 54
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 3,
+          "value": "80",
+          "secondary_total_bromine_value": null,
+          "hex": "#A2A634",
+          "rgb": {
+            "r": 162,
+            "g": 166,
+            "b": 52
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 4,
+          "value": "120",
+          "secondary_total_bromine_value": null,
+          "hex": "#6D8634",
+          "rgb": {
+            "r": 109,
+            "g": 134,
+            "b": 52
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 5,
+          "value": "180",
+          "secondary_total_bromine_value": null,
+          "hex": "#34592B",
+          "rgb": {
+            "r": 52,
+            "g": 89,
+            "b": 43
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 6,
+          "value": "240",
+          "secondary_total_bromine_value": null,
+          "hex": "#1F4D55",
+          "rgb": {
+            "r": 31,
+            "g": 77,
+            "b": 85
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        }
+      ]
+    },
+    {
+      "name": "CYANURIC ACID",
+      "unit": "ppm",
+      "note": "FIND NEAREST HANDLE",
+      "statuses": [
+        {
+          "label": "LOW",
+          "first": 0,
+          "last": 0,
+          "style": "single"
+        },
+        {
+          "label": "OK",
+          "first": 1,
+          "last": 2,
+          "style": "span"
+        },
+        {
+          "label": "HIGH",
+          "first": 3,
+          "last": 4,
+          "style": "span"
+        }
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "secondary_total_bromine_value": null,
+          "hex": "#F28324",
+          "rgb": {
+            "r": 242,
+            "g": 131,
+            "b": 36
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 2,
+          "value": "30-50",
+          "secondary_total_bromine_value": null,
+          "hex": "#EB6820",
+          "rgb": {
+            "r": 235,
+            "g": 104,
+            "b": 32
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 3,
+          "value": "100",
+          "secondary_total_bromine_value": null,
+          "hex": "#DD1E1E",
+          "rgb": {
+            "r": 221,
+            "g": 30,
+            "b": 30
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 4,
+          "value": "150",
+          "secondary_total_bromine_value": null,
+          "hex": "#C01D7B",
+          "rgb": {
+            "r": 192,
+            "g": 29,
+            "b": 123
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        },
+        {
+          "column": 5,
+          "value": "300",
+          "secondary_total_bromine_value": null,
+          "hex": "#791B8B",
+          "rgb": {
+            "r": 121,
+            "g": 27,
+            "b": 139
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 21×21 px central area of the uploaded reference chart; no color enhancement applied."
+        }
+      ]
+    }
+  ]
+}

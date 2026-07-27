@@ -1,0 +1,32 @@
+AQUACHEK 7-IN-1 — MOBILE HANDOFF
+
+MASTER
+- SVG viewBox: 0 0 358 776
+- Master dimensions: 358 × 776px
+- Transparent background
+- iOS reference screen: 390 × 844px; chart width 358px
+- Android reference screen: 360 × 800px; chart width 328px
+- Preserve aspect ratio
+
+GRID
+- Six-column master grid
+- Uniform swatches: 32 × 32px
+- Horizontal gap: 9px
+- Sharp 90-degree corners
+- Swatch border: 0.7px #858B93
+- Row dividers: 1px #E2E5E9
+
+TYPOGRAPHY
+- Poppins SemiBold 15px: chart header
+- Poppins SemiBold 12px: row titles
+- Poppins Regular 8.8px: units
+- Poppins Medium 10.5px: numerical values
+- Poppins Medium 8.5px: status labels
+- Poppins Regular 7px: source note
+- SVG text remains live and editable
+
+EDITABILITY
+- Every swatch is a separate SVG rectangle with a unique descriptive ID
+- Status arrows and lines are separate vector elements
+- TC and TB values remain separate live-text objects
+- No source image, raster fill, gradient, shadow, texture, or perspective is embedded

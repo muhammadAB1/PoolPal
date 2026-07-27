@@ -1,0 +1,36 @@
+POOL TEST-STRIP CHART — LABELS ABOVE ROWS
+
+MASTER
+- SVG viewBox: 0 0 358 710
+- Master dimensions: 358 × 710px
+- Transparent background
+- Test labels are positioned above each color row
+- No left-side label column or vertical divider
+- iOS reference screen: 390 × 844px; display at 358px wide
+- Android reference screen: 360 × 800px; display at 328px wide
+- Preserve aspect ratio
+
+GRID
+- Six-column master grid
+- Swatches: 34 × 34px
+- Horizontal gap: 10px
+- Grid width: 254px
+- Grid x-position: 52.0px
+- Sharp 90-degree corners
+- Swatch border: 0.65px #8A9098
+- Row divider: 1px #E1E4E8
+
+TYPOGRAPHY
+- Poppins SemiBold 12.5px: test names
+- Poppins Regular 9px: units
+- Poppins Medium 10.5px: result values
+- Poppins Medium 8.5px: status labels
+- Poppins Regular 7.8px: pH footnote
+- SVG text remains live and editable
+
+EDITABILITY
+- Every color square is a separate SVG rectangle
+- Every square has a unique descriptive object ID
+- Status labels, units, values, and row dividers are independent elements
+- No raster source image is embedded
+- No gradients, shadows, textures, bevels, or perspective are used

@@ -1,0 +1,630 @@
+{
+  "brand": "Not visible in source",
+  "model": "Attached reference chart",
+  "source_image": "337145a8-bb46-5296-a7b2-6df32d06fb8d.png",
+  "layout_reference": "8d23f586-a5ce-5800-9733-f8b9463c5d8b.png",
+  "component": {
+    "viewBox": "0 0 358 834",
+    "master_width_px": 358,
+    "master_height_px": 834,
+    "transparent_background": true
+  },
+  "notes": "Colors preserved from the first source image. Swatch shape, label placement, and spacing adapted to match the second reference image more closely.",
+  "tests": [
+    {
+      "name": "Total Hardness",
+      "unit": "ppm",
+      "values": [
+        "0",
+        "100",
+        "250",
+        "500",
+        "1000"
+      ],
+      "brackets": [
+        [
+          "OK",
+          2,
+          3
+        ]
+      ],
+      "status_texts": [
+        [
+          "VERY LOW",
+          0,
+          0
+        ],
+        [
+          "LOW",
+          1,
+          1
+        ],
+        [
+          "HIGH",
+          4,
+          4
+        ]
+      ],
+      "note": null,
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#307AB2",
+          "rgb": {
+            "r": 48,
+            "g": 122,
+            "b": 178
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 2,
+          "value": "100",
+          "hex": "#5578AE",
+          "rgb": {
+            "r": 85,
+            "g": 120,
+            "b": 174
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 3,
+          "value": "250",
+          "hex": "#746DAC",
+          "rgb": {
+            "r": 116,
+            "g": 109,
+            "b": 172
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 4,
+          "value": "500",
+          "hex": "#8761A5",
+          "rgb": {
+            "r": 135,
+            "g": 97,
+            "b": 165
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 5,
+          "value": "1000",
+          "hex": "#9D529B",
+          "rgb": {
+            "r": 157,
+            "g": 82,
+            "b": 155
+          },
+          "confidence": "High"
+        }
+      ]
+    },
+    {
+      "name": "Free Chlorine",
+      "unit": "ppm",
+      "values": [
+        "0",
+        "0.5",
+        "1",
+        "3",
+        "5",
+        "10"
+      ],
+      "brackets": [
+        [
+          "OK",
+          1,
+          3
+        ]
+      ],
+      "status_texts": [],
+      "note": null,
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#FDF4F9",
+          "rgb": {
+            "r": 253,
+            "g": 244,
+            "b": 249
+          },
+          "confidence": "Manual Review"
+        },
+        {
+          "column": 2,
+          "value": "0.5",
+          "hex": "#F9DEEF",
+          "rgb": {
+            "r": 249,
+            "g": 222,
+            "b": 239
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 3,
+          "value": "1",
+          "hex": "#F4D0E8",
+          "rgb": {
+            "r": 244,
+            "g": 208,
+            "b": 232
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 4,
+          "value": "3",
+          "hex": "#DC9BC8",
+          "rgb": {
+            "r": 220,
+            "g": 155,
+            "b": 200
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 5,
+          "value": "5",
+          "hex": "#CD7BB5",
+          "rgb": {
+            "r": 205,
+            "g": 123,
+            "b": 181
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 6,
+          "value": "10",
+          "hex": "#B4519C",
+          "rgb": {
+            "r": 180,
+            "g": 81,
+            "b": 156
+          },
+          "confidence": "High"
+        }
+      ]
+    },
+    {
+      "name": "Bromine",
+      "unit": "ppm",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "6",
+        "10",
+        "20"
+      ],
+      "brackets": [
+        [
+          "OK",
+          1,
+          3
+        ]
+      ],
+      "status_texts": [],
+      "note": null,
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#FCF5FA",
+          "rgb": {
+            "r": 252,
+            "g": 245,
+            "b": 250
+          },
+          "confidence": "Manual Review"
+        },
+        {
+          "column": 2,
+          "value": "1",
+          "hex": "#F4DFEF",
+          "rgb": {
+            "r": 244,
+            "g": 223,
+            "b": 239
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 3,
+          "value": "2",
+          "hex": "#EBCBE4",
+          "rgb": {
+            "r": 235,
+            "g": 203,
+            "b": 228
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 4,
+          "value": "6",
+          "hex": "#D6A1CC",
+          "rgb": {
+            "r": 214,
+            "g": 161,
+            "b": 204
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 5,
+          "value": "10",
+          "hex": "#BB71AF",
+          "rgb": {
+            "r": 187,
+            "g": 113,
+            "b": 175
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 6,
+          "value": "20",
+          "hex": "#9B3D91",
+          "rgb": {
+            "r": 155,
+            "g": 61,
+            "b": 145
+          },
+          "confidence": "High"
+        }
+      ]
+    },
+    {
+      "name": "Total Chlorine",
+      "unit": "ppm",
+      "values": [
+        "0",
+        "0.5",
+        "1",
+        "3",
+        "5",
+        "10"
+      ],
+      "brackets": [
+        [
+          "OK",
+          1,
+          3
+        ]
+      ],
+      "status_texts": [],
+      "note": null,
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#F6F29F",
+          "rgb": {
+            "r": 246,
+            "g": 242,
+            "b": 159
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 2,
+          "value": "0.5",
+          "hex": "#EBEB95",
+          "rgb": {
+            "r": 235,
+            "g": 235,
+            "b": 149
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 3,
+          "value": "1",
+          "hex": "#D9E398",
+          "rgb": {
+            "r": 217,
+            "g": 227,
+            "b": 152
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 4,
+          "value": "3",
+          "hex": "#BBD58F",
+          "rgb": {
+            "r": 187,
+            "g": 213,
+            "b": 143
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 5,
+          "value": "5",
+          "hex": "#99CA96",
+          "rgb": {
+            "r": 153,
+            "g": 202,
+            "b": 150
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 6,
+          "value": "10",
+          "hex": "#6CB582",
+          "rgb": {
+            "r": 108,
+            "g": 181,
+            "b": 130
+          },
+          "confidence": "High"
+        }
+      ]
+    },
+    {
+      "name": "Cyanuric Acid",
+      "unit": "ppm",
+      "values": [
+        "0",
+        "30–50",
+        "100",
+        "150",
+        "240"
+      ],
+      "brackets": [
+        [
+          "OK",
+          1,
+          3
+        ]
+      ],
+      "status_texts": [],
+      "note": "For best results, pH must be between 7.2–8.4",
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#F8C99A",
+          "rgb": {
+            "r": 248,
+            "g": 201,
+            "b": 154
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 2,
+          "value": "30–50",
+          "hex": "#FABEAA",
+          "rgb": {
+            "r": 250,
+            "g": 190,
+            "b": 170
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 3,
+          "value": "100",
+          "hex": "#FAB4B0",
+          "rgb": {
+            "r": 250,
+            "g": 180,
+            "b": 176
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 4,
+          "value": "150",
+          "hex": "#F8A1A8",
+          "rgb": {
+            "r": 248,
+            "g": 161,
+            "b": 168
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 5,
+          "value": "240",
+          "hex": "#E389A3",
+          "rgb": {
+            "r": 227,
+            "g": 137,
+            "b": 163
+          },
+          "confidence": "High"
+        }
+      ]
+    },
+    {
+      "name": "Total Alkalinity",
+      "unit": "ppm",
+      "values": [
+        "0",
+        "40",
+        "80",
+        "120",
+        "180",
+        "240"
+      ],
+      "brackets": [
+        [
+          "OK",
+          1,
+          3
+        ]
+      ],
+      "status_texts": [],
+      "note": null,
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#E5EED7",
+          "rgb": {
+            "r": 229,
+            "g": 238,
+            "b": 215
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 2,
+          "value": "40",
+          "hex": "#D1E5D1",
+          "rgb": {
+            "r": 209,
+            "g": 229,
+            "b": 209
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 3,
+          "value": "80",
+          "hex": "#BDE0D9",
+          "rgb": {
+            "r": 189,
+            "g": 224,
+            "b": 217
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 4,
+          "value": "120",
+          "hex": "#AED5DA",
+          "rgb": {
+            "r": 174,
+            "g": 213,
+            "b": 218
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 5,
+          "value": "180",
+          "hex": "#A3D6EF",
+          "rgb": {
+            "r": 163,
+            "g": 214,
+            "b": 239
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 6,
+          "value": "240",
+          "hex": "#8ECAEC",
+          "rgb": {
+            "r": 142,
+            "g": 202,
+            "b": 236
+          },
+          "confidence": "High"
+        }
+      ]
+    },
+    {
+      "name": "pH",
+      "unit": "",
+      "values": [
+        "6.2",
+        "6.8",
+        "7.2",
+        "7.8",
+        "8.4",
+        "9.0"
+      ],
+      "brackets": [
+        [
+          "OK",
+          2,
+          3
+        ]
+      ],
+      "status_texts": [],
+      "note": null,
+      "swatches": [
+        {
+          "column": 1,
+          "value": "6.2",
+          "hex": "#FCBC4C",
+          "rgb": {
+            "r": 252,
+            "g": 188,
+            "b": 76
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 2,
+          "value": "6.8",
+          "hex": "#F7903D",
+          "rgb": {
+            "r": 247,
+            "g": 144,
+            "b": 61
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 3,
+          "value": "7.2",
+          "hex": "#F47A63",
+          "rgb": {
+            "r": 244,
+            "g": 122,
+            "b": 99
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 4,
+          "value": "7.8",
+          "hex": "#F16665",
+          "rgb": {
+            "r": 241,
+            "g": 102,
+            "b": 101
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 5,
+          "value": "8.4",
+          "hex": "#EF4F67",
+          "rgb": {
+            "r": 239,
+            "g": 79,
+            "b": 103
+          },
+          "confidence": "High"
+        },
+        {
+          "column": 6,
+          "value": "9.0",
+          "hex": "#E13364",
+          "rgb": {
+            "r": 225,
+            "g": 51,
+            "b": 100
+          },
+          "confidence": "High"
+        }
+      ]
+    }
+  ]
+}

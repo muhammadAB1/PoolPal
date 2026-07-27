@@ -1,12 +1,12 @@
+import { icons } from '@/constants/images';
 import { useAuth } from '@/providers/AuthProvider';
+import { usePool } from '@/providers/PoolProvider';
 import { Redirect, Stack, useGlobalSearchParams, useRouter } from 'expo-router';
 import { useRef } from 'react';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { icons } from '@/constants/images';
-import { usePool } from '@/providers/PoolProvider';
 
-const onboardingSteps = ['pool-basics', 'pool-condition', 'pool-size-gallons', 'equipment-basics', 'surface-type', 'cleaning-setup', 'test-readings', 'weekly-reminder'] as const;
+const onboardingSteps = ['pool-basics', 'pool-condition', 'pool-size-gallons', 'equipment-basics', 'surface-type', 'cleaning-setup', 'weekly-reminder'] as const;
 
 function OnboardingHeader({
   routeName,

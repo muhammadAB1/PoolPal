@@ -1,0 +1,241 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+ width="358" height="776" viewBox="0 0 358 776"
+ preserveAspectRatio="xMidYMid meet"
+ role="img" aria-labelledby="chart-title chart-desc">
+<title id="chart-title">AquaChek 7-in-1 mobile color chart</title>
+<desc id="chart-desc">Editable vector reconstruction with uniform independently recolorable square swatches.</desc>
+<style>
+.header {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .4px;
+  fill: #15171A;
+}
+.row-title {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  fill: #15171A;
+}
+.unit {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 8.8px;
+  font-weight: 400;
+  fill: #4F545C;
+}
+.value {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 10.5px;
+  font-weight: 500;
+  fill: #15171A;
+}
+.axis-tag {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  fill: #15171A;
+}
+.status {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 8.5px;
+  font-weight: 500;
+  fill: #15171A;
+}
+.note {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 7px;
+  font-weight: 400;
+  fill: #4F545C;
+}
+.swatch {
+  stroke: #858B93;
+  stroke-width: .7;
+  vector-effect: non-scaling-stroke;
+  shape-rendering: geometricPrecision;
+}
+.range-line {
+  fill: none;
+  stroke: #22252A;
+  stroke-width: 1;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  vector-effect: non-scaling-stroke;
+}
+.divider {
+  stroke: #E2E5E9;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+</style>
+<g id="chart">
+<text id="aquachek-header" class="header" x="179.0" y="25.0" text-anchor="middle" dominant-baseline="middle">AQUACHEK 7-IN-1</text>
+<g id="row-01-total-hardness" data-test="total-hardness">
+<text id="total-hardness-title" class="row-title" x="16" y="54.0" dominant-baseline="middle">TOTAL HARDNESS</text>
+<text id="total-hardness-unit" class="unit" x="124" y="54.0" dominant-baseline="middle">(PPM)</text>
+<text id="total-hardness_0_01-value" class="value" x="97.0" y="78.0" text-anchor="middle" dominant-baseline="middle">0</text>
+<rect id="total-hardness_0_01" class="swatch" x="81.0" y="90.0" width="32" height="32" fill="#382598" data-value="0" data-hex="#382598"/>
+<text id="total-hardness_100_02-value" class="value" x="138.0" y="78.0" text-anchor="middle" dominant-baseline="middle">100</text>
+<rect id="total-hardness_100_02" class="swatch" x="122.0" y="90.0" width="32" height="32" fill="#001C96" data-value="100" data-hex="#001C96"/>
+<text id="total-hardness_250_03-value" class="value" x="179.0" y="78.0" text-anchor="middle" dominant-baseline="middle">250</text>
+<rect id="total-hardness_250_03" class="swatch" x="163.0" y="90.0" width="32" height="32" fill="#3D2D9F" data-value="250" data-hex="#3D2D9F"/>
+<text id="total-hardness_500_04-value" class="value" x="220.0" y="78.0" text-anchor="middle" dominant-baseline="middle">500</text>
+<rect id="total-hardness_500_04" class="swatch" x="204.0" y="90.0" width="32" height="32" fill="#82339A" data-value="500" data-hex="#82339A"/>
+<text id="total-hardness_1000_05-value" class="value" x="261.0" y="78.0" text-anchor="middle" dominant-baseline="middle">1000</text>
+<rect id="total-hardness_1000_05" class="swatch" x="245.0" y="90.0" width="32" height="32" fill="#94218C" data-value="1000" data-hex="#94218C"/>
+<line id="total-hardness-status-01-left-line" class="range-line" x1="81.0" y1="136.0" x2="105.5" y2="136.0"/>
+<path id="total-hardness-status-01-left-arrow" class="range-line" d="M85.0,133.0 L81.0,136.0 L85.0,139.0"/>
+<line id="total-hardness-status-01-right-line" class="range-line" x1="129.5" y1="136.0" x2="154.0" y2="136.0"/>
+<path id="total-hardness-status-01-right-arrow" class="range-line" d="M150.0,133.0 L154.0,136.0 L150.0,139.0"/>
+<text id="total-hardness-status-01-label" class="status" x="117.5" y="136.4" text-anchor="middle" dominant-baseline="middle">LOW</text>
+<line id="total-hardness-status-02-left-line" class="range-line" x1="163.0" y1="136.0" x2="187.5" y2="136.0"/>
+<path id="total-hardness-status-02-left-arrow" class="range-line" d="M167.0,133.0 L163.0,136.0 L167.0,139.0"/>
+<line id="total-hardness-status-02-right-line" class="range-line" x1="211.5" y1="136.0" x2="236.0" y2="136.0"/>
+<path id="total-hardness-status-02-right-arrow" class="range-line" d="M232.0,133.0 L236.0,136.0 L232.0,139.0"/>
+<text id="total-hardness-status-02-label" class="status" x="199.5" y="136.4" text-anchor="middle" dominant-baseline="middle">OK</text>
+<text id="total-hardness-status-03" class="status" x="261.0" y="136.0" text-anchor="middle" dominant-baseline="middle">HIGH</text>
+<line class="divider" x1="16" y1="155.0" x2="342" y2="155.0"/>
+</g>
+<g id="row-02-total-chlorine-bromine" data-test="total-chlorine-bromine">
+<text id="total-chlorine-bromine-title" class="row-title" x="16" y="166.0" dominant-baseline="middle">TOTAL CHLORINE / TOTAL BROMINE</text>
+<text id="total-chlorine-bromine-unit" class="unit" x="234" y="166.0" dominant-baseline="middle">(PPM)</text>
+<text id="total-chlorine-bromine-tc-tag" class="axis-tag" x="52" y="190.0" text-anchor="end" dominant-baseline="middle">TC</text>
+<text id="total-chlorine-bromine_0_01-value" class="value" x="76.5" y="190.0" text-anchor="middle" dominant-baseline="middle">0</text>
+<rect id="total-chlorine-bromine_0_01" class="swatch" x="60.5" y="202.0" width="32" height="32" fill="#FEFA9C" data-value="0" data-hex="#FEFA9C"/>
+<text id="total-chlorine-bromine_0_01-tb-value" class="value" x="76.5" y="245.0" text-anchor="middle" dominant-baseline="middle">0</text>
+<text id="total-chlorine-bromine_5_02-value" class="value" x="117.5" y="190.0" text-anchor="middle" dominant-baseline="middle">.5</text>
+<rect id="total-chlorine-bromine_5_02" class="swatch" x="101.5" y="202.0" width="32" height="32" fill="#F7FBA6" data-value=".5" data-hex="#F7FBA6"/>
+<text id="total-chlorine-bromine_5_02-tb-value" class="value" x="117.5" y="245.0" text-anchor="middle" dominant-baseline="middle">.5</text>
+<text id="total-chlorine-bromine_1_03-value" class="value" x="158.5" y="190.0" text-anchor="middle" dominant-baseline="middle">1</text>
+<rect id="total-chlorine-bromine_1_03" class="swatch" x="142.5" y="202.0" width="32" height="32" fill="#E8F195" data-value="1" data-hex="#E8F195"/>
+<text id="total-chlorine-bromine_1_03-tb-value" class="value" x="158.5" y="245.0" text-anchor="middle" dominant-baseline="middle">1</text>
+<text id="total-chlorine-bromine_3_04-value" class="value" x="199.5" y="190.0" text-anchor="middle" dominant-baseline="middle">3</text>
+<rect id="total-chlorine-bromine_3_04" class="swatch" x="183.5" y="202.0" width="32" height="32" fill="#B9DA86" data-value="3" data-hex="#B9DA86"/>
+<text id="total-chlorine-bromine_3_04-tb-value" class="value" x="199.5" y="245.0" text-anchor="middle" dominant-baseline="middle">3</text>
+<text id="total-chlorine-bromine_5_05-value" class="value" x="240.5" y="190.0" text-anchor="middle" dominant-baseline="middle">5</text>
+<rect id="total-chlorine-bromine_5_05" class="swatch" x="224.5" y="202.0" width="32" height="32" fill="#87C270" data-value="5" data-hex="#87C270"/>
+<text id="total-chlorine-bromine_5_05-tb-value" class="value" x="240.5" y="245.0" text-anchor="middle" dominant-baseline="middle">5</text>
+<text id="total-chlorine-bromine_10_06-value" class="value" x="281.5" y="190.0" text-anchor="middle" dominant-baseline="middle">10</text>
+<rect id="total-chlorine-bromine_10_06" class="swatch" x="265.5" y="202.0" width="32" height="32" fill="#4BA25C" data-value="10" data-hex="#4BA25C"/>
+<text id="total-chlorine-bromine_10_06-tb-value" class="value" x="281.5" y="245.0" text-anchor="middle" dominant-baseline="middle">10</text>
+<text id="total-chlorine-bromine-tb-tag" class="axis-tag" x="52" y="245.0" text-anchor="end" dominant-baseline="middle">TB</text>
+<line id="total-chlorine-bromine-status-line" class="range-line" x1="60.5" y1="260.0" x2="297.5" y2="260.0"/>
+<path id="total-chlorine-bromine-left-arrow" class="range-line" d="M64.5,257.0 L60.5,260.0 L64.5,263.0"/>
+<path id="total-chlorine-bromine-right-arrow" class="range-line" d="M293.5,257.0 L297.5,260.0 L293.5,263.0"/>
+<rect id="total-chlorine-bromine-status-mask-01" x="143.5" y="254.0" width="30" height="12" fill="#FFFFFF"/>
+<text id="total-chlorine-bromine-status-01" class="status" x="158.5" y="260.4" text-anchor="middle" dominant-baseline="middle">OK</text>
+<rect id="total-chlorine-bromine-status-mask-02" x="184.5" y="254.0" width="30" height="12" fill="#FFFFFF"/>
+<text id="total-chlorine-bromine-status-02" class="status" x="199.5" y="260.4" text-anchor="middle" dominant-baseline="middle">IDEAL</text>
+<rect id="total-chlorine-bromine-status-mask-03" x="225.5" y="254.0" width="30" height="12" fill="#FFFFFF"/>
+<text id="total-chlorine-bromine-status-03" class="status" x="240.5" y="260.4" text-anchor="middle" dominant-baseline="middle">OK</text>
+<line class="divider" x1="16" y1="297.0" x2="342" y2="297.0"/>
+</g>
+<g id="row-03-free-chlorine" data-test="free-chlorine">
+<text id="free-chlorine-title" class="row-title" x="16" y="308.0" dominant-baseline="middle">FREE CHLORINE</text>
+<text id="free-chlorine-unit" class="unit" x="112" y="308.0" dominant-baseline="middle">(PPM)</text>
+<text id="free-chlorine_0_01-value" class="value" x="76.5" y="332.0" text-anchor="middle" dominant-baseline="middle">0</text>
+<rect id="free-chlorine_0_01" class="swatch" x="60.5" y="344.0" width="32" height="32" fill="#FEFCC3" data-value="0" data-hex="#FEFCC3"/>
+<text id="free-chlorine_5_02-value" class="value" x="117.5" y="332.0" text-anchor="middle" dominant-baseline="middle">.5</text>
+<rect id="free-chlorine_5_02" class="swatch" x="101.5" y="344.0" width="32" height="32" fill="#F7F6E1" data-value=".5" data-hex="#F7F6E1"/>
+<text id="free-chlorine_1_03-value" class="value" x="158.5" y="332.0" text-anchor="middle" dominant-baseline="middle">1</text>
+<rect id="free-chlorine_1_03" class="swatch" x="142.5" y="344.0" width="32" height="32" fill="#EBE3DA" data-value="1" data-hex="#EBE3DA"/>
+<text id="free-chlorine_3_04-value" class="value" x="199.5" y="332.0" text-anchor="middle" dominant-baseline="middle">3</text>
+<rect id="free-chlorine_3_04" class="swatch" x="183.5" y="344.0" width="32" height="32" fill="#B28BD3" data-value="3" data-hex="#B28BD3"/>
+<text id="free-chlorine_5_05-value" class="value" x="240.5" y="332.0" text-anchor="middle" dominant-baseline="middle">5</text>
+<rect id="free-chlorine_5_05" class="swatch" x="224.5" y="344.0" width="32" height="32" fill="#A168C0" data-value="5" data-hex="#A168C0"/>
+<text id="free-chlorine_10_06-value" class="value" x="281.5" y="332.0" text-anchor="middle" dominant-baseline="middle">10</text>
+<rect id="free-chlorine_10_06" class="swatch" x="265.5" y="344.0" width="32" height="32" fill="#7A1C96" data-value="10" data-hex="#7A1C96"/>
+<line id="free-chlorine-status-01-left-line" class="range-line" x1="60.5" y1="390.0" x2="85.0" y2="390.0"/>
+<path id="free-chlorine-status-01-left-arrow" class="range-line" d="M64.5,387.0 L60.5,390.0 L64.5,393.0"/>
+<line id="free-chlorine-status-01-right-line" class="range-line" x1="109.0" y1="390.0" x2="133.5" y2="390.0"/>
+<path id="free-chlorine-status-01-right-arrow" class="range-line" d="M129.5,387.0 L133.5,390.0 L129.5,393.0"/>
+<text id="free-chlorine-status-01-label" class="status" x="97.0" y="390.4" text-anchor="middle" dominant-baseline="middle">LOW</text>
+<text id="free-chlorine-status-02" class="status" x="179.0" y="390.0" text-anchor="middle" dominant-baseline="middle">POOL OK</text>
+<text id="free-chlorine-status-03" class="status" x="240.5" y="390.0" text-anchor="middle" dominant-baseline="middle">SPA OK</text>
+<text id="free-chlorine-status-04" class="status" x="281.5" y="390.0" text-anchor="middle" dominant-baseline="middle">HIGH</text>
+<line class="divider" x1="16" y1="413.0" x2="342" y2="413.0"/>
+</g>
+<g id="row-04-ph" data-test="ph">
+<text id="ph-title" class="row-title" x="16" y="424.0" dominant-baseline="middle">pH</text>
+<text id="ph_6-2_01-value" class="value" x="97.0" y="448.0" text-anchor="middle" dominant-baseline="middle">6.2</text>
+<rect id="ph_6-2_01" class="swatch" x="81.0" y="460.0" width="32" height="32" fill="#FEC707" data-value="6.2" data-hex="#FEC707"/>
+<text id="ph_6-8_02-value" class="value" x="138.0" y="448.0" text-anchor="middle" dominant-baseline="middle">6.8</text>
+<rect id="ph_6-8_02" class="swatch" x="122.0" y="460.0" width="32" height="32" fill="#FDA310" data-value="6.8" data-hex="#FDA310"/>
+<text id="ph_7-2_03-value" class="value" x="179.0" y="448.0" text-anchor="middle" dominant-baseline="middle">7.2</text>
+<rect id="ph_7-2_03" class="swatch" x="163.0" y="460.0" width="32" height="32" fill="#FC700D" data-value="7.2" data-hex="#FC700D"/>
+<text id="ph_7-8_04-value" class="value" x="220.0" y="448.0" text-anchor="middle" dominant-baseline="middle">7.8</text>
+<rect id="ph_7-8_04" class="swatch" x="204.0" y="460.0" width="32" height="32" fill="#EE3A17" data-value="7.8" data-hex="#EE3A17"/>
+<text id="ph_8-4_05-value" class="value" x="261.0" y="448.0" text-anchor="middle" dominant-baseline="middle">8.4</text>
+<rect id="ph_8-4_05" class="swatch" x="245.0" y="460.0" width="32" height="32" fill="#E3131B" data-value="8.4" data-hex="#E3131B"/>
+<line id="ph-status-01-left-line" class="range-line" x1="81.0" y1="506.0" x2="105.5" y2="506.0"/>
+<path id="ph-status-01-left-arrow" class="range-line" d="M85.0,503.0 L81.0,506.0 L85.0,509.0"/>
+<line id="ph-status-01-right-line" class="range-line" x1="129.5" y1="506.0" x2="154.0" y2="506.0"/>
+<path id="ph-status-01-right-arrow" class="range-line" d="M150.0,503.0 L154.0,506.0 L150.0,509.0"/>
+<text id="ph-status-01-label" class="status" x="117.5" y="506.4" text-anchor="middle" dominant-baseline="middle">LOW</text>
+<line id="ph-status-02-left-line" class="range-line" x1="163.0" y1="506.0" x2="187.5" y2="506.0"/>
+<path id="ph-status-02-left-arrow" class="range-line" d="M167.0,503.0 L163.0,506.0 L167.0,509.0"/>
+<line id="ph-status-02-right-line" class="range-line" x1="211.5" y1="506.0" x2="236.0" y2="506.0"/>
+<path id="ph-status-02-right-arrow" class="range-line" d="M232.0,503.0 L236.0,506.0 L232.0,509.0"/>
+<text id="ph-status-02-label" class="status" x="199.5" y="506.4" text-anchor="middle" dominant-baseline="middle">OK</text>
+<text id="ph-status-03" class="status" x="261.0" y="506.0" text-anchor="middle" dominant-baseline="middle">HIGH</text>
+<line class="divider" x1="16" y1="525.0" x2="342" y2="525.0"/>
+</g>
+<g id="row-05-total-alkalinity" data-test="total-alkalinity">
+<text id="total-alkalinity-title" class="row-title" x="16" y="536.0" dominant-baseline="middle">TOTAL ALKALINITY</text>
+<text id="total-alkalinity-unit" class="unit" x="134" y="536.0" dominant-baseline="middle">(PPM)</text>
+<text id="total-alkalinity_0_01-value" class="value" x="76.5" y="560.0" text-anchor="middle" dominant-baseline="middle">0</text>
+<rect id="total-alkalinity_0_01" class="swatch" x="60.5" y="572.0" width="32" height="32" fill="#F3CB37" data-value="0" data-hex="#F3CB37"/>
+<text id="total-alkalinity_40_02-value" class="value" x="117.5" y="560.0" text-anchor="middle" dominant-baseline="middle">40</text>
+<rect id="total-alkalinity_40_02" class="swatch" x="101.5" y="572.0" width="32" height="32" fill="#CEBF36" data-value="40" data-hex="#CEBF36"/>
+<text id="total-alkalinity_80_03-value" class="value" x="158.5" y="560.0" text-anchor="middle" dominant-baseline="middle">80</text>
+<rect id="total-alkalinity_80_03" class="swatch" x="142.5" y="572.0" width="32" height="32" fill="#A2A634" data-value="80" data-hex="#A2A634"/>
+<text id="total-alkalinity_120_04-value" class="value" x="199.5" y="560.0" text-anchor="middle" dominant-baseline="middle">120</text>
+<rect id="total-alkalinity_120_04" class="swatch" x="183.5" y="572.0" width="32" height="32" fill="#6D8634" data-value="120" data-hex="#6D8634"/>
+<text id="total-alkalinity_180_05-value" class="value" x="240.5" y="560.0" text-anchor="middle" dominant-baseline="middle">180</text>
+<rect id="total-alkalinity_180_05" class="swatch" x="224.5" y="572.0" width="32" height="32" fill="#34592B" data-value="180" data-hex="#34592B"/>
+<text id="total-alkalinity_240_06-value" class="value" x="281.5" y="560.0" text-anchor="middle" dominant-baseline="middle">240</text>
+<rect id="total-alkalinity_240_06" class="swatch" x="265.5" y="572.0" width="32" height="32" fill="#1F4D55" data-value="240" data-hex="#1F4D55"/>
+<line id="total-alkalinity-status-01-left-line" class="range-line" x1="60.5" y1="618.0" x2="85.0" y2="618.0"/>
+<path id="total-alkalinity-status-01-left-arrow" class="range-line" d="M64.5,615.0 L60.5,618.0 L64.5,621.0"/>
+<line id="total-alkalinity-status-01-right-line" class="range-line" x1="109.0" y1="618.0" x2="133.5" y2="618.0"/>
+<path id="total-alkalinity-status-01-right-arrow" class="range-line" d="M129.5,615.0 L133.5,618.0 L129.5,621.0"/>
+<text id="total-alkalinity-status-01-label" class="status" x="97.0" y="618.4" text-anchor="middle" dominant-baseline="middle">LOW</text>
+<line id="total-alkalinity-status-02-left-line" class="range-line" x1="142.5" y1="618.0" x2="167.0" y2="618.0"/>
+<path id="total-alkalinity-status-02-left-arrow" class="range-line" d="M146.5,615.0 L142.5,618.0 L146.5,621.0"/>
+<line id="total-alkalinity-status-02-right-line" class="range-line" x1="191.0" y1="618.0" x2="215.5" y2="618.0"/>
+<path id="total-alkalinity-status-02-right-arrow" class="range-line" d="M211.5,615.0 L215.5,618.0 L211.5,621.0"/>
+<text id="total-alkalinity-status-02-label" class="status" x="179.0" y="618.4" text-anchor="middle" dominant-baseline="middle">OK</text>
+<line id="total-alkalinity-status-03-left-line" class="range-line" x1="224.5" y1="618.0" x2="249.0" y2="618.0"/>
+<path id="total-alkalinity-status-03-left-arrow" class="range-line" d="M228.5,615.0 L224.5,618.0 L228.5,621.0"/>
+<line id="total-alkalinity-status-03-right-line" class="range-line" x1="273.0" y1="618.0" x2="297.5" y2="618.0"/>
+<path id="total-alkalinity-status-03-right-arrow" class="range-line" d="M293.5,615.0 L297.5,618.0 L293.5,621.0"/>
+<text id="total-alkalinity-status-03-label" class="status" x="261.0" y="618.4" text-anchor="middle" dominant-baseline="middle">HIGH</text>
+<line class="divider" x1="16" y1="637.0" x2="342" y2="637.0"/>
+</g>
+<g id="row-06-cyanuric-acid" data-test="cyanuric-acid">
+<text id="cyanuric-acid-title" class="row-title" x="16" y="648.0" dominant-baseline="middle">CYANURIC ACID</text>
+<text id="cyanuric-acid-unit" class="unit" x="112" y="648.0" dominant-baseline="middle">(PPM)</text>
+<text id="cyanuric-acid-note" class="note" x="16" y="659.0" dominant-baseline="middle">FIND NEAREST HANDLE</text>
+<text id="cyanuric-acid_0_01-value" class="value" x="97.0" y="672.0" text-anchor="middle" dominant-baseline="middle">0</text>
+<rect id="cyanuric-acid_0_01" class="swatch" x="81.0" y="684.0" width="32" height="32" fill="#F28324" data-value="0" data-hex="#F28324"/>
+<text id="cyanuric-acid_30-50_02-value" class="value" x="138.0" y="672.0" text-anchor="middle" dominant-baseline="middle">30-50</text>
+<rect id="cyanuric-acid_30-50_02" class="swatch" x="122.0" y="684.0" width="32" height="32" fill="#EB6820" data-value="30-50" data-hex="#EB6820"/>
+<text id="cyanuric-acid_100_03-value" class="value" x="179.0" y="672.0" text-anchor="middle" dominant-baseline="middle">100</text>
+<rect id="cyanuric-acid_100_03" class="swatch" x="163.0" y="684.0" width="32" height="32" fill="#DD1E1E" data-value="100" data-hex="#DD1E1E"/>
+<text id="cyanuric-acid_150_04-value" class="value" x="220.0" y="672.0" text-anchor="middle" dominant-baseline="middle">150</text>
+<rect id="cyanuric-acid_150_04" class="swatch" x="204.0" y="684.0" width="32" height="32" fill="#C01D7B" data-value="150" data-hex="#C01D7B"/>
+<text id="cyanuric-acid_300_05-value" class="value" x="261.0" y="672.0" text-anchor="middle" dominant-baseline="middle">300</text>
+<rect id="cyanuric-acid_300_05" class="swatch" x="245.0" y="684.0" width="32" height="32" fill="#791B8B" data-value="300" data-hex="#791B8B"/>
+<text id="cyanuric-acid-status-01" class="status" x="97.0" y="730.0" text-anchor="middle" dominant-baseline="middle">LOW</text>
+<line id="cyanuric-acid-status-02-left-line" class="range-line" x1="122.0" y1="730.0" x2="146.5" y2="730.0"/>
+<path id="cyanuric-acid-status-02-left-arrow" class="range-line" d="M126.0,727.0 L122.0,730.0 L126.0,733.0"/>
+<line id="cyanuric-acid-status-02-right-line" class="range-line" x1="170.5" y1="730.0" x2="195.0" y2="730.0"/>
+<path id="cyanuric-acid-status-02-right-arrow" class="range-line" d="M191.0,727.0 L195.0,730.0 L191.0,733.0"/>
+<text id="cyanuric-acid-status-02-label" class="status" x="158.5" y="730.4" text-anchor="middle" dominant-baseline="middle">OK</text>
+<line id="cyanuric-acid-status-03-left-line" class="range-line" x1="204.0" y1="730.0" x2="228.5" y2="730.0"/>
+<path id="cyanuric-acid-status-03-left-arrow" class="range-line" d="M208.0,727.0 L204.0,730.0 L208.0,733.0"/>
+<line id="cyanuric-acid-status-03-right-line" class="range-line" x1="252.5" y1="730.0" x2="277.0" y2="730.0"/>
+<path id="cyanuric-acid-status-03-right-arrow" class="range-line" d="M273.0,727.0 L277.0,730.0 L273.0,733.0"/>
+<text id="cyanuric-acid-status-03-label" class="status" x="240.5" y="730.4" text-anchor="middle" dominant-baseline="middle">HIGH</text>
+</g>
+</g></svg>

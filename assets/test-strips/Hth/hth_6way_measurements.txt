@@ -1,0 +1,32 @@
+HTH 6-WAY TEST-STRIP CHART — MOBILE HANDOFF
+
+MASTER
+- SVG viewBox: 0 0 358 682
+- Master dimensions: 358 × 682px
+- Transparent background
+- Test names centered above each row
+- Increased, uniform vertical row spacing
+- iOS reference: 390 × 844px; chart width 358px
+- Android reference: 360 × 800px; chart width 328px
+- Preserve aspect ratio
+
+GRID
+- Six-column master grid
+- Square swatches: 34 × 34px
+- Horizontal gap: 10px
+- Uniform row height: 130px
+- Sharp 90-degree corners
+- Swatch border: 0.75px #92979E
+- Row divider: 1px #E3E6EA
+
+TYPOGRAPHY
+- Poppins SemiBold 12.5px: test names
+- Poppins Medium 10.5px: values
+- SVG text remains live and editable
+- Arial/sans-serif included only as a rendering fallback
+
+EDITABILITY
+- Every swatch is a separate SVG rectangle
+- Every square has a unique descriptive object ID
+- No raster source image is embedded
+- No gradients, shadows, textures, bevels, or perspective

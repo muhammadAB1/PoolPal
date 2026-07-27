@@ -63,6 +63,9 @@ import poolUseFamily from '../assets/poolbasicsimages/poolbasics/Family.png';
 import poolUseVacationHome from '../assets/poolbasicsimages/poolbasics/VacationHome.png';
 import poolUseShortTermRental from '../assets/poolbasicsimages/poolbasics/ShortTermRental.png';
 
+// ─── Pool Basics — Hot Tub / Spa ──────────────────────────────────────────────
+import poolHotTubYes from '../assets/poolbasicsimages/poolbasics/hottub.png';
+
 // ─── Pool Condition (keyed to DB enum values) ──────────────────────────────────
 import poolConditionCrystalClear from '../assets/pool-condition-images/CrystalClear.png';
 import poolConditionALittleCloudy from '../assets/pool-condition-images/ALittleCloudy.png';
@@ -200,6 +203,9 @@ export const poolBasicsImages = {
         Family: poolUseFamily,
         VacationHome: poolUseVacationHome,
         ShortTermRental: poolUseShortTermRental,
+    },
+    hotTub: {
+        Yes: poolHotTubYes,
     },
 } as const;
 

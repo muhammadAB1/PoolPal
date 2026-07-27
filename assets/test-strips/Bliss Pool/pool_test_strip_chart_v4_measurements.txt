@@ -1,0 +1,35 @@
+POOL TEST STRIP CHART V4 — MOBILE HANDOFF
+
+MASTER
+- SVG viewBox: 0 0 358 686
+- Master dimensions: 358 × 686px
+- Transparent background
+- Promotional “150 STRIPS” badge: removed
+- iOS reference: 390 × 844px with chart displayed at 358px wide
+- Android reference: 360 × 800px with chart displayed at 328px wide
+- Preserve aspect ratio
+
+GRID
+- Six fixed mobile columns
+- Swatches: 34 × 34px
+- Horizontal gap: 11px
+- Grid width: 259px
+- Outer horizontal padding: 16px
+- Sharp 90-degree corners
+- Swatch border: 0.65px #858A91
+- Ideal bracket: 1.2px #1351AF
+
+TYPOGRAPHY
+- Poppins SemiBold 12.5px: test titles
+- Poppins Medium 10.5px: primary values
+- Poppins Medium 10px: Bromine values inside the combined row
+- Poppins SemiBold 9px: IDEAL labels
+- Poppins Medium 7.5px: handle note
+- Poppins Regular 7.6px: footnote
+- SVG text remains live and editable
+
+EDITABILITY
+- Every color square is a separate vector rectangle
+- Every swatch has a unique descriptive object ID
+- Ideal brackets and labels are separate editable vectors/text
+- No raster image, tag, badge, logo, gradient, shadow, texture, or perspective is embedded

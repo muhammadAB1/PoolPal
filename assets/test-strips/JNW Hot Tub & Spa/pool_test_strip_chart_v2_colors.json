@@ -1,0 +1,620 @@
+{
+  "brand": "Not visible in source",
+  "model": "Version 1.0 (11-2025)",
+  "source_image": "b8a288cf-183d-4334-9a6a-d7f23f001a5e.png",
+  "component": {
+    "viewBox": "0 0 358 718",
+    "master_width_px": 358,
+    "master_height_px": 718,
+    "transparent_background": true
+  },
+  "tests": [
+    {
+      "name": "TOTAL HARDNESS",
+      "unit": "ppm",
+      "ideal_range_columns": [
+        3,
+        5
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#A38E39",
+          "rgb": {
+            "r": 163,
+            "g": 142,
+            "b": 57
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 2,
+          "value": "25",
+          "hex": "#B49959",
+          "rgb": {
+            "r": 180,
+            "g": 153,
+            "b": 89
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 3,
+          "value": "50",
+          "hex": "#B06F22",
+          "rgb": {
+            "r": 176,
+            "g": 111,
+            "b": 34
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 4,
+          "value": "120",
+          "hex": "#9C4B05",
+          "rgb": {
+            "r": 156,
+            "g": 75,
+            "b": 5
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 5,
+          "value": "250",
+          "hex": "#A7440A",
+          "rgb": {
+            "r": 167,
+            "g": 68,
+            "b": 10
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 6,
+          "value": "425",
+          "hex": "#C5531C",
+          "rgb": {
+            "r": 197,
+            "g": 83,
+            "b": 28
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        }
+      ]
+    },
+    {
+      "name": "TOTAL CHLORINE",
+      "unit": "ppm",
+      "ideal_range_columns": [
+        2,
+        3
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#FCFBDC",
+          "rgb": {
+            "r": 252,
+            "g": 251,
+            "b": 220
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 2,
+          "value": "0.5",
+          "hex": "#F7F8DA",
+          "rgb": {
+            "r": 247,
+            "g": 248,
+            "b": 218
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 3,
+          "value": "1",
+          "hex": "#E2EFCF",
+          "rgb": {
+            "r": 226,
+            "g": 239,
+            "b": 207
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 4,
+          "value": "3",
+          "hex": "#C3E0BD",
+          "rgb": {
+            "r": 195,
+            "g": 224,
+            "b": 189
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 5,
+          "value": "5",
+          "hex": "#8DC8A0",
+          "rgb": {
+            "r": 141,
+            "g": 200,
+            "b": 160
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 6,
+          "value": "10",
+          "hex": "#5BBBAF",
+          "rgb": {
+            "r": 91,
+            "g": 187,
+            "b": 175
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 7,
+          "value": "20",
+          "hex": "#2AA5A6",
+          "rgb": {
+            "r": 42,
+            "g": 165,
+            "b": 166
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        }
+      ]
+    },
+    {
+      "name": "FREE CHLORINE",
+      "unit": "ppm",
+      "ideal_range_columns": [
+        2,
+        3
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#FEFEFC",
+          "rgb": {
+            "r": 254,
+            "g": 254,
+            "b": 252
+          },
+          "confidence": "Manual Review",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 2,
+          "value": "0.5",
+          "hex": "#FDEFEE",
+          "rgb": {
+            "r": 253,
+            "g": 239,
+            "b": 238
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 3,
+          "value": "1",
+          "hex": "#FDDDE2",
+          "rgb": {
+            "r": 253,
+            "g": 221,
+            "b": 226
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 4,
+          "value": "3",
+          "hex": "#F9BFCD",
+          "rgb": {
+            "r": 249,
+            "g": 191,
+            "b": 205
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 5,
+          "value": "5",
+          "hex": "#F59AB5",
+          "rgb": {
+            "r": 245,
+            "g": 154,
+            "b": 181
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 6,
+          "value": "10",
+          "hex": "#F173A6",
+          "rgb": {
+            "r": 241,
+            "g": 115,
+            "b": 166
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 7,
+          "value": "20",
+          "hex": "#E45995",
+          "rgb": {
+            "r": 228,
+            "g": 89,
+            "b": 149
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        }
+      ]
+    },
+    {
+      "name": "BROMINE",
+      "unit": "ppm",
+      "ideal_range_columns": [
+        2,
+        3
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#FEFEFC",
+          "rgb": {
+            "r": 254,
+            "g": 254,
+            "b": 252
+          },
+          "confidence": "Manual Review",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 2,
+          "value": "1",
+          "hex": "#FAEBEA",
+          "rgb": {
+            "r": 250,
+            "g": 235,
+            "b": 234
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 3,
+          "value": "2",
+          "hex": "#F1D3E5",
+          "rgb": {
+            "r": 241,
+            "g": 211,
+            "b": 229
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 4,
+          "value": "6",
+          "hex": "#E4BBD9",
+          "rgb": {
+            "r": 228,
+            "g": 187,
+            "b": 217
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 5,
+          "value": "10",
+          "hex": "#BE7DB3",
+          "rgb": {
+            "r": 190,
+            "g": 125,
+            "b": 179
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 6,
+          "value": "20",
+          "hex": "#B56E9D",
+          "rgb": {
+            "r": 181,
+            "g": 110,
+            "b": 157
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 7,
+          "value": "40",
+          "hex": "#A24A82",
+          "rgb": {
+            "r": 162,
+            "g": 74,
+            "b": 130
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        }
+      ]
+    },
+    {
+      "name": "TOTAL ALKALINITY",
+      "unit": "ppm",
+      "ideal_range_columns": [
+        2,
+        3
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#FED004",
+          "rgb": {
+            "r": 254,
+            "g": 208,
+            "b": 4
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 2,
+          "value": "40",
+          "hex": "#CBC25A",
+          "rgb": {
+            "r": 203,
+            "g": 194,
+            "b": 90
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 3,
+          "value": "80",
+          "hex": "#ACBA49",
+          "rgb": {
+            "r": 172,
+            "g": 186,
+            "b": 73
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 4,
+          "value": "120",
+          "hex": "#65A039",
+          "rgb": {
+            "r": 101,
+            "g": 160,
+            "b": 57
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 5,
+          "value": "180",
+          "hex": "#2B8236",
+          "rgb": {
+            "r": 43,
+            "g": 130,
+            "b": 54
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 6,
+          "value": "240",
+          "hex": "#036838",
+          "rgb": {
+            "r": 3,
+            "g": 104,
+            "b": 56
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 7,
+          "value": "360",
+          "hex": "#014E2E",
+          "rgb": {
+            "r": 1,
+            "g": 78,
+            "b": 46
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        }
+      ]
+    },
+    {
+      "name": "CYANURIC ACID",
+      "unit": "ppm",
+      "ideal_range_columns": null,
+      "swatches": [
+        {
+          "column": 1,
+          "value": "0",
+          "hex": "#FCA609",
+          "rgb": {
+            "r": 252,
+            "g": 166,
+            "b": 9
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 2,
+          "value": "30–50",
+          "hex": "#FB9B2B",
+          "rgb": {
+            "r": 251,
+            "g": 155,
+            "b": 43
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 3,
+          "value": "100",
+          "hex": "#EA571B",
+          "rgb": {
+            "r": 234,
+            "g": 87,
+            "b": 27
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 4,
+          "value": "150",
+          "hex": "#D31612",
+          "rgb": {
+            "r": 211,
+            "g": 22,
+            "b": 18
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 5,
+          "value": "240",
+          "hex": "#BB0264",
+          "rgb": {
+            "r": 187,
+            "g": 2,
+            "b": 100
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        }
+      ]
+    },
+    {
+      "name": "pH",
+      "unit": "pH",
+      "ideal_range_columns": [
+        2,
+        4
+      ],
+      "swatches": [
+        {
+          "column": 1,
+          "value": "6.2",
+          "hex": "#FEBB23",
+          "rgb": {
+            "r": 254,
+            "g": 187,
+            "b": 35
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 2,
+          "value": "6.8",
+          "hex": "#FDA82B",
+          "rgb": {
+            "r": 253,
+            "g": 168,
+            "b": 43
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 3,
+          "value": "7.2",
+          "hex": "#FA8E17",
+          "rgb": {
+            "r": 250,
+            "g": 142,
+            "b": 23
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 4,
+          "value": "7.6",
+          "hex": "#F16518",
+          "rgb": {
+            "r": 241,
+            "g": 101,
+            "b": 24
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 5,
+          "value": "7.8",
+          "hex": "#EB4B1D",
+          "rgb": {
+            "r": 235,
+            "g": 75,
+            "b": 29
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        },
+        {
+          "column": 6,
+          "value": "8.4",
+          "hex": "#EC3A2B",
+          "rgb": {
+            "r": 236,
+            "g": 58,
+            "b": 43
+          },
+          "confidence": "High",
+          "source_issue": "Flat median sampled from a 21×21 px clean center area; source image contains minor shading/compression."
+        }
+      ]
+    }
+  ]
+}

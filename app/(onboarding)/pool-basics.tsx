@@ -2,7 +2,7 @@ import { icons, poolBasicsImages } from '@/constants/images';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Image,
@@ -17,6 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 type PoolType = 'Chlorine' | 'Saltwater' | 'Other';
 type ScreenedType = 'Screened' | 'Unscreened';
+type HotTubType = 'Yes' | 'No';
 type UseType = 'Family' | 'VacationHome' | 'ShortTermRental';
 
 export default function PoolBasicsScreen() {
@@ -29,6 +30,7 @@ export default function PoolBasicsScreen() {
     const [poolName, setPoolName] = useState('');
     const [poolType, setPoolType] = useState<PoolType>();
     const [screened, setScreened] = useState<ScreenedType>();
+    const [hasHotTub, setHasHotTub] = useState<HotTubType>();
     const [useType, setUseType] = useState<UseType>();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -51,6 +53,7 @@ export default function PoolBasicsScreen() {
             poolName,
             poolType,
             screened,
+            hasHotTub,
             useType,
         });
         if (error) {
@@ -174,6 +177,46 @@ export default function PoolBasicsScreen() {
                     </View>
 
                     <View className="mt-6">
+                        <Text className="section__title">{t('pool_basics_hot_tub_label')}</Text>
+                        <Text className="section__subtitle mt-0.5">
+                            {t('pool_basics_hot_tub_subtitle')}
+                        </Text>
+
+                        <View className="flex-row mt-3 gap-2">
+                            {(
+                                [
+                                    {
+                                        value: 'Yes' as HotTubType,
+                                        label: t('pool_basics_hot_tub_yes'),
+                                        desc: t('pool_basics_hot_tub_yes_desc'),
+                                        image: poolBasicsImages.hotTub.Yes,
+                                    },
+                                    {
+                                        value: 'No' as HotTubType,
+                                        label: t('pool_basics_hot_tub_no'),
+                                        desc: t('pool_basics_hot_tub_no_desc'),
+                                        iconContent: <HotTubNoIcon />,
+                                    },
+                                ] as const
+                            ).map((item) => (
+                                <SelectionCard
+                                    key={item.value}
+                                    image={'image' in item ? item.image : undefined}
+                                    iconContent={'iconContent' in item ? item.iconContent : undefined}
+                                    label={item.label}
+                                    description={item.desc}
+                                    selected={hasHotTub === item.value}
+                                    onPress={() => {
+                                        setHasHotTub(item.value);
+                                        setErrorMessage(null);
+                                    }}
+                                    imageClassName="w-[72px] h-[72px] rounded-full"
+                                />
+                            ))}
+                        </View>
+                    </View>
+
+                    <View className="mt-6">
                         <Text className="section__title">{t('pool_basics_use_label')}</Text>
                         <Text className="section__subtitle mt-0.5">
                             {t('pool_basics_use_subtitle')}
@@ -249,7 +292,8 @@ export default function PoolBasicsScreen() {
 }
 
 interface SelectionCardProps {
-    image: ImageSourcePropType;
+    image?: ImageSourcePropType;
+    iconContent?: ReactNode;
     label: string;
     description: string;
     selected: boolean;
@@ -259,6 +303,7 @@ interface SelectionCardProps {
 
 function SelectionCard({
     image,
+    iconContent,
     label,
     description,
     selected,
@@ -282,11 +327,13 @@ function SelectionCard({
                 />
             </View>
 
-            <Image
-                source={image}
-                className={imageClassName}
-                resizeMode="contain"
-            />
+            {iconContent ?? (
+                <Image
+                    source={image!}
+                    className={imageClassName}
+                    resizeMode="contain"
+                />
+            )}
 
             <Text className="mt-2 text-small font-jakarta-bold text-charcoal text-center" numberOfLines={1}>
                 {label}
@@ -295,5 +342,15 @@ function SelectionCard({
                 {description}
             </Text>
         </TouchableOpacity>
+    );
+}
+
+function HotTubNoIcon() {
+    return (
+        <View className="w-18 h-18 rounded-full bg-surface-soft-aqua items-center justify-center">
+            <Text className="text-[28px] leading-[28px] font-jakarta-bold text-brand-aqua">
+                ×
+            </Text>
+        </View>
     );
 }

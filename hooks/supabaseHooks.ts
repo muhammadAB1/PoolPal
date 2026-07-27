@@ -1,7 +1,7 @@
 import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
 
 import { supabase } from "@/lib/Supabase"
-import { poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, testReadingsInsertProps, UseType } from "@/lib/types"
+import { HotTubType, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, testReadingsInsertProps, UseType } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Linking from "expo-linking"
@@ -100,14 +100,14 @@ export function useSupabase() {
 
     }
 
-    async function poolBasicInsert({ poolName, poolType, screened, useType }:
-        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType }) {
+    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub }:
+        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType }) {
 
         const id = await AsyncStorage.getItem('activePoolId');
         if (id) {
             const { data, error } = await supabase
                 .from('pools')
-                .update({ pool_name: poolName, pool_type: poolType, pool_screen: screened, pool_use_type: useType })
+                .update({ pool_name: poolName, pool_type: poolType, pool_screen: screened, hot_tub_type: hasHotTub, pool_use_type: useType })
                 .eq('id', id)
                 .select()
                 .single()
@@ -117,7 +117,7 @@ export function useSupabase() {
         else {
             const { data, error } = await supabase
                 .from('pools')
-                .insert({ owner_user_id: user?.id, pool_name: poolName, pool_type: poolType, pool_screen: screened, pool_use_type: useType })
+                .insert({ owner_user_id: user?.id, pool_name: poolName, pool_type: poolType, pool_screen: screened, hot_tub_type: hasHotTub, pool_use_type: useType })
                 .select()
                 .single();
             if (data) {

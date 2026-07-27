@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+ width="358" height="742" viewBox="0 0 358 742"
+ preserveAspectRatio="xMidYMid meet"
+ role="img" aria-labelledby="chart-title chart-desc">
+<title id="chart-title">Mobile pool test-strip color chart with A–E markers</title>
+<desc id="chart-desc">Editable vector chart with uniform square swatches, exact values, and source A–E marker labels.</desc>
+<style>
+.row-title {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  fill: #191B1E;
+}
+.unit {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+  fill: #51565E;
+}
+.marker {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 9.5px;
+  font-weight: 600;
+  fill: #191B1E;
+}
+.value {
+  font-family: Poppins, Arial, sans-serif;
+  font-size: 9.5px;
+  font-weight: 500;
+  fill: #191B1E;
+}
+.swatch {
+  stroke: #898F97;
+  stroke-width: .75;
+  vector-effect: non-scaling-stroke;
+  shape-rendering: geometricPrecision;
+}
+.divider {
+  stroke: #E2E5E9;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+</style>
+<g id="chart">
+<g id="row-01-total-hardness" data-test="total-hardness">
+<text id="total-hardness-title" class="row-title" x="16" y="24.0" dominant-baseline="middle">Total Hardness</text>
+<text id="total-hardness-unit" class="unit" x="119" y="24.0" dominant-baseline="middle">(ppm)</text>
+<rect id="total-hardness_0_01" class="swatch" x="43.0" y="48.0" width="36" height="36" fill="#31639B" data-marker="A" data-value="0" data-hex="#31639B"/>
+<text id="total-hardness_0_01-marker" class="marker" x="45.0" y="97.0" text-anchor="start" dominant-baseline="middle">A</text>
+<text id="total-hardness_0_01-value" class="value" x="77.0" y="97.0" text-anchor="end" dominant-baseline="middle">0</text>
+<rect id="total-hardness_110_02" class="swatch" x="102.0" y="48.0" width="36" height="36" fill="#656D9B" data-marker="B" data-value="110" data-hex="#656D9B"/>
+<text id="total-hardness_110_02-marker" class="marker" x="104.0" y="97.0" text-anchor="start" dominant-baseline="middle">B</text>
+<text id="total-hardness_110_02-value" class="value" x="136.0" y="97.0" text-anchor="end" dominant-baseline="middle">110</text>
+<rect id="total-hardness_250_03" class="swatch" x="161.0" y="48.0" width="36" height="36" fill="#655B93" data-marker="C" data-value="250" data-hex="#655B93"/>
+<text id="total-hardness_250_03-marker" class="marker" x="163.0" y="97.0" text-anchor="start" dominant-baseline="middle">C</text>
+<text id="total-hardness_250_03-value" class="value" x="195.0" y="97.0" text-anchor="end" dominant-baseline="middle">250</text>
+<rect id="total-hardness_500_04" class="swatch" x="220.0" y="48.0" width="36" height="36" fill="#7E4B7B" data-marker="D" data-value="500" data-hex="#7E4B7B"/>
+<text id="total-hardness_500_04-marker" class="marker" x="222.0" y="97.0" text-anchor="start" dominant-baseline="middle">D</text>
+<text id="total-hardness_500_04-value" class="value" x="254.0" y="97.0" text-anchor="end" dominant-baseline="middle">500</text>
+<rect id="total-hardness_1000_05" class="swatch" x="279.0" y="48.0" width="36" height="36" fill="#984F8A" data-marker="E" data-value="1000" data-hex="#984F8A"/>
+<text id="total-hardness_1000_05-marker" class="marker" x="281.0" y="97.0" text-anchor="start" dominant-baseline="middle">E</text>
+<text id="total-hardness_1000_05-value" class="value" x="313.0" y="97.0" text-anchor="end" dominant-baseline="middle">1000</text>
+<line class="divider" x1="16" y1="132.0" x2="342" y2="132.0"/>
+</g>
+<g id="row-02-total-chlorine" data-test="total-chlorine">
+<text id="total-chlorine-title" class="row-title" x="16" y="143.0" dominant-baseline="middle">Total Chlorine</text>
+<text id="total-chlorine-unit" class="unit" x="115" y="143.0" dominant-baseline="middle">(ppm)</text>
+<rect id="total-chlorine_0_01" class="swatch" x="43.0" y="167.0" width="36" height="36" fill="#FEEC6C" data-marker="A" data-value="0" data-hex="#FEEC6C"/>
+<text id="total-chlorine_0_01-marker" class="marker" x="45.0" y="216.0" text-anchor="start" dominant-baseline="middle">A</text>
+<text id="total-chlorine_0_01-value" class="value" x="77.0" y="216.0" text-anchor="end" dominant-baseline="middle">0</text>
+<rect id="total-chlorine_1_02" class="swatch" x="102.0" y="167.0" width="36" height="36" fill="#FAF37F" data-marker="B" data-value="1" data-hex="#FAF37F"/>
+<text id="total-chlorine_1_02-marker" class="marker" x="104.0" y="216.0" text-anchor="start" dominant-baseline="middle">B</text>
+<text id="total-chlorine_1_02-value" class="value" x="136.0" y="216.0" text-anchor="end" dominant-baseline="middle">1</text>
+<rect id="total-chlorine_3_03" class="swatch" x="161.0" y="167.0" width="36" height="36" fill="#E5E769" data-marker="C" data-value="3" data-hex="#E5E769"/>
+<text id="total-chlorine_3_03-marker" class="marker" x="163.0" y="216.0" text-anchor="start" dominant-baseline="middle">C</text>
+<text id="total-chlorine_3_03-value" class="value" x="195.0" y="216.0" text-anchor="end" dominant-baseline="middle">3</text>
+<rect id="total-chlorine_5_04" class="swatch" x="220.0" y="167.0" width="36" height="36" fill="#B1D0A7" data-marker="D" data-value="5" data-hex="#B1D0A7"/>
+<text id="total-chlorine_5_04-marker" class="marker" x="222.0" y="216.0" text-anchor="start" dominant-baseline="middle">D</text>
+<text id="total-chlorine_5_04-value" class="value" x="254.0" y="216.0" text-anchor="end" dominant-baseline="middle">5</text>
+<rect id="total-chlorine_10_05" class="swatch" x="279.0" y="167.0" width="36" height="36" fill="#88C3A2" data-marker="E" data-value="10" data-hex="#88C3A2"/>
+<text id="total-chlorine_10_05-marker" class="marker" x="281.0" y="216.0" text-anchor="start" dominant-baseline="middle">E</text>
+<text id="total-chlorine_10_05-value" class="value" x="313.0" y="216.0" text-anchor="end" dominant-baseline="middle">10</text>
+<line class="divider" x1="16" y1="251.0" x2="342" y2="251.0"/>
+</g>
+<g id="row-03-free-chlorine" data-test="free-chlorine">
+<text id="free-chlorine-title" class="row-title" x="16" y="262.0" dominant-baseline="middle">Free Chlorine</text>
+<text id="free-chlorine-unit" class="unit" x="111" y="262.0" dominant-baseline="middle">(ppm)</text>
+<rect id="free-chlorine_0_01" class="swatch" x="43.0" y="286.0" width="36" height="36" fill="#FEF19A" data-marker="A" data-value="0" data-hex="#FEF19A"/>
+<text id="free-chlorine_0_01-marker" class="marker" x="45.0" y="335.0" text-anchor="start" dominant-baseline="middle">A</text>
+<text id="free-chlorine_0_01-value" class="value" x="77.0" y="335.0" text-anchor="end" dominant-baseline="middle">0</text>
+<rect id="free-chlorine_1_02" class="swatch" x="102.0" y="286.0" width="36" height="36" fill="#EDDECD" data-marker="B" data-value="1" data-hex="#EDDECD"/>
+<text id="free-chlorine_1_02-marker" class="marker" x="104.0" y="335.0" text-anchor="start" dominant-baseline="middle">B</text>
+<text id="free-chlorine_1_02-value" class="value" x="136.0" y="335.0" text-anchor="end" dominant-baseline="middle">1</text>
+<rect id="free-chlorine_3_03" class="swatch" x="161.0" y="286.0" width="36" height="36" fill="#BE9DC5" data-marker="C" data-value="3" data-hex="#BE9DC5"/>
+<text id="free-chlorine_3_03-marker" class="marker" x="163.0" y="335.0" text-anchor="start" dominant-baseline="middle">C</text>
+<text id="free-chlorine_3_03-value" class="value" x="195.0" y="335.0" text-anchor="end" dominant-baseline="middle">3</text>
+<rect id="free-chlorine_5_04" class="swatch" x="220.0" y="286.0" width="36" height="36" fill="#A06DA8" data-marker="D" data-value="5" data-hex="#A06DA8"/>
+<text id="free-chlorine_5_04-marker" class="marker" x="222.0" y="335.0" text-anchor="start" dominant-baseline="middle">D</text>
+<text id="free-chlorine_5_04-value" class="value" x="254.0" y="335.0" text-anchor="end" dominant-baseline="middle">5</text>
+<rect id="free-chlorine_10_05" class="swatch" x="279.0" y="286.0" width="36" height="36" fill="#7F3C8B" data-marker="E" data-value="10" data-hex="#7F3C8B"/>
+<text id="free-chlorine_10_05-marker" class="marker" x="281.0" y="335.0" text-anchor="start" dominant-baseline="middle">E</text>
+<text id="free-chlorine_10_05-value" class="value" x="313.0" y="335.0" text-anchor="end" dominant-baseline="middle">10</text>
+<line class="divider" x1="16" y1="370.0" x2="342" y2="370.0"/>
+</g>
+<g id="row-04-ph" data-test="ph">
+<text id="ph-title" class="row-title" x="16" y="381.0" dominant-baseline="middle">pH</text>
+<rect id="ph_6-2_01" class="swatch" x="43.0" y="405.0" width="36" height="36" fill="#E5974A" data-marker="A" data-value="6.2" data-hex="#E5974A"/>
+<text id="ph_6-2_01-marker" class="marker" x="45.0" y="454.0" text-anchor="start" dominant-baseline="middle">A</text>
+<text id="ph_6-2_01-value" class="value" x="77.0" y="454.0" text-anchor="end" dominant-baseline="middle">6.2</text>
+<rect id="ph_6-8_02" class="swatch" x="102.0" y="405.0" width="36" height="36" fill="#F9813D" data-marker="B" data-value="6.8" data-hex="#F9813D"/>
+<text id="ph_6-8_02-marker" class="marker" x="104.0" y="454.0" text-anchor="start" dominant-baseline="middle">B</text>
+<text id="ph_6-8_02-value" class="value" x="136.0" y="454.0" text-anchor="end" dominant-baseline="middle">6.8</text>
+<rect id="ph_7-2_03" class="swatch" x="161.0" y="405.0" width="36" height="36" fill="#E65625" data-marker="C" data-value="7.2" data-hex="#E65625"/>
+<text id="ph_7-2_03-marker" class="marker" x="163.0" y="454.0" text-anchor="start" dominant-baseline="middle">C</text>
+<text id="ph_7-2_03-value" class="value" x="195.0" y="454.0" text-anchor="end" dominant-baseline="middle">7.2</text>
+<rect id="ph_7-8_04" class="swatch" x="220.0" y="405.0" width="36" height="36" fill="#E6574E" data-marker="D" data-value="7.8" data-hex="#E6574E"/>
+<text id="ph_7-8_04-marker" class="marker" x="222.0" y="454.0" text-anchor="start" dominant-baseline="middle">D</text>
+<text id="ph_7-8_04-value" class="value" x="254.0" y="454.0" text-anchor="end" dominant-baseline="middle">7.8</text>
+<rect id="ph_8-4_05" class="swatch" x="279.0" y="405.0" width="36" height="36" fill="#E43043" data-marker="E" data-value="8.4" data-hex="#E43043"/>
+<text id="ph_8-4_05-marker" class="marker" x="281.0" y="454.0" text-anchor="start" dominant-baseline="middle">E</text>
+<text id="ph_8-4_05-value" class="value" x="313.0" y="454.0" text-anchor="end" dominant-baseline="middle">8.4</text>
+<line class="divider" x1="16" y1="489.0" x2="342" y2="489.0"/>
+</g>
+<g id="row-05-total-alkalinity" data-test="total-alkalinity">
+<text id="total-alkalinity-title" class="row-title" x="16" y="500.0" dominant-baseline="middle">Total Alkalinity</text>
+<text id="total-alkalinity-unit" class="unit" x="126" y="500.0" dominant-baseline="middle">(ppm)</text>
+<rect id="total-alkalinity_0_01" class="swatch" x="43.0" y="524.0" width="36" height="36" fill="#DDA746" data-marker="A" data-value="0" data-hex="#DDA746"/>
+<text id="total-alkalinity_0_01-marker" class="marker" x="45.0" y="573.0" text-anchor="start" dominant-baseline="middle">A</text>
+<text id="total-alkalinity_0_01-value" class="value" x="77.0" y="573.0" text-anchor="end" dominant-baseline="middle">0</text>
+<rect id="total-alkalinity_40_02" class="swatch" x="102.0" y="524.0" width="36" height="36" fill="#B09F47" data-marker="B" data-value="40" data-hex="#B09F47"/>
+<text id="total-alkalinity_40_02-marker" class="marker" x="104.0" y="573.0" text-anchor="start" dominant-baseline="middle">B</text>
+<text id="total-alkalinity_40_02-value" class="value" x="136.0" y="573.0" text-anchor="end" dominant-baseline="middle">40</text>
+<rect id="total-alkalinity_120_03" class="swatch" x="161.0" y="524.0" width="36" height="36" fill="#7D947C" data-marker="C" data-value="120" data-hex="#7D947C"/>
+<text id="total-alkalinity_120_03-marker" class="marker" x="163.0" y="573.0" text-anchor="start" dominant-baseline="middle">C</text>
+<text id="total-alkalinity_120_03-value" class="value" x="195.0" y="573.0" text-anchor="end" dominant-baseline="middle">120</text>
+<rect id="total-alkalinity_180_04" class="swatch" x="220.0" y="524.0" width="36" height="36" fill="#448375" data-marker="D" data-value="180" data-hex="#448375"/>
+<text id="total-alkalinity_180_04-marker" class="marker" x="222.0" y="573.0" text-anchor="start" dominant-baseline="middle">D</text>
+<text id="total-alkalinity_180_04-value" class="value" x="254.0" y="573.0" text-anchor="end" dominant-baseline="middle">180</text>
+<rect id="total-alkalinity_240_05" class="swatch" x="279.0" y="524.0" width="36" height="36" fill="#3A757A" data-marker="E" data-value="240" data-hex="#3A757A"/>
+<text id="total-alkalinity_240_05-marker" class="marker" x="281.0" y="573.0" text-anchor="start" dominant-baseline="middle">E</text>
+<text id="total-alkalinity_240_05-value" class="value" x="313.0" y="573.0" text-anchor="end" dominant-baseline="middle">240</text>
+<line class="divider" x1="16" y1="608.0" x2="342" y2="608.0"/>
+</g>
+<g id="row-06-stabilizer" data-test="stabilizer">
+<text id="stabilizer-title" class="row-title" x="16" y="619.0" dominant-baseline="middle">Stabilizer</text>
+<text id="stabilizer-unit" class="unit" x="82" y="619.0" dominant-baseline="middle">(ppm)</text>
+<rect id="stabilizer_0_01" class="swatch" x="43.0" y="643.0" width="36" height="36" fill="#D09149" data-marker="A" data-value="0" data-hex="#D09149"/>
+<text id="stabilizer_0_01-marker" class="marker" x="45.0" y="692.0" text-anchor="start" dominant-baseline="middle">A</text>
+<text id="stabilizer_0_01-value" class="value" x="77.0" y="692.0" text-anchor="end" dominant-baseline="middle">0</text>
+<rect id="stabilizer_50_02" class="swatch" x="102.0" y="643.0" width="36" height="36" fill="#C6742C" data-marker="B" data-value="50" data-hex="#C6742C"/>
+<text id="stabilizer_50_02-marker" class="marker" x="104.0" y="692.0" text-anchor="start" dominant-baseline="middle">B</text>
+<text id="stabilizer_50_02-value" class="value" x="136.0" y="692.0" text-anchor="end" dominant-baseline="middle">50</text>
+<rect id="stabilizer_100_03" class="swatch" x="161.0" y="643.0" width="36" height="36" fill="#BA5061" data-marker="C" data-value="100" data-hex="#BA5061"/>
+<text id="stabilizer_100_03-marker" class="marker" x="163.0" y="692.0" text-anchor="start" dominant-baseline="middle">C</text>
+<text id="stabilizer_100_03-value" class="value" x="195.0" y="692.0" text-anchor="end" dominant-baseline="middle">100</text>
+<rect id="stabilizer_150_04" class="swatch" x="220.0" y="643.0" width="36" height="36" fill="#A2316D" data-marker="D" data-value="150" data-hex="#A2316D"/>
+<text id="stabilizer_150_04-marker" class="marker" x="222.0" y="692.0" text-anchor="start" dominant-baseline="middle">D</text>
+<text id="stabilizer_150_04-value" class="value" x="254.0" y="692.0" text-anchor="end" dominant-baseline="middle">150</text>
+<rect id="stabilizer_300_05" class="swatch" x="279.0" y="643.0" width="36" height="36" fill="#923381" data-marker="E" data-value="300" data-hex="#923381"/>
+<text id="stabilizer_300_05-marker" class="marker" x="281.0" y="692.0" text-anchor="start" dominant-baseline="middle">E</text>
+<text id="stabilizer_300_05-value" class="value" x="313.0" y="692.0" text-anchor="end" dominant-baseline="middle">300</text>
+</g>
+</g></svg>

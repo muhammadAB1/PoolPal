@@ -1,0 +1,22 @@
+POOL TEST STRIP CHART V3 — MOBILE HANDOFF
+
+SVG viewBox: 0 0 358 742
+Master size: 358 × 742px
+Background: transparent
+iOS reference: 390 × 844px; chart width 358px
+Android reference: 360 × 800px; chart width 328px
+
+Swatches: 30 × 30px
+Horizontal gap: 8px
+Row height: 103px
+Label divider: 1px #B8BDC4
+Swatch outline: 0.65px #6B7077
+Status bands: 10px high, #16B43C
+
+Typography:
+- Poppins Medium 10.5px: row labels
+- Poppins Medium 10px: values
+- Poppins SemiBold 8.6px: status text
+
+Every swatch and status band is a separate vector rectangle with a unique ID.
+No raster image is embedded. Colors are flat central median samples from the source.

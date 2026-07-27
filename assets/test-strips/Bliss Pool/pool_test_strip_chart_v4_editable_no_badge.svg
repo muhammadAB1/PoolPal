@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    width="358" height="686" viewBox="0 0 358 686"
+    preserveAspectRatio="xMidYMid meet"
+    role="img" aria-labelledby="chart-title chart-desc">
+  <title id="chart-title">Editable pool test-strip reference chart</title>
+  <desc id="chart-desc">Mobile-ready vector chart reconstructed from the attached source, with the 150 strips badge removed.</desc>
+  <style>
+    .title {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 12.5px;
+      font-weight: 600;
+      fill: #121417;
+    }
+    .unit {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 9.5px;
+      font-weight: 500;
+      fill: #121417;
+    }
+    .value {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 10.5px;
+      font-weight: 500;
+      fill: #121417;
+    }
+    .secondary-value {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      fill: #079FD9;
+    }
+    .ideal-label {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      fill: #1351AF;
+    }
+    .small-note {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 7.5px;
+      font-weight: 500;
+      fill: #121417;
+    }
+    .footnote {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 7.6px;
+      font-weight: 400;
+      fill: #4B5058;
+    }
+    .swatch {
+      stroke: #858A91;
+      stroke-width: .65;
+      vector-effect: non-scaling-stroke;
+      shape-rendering: geometricPrecision;
+    }
+    .ideal-line {
+      fill: none;
+      stroke: #1351AF;
+      stroke-width: 1.2;
+      vector-effect: non-scaling-stroke;
+    }
+    .divider {
+      stroke: #E2E5E9;
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+    }
+  </style>
+  <g id="chart">
+
+    <g id="row-01-total-hardness" data-test="total-hardness">
+      <text id="total-hardness-title" class="title" x="16" y="19" dominant-baseline="middle">Total Hardness</text>
+      <text id="total-hardness-unit" class="unit" x="122" y="19" dominant-baseline="middle">(ppm)</text>
+      <text id="total-hardness_0_01-value" class="value" x="33.0" y="45" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="total-hardness_0_01" class="swatch" x="16.0" y="56" width="34" height="34" fill="#02AFDD" data-value="0" data-hex="#02AFDD"/>
+      <text id="total-hardness_100_02-value" class="value" x="78.0" y="45" text-anchor="middle" dominant-baseline="middle">100</text>
+      <rect id="total-hardness_100_02" class="swatch" x="61.0" y="56" width="34" height="34" fill="#039FDC" data-value="100" data-hex="#039FDC"/>
+      <text id="total-hardness_250_03-value" class="value" x="123.0" y="45" text-anchor="middle" dominant-baseline="middle">250</text>
+      <rect id="total-hardness_250_03" class="swatch" x="106.0" y="56" width="34" height="34" fill="#0277CB" data-value="250" data-hex="#0277CB"/>
+      <text id="total-hardness_500_04-value" class="value" x="168.0" y="45" text-anchor="middle" dominant-baseline="middle">500</text>
+      <rect id="total-hardness_500_04" class="swatch" x="151.0" y="56" width="34" height="34" fill="#0140B5" data-value="500" data-hex="#0140B5"/>
+<path id="total-hardness-ideal-left" class="ideal-line" d="M61.0,98 V103 H101.0"/>
+<path id="total-hardness-ideal-right" class="ideal-line" d="M145.0,103 H185.0 V98"/>
+<text id="total-hardness-ideal-label" class="ideal-label" x="123.0" y="104" text-anchor="middle" dominant-baseline="middle">IDEAL</text>
+      <line class="divider" x1="16" y1="111" x2="342" y2="111"/>
+    </g>
+    <g id="row-02-free-chlorine-bromine" data-test="free-chlorine-bromine">
+      <text id="free-chlorine-bromine-title" class="title" x="16" y="121" dominant-baseline="middle">
+        <tspan>Free Chlorine / </tspan>
+        <tspan fill="#079FD9">Bromine</tspan>
+      </text>
+      <text id="free-chlorine-bromine-unit" class="unit" x="205" y="121" dominant-baseline="middle">(ppm)</text>
+      <text id="free-chlorine-bromine_0_01-value" class="value" x="33.0" y="147" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="free-chlorine-bromine_0_01" class="swatch" x="16.0" y="158" width="34" height="34" fill="#FDFDFD" data-value="0" data-hex="#FDFDFD"/>
+      <text id="free-chlorine-bromine_0_01-bromine-value" class="secondary-value" x="33.0" y="175.5" text-anchor="middle" dominant-baseline="middle">0</text>
+      <text id="free-chlorine-bromine_0-5_02-value" class="value" x="78.0" y="147" text-anchor="middle" dominant-baseline="middle">0.5</text>
+      <rect id="free-chlorine-bromine_0-5_02" class="swatch" x="61.0" y="158" width="34" height="34" fill="#FCECF4" data-value="0.5" data-hex="#FCECF4"/>
+      <text id="free-chlorine-bromine_0-5_02-bromine-value" class="secondary-value" x="78.0" y="175.5" text-anchor="middle" dominant-baseline="middle">1</text>
+      <text id="free-chlorine-bromine_1_03-value" class="value" x="123.0" y="147" text-anchor="middle" dominant-baseline="middle">1</text>
+      <rect id="free-chlorine-bromine_1_03" class="swatch" x="106.0" y="158" width="34" height="34" fill="#FAE2EF" data-value="1" data-hex="#FAE2EF"/>
+      <text id="free-chlorine-bromine_1_03-bromine-value" class="secondary-value" x="123.0" y="175.5" text-anchor="middle" dominant-baseline="middle">2</text>
+      <text id="free-chlorine-bromine_3_04-value" class="value" x="168.0" y="147" text-anchor="middle" dominant-baseline="middle">3</text>
+      <rect id="free-chlorine-bromine_3_04" class="swatch" x="151.0" y="158" width="34" height="34" fill="#E19CDF" data-value="3" data-hex="#E19CDF"/>
+      <text id="free-chlorine-bromine_3_04-bromine-value" class="secondary-value" x="168.0" y="175.5" text-anchor="middle" dominant-baseline="middle">6</text>
+      <text id="free-chlorine-bromine_5_05-value" class="value" x="213.0" y="147" text-anchor="middle" dominant-baseline="middle">5</text>
+      <rect id="free-chlorine-bromine_5_05" class="swatch" x="196.0" y="158" width="34" height="34" fill="#D76DBE" data-value="5" data-hex="#D76DBE"/>
+      <text id="free-chlorine-bromine_5_05-bromine-value" class="secondary-value" x="213.0" y="175.5" text-anchor="middle" dominant-baseline="middle">10</text>
+      <text id="free-chlorine-bromine_10_06-value" class="value" x="258.0" y="147" text-anchor="middle" dominant-baseline="middle">10</text>
+      <rect id="free-chlorine-bromine_10_06" class="swatch" x="241.0" y="158" width="34" height="34" fill="#9F3395" data-value="10" data-hex="#9F3395"/>
+      <text id="free-chlorine-bromine_10_06-bromine-value" class="secondary-value" x="258.0" y="175.5" text-anchor="middle" dominant-baseline="middle">20</text>
+<path id="free-chlorine-bromine-ideal-left" class="ideal-line" d="M106.0,200 V205 H146.0"/>
+<path id="free-chlorine-bromine-ideal-right" class="ideal-line" d="M190.0,205 H230.0 V200"/>
+<text id="free-chlorine-bromine-ideal-label" class="ideal-label" x="168.0" y="206" text-anchor="middle" dominant-baseline="middle">IDEAL</text>
+      <line class="divider" x1="16" y1="229" x2="342" y2="229"/>
+    </g>
+    <g id="row-03-total-chlorine" data-test="total-chlorine">
+      <text id="total-chlorine-title" class="title" x="16" y="239" dominant-baseline="middle">Total Chlorine</text>
+      <text id="total-chlorine-unit" class="unit" x="116" y="239" dominant-baseline="middle">(ppm)</text>
+      <text id="total-chlorine_0_01-value" class="value" x="33.0" y="265" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="total-chlorine_0_01" class="swatch" x="16.0" y="276" width="34" height="34" fill="#FDF78C" data-value="0" data-hex="#FDF78C"/>
+      <text id="total-chlorine_0-5_02-value" class="value" x="78.0" y="265" text-anchor="middle" dominant-baseline="middle">0.5</text>
+      <rect id="total-chlorine_0-5_02" class="swatch" x="61.0" y="276" width="34" height="34" fill="#F1F693" data-value="0.5" data-hex="#F1F693"/>
+      <text id="total-chlorine_1_03-value" class="value" x="123.0" y="265" text-anchor="middle" dominant-baseline="middle">1</text>
+      <rect id="total-chlorine_1_03" class="swatch" x="106.0" y="276" width="34" height="34" fill="#E5F8BD" data-value="1" data-hex="#E5F8BD"/>
+      <text id="total-chlorine_3_04-value" class="value" x="168.0" y="265" text-anchor="middle" dominant-baseline="middle">3</text>
+      <rect id="total-chlorine_3_04" class="swatch" x="151.0" y="276" width="34" height="34" fill="#B7E7B1" data-value="3" data-hex="#B7E7B1"/>
+      <text id="total-chlorine_5_05-value" class="value" x="213.0" y="265" text-anchor="middle" dominant-baseline="middle">5</text>
+      <rect id="total-chlorine_5_05" class="swatch" x="196.0" y="276" width="34" height="34" fill="#73E0B8" data-value="5" data-hex="#73E0B8"/>
+      <text id="total-chlorine_10_06-value" class="value" x="258.0" y="265" text-anchor="middle" dominant-baseline="middle">10</text>
+      <rect id="total-chlorine_10_06" class="swatch" x="241.0" y="276" width="34" height="34" fill="#06C8BC" data-value="10" data-hex="#06C8BC"/>
+<path id="total-chlorine-ideal-left" class="ideal-line" d="M106.0,318 V323 H146.0"/>
+<path id="total-chlorine-ideal-right" class="ideal-line" d="M190.0,323 H230.0 V318"/>
+<text id="total-chlorine-ideal-label" class="ideal-label" x="168.0" y="324" text-anchor="middle" dominant-baseline="middle">IDEAL</text>
+      <line class="divider" x1="16" y1="333" x2="342" y2="333"/>
+    </g>
+    <g id="row-04-stabilizer-cyanuric-acid" data-test="stabilizer-cyanuric-acid">
+      <text id="stabilizer-cyanuric-acid-title" class="title" x="16" y="343" dominant-baseline="middle">Stabilizer / Cyanuric Acid</text>
+      <text id="stabilizer-cyanuric-acid-unit" class="unit" x="184" y="343" dominant-baseline="middle">(ppm)</text>
+      <text id="stabilizer-cyanuric-acid_0_01-value" class="value" x="33.0" y="369" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="stabilizer-cyanuric-acid_0_01" class="swatch" x="16.0" y="380" width="34" height="34" fill="#FE9C05" data-value="0" data-hex="#FE9C05"/>
+      <text id="stabilizer-cyanuric-acid_30-50_02-value" class="value" x="78.0" y="369" text-anchor="middle" dominant-baseline="middle">30–50</text>
+      <rect id="stabilizer-cyanuric-acid_30-50_02" class="swatch" x="61.0" y="380" width="34" height="34" fill="#FE8939" data-value="30–50" data-hex="#FE8939"/>
+      <text id="stabilizer-cyanuric-acid_100_03-value" class="value" x="123.0" y="369" text-anchor="middle" dominant-baseline="middle">100</text>
+      <rect id="stabilizer-cyanuric-acid_100_03" class="swatch" x="106.0" y="380" width="34" height="34" fill="#F5362F" data-value="100" data-hex="#F5362F"/>
+      <text id="stabilizer-cyanuric-acid_150_04-value" class="value" x="168.0" y="369" text-anchor="middle" dominant-baseline="middle">150</text>
+      <rect id="stabilizer-cyanuric-acid_150_04" class="swatch" x="151.0" y="380" width="34" height="34" fill="#DD2D73" data-value="150" data-hex="#DD2D73"/>
+      <text id="stabilizer-cyanuric-acid_240_05-value" class="value" x="213.0" y="369" text-anchor="middle" dominant-baseline="middle">240</text>
+      <rect id="stabilizer-cyanuric-acid_240_05" class="swatch" x="196.0" y="380" width="34" height="34" fill="#B81581" data-value="240" data-hex="#B81581"/>
+<path id="stabilizer-cyanuric-acid-ideal-left" class="ideal-line" d="M106.0,422 V427 H146.0"/>
+<path id="stabilizer-cyanuric-acid-ideal-right" class="ideal-line" d="M190.0,427 H230.0 V422"/>
+<text id="stabilizer-cyanuric-acid-ideal-label" class="ideal-label" x="168.0" y="428" text-anchor="middle" dominant-baseline="middle">IDEAL</text>
+      <line class="divider" x1="16" y1="437" x2="342" y2="437"/>
+    </g>
+    <g id="row-05-total-alkalinity" data-test="total-alkalinity">
+      <text id="total-alkalinity-title" class="title" x="16" y="447" dominant-baseline="middle">Total Alkalinity</text>
+      <text id="total-alkalinity-unit" class="unit" x="129" y="447" dominant-baseline="middle">(ppm)</text>
+      <text id="total-alkalinity_0_01-value" class="value" x="33.0" y="473" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="total-alkalinity_0_01" class="swatch" x="16.0" y="484" width="34" height="34" fill="#FEF67F" data-value="0" data-hex="#FEF67F"/>
+      <text id="total-alkalinity_40_02-value" class="value" x="78.0" y="473" text-anchor="middle" dominant-baseline="middle">40</text>
+      <rect id="total-alkalinity_40_02" class="swatch" x="61.0" y="484" width="34" height="34" fill="#CDEBB0" data-value="40" data-hex="#CDEBB0"/>
+      <text id="total-alkalinity_80_03-value" class="value" x="123.0" y="473" text-anchor="middle" dominant-baseline="middle">80</text>
+      <rect id="total-alkalinity_80_03" class="swatch" x="106.0" y="484" width="34" height="34" fill="#A7E4C5" data-value="80" data-hex="#A7E4C5"/>
+      <text id="total-alkalinity_120_04-value" class="value" x="168.0" y="473" text-anchor="middle" dominant-baseline="middle">120</text>
+      <rect id="total-alkalinity_120_04" class="swatch" x="151.0" y="484" width="34" height="34" fill="#A2E2E2" data-value="120" data-hex="#A2E2E2"/>
+      <text id="total-alkalinity_180_05-value" class="value" x="213.0" y="473" text-anchor="middle" dominant-baseline="middle">180</text>
+      <rect id="total-alkalinity_180_05" class="swatch" x="196.0" y="484" width="34" height="34" fill="#64CFF1" data-value="180" data-hex="#64CFF1"/>
+<path id="total-alkalinity-ideal-left" class="ideal-line" d="M106.0,526 V531 H146.0"/>
+<path id="total-alkalinity-ideal-right" class="ideal-line" d="M190.0,531 H230.0 V526"/>
+<text id="total-alkalinity-ideal-label" class="ideal-label" x="168.0" y="532" text-anchor="middle" dominant-baseline="middle">IDEAL</text>
+      <line class="divider" x1="16" y1="541" x2="342" y2="541"/>
+    </g>
+    <g id="row-06-ph" data-test="ph">
+      <text id="ph-title" class="title" x="16" y="551" dominant-baseline="middle">pH</text>
+      <text id="ph-handle-note" class="small-note" x="258.0" y="553" text-anchor="middle" dominant-baseline="middle">PAD NEAREST HANDLE</text>
+      <text id="ph_6-2_01-value" class="value" x="33.0" y="577" text-anchor="middle" dominant-baseline="middle">6.2</text>
+      <rect id="ph_6-2_01" class="swatch" x="16.0" y="588" width="34" height="34" fill="#FECC06" data-value="6.2" data-hex="#FECC06"/>
+      <text id="ph_6-8_02-value" class="value" x="78.0" y="577" text-anchor="middle" dominant-baseline="middle">6.8</text>
+      <rect id="ph_6-8_02" class="swatch" x="61.0" y="588" width="34" height="34" fill="#FE9520" data-value="6.8" data-hex="#FE9520"/>
+      <text id="ph_7-2_03-value" class="value" x="123.0" y="577" text-anchor="middle" dominant-baseline="middle">7.2</text>
+      <rect id="ph_7-2_03" class="swatch" x="106.0" y="588" width="34" height="34" fill="#FE6E49" data-value="7.2" data-hex="#FE6E49"/>
+      <text id="ph_7-8_04-value" class="value" x="168.0" y="577" text-anchor="middle" dominant-baseline="middle">7.8</text>
+      <rect id="ph_7-8_04" class="swatch" x="151.0" y="588" width="34" height="34" fill="#FD533A" data-value="7.8" data-hex="#FD533A"/>
+      <text id="ph_8-4_05-value" class="value" x="213.0" y="577" text-anchor="middle" dominant-baseline="middle">8.4</text>
+      <rect id="ph_8-4_05" class="swatch" x="196.0" y="588" width="34" height="34" fill="#F03B61" data-value="8.4" data-hex="#F03B61"/>
+      <text id="ph_9-0_06-value" class="value" x="258.0" y="577" text-anchor="middle" dominant-baseline="middle">9.0</text>
+      <rect id="ph_9-0_06" class="swatch" x="241.0" y="588" width="34" height="34" fill="#DE1F78" data-value="9.0" data-hex="#DE1F78"/>
+<path id="ph-ideal-left" class="ideal-line" d="M106.0,630 V635 H146.0"/>
+<path id="ph-ideal-right" class="ideal-line" d="M190.0,635 H230.0 V630"/>
+<text id="ph-ideal-label" class="ideal-label" x="168.0" y="636" text-anchor="middle" dominant-baseline="middle">IDEAL</text>
+    </g>
+    <text id="ph-footnote" class="footnote" x="16" y="676" dominant-baseline="middle">*For accurate test results, pH must be between 6.8 and 8.</text>
+  </g>
+</svg>

@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="358" height="718" viewBox="0 0 358 718"
+     preserveAspectRatio="xMidYMid meet"
+     role="img" aria-labelledby="title desc">
+  <title id="title">Editable pool test-strip color chart</title>
+  <desc id="desc">Uniform mobile color chart reconstructed from the attached reference image.</desc>
+  <style>
+    .section-title {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      fill: #15171A;
+    }
+    .value {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 10.5px;
+      font-weight: 500;
+      fill: #15171A;
+    }
+    .status {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .15px;
+      fill: #15171A;
+    }
+    .footer {
+      font-family: Poppins, Arial, sans-serif;
+      font-size: 8.5px;
+      font-weight: 400;
+      fill: #4E535B;
+    }
+    .swatch {
+      stroke: #6B7077;
+      stroke-width: .75;
+      vector-effect: non-scaling-stroke;
+      shape-rendering: geometricPrecision;
+    }
+    .ideal-range {
+      fill: none;
+      stroke: #17191C;
+      stroke-width: 1.4;
+      vector-effect: non-scaling-stroke;
+    }
+    .divider {
+      stroke: #E1E3E7;
+      stroke-width: 1;
+      vector-effect: non-scaling-stroke;
+    }
+  </style>
+  <g id="chart">
+
+    <g id="row-01-total-hardness" data-test="total-hardness">
+      <text id="total-hardness-title" class="section-title" x="16" y="22" dominant-baseline="middle">TOTAL HARDNESS (PPM)</text>
+      <rect id="total-hardness-ideal-range" class="ideal-range" x="158.0" y="50" width="122.0" height="42"/>
+      <text id="total-hardness_0_01-label" class="value" x="59.0" y="44" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="total-hardness_0_01" class="swatch" x="43.0" y="55" width="32" height="32" fill="#A38E39" data-value="0" data-hex="#A38E39"/>
+      <text id="total-hardness_25_02-label" class="value" x="99.0" y="44" text-anchor="middle" dominant-baseline="middle">25</text>
+      <rect id="total-hardness_25_02" class="swatch" x="83.0" y="55" width="32" height="32" fill="#B49959" data-value="25" data-hex="#B49959"/>
+      <text id="total-hardness_50_03-label" class="value" x="139.0" y="44" text-anchor="middle" dominant-baseline="middle">50</text>
+      <rect id="total-hardness_50_03" class="swatch" x="123.0" y="55" width="32" height="32" fill="#B06F22" data-value="50" data-hex="#B06F22"/>
+      <text id="total-hardness_120_04-label" class="value" x="179.0" y="44" text-anchor="middle" dominant-baseline="middle">120</text>
+      <rect id="total-hardness_120_04" class="swatch" x="163.0" y="55" width="32" height="32" fill="#9C4B05" data-value="120" data-hex="#9C4B05"/>
+      <text id="total-hardness_250_05-label" class="value" x="219.0" y="44" text-anchor="middle" dominant-baseline="middle">250</text>
+      <rect id="total-hardness_250_05" class="swatch" x="203.0" y="55" width="32" height="32" fill="#A7440A" data-value="250" data-hex="#A7440A"/>
+      <text id="total-hardness_425_06-label" class="value" x="259.0" y="44" text-anchor="middle" dominant-baseline="middle">425</text>
+      <rect id="total-hardness_425_06" class="swatch" x="243.0" y="55" width="32" height="32" fill="#C5531C" data-value="425" data-hex="#C5531C"/>
+      <text id="total-hardness-status-soft" class="status" x="79.0" y="102" text-anchor="middle" dominant-baseline="middle">SOFT</text>
+      <text id="total-hardness-status-hard" class="status" x="139.0" y="102" text-anchor="middle" dominant-baseline="middle">HARD</text>
+      <text id="total-hardness-status-very-hard" class="status" x="219.0" y="102" text-anchor="middle" dominant-baseline="middle">VERY HARD</text>
+      <line class="divider" x1="16" y1="117" x2="342" y2="117"/>
+    </g>
+    <g id="row-02-total-chlorine" data-test="total-chlorine">
+      <text id="total-chlorine-title" class="section-title" x="16" y="128" dominant-baseline="middle">TOTAL CHLORINE (PPM)</text>
+      <rect id="total-chlorine-ideal-range" class="ideal-range" x="118.0" y="156" width="82.0" height="42"/>
+      <text id="total-chlorine_0_01-label" class="value" x="59.0" y="150" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="total-chlorine_0_01" class="swatch" x="43.0" y="161" width="32" height="32" fill="#FCFBDC" data-value="0" data-hex="#FCFBDC"/>
+      <text id="total-chlorine_0-5_02-label" class="value" x="99.0" y="150" text-anchor="middle" dominant-baseline="middle">0.5</text>
+      <rect id="total-chlorine_0-5_02" class="swatch" x="83.0" y="161" width="32" height="32" fill="#F7F8DA" data-value="0.5" data-hex="#F7F8DA"/>
+      <text id="total-chlorine_1_03-label" class="value" x="139.0" y="150" text-anchor="middle" dominant-baseline="middle">1</text>
+      <rect id="total-chlorine_1_03" class="swatch" x="123.0" y="161" width="32" height="32" fill="#E2EFCF" data-value="1" data-hex="#E2EFCF"/>
+      <text id="total-chlorine_3_04-label" class="value" x="179.0" y="150" text-anchor="middle" dominant-baseline="middle">3</text>
+      <rect id="total-chlorine_3_04" class="swatch" x="163.0" y="161" width="32" height="32" fill="#C3E0BD" data-value="3" data-hex="#C3E0BD"/>
+      <text id="total-chlorine_5_05-label" class="value" x="219.0" y="150" text-anchor="middle" dominant-baseline="middle">5</text>
+      <rect id="total-chlorine_5_05" class="swatch" x="203.0" y="161" width="32" height="32" fill="#8DC8A0" data-value="5" data-hex="#8DC8A0"/>
+      <text id="total-chlorine_10_06-label" class="value" x="259.0" y="150" text-anchor="middle" dominant-baseline="middle">10</text>
+      <rect id="total-chlorine_10_06" class="swatch" x="243.0" y="161" width="32" height="32" fill="#5BBBAF" data-value="10" data-hex="#5BBBAF"/>
+      <text id="total-chlorine_20_07-label" class="value" x="299.0" y="150" text-anchor="middle" dominant-baseline="middle">20</text>
+      <rect id="total-chlorine_20_07" class="swatch" x="283.0" y="161" width="32" height="32" fill="#2AA5A6" data-value="20" data-hex="#2AA5A6"/>
+      <line class="divider" x1="16" y1="213" x2="342" y2="213"/>
+    </g>
+    <g id="row-03-free-chlorine" data-test="free-chlorine">
+      <text id="free-chlorine-title" class="section-title" x="16" y="224" dominant-baseline="middle">FREE CHLORINE (PPM)</text>
+      <rect id="free-chlorine-ideal-range" class="ideal-range" x="118.0" y="252" width="82.0" height="42"/>
+      <text id="free-chlorine_0_01-label" class="value" x="59.0" y="246" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="free-chlorine_0_01" class="swatch" x="43.0" y="257" width="32" height="32" fill="#FEFEFC" data-value="0" data-hex="#FEFEFC"/>
+      <text id="free-chlorine_0-5_02-label" class="value" x="99.0" y="246" text-anchor="middle" dominant-baseline="middle">0.5</text>
+      <rect id="free-chlorine_0-5_02" class="swatch" x="83.0" y="257" width="32" height="32" fill="#FDEFEE" data-value="0.5" data-hex="#FDEFEE"/>
+      <text id="free-chlorine_1_03-label" class="value" x="139.0" y="246" text-anchor="middle" dominant-baseline="middle">1</text>
+      <rect id="free-chlorine_1_03" class="swatch" x="123.0" y="257" width="32" height="32" fill="#FDDDE2" data-value="1" data-hex="#FDDDE2"/>
+      <text id="free-chlorine_3_04-label" class="value" x="179.0" y="246" text-anchor="middle" dominant-baseline="middle">3</text>
+      <rect id="free-chlorine_3_04" class="swatch" x="163.0" y="257" width="32" height="32" fill="#F9BFCD" data-value="3" data-hex="#F9BFCD"/>
+      <text id="free-chlorine_5_05-label" class="value" x="219.0" y="246" text-anchor="middle" dominant-baseline="middle">5</text>
+      <rect id="free-chlorine_5_05" class="swatch" x="203.0" y="257" width="32" height="32" fill="#F59AB5" data-value="5" data-hex="#F59AB5"/>
+      <text id="free-chlorine_10_06-label" class="value" x="259.0" y="246" text-anchor="middle" dominant-baseline="middle">10</text>
+      <rect id="free-chlorine_10_06" class="swatch" x="243.0" y="257" width="32" height="32" fill="#F173A6" data-value="10" data-hex="#F173A6"/>
+      <text id="free-chlorine_20_07-label" class="value" x="299.0" y="246" text-anchor="middle" dominant-baseline="middle">20</text>
+      <rect id="free-chlorine_20_07" class="swatch" x="283.0" y="257" width="32" height="32" fill="#E45995" data-value="20" data-hex="#E45995"/>
+      <line class="divider" x1="16" y1="309" x2="342" y2="309"/>
+    </g>
+    <g id="row-04-bromine" data-test="bromine">
+      <text id="bromine-title" class="section-title" x="16" y="320" dominant-baseline="middle">BROMINE (PPM)</text>
+      <rect id="bromine-ideal-range" class="ideal-range" x="118.0" y="348" width="82.0" height="42"/>
+      <text id="bromine_0_01-label" class="value" x="59.0" y="342" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="bromine_0_01" class="swatch" x="43.0" y="353" width="32" height="32" fill="#FEFEFC" data-value="0" data-hex="#FEFEFC"/>
+      <text id="bromine_1_02-label" class="value" x="99.0" y="342" text-anchor="middle" dominant-baseline="middle">1</text>
+      <rect id="bromine_1_02" class="swatch" x="83.0" y="353" width="32" height="32" fill="#FAEBEA" data-value="1" data-hex="#FAEBEA"/>
+      <text id="bromine_2_03-label" class="value" x="139.0" y="342" text-anchor="middle" dominant-baseline="middle">2</text>
+      <rect id="bromine_2_03" class="swatch" x="123.0" y="353" width="32" height="32" fill="#F1D3E5" data-value="2" data-hex="#F1D3E5"/>
+      <text id="bromine_6_04-label" class="value" x="179.0" y="342" text-anchor="middle" dominant-baseline="middle">6</text>
+      <rect id="bromine_6_04" class="swatch" x="163.0" y="353" width="32" height="32" fill="#E4BBD9" data-value="6" data-hex="#E4BBD9"/>
+      <text id="bromine_10_05-label" class="value" x="219.0" y="342" text-anchor="middle" dominant-baseline="middle">10</text>
+      <rect id="bromine_10_05" class="swatch" x="203.0" y="353" width="32" height="32" fill="#BE7DB3" data-value="10" data-hex="#BE7DB3"/>
+      <text id="bromine_20_06-label" class="value" x="259.0" y="342" text-anchor="middle" dominant-baseline="middle">20</text>
+      <rect id="bromine_20_06" class="swatch" x="243.0" y="353" width="32" height="32" fill="#B56E9D" data-value="20" data-hex="#B56E9D"/>
+      <text id="bromine_40_07-label" class="value" x="299.0" y="342" text-anchor="middle" dominant-baseline="middle">40</text>
+      <rect id="bromine_40_07" class="swatch" x="283.0" y="353" width="32" height="32" fill="#A24A82" data-value="40" data-hex="#A24A82"/>
+      <line class="divider" x1="16" y1="405" x2="342" y2="405"/>
+    </g>
+    <g id="row-05-total-alkalinity" data-test="total-alkalinity">
+      <text id="total-alkalinity-title" class="section-title" x="16" y="416" dominant-baseline="middle">TOTAL ALKALINITY (PPM)</text>
+      <rect id="total-alkalinity-ideal-range" class="ideal-range" x="118.0" y="444" width="82.0" height="42"/>
+      <text id="total-alkalinity_0_01-label" class="value" x="59.0" y="438" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="total-alkalinity_0_01" class="swatch" x="43.0" y="449" width="32" height="32" fill="#FED004" data-value="0" data-hex="#FED004"/>
+      <text id="total-alkalinity_40_02-label" class="value" x="99.0" y="438" text-anchor="middle" dominant-baseline="middle">40</text>
+      <rect id="total-alkalinity_40_02" class="swatch" x="83.0" y="449" width="32" height="32" fill="#CBC25A" data-value="40" data-hex="#CBC25A"/>
+      <text id="total-alkalinity_80_03-label" class="value" x="139.0" y="438" text-anchor="middle" dominant-baseline="middle">80</text>
+      <rect id="total-alkalinity_80_03" class="swatch" x="123.0" y="449" width="32" height="32" fill="#ACBA49" data-value="80" data-hex="#ACBA49"/>
+      <text id="total-alkalinity_120_04-label" class="value" x="179.0" y="438" text-anchor="middle" dominant-baseline="middle">120</text>
+      <rect id="total-alkalinity_120_04" class="swatch" x="163.0" y="449" width="32" height="32" fill="#65A039" data-value="120" data-hex="#65A039"/>
+      <text id="total-alkalinity_180_05-label" class="value" x="219.0" y="438" text-anchor="middle" dominant-baseline="middle">180</text>
+      <rect id="total-alkalinity_180_05" class="swatch" x="203.0" y="449" width="32" height="32" fill="#2B8236" data-value="180" data-hex="#2B8236"/>
+      <text id="total-alkalinity_240_06-label" class="value" x="259.0" y="438" text-anchor="middle" dominant-baseline="middle">240</text>
+      <rect id="total-alkalinity_240_06" class="swatch" x="243.0" y="449" width="32" height="32" fill="#036838" data-value="240" data-hex="#036838"/>
+      <text id="total-alkalinity_360_07-label" class="value" x="299.0" y="438" text-anchor="middle" dominant-baseline="middle">360</text>
+      <rect id="total-alkalinity_360_07" class="swatch" x="283.0" y="449" width="32" height="32" fill="#014E2E" data-value="360" data-hex="#014E2E"/>
+      <line class="divider" x1="16" y1="501" x2="342" y2="501"/>
+    </g>
+    <g id="row-06-cyanuric-acid" data-test="cyanuric-acid">
+      <text id="cyanuric-acid-title" class="section-title" x="16" y="512" dominant-baseline="middle">CYANURIC ACID (PPM)</text>
+      <text id="cyanuric-acid_0_01-label" class="value" x="59.0" y="534" text-anchor="middle" dominant-baseline="middle">0</text>
+      <rect id="cyanuric-acid_0_01" class="swatch" x="43.0" y="545" width="32" height="32" fill="#FCA609" data-value="0" data-hex="#FCA609"/>
+      <text id="cyanuric-acid_30-50_02-label" class="value" x="99.0" y="534" text-anchor="middle" dominant-baseline="middle">30–50</text>
+      <rect id="cyanuric-acid_30-50_02" class="swatch" x="83.0" y="545" width="32" height="32" fill="#FB9B2B" data-value="30–50" data-hex="#FB9B2B"/>
+      <text id="cyanuric-acid_100_03-label" class="value" x="139.0" y="534" text-anchor="middle" dominant-baseline="middle">100</text>
+      <rect id="cyanuric-acid_100_03" class="swatch" x="123.0" y="545" width="32" height="32" fill="#EA571B" data-value="100" data-hex="#EA571B"/>
+      <text id="cyanuric-acid_150_04-label" class="value" x="179.0" y="534" text-anchor="middle" dominant-baseline="middle">150</text>
+      <rect id="cyanuric-acid_150_04" class="swatch" x="163.0" y="545" width="32" height="32" fill="#D31612" data-value="150" data-hex="#D31612"/>
+      <text id="cyanuric-acid_240_05-label" class="value" x="219.0" y="534" text-anchor="middle" dominant-baseline="middle">240</text>
+      <rect id="cyanuric-acid_240_05" class="swatch" x="203.0" y="545" width="32" height="32" fill="#BB0264" data-value="240" data-hex="#BB0264"/>
+      <line class="divider" x1="16" y1="597" x2="342" y2="597"/>
+    </g>
+    <g id="row-07-ph" data-test="ph">
+      <text id="ph-title" class="section-title" x="16" y="608" dominant-baseline="middle">pH</text>
+      <rect id="ph-ideal-range" class="ideal-range" x="118.0" y="636" width="122.0" height="42"/>
+      <text id="ph_6-2_01-label" class="value" x="59.0" y="630" text-anchor="middle" dominant-baseline="middle">6.2</text>
+      <rect id="ph_6-2_01" class="swatch" x="43.0" y="641" width="32" height="32" fill="#FEBB23" data-value="6.2" data-hex="#FEBB23"/>
+      <text id="ph_6-8_02-label" class="value" x="99.0" y="630" text-anchor="middle" dominant-baseline="middle">6.8</text>
+      <rect id="ph_6-8_02" class="swatch" x="83.0" y="641" width="32" height="32" fill="#FDA82B" data-value="6.8" data-hex="#FDA82B"/>
+      <text id="ph_7-2_03-label" class="value" x="139.0" y="630" text-anchor="middle" dominant-baseline="middle">7.2</text>
+      <rect id="ph_7-2_03" class="swatch" x="123.0" y="641" width="32" height="32" fill="#FA8E17" data-value="7.2" data-hex="#FA8E17"/>
+      <text id="ph_7-6_04-label" class="value" x="179.0" y="630" text-anchor="middle" dominant-baseline="middle">7.6</text>
+      <rect id="ph_7-6_04" class="swatch" x="163.0" y="641" width="32" height="32" fill="#F16518" data-value="7.6" data-hex="#F16518"/>
+      <text id="ph_7-8_05-label" class="value" x="219.0" y="630" text-anchor="middle" dominant-baseline="middle">7.8</text>
+      <rect id="ph_7-8_05" class="swatch" x="203.0" y="641" width="32" height="32" fill="#EB4B1D" data-value="7.8" data-hex="#EB4B1D"/>
+      <text id="ph_8-4_06-label" class="value" x="259.0" y="630" text-anchor="middle" dominant-baseline="middle">8.4</text>
+      <rect id="ph_8-4_06" class="swatch" x="243.0" y="641" width="32" height="32" fill="#EC3A2B" data-value="8.4" data-hex="#EC3A2B"/>
+    </g>
+    <text id="source-version" class="footer" x="342" y="708" text-anchor="end" dominant-baseline="middle">Source version 1.0 (11-2025)</text>
+  </g>
+</svg>

@@ -1,0 +1,34 @@
+POOL TEST STRIP CHART — FIXED SQUARES / LABELS ABOVE
+
+MASTER
+- SVG viewBox: 0 0 358 834
+- Master dimensions: 358 × 834px
+- Transparent background
+- Colors preserved from the original first chart
+- Item labels moved above each color row
+- Square swatches styled like the second reference
+- Increased vertical spacing between rows to provide more room for range indications
+- iOS reference screen: 390 × 844px; display at 358px wide
+- Android reference screen: 360 × 800px; display at 328px wide
+
+GRID
+- Seven-column master grid
+- Square swatches: 32 × 32px
+- Horizontal gap: 10px
+- Grid width: 284px
+- Grid x-position: 37.0px
+- Swatch border: 0.65px #8A9098
+- Row divider: 1px #E3E6EA
+
+TYPOGRAPHY
+- Poppins SemiBold 12.5px: row titles
+- Poppins Regular 9px: units
+- Poppins Medium 10.5px: values
+- Poppins Medium 8.8px: status and bracket labels
+- Poppins Regular 7.8px: supporting note
+
+EDITABILITY
+- Every color square is an independent SVG rect with a unique object ID
+- Every range indication bracket is an independent vector path
+- All labels remain live editable text
+- No source raster image is embedded

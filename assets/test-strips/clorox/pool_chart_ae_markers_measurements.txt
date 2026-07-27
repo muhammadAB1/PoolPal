@@ -1,0 +1,31 @@
+POOL TEST-STRIP CHART WITH A–E MARKERS — MOBILE HANDOFF
+
+MASTER
+- SVG viewBox: 0 0 358 742
+- Master dimensions: 358 × 742px
+- Transparent background
+- iOS reference screen: 390 × 844px; chart width 358px
+- Android reference screen: 360 × 800px; chart width 328px
+- Preserve aspect ratio
+
+GRID
+- Five-column master grid
+- Uniform swatches: 36 × 36px
+- Horizontal gap: 23px
+- Uniform row height: 119px
+- Sharp 90-degree corners
+- Swatch border: 0.75px #898F97
+- Row divider: 1px #E2E5E9
+
+TYPOGRAPHY
+- Poppins SemiBold 12.5px: test names
+- Poppins Regular 9px: units
+- Poppins SemiBold 9.5px: A–E markers
+- Poppins Medium 9.5px: values
+- SVG text remains live and editable
+
+EDITABILITY
+- Every swatch is a separate SVG rectangle with a unique descriptive ID
+- Marker and value labels are separate text objects
+- No raster source image is embedded
+- No gradients, shadows, textures, bevels, or perspective

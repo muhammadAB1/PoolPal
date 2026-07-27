@@ -1,0 +1,446 @@
+{
+  "brand": "Not visible in source",
+  "model": "A–E five-level reference chart",
+  "source_image": "c0ee6a8c-6d91-412f-bfcd-39e4225e54d0.png",
+  "component": {
+    "viewBox": "0 0 358 742",
+    "master_width_px": 358,
+    "master_height_px": 742,
+    "transparent_background": true
+  },
+  "layout": {
+    "swatch_size_px": 36,
+    "horizontal_gap_px": 23,
+    "row_height_px": 119,
+    "uniform_square_swatches": true,
+    "marker_and_value_below_each_swatch": true
+  },
+  "tests": [
+    {
+      "name": "Total Hardness",
+      "unit": "ppm",
+      "swatches": [
+        {
+          "column": 1,
+          "marker": "A",
+          "value": "0",
+          "hex": "#31639B",
+          "rgb": {
+            "r": 49,
+            "g": 99,
+            "b": 155
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 2,
+          "marker": "B",
+          "value": "110",
+          "hex": "#656D9B",
+          "rgb": {
+            "r": 101,
+            "g": 109,
+            "b": 155
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 3,
+          "marker": "C",
+          "value": "250",
+          "hex": "#655B93",
+          "rgb": {
+            "r": 101,
+            "g": 91,
+            "b": 147
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 4,
+          "marker": "D",
+          "value": "500",
+          "hex": "#7E4B7B",
+          "rgb": {
+            "r": 126,
+            "g": 75,
+            "b": 123
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 5,
+          "marker": "E",
+          "value": "1000",
+          "hex": "#984F8A",
+          "rgb": {
+            "r": 152,
+            "g": 79,
+            "b": 138
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        }
+      ]
+    },
+    {
+      "name": "Total Chlorine",
+      "unit": "ppm",
+      "swatches": [
+        {
+          "column": 1,
+          "marker": "A",
+          "value": "0",
+          "hex": "#FEEC6C",
+          "rgb": {
+            "r": 254,
+            "g": 236,
+            "b": 108
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 2,
+          "marker": "B",
+          "value": "1",
+          "hex": "#FAF37F",
+          "rgb": {
+            "r": 250,
+            "g": 243,
+            "b": 127
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 3,
+          "marker": "C",
+          "value": "3",
+          "hex": "#E5E769",
+          "rgb": {
+            "r": 229,
+            "g": 231,
+            "b": 105
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 4,
+          "marker": "D",
+          "value": "5",
+          "hex": "#B1D0A7",
+          "rgb": {
+            "r": 177,
+            "g": 208,
+            "b": 167
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 5,
+          "marker": "E",
+          "value": "10",
+          "hex": "#88C3A2",
+          "rgb": {
+            "r": 136,
+            "g": 195,
+            "b": 162
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        }
+      ]
+    },
+    {
+      "name": "Free Chlorine",
+      "unit": "ppm",
+      "swatches": [
+        {
+          "column": 1,
+          "marker": "A",
+          "value": "0",
+          "hex": "#FEF19A",
+          "rgb": {
+            "r": 254,
+            "g": 241,
+            "b": 154
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 2,
+          "marker": "B",
+          "value": "1",
+          "hex": "#EDDECD",
+          "rgb": {
+            "r": 237,
+            "g": 222,
+            "b": 205
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 3,
+          "marker": "C",
+          "value": "3",
+          "hex": "#BE9DC5",
+          "rgb": {
+            "r": 190,
+            "g": 157,
+            "b": 197
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 4,
+          "marker": "D",
+          "value": "5",
+          "hex": "#A06DA8",
+          "rgb": {
+            "r": 160,
+            "g": 109,
+            "b": 168
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 5,
+          "marker": "E",
+          "value": "10",
+          "hex": "#7F3C8B",
+          "rgb": {
+            "r": 127,
+            "g": 60,
+            "b": 139
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        }
+      ]
+    },
+    {
+      "name": "pH",
+      "unit": "pH",
+      "swatches": [
+        {
+          "column": 1,
+          "marker": "A",
+          "value": "6.2",
+          "hex": "#E5974A",
+          "rgb": {
+            "r": 229,
+            "g": 151,
+            "b": 74
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 2,
+          "marker": "B",
+          "value": "6.8",
+          "hex": "#F9813D",
+          "rgb": {
+            "r": 249,
+            "g": 129,
+            "b": 61
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 3,
+          "marker": "C",
+          "value": "7.2",
+          "hex": "#E65625",
+          "rgb": {
+            "r": 230,
+            "g": 86,
+            "b": 37
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 4,
+          "marker": "D",
+          "value": "7.8",
+          "hex": "#E6574E",
+          "rgb": {
+            "r": 230,
+            "g": 87,
+            "b": 78
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 5,
+          "marker": "E",
+          "value": "8.4",
+          "hex": "#E43043",
+          "rgb": {
+            "r": 228,
+            "g": 48,
+            "b": 67
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        }
+      ]
+    },
+    {
+      "name": "Total Alkalinity",
+      "unit": "ppm",
+      "swatches": [
+        {
+          "column": 1,
+          "marker": "A",
+          "value": "0",
+          "hex": "#DDA746",
+          "rgb": {
+            "r": 221,
+            "g": 167,
+            "b": 70
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 2,
+          "marker": "B",
+          "value": "40",
+          "hex": "#B09F47",
+          "rgb": {
+            "r": 176,
+            "g": 159,
+            "b": 71
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 3,
+          "marker": "C",
+          "value": "120",
+          "hex": "#7D947C",
+          "rgb": {
+            "r": 125,
+            "g": 148,
+            "b": 124
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 4,
+          "marker": "D",
+          "value": "180",
+          "hex": "#448375",
+          "rgb": {
+            "r": 68,
+            "g": 131,
+            "b": 117
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 5,
+          "marker": "E",
+          "value": "240",
+          "hex": "#3A757A",
+          "rgb": {
+            "r": 58,
+            "g": 117,
+            "b": 122
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        }
+      ]
+    },
+    {
+      "name": "Stabilizer",
+      "unit": "ppm",
+      "swatches": [
+        {
+          "column": 1,
+          "marker": "A",
+          "value": "0",
+          "hex": "#D09149",
+          "rgb": {
+            "r": 208,
+            "g": 145,
+            "b": 73
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 2,
+          "marker": "B",
+          "value": "50",
+          "hex": "#C6742C",
+          "rgb": {
+            "r": 198,
+            "g": 116,
+            "b": 44
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 3,
+          "marker": "C",
+          "value": "100",
+          "hex": "#BA5061",
+          "rgb": {
+            "r": 186,
+            "g": 80,
+            "b": 97
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 4,
+          "marker": "D",
+          "value": "150",
+          "hex": "#A2316D",
+          "rgb": {
+            "r": 162,
+            "g": 49,
+            "b": 109
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        },
+        {
+          "column": 5,
+          "marker": "E",
+          "value": "300",
+          "hex": "#923381",
+          "rgb": {
+            "r": 146,
+            "g": 51,
+            "b": 129
+          },
+          "confidence": "High",
+          "source_note": "Median RGB sampled from a clean 25×25 px central area of the uploaded swatch. Source contained slight tonal variation."
+        }
+      ]
+    }
+  ]
+}

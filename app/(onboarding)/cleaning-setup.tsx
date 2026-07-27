@@ -46,7 +46,7 @@ export default function CleaningSetupScreen() {
                 return;
             }
 
-            router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/test-readings' as Href));
+            router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -57,7 +57,7 @@ export default function CleaningSetupScreen() {
     }
 
     function handleSkipForNow() {
-        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/test-readings' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/weekly-reminder' as Href));
     }
 
     return (

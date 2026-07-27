@@ -1,0 +1,43 @@
+POOL TEST STRIP COLOR CHART V2 — MOBILE HANDOFF
+
+MASTER COMPONENT
+- SVG viewBox: 0 0 358 718
+- Master dimensions: 358 × 718px
+- Background: transparent
+- iOS reference screen: 390 × 844px
+- iOS chart width: 358px with 16px screen margins
+- Android reference screen: 360 × 800px
+- Android chart width: 328px with 16px screen margins
+- Scaling: proportional only; preserve aspect ratio
+
+GRID
+- Seven-column master grid
+- Grid width: 272px
+- Swatch dimensions: 32 × 32px
+- Horizontal gap: 8px
+- Swatch corners: sharp 90-degree corners
+- Swatch border: 0.75px #6B7077
+- Section divider: 1px #E1E3E7
+- Outer horizontal padding: 16px
+
+TYPOGRAPHY
+- Font family: Poppins
+- Section titles: Poppins SemiBold, 12px
+- Numerical values: Poppins Medium, 10.5px
+- Status labels: Poppins Medium, 9px
+- Footer: Poppins Regular, 8.5px
+- SVG text remains live and editable
+- Arial/sans-serif is included only as a rendering fallback
+
+EDITABILITY
+- Every swatch is a separate vector rectangle
+- Every swatch has a descriptive unique ID
+- Every fill is independently editable
+- Recommended ranges are separate outline rectangles
+- No source photograph or raster image is embedded
+- No gradients, shadows, bevels, textures, or perspective are used
+
+SOURCE-COLOR METHOD
+- Each fill was derived from the median RGB value of a 21 × 21px area
+  sampled from the clean center of the corresponding source swatch
+- Pale white swatches are flagged for manual review in the color inventory

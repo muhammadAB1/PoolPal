@@ -5,6 +5,7 @@ export type Measurement = 'us' | 'metric';
 export type PoolType = 'Chlorine' | 'Saltwater' | 'Other';
 export type ScreenedType = 'Screened' | 'Unscreened';
 export type UseType = 'Family' | 'VacationHome' | 'ShortTermRental';
+export type HotTubType = 'Yes' | 'No';
 
 export type PoolCondition =
     | 'CRYSTAL_CLEAR'
@@ -37,6 +38,7 @@ export type Pool = {
     pool_type: PoolType
     pool_screen: ScreenedType
     pool_use_type: UseType
+    has_hot_tub?: HotTubType
     pool_condition?: PoolCondition | null
     surface_type?: SurfaceType | null
     cleaning_type?: CleaningType | null

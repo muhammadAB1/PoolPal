@@ -1,0 +1,45 @@
+product_brand,product_model,test_name,row_number,column_number,displayed_value,unit,hex,rgb_r,rgb_g,rgb_b,original_left_to_right_position,confidence,source_note
+Not visible in source,Attached reference chart,pH,1,1,6.2,pH,#FDD707,253,215,7,1,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,pH,1,2,6.8,pH,#FEBD04,254,189,4,2,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,pH,1,3,7.2,pH,#FD9F0D,253,159,13,3,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,pH,1,4,7.6,pH,#FD8310,253,131,16,4,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,pH,1,5,7.8,pH,#F9571C,249,87,28,5,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,pH,1,6,8.4,pH,#F3262A,243,38,42,6,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Alkalinity,2,1,0,ppm,#FDEA4A,253,234,74,1,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Alkalinity,2,2,40,ppm,#DFE14D,223,225,77,2,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Alkalinity,2,3,80,ppm,#ABCF2E,171,207,46,3,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Alkalinity,2,4,120,ppm,#6EC23D,110,194,61,4,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Alkalinity,2,5,180,ppm,#04A24C,4,162,76,5,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Alkalinity,2,6,240,ppm,#039569,3,149,105,6,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Alkalinity,2,7,360,ppm,#026449,2,100,73,7,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Hardness,3,1,0,ppm,#958B20,149,139,32,1,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Hardness,3,2,25,ppm,#C39407,195,148,7,2,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Hardness,3,3,50,ppm,#D17904,209,121,4,3,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Hardness,3,4,125,ppm,#DC7604,220,118,4,4,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Hardness,3,5,250,ppm,#EF700E,239,112,14,5,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Hardness,3,6,425,ppm,#E34E1B,227,78,27,6,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Cyanuric Acid,4,1,0,ppm,#FCCF09,252,207,9,1,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Cyanuric Acid,4,2,30–50,ppm,#FD9B04,253,155,4,2,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Cyanuric Acid,4,3,100,ppm,#F22C0D,242,44,13,3,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Cyanuric Acid,4,4,150,ppm,#E40B08,228,11,8,4,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Cyanuric Acid,4,5,240,ppm,#DC207F,220,32,127,5,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Free Chlorine,5,1,0,ppm,#F9F6E3,249,246,227,1,Manual Review,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Free Chlorine,5,2,0.5,ppm,#E8F4D9,232,244,217,2,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Free Chlorine,5,3,1,ppm,#D0F2E0,208,242,224,3,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Free Chlorine,5,4,3,ppm,#A6EAE5,166,234,229,4,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Free Chlorine,5,5,5,ppm,#87E5E9,135,229,233,5,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Free Chlorine,5,6,10,ppm,#5BDEE7,91,222,231,6,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Free Chlorine,5,7,20,ppm,#08D1E6,8,209,230,7,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Bromine,6,1,0,ppm,#F8F7EE,248,247,238,1,Manual Review,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Bromine,6,2,0.5,ppm,#F1F7E6,241,247,230,2,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Bromine,6,3,1,ppm,#DDF3E8,221,243,232,3,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Bromine,6,4,3,ppm,#B8ECEA,184,236,234,4,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Bromine,6,5,5,ppm,#97E7ED,151,231,237,5,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Bromine,6,6,10,ppm,#5EDDEA,94,221,234,6,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Bromine,6,7,20,ppm,#07CFE6,7,207,230,7,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Chlorine,7,1,0,ppm,#F8F8F2,248,248,242,1,Manual Review,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Chlorine,7,2,1,ppm,#E2F4F5,226,244,245,2,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Chlorine,7,3,2,ppm,#BFEBF6,191,235,246,3,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Chlorine,7,4,5,ppm,#8DDEF2,141,222,242,4,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Chlorine,7,5,10,ppm,#5DD5EE,93,213,238,5,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
+Not visible in source,Attached reference chart,Total Chlorine,7,6,20,ppm,#1FC4E8,31,196,232,6,High,Median RGB sampled from a clean 21×21 px central area; source contains slight tonal variation.
