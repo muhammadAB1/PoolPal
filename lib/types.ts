@@ -77,7 +77,13 @@ export type poolCleaningInsertProps = {
 
 export type TestReadingsMethod = 'Readings' | 'Photo' | 'None';
 
+export type PanelHandle = {
+    show: () => void
+    hide: () => void
+}
+
 export type testReadingsInsertProps = {
+    bromine: number
     testing_preference: TestReadingsMethod
     free_chlorine: number
     ph: number

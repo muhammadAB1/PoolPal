@@ -7,6 +7,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -23,6 +24,10 @@ type PoolContextValue = {
   loading: boolean;
   error: Error | null;
   refreshPools: (options?: RefreshPoolsOptions) => Promise<void>;
+  /** Silent flag — does not re-render. Call after a successful pool write. */
+  markPoolsStale: () => void;
+  /** Refreshes only if markPoolsStale was called since the last refresh. */
+  refreshPoolsIfStale: (options?: RefreshPoolsOptions) => Promise<void>;
 };
 
 const PoolContext = createContext<PoolContextValue | undefined>(undefined);
@@ -33,6 +38,12 @@ export function PoolProvider({ children }: { children: ReactNode }) {
   const [pools, setPools] = useState<Pool | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  // Ref (not state): marking stale must not re-render or set poolId during onboarding.
+  const poolsStaleRef = useRef(false);
+
+  const markPoolsStale = useCallback(() => {
+    poolsStaleRef.current = true;
+  }, []);
 
   const refreshPools = useCallback(async (options?: RefreshPoolsOptions) => {
     if (authLoading) return;
@@ -49,14 +60,6 @@ export function PoolProvider({ children }: { children: ReactNode }) {
       await AsyncStorage.removeItem('activePoolId');
       return;
     }
-    if (!user) {
-      setPools(null);
-      setPoolId(null);
-      setLoading(false);
-      await AsyncStorage.removeItem('activePoolId');
-      return;
-    }
-
 
     const activePoolId = await AsyncStorage.getItem('activePoolId');
     if (activePoolId) {
@@ -72,8 +75,7 @@ export function PoolProvider({ children }: { children: ReactNode }) {
       if (activePool.error) {
         setError(activePool.error);
       }
-    }
-    else {
+    } else {
       const { data, error: fetchError } = await supabase
         .from('pools')
         .select('*')
@@ -99,13 +101,31 @@ export function PoolProvider({ children }: { children: ReactNode }) {
     setLoading(false);
   }, [user, authLoading]);
 
+  const refreshPoolsIfStale = useCallback(
+    async (options?: RefreshPoolsOptions) => {
+      if (!poolsStaleRef.current) return;
+      poolsStaleRef.current = false;
+      await refreshPools(options);
+    },
+    [refreshPools],
+  );
+
   useEffect(() => {
     refreshPools();
   }, [refreshPools]);
 
   return (
     <PoolContext.Provider
-      value={{ poolId, setPoolId, pools, loading, error, refreshPools }}
+      value={{
+        poolId,
+        setPoolId,
+        pools,
+        loading,
+        error,
+        refreshPools,
+        markPoolsStale,
+        refreshPoolsIfStale,
+      }}
     >
       {children}
     </PoolContext.Provider>

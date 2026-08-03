@@ -106,6 +106,13 @@ import testReadingsStripPhoto from '../assets/pool-reading-images/test_strips.pn
 import testReadingsBackyardPhoto from '../assets/pool-reading-images/pool-backyard.png';
 import reminderShield from '../assets/pool-reading-images/reminder_shield.png';
 
+// ─── Choose Test Method ───────────────────────────────────────────────────────
+import chooseTestMethodStrip from '../assets/pool-reading-images-new/strip.webp';
+import chooseTestMethodFlask from '../assets/pool-reading-images-new/flask.webp';
+import chooseTestMethodResults from '../assets/pool-reading-images-new/results.webp';
+import chooseTestMethodMagnifyingGlass from '../assets/pool-reading-images-new/magnifying_glass.webp';
+import chooseTestMethodSettings from '../assets/pool-reading-images-new/settings.png';
+
 // ─── Onboarding completion (pool profile) ────────────────────────────────────
 import poolProfileWaterDrop from '../assets/onboardin-screen-images/pool-profile-water-drop.png';
 import poolProfileTestTube from '../assets/onboardin-screen-images/pool-profile-test-tube.png';
@@ -284,6 +291,18 @@ export const testReadingsGraphics = {
     infoIcon: testReadingsInfoIcon,
     stripPhoto: testReadingsStripPhoto,
     backyardPhoto: testReadingsBackyardPhoto,
+} as const;
+
+/**
+ * Choose Test Method screen images.
+ */
+export const chooseTestMethodImages = {
+    strip: chooseTestMethodStrip,
+    flask: chooseTestMethodFlask,
+    results: chooseTestMethodResults,
+    magnifyingGlass: chooseTestMethodMagnifyingGlass,
+    settings: chooseTestMethodSettings,
+    hero: dashboardPoolIllustration,
 } as const;
 
 export const poolSizeGraphics = {

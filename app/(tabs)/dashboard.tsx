@@ -95,13 +95,14 @@ export default function DashboardScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { user } = useAuth();
-  const { pools, refreshPools } = usePool();
+  const { pools, refreshPoolsIfStale } = usePool();
   const { logout } = useSupabase();
 
   useFocusEffect(
     useCallback(() => {
-      void refreshPools({ silent: true });
-    }, [refreshPools]),
+      console.log('I am running')
+      void refreshPoolsIfStale({ silent: true });
+    }, [refreshPoolsIfStale]),
   );
 
   const displayName = getDisplayName(user, t('dashboard_greeting_fallback_name'));
@@ -128,7 +129,7 @@ export default function DashboardScreen() {
               <Text className="text-h3 font-jakarta-extrabold text-brand-navy">
                 {t('dashboard_brand_name')}
               </Text>
-    
+
             </View>
             <TouchableOpacity
               activeOpacity={0.7}
@@ -224,6 +225,7 @@ export default function DashboardScreen() {
             <TouchableOpacity
               className="bg-brand-blue self-start flex-row items-center gap-1.5 rounded-full px-5 py-3 mt-4"
               activeOpacity={0.85}
+              onPress={() => router.push('/(readings)/choose-test-method' as Href)}
             >
               <Text className="text-button font-jakarta-bold text-surface-white">
                 {t('dashboard_choose_kit_cta')}

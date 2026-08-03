@@ -3,6 +3,7 @@ import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
 import { supabase } from "@/lib/Supabase"
 import { HotTubType, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, testReadingsInsertProps, UseType } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
+import { usePool } from "@/providers/PoolProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Linking from "expo-linking"
 import * as WebBrowser from "expo-web-browser"
@@ -22,6 +23,7 @@ type OAuthResult = {
 export function useSupabase() {
 
     const { user, setUser } = useAuth();
+    const { markPoolsStale } = usePool();
 
     async function signInWithOAuth(
 
@@ -111,6 +113,7 @@ export function useSupabase() {
                 .eq('id', id)
                 .select()
                 .single()
+            if (!error) markPoolsStale();
             return { data, error }
         }
 
@@ -123,6 +126,7 @@ export function useSupabase() {
             if (data) {
                 await AsyncStorage.setItem('activePoolId', data.id);
             }
+            if (!error) markPoolsStale();
             return { data, error }
         }
     }
@@ -137,6 +141,7 @@ export function useSupabase() {
             .update({ pool_condition: props.poolCondition })
             .eq('id', id);
 
+        if (!error) markPoolsStale();
         return { data, error }
 
     }
@@ -149,6 +154,7 @@ export function useSupabase() {
                     .from('pools')
                     .update({ length: props.length, width: props.width, shallow_depth: props.shallowDepth, deep_depth: props.deepDepth, shape: props.shape, gallons: props.gallons })
                     .eq('id', id)
+                if (!error) markPoolsStale();
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -165,6 +171,7 @@ export function useSupabase() {
                     .from('pools')
                     .update({ filter_type: props.filterType, pump_type: props.pumpType, heater: props.heaterOption })
                     .eq('id', id)
+                if (!error) markPoolsStale();
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -182,6 +189,7 @@ export function useSupabase() {
                     .from('pools')
                     .update({ surface_type: props.surfaceType })
                     .eq('id', id)
+                if (!error) markPoolsStale();
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -198,6 +206,7 @@ export function useSupabase() {
                     .from('pools')
                     .update({ cleaning_type: props.cleaningType })
                     .eq('id', id)
+                if (!error) markPoolsStale();
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -212,9 +221,10 @@ export function useSupabase() {
             const id = await AsyncStorage.getItem('activePoolId');
             if (id) {
                 const { error } = await supabase
-                    .from('pools')
-                    .update({ testing_preference: props.testing_preference, free_chlorine: props.free_chlorine, ph: props.ph, total_alkalinity: props.total_alkalinity, cyanuric_acid: props.cyanuric_acid, calcium_hardness: props.calcium_hardness, })
-                    .eq('id', id)
+                    .from('test_reading')
+                    .insert({ free_chlorine: props.free_chlorine, bromine: props.bromine, ph: props.ph, total_alkalinity: props.total_alkalinity, cyanuric_acid: props.cyanuric_acid, calcium_hardness: props.calcium_hardness, })
+                    .eq('pool_id', id)
+                if (!error) markPoolsStale();
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -232,6 +242,7 @@ export function useSupabase() {
                         .from('pools')
                         .update({ reminder_day: props.reminderDay, reminder_time: props.reminderTime })
                         .eq('id', id).select('id, profile_completion_score').single()
+                    if (!error) markPoolsStale();
                     return { data, error }
                 }
                 else {

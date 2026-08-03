@@ -280,11 +280,11 @@ export const en = {
   test_readings_form_subtitle: "Leave anything blank if you're not sure.",
   test_readings_basic_title: 'Basic readings',
   test_readings_basic_subtitle: 'These are enough to start your weekly plan.',
-  test_readings_fc_label: 'Free Chlorine (FC)',
+  test_readings_fc_label: 'Free Chlorine',
   test_readings_ph_label: 'pH',
-  test_readings_ta_label: 'Total Alkalinity (TA)',
-  test_readings_cya_label: 'Cyanuric Acid (CYA)',
-  test_readings_ch_label: 'Calcium Hardness (CH)',
+  test_readings_ta_label: 'Total Alkalinity',
+  test_readings_cya_label: 'Cyanuric Acid',
+  test_readings_ch_label: 'Calcium Hardness',
   test_readings_unit_ppm: 'ppm',
 
   test_readings_info_modal_title: 'What do these readings mean?',
@@ -410,6 +410,35 @@ export const en = {
   dashboard_learn_title: 'Learn',
   dashboard_learn_desc: 'Videos, guides, and tips',
   dashboard_coming_soon: 'Coming soon',
+
+  // choose test method
+  choose_test_method_title: 'How would you like to check your pool?',
+  choose_test_method_subtitle:
+    'Choose the option that best matches what you have available.',
+  choose_test_method_strip_title: 'Manual Strip Test',
+  choose_test_method_strip_desc: 'Use any test strip to test your pool.',
+  choose_test_method_liquid_title: 'Liquid Test',
+  choose_test_method_liquid_desc: 'Use a test kit to test your pool water.',
+  choose_test_method_results_title: 'I Have Test Results',
+  choose_test_method_results_desc:
+    'Enter results you already have from a pool store, digital reader, or previous test.',
+  choose_test_method_problems_title: 'Solve Visible Problems',
+  choose_test_method_problems_desc:
+    'Troubleshoot common pool problems like cloudy, green, foamy, or stained water.',
+  choose_test_method_info_title: 'Not sure which option to choose?',
+  choose_test_method_info_desc: 'You can always update or retest later.',
+  choose_test_method_enter_title: 'Enter your test results',
+  choose_test_method_enter_subtitle: 'These are enough to start your weekly plan.',
+  choose_test_method_tc_label: 'Total Chlorine',
+  choose_test_method_salt_label: 'Salt',
+  choose_test_method_unit_ppm: 'ppm',
+  choose_test_method_unit_none: '-',
+  choose_test_method_status_good: 'Good',
+  choose_test_method_status_bad: 'Bad',
+  choose_test_method_advanced_title: 'Advanced readings (optional)',
+  choose_test_method_advanced_desc: 'Helpful for more accurate recommendations.',
+  choose_test_method_advanced_placeholder: 'Advanced fields coming soon.',
+  choose_test_method_continue: 'Continue',
 
   // bottom navigation
   nav_home: 'Home',
@@ -702,11 +731,11 @@ export const es = {
   test_readings_form_subtitle: 'Deja en blanco lo que no sepas.',
   test_readings_basic_title: 'Mediciones básicas',
   test_readings_basic_subtitle: 'Son suficientes para empezar tu plan semanal.',
-  test_readings_fc_label: 'Cloro libre (FC)',
+  test_readings_fc_label: 'Cloro libre',
   test_readings_ph_label: 'pH',
-  test_readings_ta_label: 'Alcalinidad total (TA)',
-  test_readings_cya_label: 'Ácido cianúrico (CYA)',
-  test_readings_ch_label: 'Dureza cálcica (CH)',
+  test_readings_ta_label: 'Alcalinidad total',
+  test_readings_cya_label: 'Ácido cianúrico',
+  test_readings_ch_label: 'Dureza cálcica',
   test_readings_unit_ppm: 'ppm',
 
   test_readings_info_modal_title: '¿Qué significan estas mediciones?',
@@ -837,6 +866,35 @@ export const es = {
   dashboard_learn_title: 'Aprender',
   dashboard_learn_desc: 'Vídeos, guías y consejos',
   dashboard_coming_soon: 'Próximamente',
+
+  // choose test method
+  choose_test_method_title: '¿Cómo quieres revisar tu piscina?',
+  choose_test_method_subtitle:
+    'Elige la opción que mejor coincida con lo que tienes disponible.',
+  choose_test_method_strip_title: 'Prueba con tira manual',
+  choose_test_method_strip_desc: 'Usa cualquier tira de prueba para analizar tu piscina.',
+  choose_test_method_liquid_title: 'Prueba líquida',
+  choose_test_method_liquid_desc: 'Usa un kit de prueba para analizar el agua de tu piscina.',
+  choose_test_method_results_title: 'Ya tengo resultados',
+  choose_test_method_results_desc:
+    'Introduce resultados que ya tengas de una tienda, lector digital o una prueba anterior.',
+  choose_test_method_problems_title: 'Resolver problemas visibles',
+  choose_test_method_problems_desc:
+    'Soluciona problemas comunes como agua turbia, verde, espumosa o manchada.',
+  choose_test_method_info_title: '¿No estás seguro de qué opción elegir?',
+  choose_test_method_info_desc: 'Siempre puedes actualizar o volver a analizar más tarde.',
+  choose_test_method_enter_title: 'Introduce tus resultados',
+  choose_test_method_enter_subtitle: 'Son suficientes para empezar tu plan semanal.',
+  choose_test_method_tc_label: 'Cloro total',
+  choose_test_method_salt_label: 'Sal',
+  choose_test_method_unit_ppm: 'ppm',
+  choose_test_method_unit_none: '-',
+  choose_test_method_status_good: 'Bien',
+  choose_test_method_status_bad: 'Mal',
+  choose_test_method_advanced_title: 'Lecturas avanzadas (opcional)',
+  choose_test_method_advanced_desc: 'Útiles para recomendaciones más precisas.',
+  choose_test_method_advanced_placeholder: 'Campos avanzados próximamente.',
+  choose_test_method_continue: 'Continuar',
 
   // bottom navigation
   nav_home: 'Inicio',
