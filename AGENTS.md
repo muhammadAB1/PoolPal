@@ -34,7 +34,6 @@ Use the following stack:
 - TypeScript
 - Expo Router
 - NativeWind / Tailwind CSS
-- Zustand
 - AsyncStorage
 - Supabase for all types of database and backend work
 - Stream / GetStream for video and real-time communication
@@ -334,9 +333,9 @@ All the text in all the screen should also be typed in /data/translation.ts and 
 
 ## store/
 
-Use Zustand stores here.
+Use localstorage stores here.
 
-Use Zustand for:
+Use localstorage for:
 
 - selected language
 - completed lessons
@@ -369,7 +368,7 @@ Never expose secret keys in the mobile app.
 
 ## State Management Rules
 
-Use Zustand for global client state.
+Use local storage for global client state.
 
 Use local state for temporary UI state.
 
@@ -473,7 +472,6 @@ supabase database for this version.
 Use:
 
 - JSON for content
-- Zustand for state
 - AsyncStorage for persistence
 - backend only for secure operations
 

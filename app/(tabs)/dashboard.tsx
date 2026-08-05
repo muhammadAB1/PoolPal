@@ -5,10 +5,11 @@ import { useSupabase } from '@/hooks/supabaseHooks';
 import { useAuth } from '@/providers/AuthProvider';
 import { usePool } from '@/providers/PoolProvider';
 import { Ionicons } from '@expo/vector-icons';
-import { type User } from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { type User } from '@supabase/supabase-js';
+import { REQUIRED_TASK_IDS } from '@/data/checklist';
 import { Href, useFocusEffect, useRouter } from 'expo-router';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
@@ -110,9 +111,22 @@ export default function DashboardScreen() {
   const detailsLeft = pools?.missing_details?.length ?? 0;
   const isSetupComplete = completionScore >= 100;
 
-  const checklistCompleted = 3;
-  const checklistTotal = 11;
+  const [checklistCompleted, setChecklistCompleted] = useState(0);
+  const checklistTotal = REQUIRED_TASK_IDS.length;
   const checklistProgress = checklistCompleted / checklistTotal;
+
+  // Recount from storage each time the dashboard is focused
+  useFocusEffect(
+    useCallback(() => {
+      async function countCompletedTasks() {
+        const keys = REQUIRED_TASK_IDS.map((id) => `checklist.${id}`);
+        const entries = await AsyncStorage.multiGet(keys);
+        const count = entries.filter(([, raw]) => raw && JSON.parse(raw).done).length;
+        setChecklistCompleted(count);
+      }
+      countCompletedTasks();
+    }, []),
+  );
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
@@ -271,12 +285,16 @@ export default function DashboardScreen() {
           </View>
 
           {/* Weekly Care Checklist */}
-          <TouchableOpacity className="card mt-4 p-4" activeOpacity={0.7}>
+          <TouchableOpacity
+            className="card mt-4 p-4"
+            activeOpacity={0.7}
+            onPress={() => router.navigate('/(tabs)/checklist')}
+          >
             <View className="flex-row items-center">
               <View className="icon-circle">
                 <Image
                   source={dashboardImages.checklistIcon}
-                  className="w-5 h-5"
+                  className="w-14 h-5"
                   resizeMode="contain"
                 />
               </View>
