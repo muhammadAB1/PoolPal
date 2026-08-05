@@ -5,8 +5,8 @@ import { useSupabase } from '@/hooks/supabaseHooks';
 import { useAuth } from '@/providers/AuthProvider';
 import { usePool } from '@/providers/PoolProvider';
 import { Ionicons } from '@expo/vector-icons';
-import { type User } from '@supabase/supabase-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { type User } from '@supabase/supabase-js';
 import { Href, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -269,7 +269,11 @@ export default function DashboardScreen() {
           </View>
 
           {/* Weekly Care Checklist */}
-          <TouchableOpacity className="card mt-4 p-4" activeOpacity={0.7}>
+          <TouchableOpacity
+            className="card mt-4 p-4"
+            activeOpacity={0.7}
+            onPress={() => router.navigate('/(tabs)/checklist')}
+          >
             <View className="flex-row items-center">
               <View className="icon-circle">
                 <Image

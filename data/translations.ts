@@ -417,6 +417,65 @@ export const en = {
   nav_readings: 'Readings',
   nav_checklist: 'Checklist',
   nav_learn: 'Learn',
+
+  checklist: {
+    title: 'Checklist',
+    subtitle: 'A personalized routine for a healthy pool.',
+    weekOf: 'Week of {{range}}',
+    completeStatus: '{{completed}} of {{total}} complete • {{percent}}%',
+    almostDone: "You're almost done!",
+    routineComplete: 'Your pool-care routine is complete!',
+    resetsMonday: 'Resets Monday',
+    nextReset: 'Next reset: {{date}}',
+    completeWeek: 'Complete This Week',
+    completeFirst: 'Complete the checklist first',
+    weekCompleted: 'Week completed!',
+    nextChecklistStarts: 'Your next checklist starts {{date}}',
+    completedAt: 'Completed {{datetime}}',
+
+    sections: {
+      testAndBalance: 'TEST AND BALANCE',
+      cleanThePool: 'CLEAN THE POOL',
+      cleaner: 'CLEANER',
+      checkEquipment: 'CHECK EQUIPMENT',
+      optional: 'OPTIONAL',
+    },
+
+    badges: {
+      required: 'Required',
+      afterTesting: 'After testing',
+      weekly: 'Weekly',
+      asNeeded: 'As needed',
+      monthly: 'Monthly',
+      optional: 'Optional',
+    },
+
+    tasks: {
+      testWater: 'Test water and record readings',
+      reviewPlan: 'Review treatment plan',
+      skimDebris: 'Skim debris from surface',
+      emptySkimmer: 'Empty skimmer basket',
+      brushWalls: 'Brush walls and steps',
+      runRobotic: 'Run robotic cleaner',
+      checkWaterLevel: 'Check water level',
+      runRoboticCleaner: 'Run the robotic cleaner',
+      emptyRinseBasket: 'Empty and rinse the filter basket',
+      checkCableParts: 'Check the cable, brushes, tracks, or wheels',
+      rinseAndStore: 'Rinse the cleaner and store it out of direct sunlight',
+      checkPressure: 'Check filter pressure',
+      cleanFilter: 'Clean filter if needed',
+      inspectEquipment: 'Inspect equipment',
+      logIssues: 'Log issues or notes',
+    },
+
+    subtexts: {
+      adjustmentsAvailable: 'Recommended adjustments available',
+      pressureRange: 'Normal range: 10-15 PSI',
+      backwashInfo: 'Backwash if pressure is high',
+      equipmentChecklist: 'Check pump, system',
+      trackAttention: 'Track anything that needs attention',
+    },
+  },
 };
 
 export const es = {
@@ -844,4 +903,63 @@ export const es = {
   nav_readings: 'Valores',
   nav_checklist: 'Checklist',
   nav_learn: 'Aprender',
+
+  checklist: {
+    title: 'Checklist',
+    subtitle: 'Una rutina personalizada para una piscina saludable.',
+    weekOf: 'Semana del {{range}}',
+    completeStatus: '{{completed}} de {{total}} completados • {{percent}}%',
+    almostDone: '¡Ya casi terminas!',
+    routineComplete: '¡Tu rutina de cuidado está completa!',
+    resetsMonday: 'Se reinicia el lunes',
+    nextReset: 'Próximo reinicio: {{date}}',
+    completeWeek: 'Completar esta semana',
+    completeFirst: 'Completa el checklist primero',
+    weekCompleted: '¡Semana completada!',
+    nextChecklistStarts: 'Tu próximo checklist empieza el {{date}}',
+    completedAt: 'Completado {{datetime}}',
+
+    sections: {
+      testAndBalance: 'ANALIZAR Y EQUILIBRAR',
+      cleanThePool: 'LIMPIAR LA PISCINA',
+      cleaner: 'LIMPIADOR',
+      checkEquipment: 'REVISAR EQUIPO',
+      optional: 'OPCIONAL',
+    },
+
+    badges: {
+      required: 'Obligatorio',
+      afterTesting: 'Después del análisis',
+      weekly: 'Semanal',
+      asNeeded: 'Según necesidad',
+      monthly: 'Mensual',
+      optional: 'Opcional',
+    },
+
+    tasks: {
+      testWater: 'Analizar el agua y registrar valores',
+      reviewPlan: 'Revisar el plan de tratamiento',
+      skimDebris: 'Retirar residuos de la superficie',
+      emptySkimmer: 'Vaciar la cesta del skimmer',
+      brushWalls: 'Cepillar paredes y escalones',
+      runRobotic: 'Usar el limpiador robótico',
+      checkWaterLevel: 'Revisar el nivel del agua',
+      runRoboticCleaner: 'Poner en marcha el limpiador robótico',
+      emptyRinseBasket: 'Vaciar y enjuagar la cesta del filtro',
+      checkCableParts: 'Revisar cable, cepillos, rieles o ruedas',
+      rinseAndStore: 'Enjuagar el limpiador y guardarlo fuera del sol',
+      checkPressure: 'Revisar la presión del filtro',
+      cleanFilter: 'Limpiar el filtro si hace falta',
+      inspectEquipment: 'Inspeccionar el equipo',
+      logIssues: 'Registrar problemas o notas',
+    },
+
+    subtexts: {
+      adjustmentsAvailable: 'Ajustes recomendados disponibles',
+      pressureRange: 'Rango normal: 10–15 PSI',
+      backwashInfo: 'Haz un retrolavado si la presión es alta',
+      equipmentChecklist: 'Revisa bomba y sistema',
+      trackAttention: 'Anota cualquier cosa que necesite atención',
+    },
+  },
 };
