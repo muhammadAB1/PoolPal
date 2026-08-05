@@ -8,6 +8,15 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 const TEAL = '#2EC4B6';
 
+/** Monday 00:00 of the current week — anything saved before this has expired. */
+function getWeekStart() {
+  const now = new Date();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + (now.getDay() === 0 ? -6 : 1 - now.getDay()));
+  monday.setHours(0, 0, 0, 0);
+  return monday;
+}
+
 const BADGE_COLORS: Record<string, { bg: string; text: string }> = {
   required: { bg: '#E6F8F6', text: '#1A9E94' },
   afterTesting: { bg: '#EEF2FF', text: '#6366F1' },
@@ -48,9 +57,11 @@ function TaskComponent({ task, disabled, onChange }: TaskComponentProps) {
 
   useEffect(() => {
     async function fetchTaskStatus() {
-      const rawData = JSON.parse(await AsyncStorage.getItem(`checklist.${task.id}`) || '{}');
-      if (!rawData) return;
-      if (rawData.completedAt && new Date(rawData.completedAt) < new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) {
+      console.log('I started fetching task status');
+      const raw = await AsyncStorage.getItem(`checklist.${task.id}`);
+      if (!raw) return;
+      const rawData = JSON.parse(raw);
+      if (rawData.completedAt && new Date(rawData.completedAt) < getWeekStart()) {
         setDone(false);
         setCompletedAt(null);
         await AsyncStorage.setItem(`checklist.${task.id}`,

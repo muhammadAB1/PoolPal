@@ -82,7 +82,7 @@ export function getWeekLabel(locale = 'en-US') {
   sunday.setDate(monday.getDate() + 6);
 
   const month = new Intl.DateTimeFormat(locale, { month: 'long' }).format(monday);
-  return `${month} ${monday.getDate()}–${sunday.getDate()}`;
+  return `${month} ${monday.getDate()}-${sunday.getDate()}`;
 }
 
 /** Next Monday after the current week. */
