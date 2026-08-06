@@ -440,6 +440,23 @@ export const en = {
   choose_test_method_advanced_placeholder: 'Advanced fields coming soon.',
   choose_test_method_continue: 'Continue',
 
+  // choose test strip brand
+  strip_brand_step: 'Step 1 of 4',
+  strip_brand_title: 'Choose Your\nTest Strip Brand',
+  strip_brand_subtitle:
+    "Select the brand on your bottle to continue.\nIf you don't see it, choose Other.",
+  strip_brand_search_placeholder: 'Search test strip brands',
+  strip_brand_info:
+    'PoolWise only reads supported strip products and never guesses the brand silently.',
+  strip_brand_section: 'Supported brands',
+  strip_brand_supported: 'Supported test strips',
+  strip_brand_other_title: "Other / My brand isn't listed",
+  strip_brand_other_desc: 'Use manual selection if your brand is not shown',
+  strip_brand_help_title: 'Not sure which brand you have?',
+  strip_brand_help_desc: 'You can check the bottle label or choose Other.',
+  strip_brand_empty: 'No brands match your search.',
+  strip_brand_continue: 'Continue',
+
   // bottom navigation
   nav_home: 'Home',
   nav_pool: 'Pool',
@@ -954,6 +971,24 @@ export const es = {
   choose_test_method_advanced_desc: 'Útiles para recomendaciones más precisas.',
   choose_test_method_advanced_placeholder: 'Campos avanzados próximamente.',
   choose_test_method_continue: 'Continuar',
+
+  // choose test strip brand
+  strip_brand_step: 'Paso 1 de 4',
+  strip_brand_title: 'Elige tu marca\nde tiras de prueba',
+  strip_brand_subtitle:
+    'Selecciona la marca de tu envase para continuar.\nSi no la ves, elige Otra.',
+  strip_brand_search_placeholder: 'Buscar marcas de tiras de prueba',
+  strip_brand_info:
+    'PoolWise solo lee productos de tiras compatibles y nunca adivina la marca en silencio.',
+  strip_brand_section: 'Marcas compatibles',
+  strip_brand_supported: 'Tiras de prueba compatibles',
+  strip_brand_other_title: 'Otra / Mi marca no aparece',
+  strip_brand_other_desc: 'Usa la selección manual si tu marca no aparece',
+  strip_brand_help_title: '¿No sabes qué marca tienes?',
+  strip_brand_help_desc:
+    'Puedes revisar la etiqueta del envase o elegir Otra.',
+  strip_brand_empty: 'Ninguna marca coincide con tu búsqueda.',
+  strip_brand_continue: 'Continuar',
 
   // bottom navigation
   nav_home: 'Inicio',

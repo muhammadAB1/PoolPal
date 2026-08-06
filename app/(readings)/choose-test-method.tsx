@@ -119,6 +119,10 @@ export default function ChooseTestMethodScreen() {
                     } else {
                       haveResultsRef.current?.hide();
                     }
+
+                    if (option.id === 'manual_strip') {
+                      router.push('/(readings)/choose-strip-brand');
+                    }
                   }}
                 >
                   <Image

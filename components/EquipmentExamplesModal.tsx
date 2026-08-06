@@ -78,7 +78,7 @@ export default function EquipmentExamplesModal({
                             <View key={item.key} className="card overflow-hidden">
                                 <Image
                                     source={item.image}
-                                    className="w-[250px] h-[150px] self-center"
+                                    className="w-62.5 h-37.5 self-center"
                                     resizeMode="stretch"
                                     
                                 />

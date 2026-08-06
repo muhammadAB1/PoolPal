@@ -305,6 +305,22 @@ export const chooseTestMethodImages = {
     hero: dashboardPoolIllustration,
 } as const;
 
+/**
+ * Test strip brand bottle icons, in catalog order.
+ * Real brand artwork has not been supplied yet — every slot points at the
+ * shared strip placeholder. Replace them one by one as the assets arrive.
+ */
+export const testStripBrandIcons = [
+    iconTestStrip, // icon1 — AquaChek
+    iconTestStrip, // icon2 — HTH
+    iconTestStrip, // icon3 — Clorox
+    iconTestStrip, // icon4 — JNW
+    iconTestStrip, // icon5 — EasyTest
+    iconTestStrip, // icon6 — kimbist
+    iconTestStrip, // icon7 — Bliss Pool
+    iconTestStrip, // icon8 — Runbo
+] as const;
+
 export const poolSizeGraphics = {
     reminderShield,
     infoIcon: testReadingsInfoIcon,
