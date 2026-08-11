@@ -22,7 +22,21 @@ export type MeasurementUnit = 'us' | 'metric';
 export type FilterType = 'Sand' | 'Cartridge' | 'DE';
 export type PumpType = 'Single' | 'Dual' | 'Variable';
 export type HeaterOption = 'Yes' | 'No' | 'NotSure';
-export type SurfaceType = 'Plaster' | 'Pebble' | 'Vinyl' | 'Fiberglass' | 'Tile' | 'NotSure';
+export type SurfaceType =
+    | 'Plaster'
+    | 'Pebble'
+    | 'Vinyl'
+    | 'Fiberglass'
+    | 'Tile'
+    | 'Quartz'
+    | 'PaintedConcrete'
+    | 'SmoothStoneGlassBead'
+    | 'ReinforcedPvcMembrane'
+    | 'StainlessSteel'
+    | 'Copper'
+    | 'VinylLiner'
+    | 'OtherCustomSurface'
+    | 'NotSure';
 export type CleaningType =
     | 'Robotic'
     | 'SuctionSide'

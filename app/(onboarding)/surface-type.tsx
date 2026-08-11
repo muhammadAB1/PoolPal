@@ -1,11 +1,14 @@
 import { icons, poolSurfaceImages } from '@/constants/images';
+import { colors } from '@/constants/theme';
 import {
+    NEW_SURFACE_TYPES,
     SURFACE_TYPES,
     surfaceTypeTranslationKeys,
 } from '@/data/poolSurfaceTypes';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { SurfaceType } from '@/lib/types';
+import { Ionicons } from '@expo/vector-icons';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -28,9 +31,12 @@ export default function SurfaceTypeScreen() {
     const remainingSteps = parseRemainingSteps(remaining);
 
     const [surfaceType, setSurfaceType] = useState<SurfaceType>('Plaster');
+    const [showMore, setShowMore] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const scrollViewRef = useRef<ScrollView>(null);
+
+    const ScrollViewRef = useRef<ScrollView>(null)
+
     async function handleContinue() {
         setErrorMessage(null);
 
@@ -69,7 +75,7 @@ export default function SurfaceTypeScreen() {
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
                 showsVerticalScrollIndicator={false}
-                ref={scrollViewRef}
+                ref={ScrollViewRef}
             >
                 <View className="flex-1 px-5 pt-2 -mt-6">
                     <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-6">
@@ -93,38 +99,47 @@ export default function SurfaceTypeScreen() {
                                     onPress={() => {
                                         setSurfaceType(value);
                                         setErrorMessage(null);
-                                        value === 'NotSure' && //scroll to bottom of the screen
-                                            setTimeout(() => {
-                                                scrollViewRef.current?.scrollToEnd({ animated: true });
-                                            }, 100);
                                     }}
                                 />
                             );
                         })}
 
-                        {surfaceType === 'NotSure' ? (
-                            <TouchableOpacity
-                                className="flex-row items-start gap-3 rounded-2xl border border-dashed border-brand-aqua bg-surface-soft-aqua px-4 py-3.5"
-                                activeOpacity={0.7}
-                                onPress={() => { }}
-                            >
-                                <View className="w-11 h-11 rounded-xl bg-surface-white items-center justify-center">
-                                    <Image
-                                        source={icons.camera}
-                                        className="w-5 h-5"
-                                        resizeMode="contain"
+                        {showMore &&
+                            NEW_SURFACE_TYPES.map((value) => {
+                                const keys = surfaceTypeTranslationKeys[value];
+
+                                return (
+                                    <SurfaceOptionCard
+                                        key={value}
+                                        image={poolSurfaceImages[value]}
+                                        label={t(keys.label)}
+                                        description={t(keys.description)}
+                                        selected={surfaceType === value}
+                                        onPress={() => {
+                                            setSurfaceType(value);
+                                            setErrorMessage(null);
+                                        }}
                                     />
-                                </View>
-                                <View className="flex-1">
-                                    <Text className="text-body font-jakarta-bold text-charcoal">
-                                        {t('surface_type_upload_photo_title')}
-                                    </Text>
-                                    <Text className="text-tiny font-jakarta text-sub mt-1 leading-relaxed">
-                                        {t('surface_type_upload_photo_desc')}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        ) : null}
+                                );
+                            })}
+
+                        <TouchableOpacity
+                            onPress={() => {
+                                setShowMore(!showMore);
+                                ScrollViewRef.current?.scrollToEnd({  animated: true });
+                            }}
+                            activeOpacity={0.8}
+                            className="flex-row items-center justify-between rounded-2xl px-4 py-3.5 border-[1.5px] border-border-default bg-surface-white"
+                        >
+                            <Text className="text-body-lg font-jakarta-bold text-charcoal">
+                                {t(showMore ? 'surface_type_see_less' : 'surface_type_see_more')}
+                            </Text>
+                            <Ionicons
+                                name={showMore ? 'chevron-up' : 'chevron-down'}
+                                size={20}
+                                color={colors.text.charcoal}
+                            />
+                        </TouchableOpacity>
                     </View>
 
                     <View className="h-28" />

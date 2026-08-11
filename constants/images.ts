@@ -87,6 +87,14 @@ import surfacePebble from '../assets/pool-surface-images/pebble.png';
 import surfaceVinyl from '../assets/pool-surface-images/vinyl.png';
 import surfaceFiberglass from '../assets/pool-surface-images/fiberglass.png';
 import surfaceTile from '../assets/pool-surface-images/tile.png';
+import surfaceQuartz from '../assets/pool-surface-images/Additional_Pool_Surfaces/quartz.png';
+import surfacePaintedConcrete from '../assets/pool-surface-images/Additional_Pool_Surfaces/painted_concrete.png';
+import surfaceSmoothStoneGlassBead from '../assets/pool-surface-images/Additional_Pool_Surfaces/smooth_stone_glass_bead.png';
+import surfaceReinforcedPvcMembrane from '../assets/pool-surface-images/Additional_Pool_Surfaces/reinforced_pvc_membrane.png';
+import surfaceStainlessSteel from '../assets/pool-surface-images/Additional_Pool_Surfaces/stainless_steel.png';
+import surfaceCopper from '../assets/pool-surface-images/Additional_Pool_Surfaces/copper.png';
+import surfaceVinylLiner from '../assets/pool-surface-images/Additional_Pool_Surfaces/vinyl_liner.png';
+import surfaceOtherCustom from '../assets/pool-surface-images/Additional_Pool_Surfaces/other_custom_surface.png';
 import surfaceNotSure from '../assets/pool-surface-images/pool_surface_not_sure_icon.png';
 
 // ─── Cleaning Setup (keyed to CleaningType values) ────────────────────────────
@@ -243,8 +251,7 @@ export const equipmentImages = {
 
 /**
  * Pool Surface Type screen images.
- * Keys match the Supabase DB enum values exactly:
- *   Plaster | Pebble | Vinyl | Fiberglass | Tile | NotSure
+ * Keys match the SurfaceType values exactly.
  */
 export const poolSurfaceImages = {
     Plaster: surfacePlaster,
@@ -252,6 +259,14 @@ export const poolSurfaceImages = {
     Vinyl: surfaceVinyl,
     Fiberglass: surfaceFiberglass,
     Tile: surfaceTile,
+    Quartz: surfaceQuartz,
+    PaintedConcrete: surfacePaintedConcrete,
+    SmoothStoneGlassBead: surfaceSmoothStoneGlassBead,
+    ReinforcedPvcMembrane: surfaceReinforcedPvcMembrane,
+    StainlessSteel: surfaceStainlessSteel,
+    Copper: surfaceCopper,
+    VinylLiner: surfaceVinylLiner,
+    OtherCustomSurface: surfaceOtherCustom,
     NotSure: surfaceNotSure,
 } as const;
 
