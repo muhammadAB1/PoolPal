@@ -2,7 +2,7 @@ import {
   CATALOG_ROWS,
   toBrands,
   type TestStripBrand,
-  type TestStripRow,
+  type TestStripBrandRow,
 } from '@/data/testStripBrands';
 import { supabase } from '@/lib/Supabase';
 import { useAuth } from '@/providers/AuthProvider';
@@ -20,6 +20,9 @@ type TestStripContextValue = {
   brands: TestStripBrand[];
   selectedBrand: string | null;
   setSelectedBrand: (name: string | null) => void;
+  /** Pad readings chosen on select-strip-results (testName → chart value). */
+  selections: Record<string, string>;
+  setSelections: (next: Record<string, string>) => void;
   /** Call after the user saves a custom strip so it appears in the list. */
   refreshCustomStrips: () => Promise<void>;
 };
@@ -34,8 +37,9 @@ const TestStripContext = createContext<TestStripContextValue | undefined>(
  */
 export function TestStripProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const [customRows, setCustomRows] = useState<TestStripRow[]>([]);
+  const [customRows, setCustomRows] = useState<TestStripBrandRow[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selections, setSelections] = useState<Record<string, string>>({});
 
   const refreshCustomStrips = useCallback(async () => {
     if (!user) {
@@ -61,6 +65,8 @@ export function TestStripProvider({ children }: { children: ReactNode }) {
         brands: toBrands([...CATALOG_ROWS, ...customRows]),
         selectedBrand,
         setSelectedBrand,
+        selections,
+        setSelections,
         refreshCustomStrips,
       }}
     >

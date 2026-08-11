@@ -457,6 +457,47 @@ export const en = {
   strip_brand_empty: 'No brands match your search.',
   strip_brand_continue: 'Continue',
 
+  // select strip results
+  strip_results_step: 'Step 2 of 4',
+  strip_results_title: 'Select Your Strip Results',
+  strip_results_subtitle:
+    'Tap the color that best matches each pad on your test strip.',
+  strip_results_info:
+    "Use the bottle's color chart to match each result as closely as possible.",
+  strip_results_selected: 'Selected: {{value}}',
+  strip_results_count: '{{selected}} of {{total}} selected',
+  strip_results_helper: 'Select all {{total}} results to continue.',
+  strip_results_empty: "We don't have a color chart for this strip yet.",
+  strip_results_continue: 'Continue',
+
+  // water results
+  water_results_title: 'Your Water Results',
+  water_results_subtitle: "Here's where your water levels fall today.",
+  water_results_looking_great: 'Looking Great',
+  water_results_mostly_balanced: 'Mostly Balanced',
+  water_results_needs_balancing: 'Needs Balancing',
+  water_results_action_needed: 'Action Needed',
+  water_results_summary_looking_great:
+    'Your strip results look good overall. Most levels are in the ideal range.',
+  water_results_summary_mostly_balanced:
+    'Most levels look good, with a few that could use a small adjustment.',
+  water_results_summary_needs_balancing:
+    'Several levels are outside the ideal range. Review the details below.',
+  water_results_summary_action_needed:
+    'Multiple levels need attention. Follow the treatment plan carefully.',
+  water_results_in_range: '{{count}} of {{total}} in range',
+  water_results_detailed: 'Detailed Results',
+  water_results_ideal_range: 'Ideal range: {{min}}–{{max}}{{unit}}',
+  water_results_status_very_low: 'Very Low',
+  water_results_status_low: 'Low',
+  water_results_status_ideal: 'Ideal',
+  water_results_status_high: 'High',
+  water_results_status_very_high: 'Very High',
+  water_results_info:
+    'These readings are a good starting point. Continue to view treatment guidance and next steps.',
+  water_results_cta: 'View Treatment Plan',
+  water_results_empty: 'No readings to show yet. Go back and select your strip results.',
+
   // bottom navigation
   nav_home: 'Home',
   nav_pool: 'Pool',
@@ -989,6 +1030,48 @@ export const es = {
     'Puedes revisar la etiqueta del envase o elegir Otra.',
   strip_brand_empty: 'Ninguna marca coincide con tu búsqueda.',
   strip_brand_continue: 'Continuar',
+
+  // select strip results
+  strip_results_step: 'Paso 2 de 4',
+  strip_results_title: 'Selecciona los resultados de tu tira',
+  strip_results_subtitle:
+    'Toca el color que más se parezca a cada pastilla de tu tira de prueba.',
+  strip_results_info:
+    'Usa la tabla de colores del envase para igualar cada resultado lo más posible.',
+  strip_results_selected: 'Seleccionado: {{value}}',
+  strip_results_count: '{{selected}} de {{total}} seleccionados',
+  strip_results_helper: 'Selecciona los {{total}} resultados para continuar.',
+  strip_results_empty: 'Aún no tenemos una tabla de colores para esta tira.',
+  strip_results_continue: 'Continuar',
+
+  // water results
+  water_results_title: 'Resultados del agua',
+  water_results_subtitle: 'Así están tus niveles de agua hoy.',
+  water_results_looking_great: 'Se ve genial',
+  water_results_mostly_balanced: 'Casi equilibrado',
+  water_results_needs_balancing: 'Necesita equilibrarse',
+  water_results_action_needed: 'Acción necesaria',
+  water_results_summary_looking_great:
+    'Los resultados de tu tira se ven bien en general. La mayoría de los niveles están en el rango ideal.',
+  water_results_summary_mostly_balanced:
+    'La mayoría de los niveles se ven bien, con algunos que podrían necesitar un pequeño ajuste.',
+  water_results_summary_needs_balancing:
+    'Varios niveles están fuera del rango ideal. Revisa los detalles abajo.',
+  water_results_summary_action_needed:
+    'Varios niveles necesitan atención. Sigue el plan de tratamiento con cuidado.',
+  water_results_in_range: '{{count}} de {{total}} en rango',
+  water_results_detailed: 'Resultados detallados',
+  water_results_ideal_range: 'Rango ideal: {{min}}–{{max}}{{unit}}',
+  water_results_status_very_low: 'Muy bajo',
+  water_results_status_low: 'Bajo',
+  water_results_status_ideal: 'Ideal',
+  water_results_status_high: 'Alto',
+  water_results_status_very_high: 'Muy alto',
+  water_results_info:
+    'Estas lecturas son un buen punto de partida. Continúa para ver la guía de tratamiento y los siguientes pasos.',
+  water_results_cta: 'Ver plan de tratamiento',
+  water_results_empty:
+    'Aún no hay lecturas. Vuelve atrás y selecciona los resultados de tu tira.',
 
   // bottom navigation
   nav_home: 'Inicio',

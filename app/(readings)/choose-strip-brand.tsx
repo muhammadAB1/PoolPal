@@ -31,7 +31,7 @@ export default function ChooseStripBrandScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.white }}>
       {/* Fixed header */}
-      <View className="px-5 pt-1 pb-2 flex-row items-center">
+      <View className="pt-1 pb-2 mx-5 flex-row items-center">
         <TouchableOpacity
           className="w-10 h-10 items-start justify-center"
           onPress={() => router.back()}
@@ -44,19 +44,20 @@ export default function ChooseStripBrandScreen() {
           />
         </TouchableOpacity>
 
-        <View className="flex-1 flex-row items-center justify-center gap-2">
-          <Image
-            source={icons.waterDrop}
-            className="w-7 h-7 z-1"
-            resizeMode="contain"
-          />
-          <View className="w-9 h-9 rounded-2xl absolute -translate-x-0.75 bg-brand-blue items-center justify-center" />
+        <View className="absolute w-full flex-row items-center justify-center gap-2">
+          <View className="relative items-center justify-center">
+            <View className="w-9 h-9 rounded-2xl bg-brand-blue absolute" />
+            <Image
+              source={icons.waterDrop}
+              className="w-7 h-7 z-1"
+              resizeMode="contain"
+            />
+          </View>
           <Text className="text-h3 font-jakarta-extrabold text-brand-navy">
             {t('dashboard_brand_name')}
           </Text>
-        </View>
 
-        <View className="w-10" />
+        </View>
       </View>
 
       <ScrollView
@@ -111,18 +112,20 @@ export default function ChooseStripBrandScreen() {
             {t('strip_brand_section')}
           </Text>
 
-          {/* Brands */}
+          {/* Brand + model products */}
           <View className="gap-2.5">
-            {visibleBrands.map((brand) => (
-              <BrandRow
-                key={brand.name}
-                icon={brand.icon}
-                title={brand.name}
-                description={t('strip_brand_supported')}
-                selected={selectedBrand === brand.name}
-                onPress={() => setSelectedBrand(brand.name)}
-              />
-            ))}
+            {visibleBrands.map((brand) =>
+              brand.models.map((model) => (
+                <BrandRow
+                  key={`${brand.name}-${model}`}
+                  icon={brand.icon}
+                  title={`${brand.name} ${model}`}
+                  description={t('strip_brand_supported')}
+                  selected={selectedBrand === `${brand.name} ${model}`}
+                  onPress={() => setSelectedBrand(`${brand.name} ${model}`)}
+                />
+              ))
+            )}
 
             {visibleBrands.length === 0 ? (
               <Text className="text-small font-jakarta text-sub text-center py-4">
@@ -164,6 +167,7 @@ export default function ChooseStripBrandScreen() {
           className={`btn btn--primary ${selectedBrand ? '' : 'opacity-50'}`}
           activeOpacity={0.85}
           disabled={!selectedBrand}
+          onPress={() => router.push('/(readings)/select-strip-results')}
         >
           <Text className="text-button font-jakarta-bold text-surface-white">
             {t('strip_brand_continue')}
@@ -189,11 +193,10 @@ function BrandRow({
 }) {
   return (
     <TouchableOpacity
-      className={`flex-row items-center rounded-2xl px-3.5 py-3 gap-3 border-[1.5px] ${
-        selected
-          ? 'bg-surface-soft-aqua border-brand-aqua'
-          : 'bg-surface-white border-border-default'
-      }`}
+      className={`flex-row items-center rounded-2xl px-3.5 py-3 gap-3 border-[1.5px] ${selected
+        ? 'bg-surface-soft-aqua border-brand-aqua'
+        : 'bg-surface-white border-border-default'
+        }`}
       activeOpacity={0.8}
       onPress={onPress}
     >
