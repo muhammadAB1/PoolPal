@@ -1,132 +1,66 @@
 import ProfileCompletionRing from '@/components/ProfileCompletionRing';
-import { dashboardImages, icons, navImages } from '@/constants/images';
+import { dashboardImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { useAuth } from '@/providers/AuthProvider';
 import { usePool } from '@/providers/PoolProvider';
-import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { type User } from '@supabase/supabase-js';
-import { REQUIRED_TASK_IDS } from '@/data/checklist';
 import { Href, useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Button,
-  Image,
-  ImageSourcePropType,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Button, Image, ImageSourcePropType, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type QuickAction = {
-  key: string;
+  icon: ImageSourcePropType;
   titleKey: string;
   descKey: string;
-  icon?: ImageSourcePropType;
-  ionicon?: keyof typeof Ionicons.glyphMap;
-  iconBg: string;
-  iconColor: string;
 };
 
 const QUICK_ACTIONS: QuickAction[] = [
   {
-    key: 'solve',
-    titleKey: 'dashboard_solve_problems_title',
-    descKey: 'dashboard_solve_problems_desc',
-    ionicon: 'search-outline',
-    iconBg: '#E8F8F0',
-    iconColor: '#2EB872',
+    icon: dashboardImages.uploadPhotoIcon,
+    titleKey: 'dashboard_upload_photo_title',
+    descKey: 'dashboard_upload_photo_desc',
   },
   {
-    key: 'shop',
-    titleKey: 'dashboard_shop_title',
-    descKey: 'dashboard_shop_desc',
-    ionicon: 'bag-handle-outline',
-    iconBg: '#EEF2FF',
-    iconColor: '#6366F1',
-  },
-  {
-    key: 'ask',
+    icon: dashboardImages.askPoolwiseIcon,
     titleKey: 'dashboard_ask_poolwise_title',
     descKey: 'dashboard_ask_poolwise_desc',
-    icon: dashboardImages.askPoolwiseIcon,
-    iconBg: '#E8FFF7',
-    iconColor: '#2EB872',
   },
   {
-    key: 'learn',
+    icon: dashboardImages.learnIcon,
     titleKey: 'dashboard_learn_title',
     descKey: 'dashboard_learn_desc',
-    icon: dashboardImages.learnIcon,
-    iconBg: '#FFF4E8',
-    iconColor: '#F6B84B',
   },
 ];
 
-/** Sample reading chips matching the dashboard design (UI only until readings are wired). */
-const SAMPLE_READINGS = [
-  { label: 'FC 3.2 ppm', color: '#E87B5A' },
-  { label: 'pH 7.4', color: '#2EB872' },
-  { label: 'TA 90 ppm', color: '#0E97DC' },
-  { label: 'CYA 50 ppm', color: '#2EB872' },
-] as const;
-
-function getDisplayName(user: User | null, fallback: string) {
-  const first = user?.user_metadata?.full_name?.split(' ')[0];
-  return first || fallback;
-}
-
-function resumeProfile(
-  missingDetails: string[] | null | undefined,
-  router: ReturnType<typeof useRouter>,
-) {
-  const [firstStep, ...rest] = missingDetails ?? [];
-  if (!firstStep) return;
-  router.push({
-    pathname: `/(onboarding)/${firstStep}`,
-    params: { resume: '1', remaining: rest.join(',') },
-  } as Href);
+function getDisplayName(user: User | null) {
+  return user?.user_metadata?.full_name.split(' ')[0]
 }
 
 export default function DashboardScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { user } = useAuth();
-  const { pools, refreshPoolsIfStale } = usePool();
+  const { pools, refreshPools } = usePool();
   const { logout } = useSupabase();
 
+  // Keep pool context fresh when landing on dashboard (e.g. after onboarding).
   useFocusEffect(
     useCallback(() => {
-      console.log('I am running')
-      void refreshPoolsIfStale({ silent: true });
-    }, [refreshPoolsIfStale]),
+      void refreshPools({ silent: true });
+    }, [refreshPools]),
   );
 
-  const displayName = getDisplayName(user, t('dashboard_greeting_fallback_name'));
+  const displayName = getDisplayName(user);
   const completionScore = pools?.profile_completion_score ?? 0;
   const detailsLeft = pools?.missing_details?.length ?? 0;
-  const isSetupComplete = completionScore >= 100;
 
-  const [checklistCompleted, setChecklistCompleted] = useState(0);
-  const checklistTotal = REQUIRED_TASK_IDS.length;
+  const checklistCompleted = 3;
+  const checklistTotal = 11;
   const checklistProgress = checklistCompleted / checklistTotal;
-
-  // Recount from storage each time the dashboard is focused
-  useFocusEffect(
-    useCallback(() => {
-      async function countCompletedTasks() {
-        const keys = REQUIRED_TASK_IDS.map((id) => `checklist.${id}`);
-        const entries = await AsyncStorage.multiGet(keys);
-        const count = entries.filter(([, raw]) => raw && JSON.parse(raw).done).length;
-        setChecklistCompleted(count);
-      }
-      countCompletedTasks();
-    }, []),
-  );
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
@@ -135,78 +69,41 @@ export default function DashboardScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View className="px-5 pt-2">
-          {/* Brand header */}
+          {/* Header */}
           <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center gap-2">
-              <Image source={icons.waterDrop} className="w-7 h-7 z-1" resizeMode="contain"></Image>
-              <View className='w-9 h-9 rounded-2xl absolute -translate-x-0.75 bg-brand-blue items-center justify-center'></View>
-              <Text className="text-h3 font-jakarta-extrabold text-brand-navy">
-                {t('dashboard_brand_name')}
+            <View className="flex-row items-center gap-0">
+              <Text className="text-h1 font-jakarta-extrabold text-brand-navy -mr-4">
+                {t('dashboard_greeting', { name: displayName })}
               </Text>
-
+              <Image source={dashboardImages.helloEmoji} className="w-16 h-16 -mb-2" />
             </View>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
-            >
-              <Ionicons name="notifications-outline" size={20} color={colors.brand.navy} />
-              <View
-                className="absolute w-2 h-2 rounded-full bg-error"
-                style={{ top: 8, right: 9 }}
-              />
+            <TouchableOpacity activeOpacity={0.7}>
+              <Image source={dashboardImages.notificationBell} className="w-16 h-16" />
             </TouchableOpacity>
           </View>
 
-          {/* Greeting */}
-          <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-4">
-            {t('dashboard_greeting', { name: displayName })}
-          </Text>
-          <Text className="text-body font-jakarta text-sub mt-1">
-            {t('dashboard_tagline')}
-          </Text>
-
           {/* Pool summary card */}
-          <View className="card mt-5 p-4 flex-row items-center">
-            <View className="w-12 h-12 rounded-full bg-brand-blue items-center justify-center">
-              <Image
-                source={navImages.pool.active}
-                className="w-6 h-6"
-                resizeMode="contain"
-                style={{ tintColor: colors.surface.white }}
-              />
-            </View>
-            <View className="flex-1 ml-3 mr-2">
-              <Text className="text-body-lg font-jakarta-extrabold text-brand-navy">
+          <View className="card--info mt-4 p-4 flex-row items-center">
+            <Image
+              source={dashboardImages.poolIllustration}
+              className="w-20 h-20 rounded-full -ml-2"
+            />
+            <View className="flex-1 ml-1">
+              <Text className="text-h3 font-jakarta-extrabold text-brand-navy">
                 {pools?.pool_name ?? ''}
               </Text>
-              <View className="flex-row items-center gap-1.5 mt-1">
-                {isSetupComplete ? (
-                  <Image source={dashboardImages.greenCheckIcon} className="w-4 h-4" />
-                ) : (
-                  <View
-                    className="w-3.5 h-3.5 rounded-full border-2"
-                    style={{ borderColor: colors.status.warning, borderTopColor: 'transparent' }}
-                  />
-                )}
-                <Text
-                  className={`text-small font-jakarta-semibold ${isSetupComplete ? 'text-success-text' : 'text-sub'
-                    }`}
-                >
-                  {t(isSetupComplete ? 'dashboard_plan_ready_badge' : 'dashboard_setup_in_progress')}
+              <View className="chip--success flex-row items-center self-start  gap-1 mt-1.5 rounded-full">
+                <Image source={dashboardImages.greenCheckIcon} className="w-8 h-8 mt-1 -mr-2" />
+                <Text className="text-small font-jakarta-bold text-success-text mr-2">
+                  {t('dashboard_plan_ready_badge')}
                 </Text>
-              </View>
-              <View className="flex-row items-center gap-1 mt-1">
-                <Text className="text-small font-jakarta text-sub">
-                  {t('dashboard_profile_percent_complete', { percent: completionScore })}
-                </Text>
-                <Image source={dashboardImages.smallInfoIcon} className="w-3.5 h-3.5" />
               </View>
             </View>
             <ProfileCompletionRing
               percentage={completionScore}
               size={64}
               strokeWidth={7}
-              progressColor={colors.brand.aqua}
+              progressColor={colors.brand.blue}
             />
           </View>
 
@@ -215,36 +112,38 @@ export default function DashboardScreen() {
             <View className="flex-row items-start justify-between">
               <View className="flex-1 pr-3">
                 <View className="flex-row items-center gap-1.5">
-                  <Image source={dashboardImages.starBadge} className="w-5 h-5" resizeMode="contain" />
+                  <Image source={dashboardImages.starBadge} className="w-6 h-6" resizeMode="contain" />
                   <Text className="text-tiny font-jakarta-extrabold text-success-text tracking-wide">
                     {t('dashboard_recommended_badge').toUpperCase()}
                   </Text>
                 </View>
-                <Text className="text-h3 font-jakarta-extrabold text-brand-navy mt-2">
+                <Text className="text-h3 font-jakarta-extrabold text-brand-navy mt-1.5">
                   {t('dashboard_testing_kit_title')}
                 </Text>
-                <Text className="text-body font-jakarta text-sub mt-1.5 leading-5">
+                <Text className="text-body font-jakarta text-sub mt-1.5">
                   {t('dashboard_testing_kit_desc')}
                 </Text>
               </View>
-              <View className="w-14 h-14 items-center justify-center mt-1">
-                <Image
-                  source={icons.testStrip}
-                  className="w-10 h-10"
-                  resizeMode="contain"
-                  style={{ tintColor: colors.brand.aqua }}
-                />
-              </View>
+              <Image
+                source={dashboardImages.testingKitGraphic}
+                className="w-24 h-24 rounded-2xl"
+                resizeMode="cover"
+              />
             </View>
             <TouchableOpacity
-              className="bg-brand-blue self-start flex-row items-center gap-1.5 rounded-full px-5 py-3 mt-4"
+              className="bg-brand-blue self-start flex-row items-center gap-1.5 rounded-full px-5 py-3 mt-3.5"
               activeOpacity={0.85}
-              onPress={() => router.push('/(readings)/choose-test-method' as Href)}
+              onPress={() => router.push('/(readings)/choose-strip-brand')}
             >
               <Text className="text-button font-jakarta-bold text-surface-white">
                 {t('dashboard_choose_kit_cta')}
               </Text>
-              <Ionicons name="arrow-forward" size={16} color={colors.surface.white} />
+              <Image
+                source={dashboardImages.chevronRight}
+                className="w-3 h-3"
+                resizeMode="contain"
+                style={{ tintColor: colors.surface.white }}
+              />
             </TouchableOpacity>
           </View>
 
@@ -253,134 +152,123 @@ export default function DashboardScreen() {
             <TouchableOpacity
               className="card flex-1 p-4"
               activeOpacity={0.7}
-              onPress={() => resumeProfile(pools?.missing_details, router)}
+              onPress={() => {
+                const [firstStep, ...rest] = pools?.missing_details ?? [];
+                if (!firstStep) return;
+                router.push({
+                  pathname: `/(onboarding)/${firstStep}`,
+                  params: { resume: '1', remaining: rest.join(',') },
+                } as Href);
+              }}
             >
-              <Image source={dashboardImages.profileIcon} className="w-10 h-10" />
-              <Text className="text-body-lg font-jakarta-bold text-brand-navy mt-3">
+              <View className="flex-row items-start justify-between">
+                <Image source={dashboardImages.profileIcon} className="w-12 h-12 -ml-2" />
+                <Image
+                  source={dashboardImages.chevronRight}
+                  className="w-8 h-8 mt-1"
+                />
+              </View>
+              <Text className="text-body-lg font-jakarta-bold text-brand-navy mt-2">
                 {t('dashboard_profile_label')}
               </Text>
               <Text className="text-small font-jakarta text-sub mt-1">
                 {t('dashboard_profile_percent_label', { percent: completionScore })}
               </Text>
-              <Text className="text-small font-jakarta-semibold text-brand-blue mt-0.5">
+              <Text className="text-small font-jakarta text-sub">
                 {t('dashboard_details_left', { count: detailsLeft })}
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity className="card flex-1 p-4" activeOpacity={0.7}>
-              <Image source={dashboardImages.nextStepIcon} className="w-10 h-10" />
-              <Text className="text-body-lg font-jakarta-bold text-brand-navy mt-3">
+              <View className="flex-row items-start justify-between">
+                <Image source={dashboardImages.nextStepIcon} className="w-10 h-10 -ml-2" />
+                <Image
+                  source={dashboardImages.chevronRight}
+                  className="w-8 h-8 mt-1"
+                  resizeMode="contain"
+                />
+              </View>
+              <Text className="text-body-lg font-jakarta-bold text-brand-navy mt-4">
                 {t('dashboard_next_step_label')}
               </Text>
               <Text className="text-small font-jakarta text-sub mt-1">
-                {t('dashboard_next_step_desc')}
+                {t('dashboard_testing_kit_title')}
               </Text>
-              <View className="flex-row items-center gap-0.5 mt-1">
-                <Text className="text-small font-jakarta-bold text-brand-blue">
-                  {t('dashboard_next_step_go')}
-                </Text>
-                <Ionicons name="chevron-forward" size={14} color={colors.brand.blue} />
-              </View>
             </TouchableOpacity>
           </View>
 
           {/* Weekly Care Checklist */}
-          <TouchableOpacity
-            className="card mt-4 p-4"
-            activeOpacity={0.7}
-            onPress={() => router.navigate('/(tabs)/checklist')}
-          >
-            <View className="flex-row items-center">
-              <View className="icon-circle">
-                <Image
-                  source={dashboardImages.checklistIcon}
-                  className="w-14 h-5"
-                  resizeMode="contain"
+          <TouchableOpacity className="card mt-4 p-4 flex-row items-center" activeOpacity={0.7}>
+            <View className="icon-circle">
+              <Image source={dashboardImages.checklistIcon} className="w-14 h-14" />
+            </View>
+            <View className="flex-1 ml-3">
+              <Text className="text-body-lg font-jakarta-bold text-brand-navy">
+                {t('dashboard_checklist_title')}
+              </Text>
+              <Text className="text-small font-jakarta text-sub mt-0.5">
+                {t('dashboard_checklist_progress', {
+                  completed: checklistCompleted,
+                  total: checklistTotal,
+                })}
+              </Text>
+              <View className="progress-bar mt-2">
+                <View
+                  className="progress-bar__fill"
+                  style={{ width: `${checklistProgress * 100}%` }}
                 />
               </View>
-              <View className="flex-1 ml-3 mr-2">
-                <Text className="text-body font-jakarta-bold text-brand-navy">
-                  {t('dashboard_checklist_title')}
-                </Text>
-                <Text className="text-small font-jakarta text-sub mt-0.5">
-                  {t('dashboard_checklist_progress', {
-                    completed: checklistCompleted,
-                    total: checklistTotal,
-                  })}
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color={colors.text.faint} />
             </View>
-            <View className="progress-bar mt-3">
-              <View
-                className="progress-bar__fill"
-                style={{ width: `${checklistProgress * 100}%` }}
-              />
-            </View>
+            <Image source={dashboardImages.chevronRight} className="w-8 h-8 ml-2" />
           </TouchableOpacity>
 
           {/* Latest Readings */}
           <TouchableOpacity className="card mt-4 p-4 flex-row items-start" activeOpacity={0.7}>
-            <Image source={dashboardImages.readingsIcon} className="w-10 h-10" />
+            <Image source={dashboardImages.readingsIcon} className="w-13 h-13 self-center -ml-1" />
             <View className="flex-1 ml-3">
-              <Text className="text-body font-jakarta-bold text-brand-navy">
+              <Text className="text-body-lg font-jakarta-bold text-brand-navy">
                 {t('dashboard_readings_title')}
               </Text>
-              <View className="flex-row flex-wrap gap-x-3 gap-y-1 mt-1.5">
-                {SAMPLE_READINGS.map((reading) => (
-                  <Text
-                    key={reading.label}
-                    className="text-small font-jakarta-bold"
-                    style={{ color: reading.color }}
-                  >
-                    {reading.label}
-                  </Text>
-                ))}
-              </View>
+              <Text className="text-small font-jakarta text-sub mt-1">
+                <Text className="font-jakarta-bold text-brand-blue">
+                  {t('dashboard_readings_cta')}
+                </Text>
+                {t('dashboard_readings_or_upload')}
+              </Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color={colors.text.faint} />
+            <Image source={dashboardImages.chevronRight} className="w-4 h-4 mt-1 ml-2" resizeMode="contain" />
           </TouchableOpacity>
 
-          {/* Quick actions — separate cards */}
-          {QUICK_ACTIONS.map((action) => (
-            <TouchableOpacity
-              key={action.key}
-              className="card mt-3 p-4 flex-row items-center"
-              activeOpacity={0.7}
-            >
-              {action.icon ? (
-                <Image source={action.icon} className="w-10 h-10 rounded-full" />
-              ) : (
-                <View
-                  className="w-10 h-10 rounded-full items-center justify-center"
-                  style={{ backgroundColor: action.iconBg }}
+          {/* Quick actions */}
+          <View className="card mt-4 px-4">
+            {QUICK_ACTIONS.map((action, index) => {
+              const isLast = index === QUICK_ACTIONS.length - 1;
+              return (
+                <TouchableOpacity
+                  key={action.titleKey}
+                  activeOpacity={0.7}
+                  className={`flex-row items-center py-3.5 ${isLast ? '' : 'border-b border-border-default'}`}
                 >
-                  <Ionicons name={action.ionicon!} size={20} color={action.iconColor} />
-                </View>
-              )}
-              <View className="flex-1 ml-3 mr-2">
-                <Text className="text-body font-jakarta-bold text-brand-navy">
-                  {t(action.titleKey)}
-                </Text>
-                <Text className="text-small font-jakarta text-sub mt-0.5 leading-5">
-                  {t(action.descKey)}
-                </Text>
-              </View>
-              <Ionicons name="chevron-forward" size={18} color={colors.text.faint} />
-            </TouchableOpacity>
-          ))}
-
-          {/* Logout — temporary for flow testing */}
-          <View className="mt-6 items-center">
-            <Button
-              title="Logout"
-              onPress={async () => {
-                await logout();
-                await AsyncStorage.removeItem('activePoolId');
-                router.replace('/welcome');
-              }}
-            />
+                  <Image source={action.icon} className="w-14 h-14 rounded-full" />
+                  <View className="flex-1 ml-3 mr-2">
+                    <Text className="text-body font-jakarta-bold text-brand-navy">
+                      {t(action.titleKey)}
+                    </Text>
+                    <Text className="text-small font-jakarta text-sub mt-0.5">
+                      {t(action.descKey)}
+                    </Text>
+                  </View>
+                  <Image source={dashboardImages.chevronRight} className="w-6 h-6" resizeMode="contain" />
+                </TouchableOpacity>
+              );
+            })}
           </View>
+        </View>
+        <View className="flex-1 items-center justify-center px-5">
+          <Text className="text-h1 font-jakarta-extrabold text-brand-navy text-center">
+            {t('dashboard_welcome_back')}
+          </Text>
+          <Button title="Logout" onPress={async () => { await logout(); await AsyncStorage.removeItem('activePoolId'); router.replace('/welcome'); }} />
         </View>
       </ScrollView>
     </SafeAreaView>
