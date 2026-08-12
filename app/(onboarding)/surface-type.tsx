@@ -126,7 +126,7 @@ export default function SurfaceTypeScreen() {
                         <TouchableOpacity
                             onPress={() => {
                                 setShowMore(!showMore);
-                                ScrollViewRef.current?.scrollToEnd({  animated: true });
+                                ScrollViewRef.current?.scrollToEnd({ animated: true });
                             }}
                             activeOpacity={0.8}
                             className="flex-row items-center justify-between rounded-2xl px-4 py-3.5 border-[1.5px] border-border-default bg-surface-white"
