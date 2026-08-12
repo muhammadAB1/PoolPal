@@ -9,7 +9,7 @@ import {
   getWeekLabel,
 } from '@/data/checklist';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
@@ -18,12 +18,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const TEAL = '#2EC4B6';
 
 export default function ChecklistScreen() {
+  const { checklistCompleted } = useLocalSearchParams();
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
 
   // Parent only tracks the count for progress / footer
-  const [completed, setCompleted] = useState(0);
+  const [completed, setCompleted] = useState(Number(checklistCompleted));
   const [weekDone, setWeekDone] = useState(false);
 
   const total = REQUIRED_TASK_IDS.length;
