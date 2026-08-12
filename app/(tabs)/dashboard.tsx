@@ -1,16 +1,17 @@
 import ProfileCompletionRing from '@/components/ProfileCompletionRing';
 import { dashboardImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
+import { REQUIRED_TASK_IDS } from '@/data/checklist';
+import { useSupabase } from '@/hooks/supabaseHooks';
 import { useAuth } from '@/providers/AuthProvider';
 import { usePool } from '@/providers/PoolProvider';
-import { useSupabase } from '@/hooks/supabaseHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { type User } from '@supabase/supabase-js';
 import { Href, useFocusEffect, useRouter } from 'expo-router';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Image, ImageSourcePropType, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { type User } from '@supabase/supabase-js';
 
 type QuickAction = {
   icon: ImageSourcePropType;
@@ -58,9 +59,22 @@ export default function DashboardScreen() {
   const completionScore = pools?.profile_completion_score ?? 0;
   const detailsLeft = pools?.missing_details?.length ?? 0;
 
-  const checklistCompleted = 3;
-  const checklistTotal = 11;
-  const checklistProgress = checklistCompleted / checklistTotal;
+  const [checklistCompleted, setChecklistCompleted] = useState(0);
+  const checklistTotal = REQUIRED_TASK_IDS.length;
+  const checklistProgress = checklistTotal > 0 ? checklistCompleted / checklistTotal : 0;
+
+  // Recount from storage each time the dashboard is focused
+  useFocusEffect(
+    useCallback(() => {
+      async function countCompletedTasks() {
+        const keys = REQUIRED_TASK_IDS.map((id) => `checklist.${id}`);
+        const entries = await AsyncStorage.multiGet(keys);
+        const count = entries.filter(([, raw]) => raw && JSON.parse(raw).done).length;
+        setChecklistCompleted(count);
+      }
+      void countCompletedTasks();
+    }, []),
+  );
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
@@ -197,7 +211,16 @@ export default function DashboardScreen() {
           </View>
 
           {/* Weekly Care Checklist */}
-          <TouchableOpacity className="card mt-4 p-4 flex-row items-center" activeOpacity={0.7}>
+          <TouchableOpacity
+            className="card mt-4 p-4 flex-row items-center"
+            activeOpacity={0.7}
+            onPress={() =>
+              router.push({
+                pathname: '/(tabs)/checklist',
+                params: { checklistCompleted }
+              })
+            }
+          >
             <View className="icon-circle">
               <Image source={dashboardImages.checklistIcon} className="w-14 h-14" />
             </View>
