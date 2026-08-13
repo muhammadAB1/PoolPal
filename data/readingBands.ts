@@ -149,6 +149,10 @@ export function getIdealStatusRange(
       out[originalKey.ta] = { min: 100, max: 120 };
     }
   }
+
+  if (originalKey.th != undefined) {
+    out[originalKey.th] = { min: 200, max: 400 };
+  }
   return out;
 }
 
