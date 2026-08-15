@@ -97,13 +97,15 @@ export type PanelHandle = {
 }
 
 export type testReadingsInsertProps = {
-    bromine: number
-    testing_preference: TestReadingsMethod
-    free_chlorine: number
-    ph: number
-    total_alkalinity: number
-    cyanuric_acid: number
-    calcium_hardness: number
+    bromine?: number
+    testing_preference?: TestReadingsMethod
+    free_chlorine?: number
+    ph?: number
+    total_alkalinity?: number
+    cyanuric_acid?: string
+    total_hardness?: number
+    calcium_hardness?: number
+    total_chlorine?: number
 }
 
 export type Weekday =

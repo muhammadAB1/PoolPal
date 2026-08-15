@@ -1,4 +1,4 @@
-import { Pool } from "@/lib/types";
+import { Pool, testReadingsInsertProps } from "@/lib/types";
 
 export type ReadingStatus =
   | 'very_low'
@@ -16,8 +16,20 @@ export type OverallStatus =
   | 'needs_balancing'
   | 'action_needed';
 
-/** Stable chemistry keys — brand catalog labels map into these. */
-export type ParamKey = 'th' | 'tc' | 'fc' | 'br' | 'ta' | 'cya' | 'ph';
+/**
+ * Stable chemistry keys — brand catalog labels map into these.
+ * Names match the test_reading columns / testReadingsInsertProps.
+ * `total_chlorine` has no DB column; it is only used for range logic.
+ */
+export type ParamKey =
+  | 'total_hardness'
+  | 'total_chlorine'
+  | 'free_chlorine'
+  | 'bromine'
+  | 'total_alkalinity'
+  | 'cyanuric_acid'
+  | 'ph'
+  | 'calcium_hardness';
 
 type CanonicalSelections = {
   values: Partial<Record<ParamKey, number>>;
@@ -31,13 +43,14 @@ type CanonicalSelections = {
  * so "FREE CHLORINE" does not also hit `tc`.
  */
 const PARAM_ALIASES: { key: ParamKey; match: RegExp }[] = [
-  { key: 'fc', match: /free\s*(available\s*)?chlorine|fac/i },
-  { key: 'tc', match: /total\s*chlorine/i },
-  { key: 'cya', match: /cyanuric|stabilizer/i },
-  { key: 'ta', match: /alkalinity/i },
-  { key: 'th', match: /hardness/i },
-  { key: 'br', match: /bromine/i },
+  { key: 'free_chlorine', match: /free\s*(available\s*)?chlorine|fac/i },
+  { key: 'total_chlorine', match: /total\s*chlorine/i },
+  { key: 'cyanuric_acid', match: /cyanuric|stabilizer/i },
+  { key: 'total_alkalinity', match: /alkalinity/i },
+  { key: 'total_hardness', match: /hardness/i },
+  { key: 'bromine', match: /bromine/i },
   { key: 'ph', match: /^ph$/i },
+  { key: 'calcium_hardness', match: /calcium\s*hardness/i },
 ];
 
 /** Every ParamKey that this catalog label maps to (0–n). */
@@ -74,6 +87,49 @@ export function toCanonical(
   return { values, originalKey };
 }
 
+export function databaseKeysTestReading(
+  selections: Record<string, string>,
+) {
+  const values: Partial<Record<ParamKey, string>> = {};
+  const originalKey: Partial<Record<ParamKey, string>> = {};
+
+  for (const [testName, raw] of Object.entries(selections)) {
+    const keys = toParamKeys(testName);
+    if (keys.length === 0) continue;
+
+    for (const key of keys) {
+      originalKey[key] = testName;
+      values[key] = raw.toString();
+    }
+  }
+
+  return { values, originalKey };
+}
+
+/**
+ * Turn the brand-specific pad selections (testName → chart value) into the
+ * props the test_reading insert expects. Matches by name, so a strip's pad
+ * order does not matter. `total_chlorine` is dropped because there is no
+ * column for it.
+ */
+export function toTestReadingsProps(
+  selections: Record<string, string>,
+): testReadingsInsertProps {
+  const { values } = databaseKeysTestReading(selections);
+  const props: testReadingsInsertProps = {};
+
+  if (values.free_chlorine != null) props.free_chlorine = Number(values.free_chlorine);
+  if (values.bromine != null) props.bromine = Number(values.bromine);
+  if (values.ph != null) props.ph = Number(values.ph);
+  if (values.total_alkalinity != null) props.total_alkalinity = Number(values.total_alkalinity);
+  if (values.cyanuric_acid != null) props.cyanuric_acid = values.cyanuric_acid;
+  if (values.total_hardness != null) props.total_hardness = Number(values.total_hardness);
+  if (values.calcium_hardness != null) props.calcium_hardness = Number(values.calcium_hardness);
+  if (values.total_chlorine != null) props.total_chlorine = Number(values.total_chlorine);
+
+  return props;
+}
+
 /**
  * Stub — fill real per-test ideal-range logic later.
  * Returns which band the selected reading falls into.
@@ -94,7 +150,7 @@ export function getReadingStatus(
 
 /**
  * Needs the full selections map because ranges can depend on multiple readings.
- * Write if/else against `values.cya` / `values.fc`, then emit ranges keyed by
+ * Write if/else against `values.cyanuric_acid` / `values.free_chlorine`, then emit ranges keyed by
  * the original catalog test names via `originalKey`.
  */
 export function getIdealStatusRange(
@@ -108,50 +164,50 @@ export function getIdealStatusRange(
     out[originalKey.ph] = { min: 7.2, max: 7.8 };
   }
 
-  if (originalKey.th != undefined) {
-    out[originalKey.th] = { min: 200, max: 400 };
+  if (originalKey.total_hardness != undefined) {
+    out[originalKey.total_hardness] = { min: 200, max: 400 };
   }
 
-  if (originalKey.cya != undefined) {
-    out[originalKey.cya] = { min: 30, max: 50 };
+  if (originalKey.cyanuric_acid != undefined) {
+    out[originalKey.cyanuric_acid] = { min: 30, max: 50 };
   }
 
-  if (originalKey.fc != undefined) {
-    if (originalKey.cya === undefined) {
-      out[originalKey.fc] = { min: 2, max: 3 };
-    } else if (values.cya === 0) {
-      out[originalKey.fc] = { min: 1, max: 3 };
+  if (originalKey.free_chlorine != undefined) {
+    if (originalKey.cyanuric_acid === undefined) {
+      out[originalKey.free_chlorine] = { min: 2, max: 3 };
+    } else if (values.cyanuric_acid === 0) {
+      out[originalKey.free_chlorine] = { min: 1, max: 3 };
     } else {
-      out[originalKey.fc] = { min: 2, max: 3 };
+      out[originalKey.free_chlorine] = { min: 2, max: 3 };
     }
     if (pools?.pool_use_type === 'ShortTermRental') {
-      out[originalKey.fc] = { min: 2, max: 4 };
+      out[originalKey.free_chlorine] = { min: 2, max: 4 };
     }
     if (pools?.has_hot_tub === 'Yes') {
-      out[originalKey.fc] = { min: 3, max: 5 };
+      out[originalKey.free_chlorine] = { min: 3, max: 5 };
     }
   }
 
-  if (originalKey.br != undefined) {
-    out[originalKey.br] = { min: 2, max: 4 };
+  if (originalKey.bromine != undefined) {
+    out[originalKey.bromine] = { min: 2, max: 4 };
     if (pools?.pool_use_type === 'ShortTermRental') {
-      out[originalKey.br] = { min: 3, max: 5 };
+      out[originalKey.bromine] = { min: 3, max: 5 };
     }
     if (pools?.has_hot_tub === 'Yes') {
-      out[originalKey.br] = { min: 4, max: 8 };
+      out[originalKey.bromine] = { min: 4, max: 8 };
     }
   }
 
-  if (originalKey.ta != undefined) {
-    if (originalKey.br === undefined) {
-      out[originalKey.ta] = { min: 80, max: 120 };
-    } else if ((values.br ?? 0) > 0) {
-      out[originalKey.ta] = { min: 100, max: 120 };
+  if (originalKey.total_alkalinity != undefined) {
+    if (originalKey.bromine === undefined) {
+      out[originalKey.total_alkalinity] = { min: 80, max: 120 };
+    } else if ((values.bromine ?? 0) > 0) {
+      out[originalKey.total_alkalinity] = { min: 100, max: 120 };
     }
   }
 
-  if (originalKey.th != undefined) {
-    out[originalKey.th] = { min: 200, max: 400 };
+  if (originalKey.total_hardness != undefined) {
+    out[originalKey.total_hardness] = { min: 200, max: 400 };
   }
   return out;
 }

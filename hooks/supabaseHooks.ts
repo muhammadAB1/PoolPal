@@ -216,14 +216,14 @@ export function useSupabase() {
     }
 
     async function testReadingsInsert({ props }: { props: testReadingsInsertProps }) {
-
+        console.log(props)
         try {
             const id = await AsyncStorage.getItem('activePoolId');
+            console.log(id)
             if (id) {
                 const { error } = await supabase
                     .from('test_reading')
-                    .insert({ free_chlorine: props.free_chlorine, bromine: props.bromine, ph: props.ph, total_alkalinity: props.total_alkalinity, cyanuric_acid: props.cyanuric_acid, calcium_hardness: props.calcium_hardness, })
-                    .eq('pool_id', id)
+                    .insert({ pool_id: id, free_chlorine: props.free_chlorine, bromine: props.bromine, ph: props.ph, total_alkalinity: props.total_alkalinity, cyanuric_acid: props.cyanuric_acid, calcium_hardness: props.calcium_hardness, })
                 if (!error) markPoolsStale();
                 return { error }
             }
