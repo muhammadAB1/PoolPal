@@ -25,7 +25,7 @@ export default function ChecklistScreen() {
   const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
 
   // Parent only tracks the count for progress / footer
-  const [completed, setCompleted] = useState(Number(checklistCompleted));
+  const [completed, setCompleted] = useState(Number(checklistCompleted) || 0);
   const [weekDone, setWeekDone] = useState(false);
 
   const total = REQUIRED_TASK_IDS.length;

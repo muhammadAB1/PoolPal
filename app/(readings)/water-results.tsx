@@ -106,7 +106,11 @@ export default function WaterResultsScreen() {
   const pads = selectedBrand ? getPads(selectedBrand) : [];
   const rows = pads.filter((pad) => selections[pad.testName] != null);
   const statuses = rows.map((pad) =>
-    getReadingStatus(pad.testName, selections[pad.testName]),
+    getReadingStatus(
+      pad.testName,
+      selections[pad.testName],
+      idealRanges[pad.testName],
+    ),
   );
   const idealCount = statuses.filter((status) => status === 'ideal').length;
 
@@ -259,7 +263,7 @@ function ResultRow({
   range: { min: number; max: number } | null;
 }) {
   const { t } = useTranslation();
-  const status = getReadingStatus(pad.testName, value);
+  const status = getReadingStatus(pad.testName, value, range);
   const meta = testMeta(pad.testName);
   const { min, max } = scaleEnds(pad);
   const span = max - min || 1;

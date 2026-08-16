@@ -135,16 +135,120 @@ export function toTestReadingsProps(
  * Returns which band the selected reading falls into.
  */
 export function getReadingStatus(
-  _testName: string,
-  _value: string,
-  // _idealRanges: Record<string, IdealRange | null>,
+  testName: string,
+  value: string,
+  range?: IdealRange | null,
 ): ReadingStatus {
-  // console.log('value', _value)
-  // console.log('_idealRanges', _idealRanges)
-  // console.log('_testName', _testName)
+  const { originalKey } = toCanonical({ [testName]: value });
+  const reading = parseReadingValue(value);
+  if (reading == null) return 'ideal';
 
-  // if (_value as number >= _idealRanges[_testName]?.min && _value as number <= _idealRanges[_testName]?.max)
-  //   return 'very_high'
+  if (originalKey.free_chlorine != undefined) {
+    const idealMin = range?.min ?? 1;
+    const idealMax = range?.max ?? 3;
+    let lowFloor = 0.5;
+    let highCeiling = 4;
+
+    if (idealMin === 2 && idealMax === 3) {
+      lowFloor = 1;
+      highCeiling = 4;
+    } else if (idealMin === 2 && idealMax === 4) {
+      lowFloor = 1;
+      highCeiling = 5;
+    } else if (idealMin === 3 && idealMax === 5) {
+      lowFloor = 2;
+      highCeiling = 6;
+    }
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+    if (reading < lowFloor) return 'very_low';
+    if (reading < idealMin) return 'low';
+    if (reading <= highCeiling) return 'high';
+    return 'very_high';
+  }
+
+  if (originalKey.ph != undefined) {
+    const idealMin = range?.min ?? 7.2;
+    const idealMax = range?.max ?? 7.8;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+    if (reading < 7.0) return 'very_low';
+    if (reading < idealMin) return 'low';
+    if (reading <= 8.0) return 'high';
+    return 'very_high';
+  }
+
+  if (originalKey.total_hardness != undefined) {
+    const idealMin = range?.min ?? 200;
+    const idealMax = range?.max ?? 400;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+    if (reading < 150) return 'very_low';
+    if (reading < idealMin) return 'low';
+    if (reading <= 500) return 'high';
+    return 'very_high';
+  }
+
+  if (originalKey.cyanuric_acid != undefined) {
+    const idealMin = range?.min ?? 30;
+    const idealMax = range?.max ?? 50;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+    if (reading < 1) return 'very_low';
+    if (reading < idealMin) return 'low';
+    if (reading < 100) return 'high';
+    return 'very_high';
+  }
+
+  if (originalKey.bromine != undefined) {
+    const idealMin = range?.min ?? 2;
+    const idealMax = range?.max ?? 4;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+
+    if (idealMin === 2 && idealMax === 4) {
+      if (reading < 1) return 'very_low';
+      if (reading < idealMin) return 'low';
+      if (reading <= 10) return 'high';
+      return 'very_high';
+    }
+
+    if (idealMin === 3 && idealMax === 5) {
+      if (reading < 2) return 'very_low';
+      if (reading < idealMin) return 'low';
+      if (reading <= 10) return 'high';
+      return 'very_high';
+    }
+
+    if (idealMin === 4 && idealMax === 8) {
+      if (reading < 3) return 'very_low';
+      if (reading < idealMin) return 'low';
+      if (reading <= 10) return 'high';
+      return 'very_high';
+    }
+  }
+
+  if (originalKey.total_alkalinity != undefined) {
+    const idealMin = range?.min ?? 80;
+    const idealMax = range?.max ?? 100;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+
+    if (idealMin === 80 && idealMax === 100) {
+      if (reading < 60) return 'very_low';
+      if (reading < idealMin) return 'low';
+      if (reading <= 120) return 'high';
+      return 'very_high';
+    }
+
+    if (idealMin === 100 && idealMax === 120) {
+      if (reading < 60) return 'very_low';
+      if (reading < idealMin) return 'low';
+      if (reading <= 180) return 'high';
+      return 'very_high';
+    }
+  }
+
   return 'ideal';
 }
 
@@ -200,7 +304,7 @@ export function getIdealStatusRange(
 
   if (originalKey.total_alkalinity != undefined) {
     if (originalKey.bromine === undefined) {
-      out[originalKey.total_alkalinity] = { min: 80, max: 120 };
+      out[originalKey.total_alkalinity] = { min: 80, max: 100 };
     } else if ((values.bromine ?? 0) > 0) {
       out[originalKey.total_alkalinity] = { min: 100, max: 120 };
     }
