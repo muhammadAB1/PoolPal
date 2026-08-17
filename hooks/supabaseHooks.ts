@@ -1,7 +1,7 @@
 import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
 
 import { supabase } from "@/lib/Supabase"
-import { HotTubType, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, testReadingsInsertProps, UseType } from "@/lib/types"
+import { HotTubType, NumberOfPoolUsers, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Linking from "expo-linking"
@@ -100,14 +100,24 @@ export function useSupabase() {
 
     }
 
-    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub }:
-        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType }) {
+    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub, usageFrequency, numberOfUsers }:
+        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType, usageFrequency?: UsageFrequency, numberOfUsers?: NumberOfPoolUsers }) {
 
         const id = await AsyncStorage.getItem('activePoolId');
+        const poolBasics = {
+            pool_name: poolName,
+            pool_type: poolType ?? null,
+            pool_screen: screened ?? null,
+            hot_tub_type: hasHotTub ?? null,
+            pool_use_type: useType ?? null,
+            usage_frequency: usageFrequency ?? null,
+            number_of_users: numberOfUsers ?? null,
+        };
+
         if (id) {
             const { data, error } = await supabase
                 .from('pools')
-                .update({ pool_name: poolName, pool_type: poolType, pool_screen: screened, hot_tub_type: hasHotTub, pool_use_type: useType })
+                .update(poolBasics)
                 .eq('id', id)
                 .select()
                 .single()
@@ -117,7 +127,7 @@ export function useSupabase() {
         else {
             const { data, error } = await supabase
                 .from('pools')
-                .insert({ owner_user_id: user?.id, pool_name: poolName, pool_type: poolType, pool_screen: screened, hot_tub_type: hasHotTub, pool_use_type: useType })
+                .insert({ owner_user_id: user?.id, ...poolBasics })
                 .select()
                 .single();
             if (data) {
