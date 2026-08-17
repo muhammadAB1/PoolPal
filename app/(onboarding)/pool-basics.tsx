@@ -1,6 +1,7 @@
 import { icons, poolBasicsImages } from '@/constants/images';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
+import type { HotTubType, NumberOfPoolUsers, PoolType, ScreenedType, UsageFrequency, UseType } from '@/lib/types';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,11 +16,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-type PoolType = 'Chlorine' | 'Saltwater' | 'Other';
-type ScreenedType = 'Screened' | 'Unscreened';
-type HotTubType = 'Yes' | 'No';
-type UseType = 'Family' | 'VacationHome' | 'ShortTermRental';
-
 export default function PoolBasicsScreen() {
     const router = useRouter();
     const { t } = useTranslation();
@@ -32,6 +28,8 @@ export default function PoolBasicsScreen() {
     const [screened, setScreened] = useState<ScreenedType>();
     const [hasHotTub, setHasHotTub] = useState<HotTubType>();
     const [useType, setUseType] = useState<UseType>();
+    const [usageFrequency, setUsageFrequency] = useState<UsageFrequency>();
+    const [numberOfPoolUsers, setNumberOfPoolUsers] = useState<NumberOfPoolUsers>();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const { poolBasicInsert } = useSupabase();
@@ -55,6 +53,8 @@ export default function PoolBasicsScreen() {
             screened,
             hasHotTub,
             useType,
+            usageFrequency,
+            numberOfUsers: numberOfPoolUsers,
         });
         if (error) {
             setErrorMessage(error.message);
@@ -250,6 +250,10 @@ export default function PoolBasicsScreen() {
                                     selected={useType === item.value}
                                     onPress={() => {
                                         setUseType(item.value);
+                                        if (item.value !== 'Family') {
+                                            setUsageFrequency(undefined);
+                                            setNumberOfPoolUsers(undefined);
+                                        }
                                         setErrorMessage(null);
                                     }}
                                     imageClassName="w-[52px] h-[52px] rounded-full"
@@ -257,6 +261,92 @@ export default function PoolBasicsScreen() {
                             ))}
                         </View>
                     </View>
+
+                    {useType === 'Family' ? (
+                        <>
+                            <View className="mt-6">
+                                <Text className="section__title">
+                                    {t('pool_basics_usage_frequency_label')}
+                                </Text>
+                                <Text className="section__subtitle mt-0.5">
+                                    {t('pool_basics_usage_frequency_subtitle')}
+                                </Text>
+
+                                <View className="mt-3 gap-2">
+                                    {(
+                                        [
+                                            [
+                                                {
+                                                    value: '0-1' as UsageFrequency,
+                                                    label: t('pool_basics_usage_frequency_0_1'),
+                                                },
+                                                {
+                                                    value: '2-3' as UsageFrequency,
+                                                    label: t('pool_basics_usage_frequency_2_3'),
+                                                },
+                                            ],
+                                            [
+                                                {
+                                                    value: '4-5' as UsageFrequency,
+                                                    label: t('pool_basics_usage_frequency_4_5'),
+                                                },
+                                                {
+                                                    value: '6-7' as UsageFrequency,
+                                                    label: t('pool_basics_usage_frequency_6_7'),
+                                                },
+                                            ],
+                                        ] as const
+                                    ).map((row, rowIndex) => (
+                                        <View key={rowIndex} className="flex-row gap-2">
+                                            {row.map((item) => (
+                                                <ChoiceButton
+                                                    key={item.value}
+                                                    label={item.label}
+                                                    selected={usageFrequency === item.value}
+                                                    onPress={() => setUsageFrequency(item.value)}
+                                                />
+                                            ))}
+                                        </View>
+                                    ))}
+                                </View>
+                            </View>
+
+                            <View className="mt-6">
+                                <Text className="section__title">
+                                    {t('pool_basics_pool_users_label')}
+                                </Text>
+                                <Text className="section__subtitle mt-0.5">
+                                    {t('pool_basics_pool_users_subtitle')}
+                                </Text>
+
+                                <View className="flex-row mt-3 gap-2">
+                                    {(
+                                        [
+                                            {
+                                                value: '1-2' as NumberOfPoolUsers,
+                                                label: t('pool_basics_pool_users_1_2'),
+                                            },
+                                            {
+                                                value: '3-4' as NumberOfPoolUsers,
+                                                label: t('pool_basics_pool_users_3_4'),
+                                            },
+                                            {
+                                                value: '5+' as NumberOfPoolUsers,
+                                                label: t('pool_basics_pool_users_5_plus'),
+                                            },
+                                        ] as const
+                                    ).map((item) => (
+                                        <ChoiceButton
+                                            key={item.value}
+                                            label={item.label}
+                                            selected={numberOfPoolUsers === item.value}
+                                            onPress={() => setNumberOfPoolUsers(item.value)}
+                                        />
+                                    ))}
+                                </View>
+                            </View>
+                        </>
+                    ) : null}
 
                     <View className="h-28" />
                 </View>
@@ -345,12 +435,39 @@ function SelectionCard({
     );
 }
 
+interface ChoiceButtonProps {
+    label: string;
+    selected: boolean;
+    onPress: () => void;
+}
+
+function ChoiceButton({ label, selected, onPress }: ChoiceButtonProps) {
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+            activeOpacity={0.8}
+            className={`flex-1 py-3.5 px-2 items-center justify-center rounded-2xl border-[1.5px] ${selected
+                ? 'bg-surface-soft-aqua border-brand-aqua'
+                : 'bg-surface-white border-border-default'
+                }`}
+        >
+            <Text
+                className="text-small font-jakarta-bold text-charcoal text-center"
+                numberOfLines={2}
+            >
+                {label}
+            </Text>
+        </TouchableOpacity>
+    );
+}
+
 function HotTubNoIcon() {
     return (
-        <View className="w-18 h-18 rounded-full bg-surface-soft-aqua items-center justify-center">
-            <Text className="text-[28px] leading-[28px] font-jakarta-bold text-brand-aqua">
-                ×
+        <View className="w-18 h-18 flex bg-surface-soft-aqua rounded-full items-center">
+            <Text className="text-[28px] leading-[28px] font-jakarta-bold text-brand-aqua bg-amber-600 ">
+                x
             </Text>
         </View>
+
     );
 }
