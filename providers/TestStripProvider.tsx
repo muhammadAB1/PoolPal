@@ -23,6 +23,10 @@ type TestStripContextValue = {
   /** Pad readings chosen on select-strip-results (testName → chart value). */
   selections: Record<string, string>;
   setSelections: (next: Record<string, string>) => void;
+  /** test_reading row id for this session, set after the first save so a
+   *  Back + Continue updates that row instead of inserting a new one. */
+  savedReadingId: string | null;
+  setSavedReadingId: (id: string | null) => void;
   /** Call after the user saves a custom strip so it appears in the list. */
   refreshCustomStrips: () => Promise<void>;
 };
@@ -40,6 +44,7 @@ export function TestStripProvider({ children }: { children: ReactNode }) {
   const [customRows, setCustomRows] = useState<TestStripBrandRow[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selections, setSelections] = useState<Record<string, string>>({});
+  const [savedReadingId, setSavedReadingId] = useState<string | null>(null);
 
   const refreshCustomStrips = useCallback(async () => {
     if (!user) {
@@ -67,6 +72,8 @@ export function TestStripProvider({ children }: { children: ReactNode }) {
         setSelectedBrand,
         selections,
         setSelections,
+        savedReadingId,
+        setSavedReadingId,
         refreshCustomStrips,
       }}
     >

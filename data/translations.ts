@@ -504,6 +504,7 @@ export const en = {
   water_results_mostly_balanced: 'Mostly Balanced',
   water_results_needs_balancing: 'Needs Balancing',
   water_results_action_needed: 'Action Needed',
+  water_results_unable_to_determine: 'Unable To Determine',
   water_results_summary_looking_great:
     'Your strip results look good overall. Most levels are in the ideal range.',
   water_results_summary_mostly_balanced:
@@ -512,6 +513,8 @@ export const en = {
     'Several levels are outside the ideal range. Review the details below.',
   water_results_summary_action_needed:
     'Multiple levels need attention. Follow the treatment plan carefully.',
+  water_results_summary_unable_to_determine:
+    'Unable to determine the status of some levels. Review the details below.',
   water_results_in_range: '{{count}} of {{total}} in range',
   water_results_detailed: 'Detailed Results',
   water_results_ideal_range: 'Ideal range: {{min}}–{{max}}{{unit}}',
@@ -524,6 +527,16 @@ export const en = {
     'These readings are a good starting point. Continue to view treatment guidance and next steps.',
   water_results_cta: 'View Treatment Plan',
   water_results_empty: 'No readings to show yet. Go back and select your strip results.',
+  water_results_pool_status_label: 'Pool Status',
+  water_results_swim_status_label: 'Swim Status',
+
+  // swim status (dashboard + water results chips)
+  swim_status_safe: 'Safe',
+  swim_status_safe_after_circulation: 'Safe After Circulation',
+  swim_status_use_caution: 'Use Caution',
+  swim_status_wait_before_swimming: 'Wait Before Swimming',
+  swim_status_do_not_swim: 'Do Not Swim',
+  swim_status_unable_to_determine: 'Unable To Determine',
 
   // bottom navigation
   nav_home: 'Home',
@@ -1105,6 +1118,7 @@ export const es = {
   water_results_mostly_balanced: 'Casi equilibrado',
   water_results_needs_balancing: 'Necesita equilibrarse',
   water_results_action_needed: 'Acción necesaria',
+  water_results_unable_to_determine: 'No se pudo determinar',
   water_results_summary_looking_great:
     'Los resultados de tu tira se ven bien en general. La mayoría de los niveles están en el rango ideal.',
   water_results_summary_mostly_balanced:
@@ -1113,6 +1127,8 @@ export const es = {
     'Varios niveles están fuera del rango ideal. Revisa los detalles abajo.',
   water_results_summary_action_needed:
     'Varios niveles necesitan atención. Sigue el plan de tratamiento con cuidado.',
+  water_results_summary_unable_to_determine:
+    'No se pudo determinar el estado de algunos niveles. Revisa los detalles abajo.',
   water_results_in_range: '{{count}} de {{total}} en rango',
   water_results_detailed: 'Resultados detallados',
   water_results_ideal_range: 'Rango ideal: {{min}}–{{max}}{{unit}}',
@@ -1126,6 +1142,16 @@ export const es = {
   water_results_cta: 'Ver plan de tratamiento',
   water_results_empty:
     'Aún no hay lecturas. Vuelve atrás y selecciona los resultados de tu tira.',
+  water_results_pool_status_label: 'Estado de la piscina',
+  water_results_swim_status_label: 'Estado para nadar',
+
+  // swim status (dashboard + water results chips)
+  swim_status_safe: 'Seguro',
+  swim_status_safe_after_circulation: 'Seguro tras circular el agua',
+  swim_status_use_caution: 'Precaución',
+  swim_status_wait_before_swimming: 'Espera antes de nadar',
+  swim_status_do_not_swim: 'No nadar',
+  swim_status_unable_to_determine: 'No se pudo determinar',
 
   // bottom navigation
   nav_home: 'Inicio',

@@ -3,16 +3,21 @@ import { colors } from '@/constants/theme';
 import {
   getIdealStatusRange,
   getOverallPoolStatus,
+  getOverallSwimmingStatus,
   getReadingStatus,
   parseReadingValue,
+  toTestReadingsProps,
   type OverallStatus,
   type ReadingStatus,
+  type SwimmingStatus,
 } from '@/data/readingBands';
 import { getPads, type TestStripPad } from '@/data/testStripBrands';
+import { useSupabase } from '@/hooks/supabaseHooks';
 import { usePool } from '@/providers/PoolProvider';
 import { useTestStrips } from '@/providers/TestStripProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -67,12 +72,56 @@ const OVERALL_STATUS: Record<
     badgeColor: colors.status.error,
     icon: 'alert',
   },
+  unable_to_determine: {
+    labelKey: 'water_results_unable_to_determine',
+    summaryKey: 'water_results_summary_unable_to_determine',
+    badgeColor: colors.text.sub,
+    icon: 'help-circle-outline',
+  },
+};
+
+/** Badge copy/colors for the 6 swimming statuses from readingBands. */
+const SWIM_STATUS: Record<
+  SwimmingStatus,
+  { labelKey: string; badgeColor: string; icon: keyof typeof Ionicons.glyphMap }
+> = {
+  safe: {
+    labelKey: 'swim_status_safe',
+    badgeColor: colors.status.success,
+    icon: 'checkmark',
+  },
+  safe_after_circulation: {
+    labelKey: 'swim_status_safe_after_circulation',
+    badgeColor: colors.brand.aqua,
+    icon: 'checkmark',
+  },
+  use_caution: {
+    labelKey: 'swim_status_use_caution',
+    badgeColor: colors.status.warning,
+    icon: 'alert',
+  },
+  wait_before_swimming: {
+    labelKey: 'swim_status_wait_before_swimming',
+    badgeColor: colors.status.warning,
+    icon: 'time-outline',
+  },
+  do_not_swim: {
+    labelKey: 'swim_status_do_not_swim',
+    badgeColor: colors.status.error,
+    icon: 'close-circle',
+  },
+  unable_to_determine: {
+    labelKey: 'swim_status_unable_to_determine',
+    badgeColor: colors.text.sub,
+    icon: 'help-circle-outline',
+  },
 };
 
 const TEST_META: { match: RegExp; abbr: string; color: string }[] = [
   { match: /hardness/i, abbr: 'H', color: '#6E9C4D' },
   { match: /alkalinity/i, abbr: 'TA', color: '#8B9A3C' },
   { match: /cyanuric|stabilizer/i, abbr: 'CYA', color: '#F0983D' },
+  { match: /combined\s*chlorine/i, abbr: 'CC', color: '#9B6BB8' },
   { match: /total\s*chlorine/i, abbr: 'TC', color: '#2EB8D9' },
   { match: /free\s*chlorine|available\s*chlorine|fac/i, abbr: 'FC', color: '#E87BA0' },
   { match: /bromine/i, abbr: 'BR', color: '#6B8CAE' },
@@ -99,8 +148,9 @@ function clamp01(n: number) {
 export default function WaterResultsScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { selectedBrand, selections } = useTestStrips();
+  const { selectedBrand, selections, savedReadingId, setSavedReadingId } = useTestStrips();
   const { pools } = usePool();
+  const { testReadingsInsert } = useSupabase();
   const idealRanges = getIdealStatusRange(selections, pools);
 
   const pads = selectedBrand ? getPads(selectedBrand) : [];
@@ -114,9 +164,38 @@ export default function WaterResultsScreen() {
   );
   const idealCount = statuses.filter((status) => status === 'ideal').length;
 
+  // Hand every reading to the scoring functions; readingBands.ts figures out
+  // which param each one is and picks the most severe result across all of them.
+  // `value` is the raw parsed number — needed for hard swim-safety rules
+  // (e.g. FC above 10 ppm) that a 5-band classification can't express.
+  const readings = rows.map((pad, index) => ({
+    testName: pad.testName,
+    status: statuses[index],
+    value: parseReadingValue(selections[pad.testName]),
+  }));
+
   // this is status of the pool coming from the array declared at the start with the name of OVERALL_STATUS.
-  //pool condition wont be based on statuses, it will be changed later.
-  const overall = OVERALL_STATUS[getOverallPoolStatus(statuses)];
+  const poolStatus = getOverallPoolStatus(readings, pools);
+  const { status: swimmingStatus, messages: swimMessages } =
+    getOverallSwimmingStatus(readings);
+  const overall = OVERALL_STATUS[poolStatus];
+  const swim = SWIM_STATUS[swimmingStatus];
+
+  // Save the readings once per visit — moved from select-strip-results so the
+  // insert happens alongside the statuses shown here instead of twice.
+  // If the user went Back to change pads and returned, savedReadingId is
+  // still set, so this updates the existing row instead of inserting again.
+  const hasInsertedRef = useRef(false);
+  useEffect(() => {
+    if (hasInsertedRef.current || rows.length === 0) return;
+    hasInsertedRef.current = true;
+    const props = toTestReadingsProps(selections);
+    props.pool_status = poolStatus;
+    props.swimming_status = swimmingStatus;
+    void testReadingsInsert({ props, id: savedReadingId ?? undefined }).then(({ data }) => {
+      if (data?.id) setSavedReadingId(data.id);
+    });
+  }, [rows.length, selections, poolStatus, swimmingStatus, testReadingsInsert, savedReadingId, setSavedReadingId]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.white }}>
@@ -175,22 +254,55 @@ export default function WaterResultsScreen() {
               resizeMode="contain"
             />
             <View className="flex-1">
-              <View
-                className="self-start flex-row items-center gap-1 rounded-full px-2.5 py-1"
-                style={{ backgroundColor: overall.badgeColor }}
-              >
-                <Ionicons
-                  name={overall.icon}
-                  size={12}
-                  color={colors.surface.white}
-                />
-                <Text className="text-tiny font-jakarta-extrabold text-surface-white">
-                  {t(overall.labelKey)}
-                </Text>
+              <View className="flex-row flex-wrap gap-x-4 gap-y-1.5">
+                <View className="gap-1">
+                  <Text className="text-small font-jakarta-bold text-sub">
+                    {t('water_results_pool_status_label')}
+                  </Text>
+                  <View
+                    className="self-start flex-row items-center gap-1 rounded-full px-2.5 py-1"
+                    style={{ backgroundColor: overall.badgeColor }}
+                  >
+                    <Ionicons
+                      name={overall.icon}
+                      size={12}
+                      color={colors.surface.white}
+                    />
+                    <Text className="text-tiny font-jakarta-extrabold text-surface-white">
+                      {t(overall.labelKey)}
+                    </Text>
+                  </View>
+                </View>
+                <View className="gap-1">
+                  <Text className="text-small font-jakarta-bold text-sub">
+                    {t('water_results_swim_status_label')}
+                  </Text>
+                  <View
+                    className="self-start flex-row items-center gap-1 rounded-full px-2.5 py-1"
+                    style={{ backgroundColor: swim.badgeColor }}
+                  >
+                    <Ionicons
+                      name={swim.icon}
+                      size={12}
+                      color={colors.surface.white}
+                    />
+                    <Text className="text-tiny font-jakarta-extrabold text-surface-white">
+                      {t(swim.labelKey)}
+                    </Text>
+                  </View>
+                </View>
               </View>
               <Text className="text-small font-jakarta text-charcoal mt-2 leading-5">
                 {t(overall.summaryKey)}
               </Text>
+              {swimMessages.map((message) => (
+                <Text
+                  key={message}
+                  className="text-small font-jakarta-bold text-error mt-2 leading-5"
+                >
+                  {message}
+                </Text>
+              ))}
               <View className="flex-row items-center gap-1 mt-2">
                 <Ionicons
                   name="checkmark-circle"
@@ -217,13 +329,13 @@ export default function WaterResultsScreen() {
             </Text>
           ) : (
             <View className="gap-3">
-              <Text>a</Text>
-              {rows.map((pad) => (
+              {rows.map((pad, index) => (
                 <ResultRow
                   key={pad.testName}
                   pad={pad}
                   value={selections[pad.testName]}
                   range={idealRanges[pad.testName] ?? null}
+                  status={statuses[index]}
                 />
               ))}
             </View>
@@ -257,13 +369,15 @@ function ResultRow({
   pad,
   value,
   range,
+  status
 }: {
   pad: TestStripPad;
   value: string;
   range: { min: number; max: number } | null;
+  status: ReadingStatus;
 }) {
   const { t } = useTranslation();
-  const status = getReadingStatus(pad.testName, value, range);
+  // const status = getReadingStatus(pad.testName, value, range);
   const meta = testMeta(pad.testName);
   const { min, max } = scaleEnds(pad);
   const span = max - min || 1;

@@ -1,3 +1,5 @@
+import type { OverallStatus, SwimmingStatus } from '@/data/readingBands'
+
 export type Country = 'us' | 'es';
 export type Language = 'en' | 'es';
 export type Measurement = 'us' | 'metric';
@@ -110,6 +112,9 @@ export type testReadingsInsertProps = {
     total_hardness?: number
     calcium_hardness?: number
     total_chlorine?: number
+    combined_chlorine?: number
+    pool_status?: OverallStatus
+    swimming_status?: SwimmingStatus
 }
 
 export type Weekday =

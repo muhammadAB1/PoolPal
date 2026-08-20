@@ -225,21 +225,36 @@ export function useSupabase() {
         }
     }
 
-    async function testReadingsInsert({ props }: { props: testReadingsInsertProps }) {
-        console.log(props)
+    async function testReadingsInsert({ props, id }: { props: testReadingsInsertProps, id?: string }) {
         try {
-            const id = await AsyncStorage.getItem('activePoolId');
+
             console.log(id)
-            if (id) {
-                const { error } = await supabase
-                    .from('test_reading')
-                    .insert({ pool_id: id, free_chlorine: props.free_chlorine, bromine: props.bromine, ph: props.ph, total_alkalinity: props.total_alkalinity, cyanuric_acid: props.cyanuric_acid, calcium_hardness: props.calcium_hardness, })
-                if (!error) markPoolsStale();
-                return { error }
+            const poolId = await AsyncStorage.getItem('activePoolId');
+            if (!poolId) {
+                return { data: null, error: new Error('Pool ID not found') }
             }
-            return { error: new Error('Pool ID not found') }
+
+            const readingRow = { pool_id: poolId, free_chlorine: props.free_chlorine, total_chlorine: props.total_chlorine, bromine: props.bromine, ph: props.ph, total_alkalinity: props.total_alkalinity, cyanuric_acid: props.cyanuric_acid, calcium_hardness: props.calcium_hardness, combined_chlorine: props.combined_chlorine, pool_status: props.pool_status, swimming_status: props.swimming_status, }
+
+            if (id) {
+                const { data, error } = await supabase
+                    .from('test_reading')
+                    .update(readingRow)
+                    .eq('id', id)
+                // .select('id')
+                // .single()
+                if (!error) markPoolsStale();
+                return { data, error }
+            }
+            const { data, error } = await supabase
+                .from('test_reading')
+                .insert(readingRow)
+                .select('id')
+                .single()
+            if (!error) markPoolsStale();
+            return { data, error }
         } catch (error) {
-            return { error: error as Error }
+            return { data: null, error: error as Error }
         }
     }
 

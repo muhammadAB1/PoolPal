@@ -1,4 +1,4 @@
-import { Pool, testReadingsInsertProps } from "@/lib/types";
+import { Pool, SurfaceType, testReadingsInsertProps } from "@/lib/types";
 
 export type ReadingStatus =
   | 'very_low'
@@ -14,7 +14,17 @@ export type OverallStatus =
   | 'looking_great'
   | 'mostly_balanced'
   | 'needs_balancing'
-  | 'action_needed';
+  | 'action_needed'
+  | 'unable_to_determine';
+
+/** Whether it's safe to swim right now, based on the same pad statuses. */
+export type SwimmingStatus =
+  | 'safe'
+  | 'safe_after_circulation'
+  | 'use_caution'
+  | 'wait_before_swimming'
+  | 'do_not_swim'
+  | 'unable_to_determine';
 
 /**
  * Stable chemistry keys — brand catalog labels map into these.
@@ -24,6 +34,7 @@ export type OverallStatus =
 export type ParamKey =
   | 'total_hardness'
   | 'total_chlorine'
+  | 'combined_chlorine'
   | 'free_chlorine'
   | 'bromine'
   | 'total_alkalinity'
@@ -44,6 +55,7 @@ type CanonicalSelections = {
  */
 const PARAM_ALIASES: { key: ParamKey; match: RegExp }[] = [
   { key: 'free_chlorine', match: /free\s*(available\s*)?chlorine|fac/i },
+  { key: 'combined_chlorine', match: /combined\s*chlorine/i },
   { key: 'total_chlorine', match: /total\s*chlorine/i },
   { key: 'cyanuric_acid', match: /cyanuric|stabilizer/i },
   { key: 'total_alkalinity', match: /alkalinity/i },
@@ -125,7 +137,17 @@ export function toTestReadingsProps(
   if (values.cyanuric_acid != null) props.cyanuric_acid = values.cyanuric_acid;
   if (values.total_hardness != null) props.total_hardness = Number(values.total_hardness);
   if (values.calcium_hardness != null) props.calcium_hardness = Number(values.calcium_hardness);
-  if (values.total_chlorine != null) props.total_chlorine = Number(values.total_chlorine);
+  // If total_chlorine is not present, but combined_chlorine and free_chlorine are, calculate total_chlorine as their sum
+  if (values.total_chlorine != null) {
+    props.total_chlorine = Number(values.total_chlorine);
+  } else if (values.combined_chlorine != null && values.free_chlorine != null) {
+    props.total_chlorine = Number(values.combined_chlorine) + Number(values.free_chlorine);
+  }
+  if (values.combined_chlorine != null) {
+    props.combined_chlorine = Number(values.combined_chlorine);
+  } else if (values.total_chlorine != null && values.free_chlorine != null) {
+    props.combined_chlorine = Number(values.total_chlorine) - Number(values.free_chlorine);
+  }
 
   return props;
 }
@@ -167,6 +189,16 @@ export function getReadingStatus(
     return 'very_high';
   }
 
+  if (originalKey.combined_chlorine != undefined) {
+    const idealMin = range?.min ?? 0;
+    const idealMax = range?.max ?? 0.2;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+    if (reading >= 0.5) return 'very_high';
+    if (reading > idealMax) return 'high';
+    return 'ideal';
+  }
+
   if (originalKey.ph != undefined) {
     const idealMin = range?.min ?? 7.2;
     const idealMax = range?.max ?? 7.8;
@@ -176,6 +208,54 @@ export function getReadingStatus(
     if (reading < idealMin) return 'low';
     if (reading <= 8.0) return 'high';
     return 'very_high';
+  }
+
+  if (originalKey.calcium_hardness != undefined) {
+    const idealMin = range?.min ?? 200;
+    const idealMax = range?.max ?? 400;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+
+    // Ideal ranges from getIdealStatusRange (pools.surface_type) — spec table order:
+    // default — 200–400 ppm (Vinyl, NotSure, missing surface_type)
+
+    // Band thresholds — one block per unique ideal range (fill TODOs from spec):
+    if (idealMin === 200 && idealMax === 400) {
+      if (reading < 150) return 'very_low';
+      if (reading < idealMin) return 'low';
+      if (reading <= 999) return 'high'; // 401–999 slightly high + high
+      return 'very_high'; // 1,000+
+    }
+
+    if (idealMin === 80 && idealMax === 120) {
+      if (reading < 50) return 'very_low';
+      if (reading < idealMin) return 'low';
+      if (reading <= 220) return 'ideal'; // 80–220
+      if (reading <= 999) return 'high';
+      return 'very_high';
+    }
+
+    if (idealMin === 250 && idealMax === 320) {
+      if (reading < 150) return 'very_low';
+      if (reading < idealMin) return 'low';
+      if (reading <= idealMax) return 'ideal'; // 250–320
+      if (reading <= 999) return 'high';
+      return 'very_high';
+    }
+
+    if (idealMin === 150 && idealMax === 250) {
+      if (reading < 100) return 'very_low';
+      if (reading < idealMin) return 'low';
+      if (reading <= 600) return 'high'; // 251–600 slightly high + high
+      return 'very_high'; // 601+
+    }
+
+    if (idealMin === 150 && idealMax === 300) {
+      if (reading < 100) return 'very_low';
+      if (reading < idealMin) return 'low';
+      if (reading <= 600) return 'high'; // 301–600 slightly high + high
+      return 'very_high'; // 601+
+    }
   }
 
   if (originalKey.total_hardness != undefined) {
@@ -192,6 +272,12 @@ export function getReadingStatus(
   if (originalKey.cyanuric_acid != undefined) {
     const idealMin = range?.min ?? 30;
     const idealMax = range?.max ?? 50;
+
+    if (idealMin === 0 && idealMax === 0) {
+      if (reading === 0) return 'ideal';
+      if (reading <= 15) return 'high';
+      return 'very_high';
+    }
 
     if (reading >= idealMin && reading <= idealMax) return 'ideal';
     if (reading < 1) return 'very_low';
@@ -264,16 +350,25 @@ export function getIdealStatusRange(
   const { values, originalKey } = toCanonical(selections);
   const out: Record<string, IdealRange | null> = {};
 
+  const isFrequentUse =
+    pools?.usage_frequency === '4-5' || pools?.usage_frequency === '6-7';
+  const hasEnoughUsers =
+    pools?.number_of_users === '3-4' || pools?.number_of_users === '5+';
+  const isHeavyUse = isFrequentUse && hasEnoughUsers;
+
   if (originalKey.ph != undefined) {
     out[originalKey.ph] = { min: 7.2, max: 7.8 };
   }
 
-  if (originalKey.total_hardness != undefined) {
-    out[originalKey.total_hardness] = { min: 200, max: 400 };
+  if (originalKey.combined_chlorine != undefined) {
+    out[originalKey.combined_chlorine] = { min: 0, max: 0.2 };
   }
 
   if (originalKey.cyanuric_acid != undefined) {
     out[originalKey.cyanuric_acid] = { min: 30, max: 50 };
+    if (pools?.has_hot_tub === 'Yes') {
+      out[originalKey.cyanuric_acid] = { min: 0, max: 0 };
+    }
   }
 
   if (originalKey.free_chlorine != undefined) {
@@ -284,7 +379,8 @@ export function getIdealStatusRange(
     } else {
       out[originalKey.free_chlorine] = { min: 2, max: 3 };
     }
-    if (pools?.pool_use_type === 'ShortTermRental') {
+
+    if (pools?.pool_use_type === 'ShortTermRental' || isHeavyUse) {
       out[originalKey.free_chlorine] = { min: 2, max: 4 };
     }
     if (pools?.has_hot_tub === 'Yes') {
@@ -294,7 +390,7 @@ export function getIdealStatusRange(
 
   if (originalKey.bromine != undefined) {
     out[originalKey.bromine] = { min: 2, max: 4 };
-    if (pools?.pool_use_type === 'ShortTermRental') {
+    if (pools?.pool_use_type === 'ShortTermRental' || isHeavyUse) {
       out[originalKey.bromine] = { min: 3, max: 5 };
     }
     if (pools?.has_hot_tub === 'Yes') {
@@ -313,15 +409,359 @@ export function getIdealStatusRange(
   if (originalKey.total_hardness != undefined) {
     out[originalKey.total_hardness] = { min: 200, max: 400 };
   }
+
+  if (originalKey.calcium_hardness != undefined) {
+    switch (pools?.surface_type) {
+      case 'Fiberglass':
+        out[originalKey.calcium_hardness] = { min: 80, max: 120 };
+        break;
+      case 'PaintedConcrete':
+        out[originalKey.calcium_hardness] = { min: 250, max: 320 };
+        break;
+      case 'VinylLiner':
+        out[originalKey.calcium_hardness] = { min: 150, max: 250 };
+        break;
+      case 'StainlessSteel':
+        out[originalKey.calcium_hardness] = { min: 150, max: 300 };
+        break;
+      case 'Plaster':
+      case 'Tile':
+      case 'Pebble':
+      case 'Quartz':
+      case 'ReinforcedPvcMembrane':
+      case 'SmoothStoneGlassBead':
+      case 'Copper':
+      case 'OtherCustomSurface':
+        out[originalKey.calcium_hardness] = { min: 200, max: 400 };
+        break;
+      default:
+        // Vinyl, NotSure, missing surface_type — generic fallback
+        out[originalKey.calcium_hardness] = { min: 200, max: 400 };
+        break;
+    }
+  }
+
   return out;
 }
 
 /**
- * Stub — fill real overall-status logic later.
- * Picks the summary badge from every pad's band.
+ * Per-param classification → pool/swim status. Keyed by ParamKey so adding
+ * the next param (pH, alkalinity...) is just another entry here — no other
+ * code needs to change.
+ *
+ * The free chlorine scoring table has 7 rows (very low, low, slightly low,
+ * ideal, slightly high, high, very high) but `getReadingStatus` only reports
+ * 5 bands, so "slightly low"/"slightly high" become low/high and the more
+ * extreme rows on each side collapse into very_low/very_high.
  */
-export function getOverallPoolStatus(_statuses: ReadingStatus[]): OverallStatus {
-  return 'looking_great';
+const PARAM_POOL_STATUS: Partial<Record<ParamKey, Record<ReadingStatus, OverallStatus>>> = {
+  free_chlorine: {
+    very_low: 'action_needed',
+    low: 'action_needed',
+    ideal: 'looking_great',
+    high: 'mostly_balanced',
+    very_high: 'needs_balancing',
+  },
+  // "High" (4.1–8.0 ppm) maps to `high`; "High + safety restriction"
+  // (8.1–10.0 ppm) and "Very high" (>10.0 ppm) both collapse into
+  // `very_high` — see the boundary change in getReadingStatus above.
+  bromine: {
+    very_low: 'action_needed',
+    low: 'action_needed',
+    ideal: 'looking_great',
+    high: 'needs_balancing',
+    very_high: 'action_needed',
+  },
+  // pH's 5-row table maps 1:1 onto the 5 bands — no collapsing needed.
+  ph: {
+    very_low: 'action_needed',
+    low: 'needs_balancing',
+    ideal: 'looking_great',
+    high: 'needs_balancing',
+    very_high: 'action_needed',
+  },
+  // "Acceptable high / slightly high" (81–100 ppm) maps to `high`; "High"
+  // (101–180 ppm) and "Very high" (>180 ppm) both collapse into `very_high`
+  // — they agree on Needs Balancing anyway. `low` never actually occurs
+  // (very_low borders ideal directly), included only for type completeness.
+  total_alkalinity: {
+    very_low: 'needs_balancing',
+    low: 'needs_balancing',
+    ideal: 'looking_great',
+    high: 'needs_balancing',
+    very_high: 'needs_balancing',
+  },
+  // "Very low" (0 ppm) alone → `very_low`.
+  // "Low" (1–14 ppm) + "Slightly low" (15–29 ppm) collapse into `low`.
+  // "Slightly high" (51–70 ppm) + "High" (71–99 ppm) collapse into `high`.
+  // "Very high" (100–299) + "Critical" (300+) collapse into `very_high`.
+  // `high`/`very_high` are flattened to needs_balancing per instruction,
+  // instead of the raw table's mostly_balanced/needs_balancing/action_needed mix.
+  cyanuric_acid: {
+    very_low: 'needs_balancing',
+    low: 'mostly_balanced',
+    ideal: 'looking_great',
+    high: 'needs_balancing',
+    very_high: 'needs_balancing',
+  },
+  // "Below 100" + "100–149" collapse into `very_low` (both agree on
+  // Needs Balancing already). "Slightly low"/"Slightly high" map 1:1 onto
+  // `low`/`high`. "High" (501–799) + "Very high" (800+) collapse into
+  // `very_high`, flattened to needs_balancing per instruction instead of
+  // the raw table's needs_balancing/action_needed mix.
+  total_hardness: {
+    very_low: 'needs_balancing',
+    low: 'mostly_balanced',
+    ideal: 'looking_great',
+    high: 'mostly_balanced',
+    very_high: 'needs_balancing',
+  },
+
+  combined_chlorine: {
+    very_low: 'looking_great',
+    low: 'looking_great',
+    ideal: 'looking_great',
+    high: 'mostly_balanced',
+    very_high: 'action_needed',
+  },
+  // Default CH pool status (painted concrete and every other surface not in
+  // CALCIUM_HARDNESS_POOL_STATUS_OVERRIDES). Swim is always Safe for CH.
+  calcium_hardness: {
+    very_low: 'needs_balancing',
+    low: 'needs_balancing',
+    ideal: 'looking_great',
+    high: 'needs_balancing',
+    very_high: 'action_needed',
+  },
+};
+
+/**
+ * Only bands that differ from PARAM_POOL_STATUS.calcium_hardness.
+ * Painted concrete matches the default 1:1 — no override.
+ * Fiberglass / PVC / copper / other: Low is Mostly Balanced, not Needs Balancing.
+ * Stainless steel / vinyl liner: Very high is Needs Balancing (601–999 and
+ * ≥1,000 share the `very_high` band, so both use this override).
+ */
+const CALCIUM_HARDNESS_POOL_STATUS_OVERRIDES: Partial<
+  Record<SurfaceType, Partial<Record<ReadingStatus, OverallStatus>>>
+> = {
+  Fiberglass: { low: 'mostly_balanced' },
+  ReinforcedPvcMembrane: { low: 'mostly_balanced' },
+  Copper: { low: 'mostly_balanced' },
+  OtherCustomSurface: { low: 'mostly_balanced' },
+  StainlessSteel: { very_high: 'needs_balancing' },
+  VinylLiner: { very_high: 'needs_balancing' },
+};
+
+/**
+ * Note: `cyanuric_acid` has no entry here on purpose. Every row of its table
+ * says swim status is "unable to determine from CYA alone" (or "...until FC
+ * interaction is checked") — CYA never independently determines swim
+ * safety. Leaving it out means a CYA reading contributes nothing to
+ * getOverallSwimmingStatus, so the result falls back to whatever FC/bromine/
+ * pH say, or to 'unable_to_determine' if none of those were tested either.
+ */
+const PARAM_SWIM_STATUS: Partial<Record<ParamKey, Record<ReadingStatus, Exclude<SwimmingStatus, 'unable_to_determine'>>>> = {
+  free_chlorine: {
+    very_low: 'do_not_swim',
+    low: 'wait_before_swimming',
+    ideal: 'safe',
+    high: 'safe',
+    very_high: 'use_caution',
+  },
+  // very_high merges "High + safety restriction" (8.1–10.0 ppm) and "Very
+  // high" (>10.0 ppm) — both use Do not swim here.
+  bromine: {
+    very_low: 'do_not_swim',
+    low: 'wait_before_swimming',
+    ideal: 'safe',
+    high: 'use_caution',
+    very_high: 'do_not_swim',
+  },
+  ph: {
+    very_low: 'do_not_swim',
+    low: 'use_caution',
+    ideal: 'safe',
+    high: 'use_caution',
+    very_high: 'do_not_swim',
+  },
+  // Every TA row is marked Safe — alkalinity alone never restricts swimming.
+  total_alkalinity: {
+    very_low: 'safe',
+    low: 'safe',
+    ideal: 'safe',
+    high: 'safe',
+    very_high: 'safe',
+  },
+
+  total_hardness: {
+    very_low: 'safe',
+    low: 'safe',
+    ideal: 'safe',
+    high: 'safe',
+    very_high: 'safe',
+  },
+
+  combined_chlorine: {
+    very_low: 'safe',
+    low: 'safe',
+    ideal: 'safe',
+    high: 'use_caution',
+    very_high: 'wait_before_swimming',
+  },
+  calcium_hardness: {
+    very_low: 'safe',
+    low: 'safe',
+    ideal: 'safe',
+    high: 'safe',
+    very_high: 'safe',
+  }
+};
+
+/** Best (0) to worst — used to pick the most severe result across every param. */
+const POOL_STATUS_SEVERITY: Record<OverallStatus, number> = {
+  looking_great: 0,
+  mostly_balanced: 1,
+  needs_balancing: 2,
+  action_needed: 3,
+  unable_to_determine: 4,
+};
+
+/** Best (0) to worst — `unable_to_determine` is a no-data fallback, not ranked here. */
+const SWIM_STATUS_SEVERITY: Record<SwimmingStatus, number> = {
+  safe: 0,
+  safe_after_circulation: 1,
+  use_caution: 2,
+  wait_before_swimming: 3,
+  do_not_swim: 4,
+  unable_to_determine: 5,
+};
+
+/**
+ * One pad's test name, the band it fell into, and its raw parsed value.
+ * `value` is only needed for hard swim-safety rules that a 5-band
+ * classification can't express (e.g. "FC above 10 ppm" is still just
+ * `very_high`, same as 4.1 ppm, unless we check the actual number).
+ */
+export type ParamReading = {
+  testName: string;
+  status: ReadingStatus;
+  value: number | null;
+};
+
+/**
+ * A triggered swim rule. `message` is shown only when this override's status
+ * ends up being the one displayed.
+ */
+type SwimOverride = { status: SwimmingStatus; message?: string };
+
+/**
+ * Hard swim-safety rules that a 5-band table cannot express. pH and bromine
+ * are not listed here: pH <7 / >8 is already very_low / very_high → do not
+ * swim, and bromine >10 is already very_high → do not swim.
+ * FC >10 still needs an override because FC very_high only maps to use_caution.
+ */
+function swimHardOverrides(readings: ParamReading[]): SwimOverride[] {
+  const overrides: SwimOverride[] = [];
+
+  let freeChlorine: number | null = null;
+  let cyanuricAcid: number | null = null;
+  let totalChlorine: number | null = null;
+
+  for (const { testName, value } of readings) {
+    if (value == null) continue;
+    const keys = toParamKeys(testName);
+
+    if (keys.includes('free_chlorine')) {
+      if (value > 10) overrides.push({ status: 'do_not_swim' });
+      freeChlorine = value;
+    }
+    if (keys.includes('cyanuric_acid')) {
+      cyanuricAcid = value;
+    }
+    if (keys.includes('total_chlorine')) {
+      totalChlorine = value;
+    }
+  }
+
+  // CYA:FC ratio too high means chlorine is "locked" and can't sanitize
+  // effectively, even if FC's own reading looks fine on its own.
+  if (freeChlorine != null && cyanuricAcid != null && cyanuricAcid / freeChlorine > 45) {
+    overrides.push({
+      status: 'do_not_swim',
+      message:
+        'Cyanuric acid is more than 45 times your free chlorine, so the chlorine cannot sanitize.',
+    });
+  }
+
+  if (freeChlorine != null && totalChlorine != null && freeChlorine > totalChlorine) {
+    overrides.push({
+      status: 'unable_to_determine',
+      message: "Free chlorine can't be higher than total chlorine. Re-test your strip.",
+    });
+  }
+
+  return overrides;
+}
+
+/**
+ * Scores every reading against whichever params have a table above, then
+ * returns the most severe result. Params without a table yet (e.g. pH)
+ * contribute nothing until their table is added.
+ */
+export function getOverallPoolStatus(
+  readings: ParamReading[],
+  pools?: Pool | null,
+): OverallStatus {
+  const results: OverallStatus[] = [];
+  for (const { testName, status } of readings) {
+    for (const key of toParamKeys(testName)) {
+      const poolStatus =
+        key === 'calcium_hardness' && pools?.surface_type
+          ? (CALCIUM_HARDNESS_POOL_STATUS_OVERRIDES[pools.surface_type]?.[status] ??
+            PARAM_POOL_STATUS[key]?.[status])
+          : PARAM_POOL_STATUS[key]?.[status];
+      if (poolStatus) results.push(poolStatus);
+    }
+  }
+
+  if (results.length === 0) return 'looking_great';
+  return results.reduce((worst, current) =>
+    POOL_STATUS_SEVERITY[current] > POOL_STATUS_SEVERITY[worst] ? current : worst,
+  );
+}
+
+/**
+ * Scores every reading against whichever params have a table above, then
+ * returns the most severe result plus the messages explaining it. Only
+ * messages belonging to the winning status are returned, so the text never
+ * contradicts the badge.
+ */
+export function getOverallSwimmingStatus(
+  readings: ParamReading[],
+): { status: SwimmingStatus; messages: string[] } {
+  const results: SwimmingStatus[] = [];
+  for (const { testName, status } of readings) {
+    for (const key of toParamKeys(testName)) {
+      const value = PARAM_SWIM_STATUS[key]?.[status];
+      if (value) results.push(value);
+    }
+  }
+
+  const overrides = swimHardOverrides(readings);
+  results.push(...overrides.map((item) => item.status));
+
+  if (results.length === 0) return { status: 'unable_to_determine', messages: [] };
+
+  const status = results.reduce((worst, current) =>
+    SWIM_STATUS_SEVERITY[current] > SWIM_STATUS_SEVERITY[worst] ? current : worst,
+  );
+
+  const messages = overrides
+    .filter((item) => item.status === status && item.message)
+    .map((item) => item.message as string);
+
+  return { status, messages };
 }
 
 /** Pull a usable number from chart labels like "120" or "30–50". */

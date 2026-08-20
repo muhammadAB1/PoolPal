@@ -1,8 +1,6 @@
 import { icons } from '@/constants/images';
 import { colors } from '@/constants/theme';
-import { toTestReadingsProps } from '@/data/readingBands';
 import { getPads, type TestStripPad } from '@/data/testStripBrands';
-import { useSupabase } from '@/hooks/supabaseHooks';
 import { useTestStrips } from '@/providers/TestStripProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -15,7 +13,6 @@ export default function SelectStripResultsScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const { selectedBrand, setSelections: saveSelections } = useTestStrips();
-  const { testReadingsInsert } = useSupabase();
   const [selections, setSelections] = useState<Record<string, string>>({});
 
   const pads = selectedBrand ? getPads(selectedBrand) : [];
@@ -146,9 +143,8 @@ export default function SelectStripResultsScreen() {
           className={`btn btn--primary ${allSelected ? '' : 'opacity-50'}`}
           activeOpacity={0.85}
           disabled={!allSelected}
-          onPress={async () => {
+          onPress={() => {
             saveSelections(selections);
-            await testReadingsInsert({ props: toTestReadingsProps(selections) });
             router.push('/(readings)/water-results');
           }}
         >
