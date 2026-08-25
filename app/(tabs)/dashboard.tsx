@@ -63,11 +63,16 @@ export default function DashboardScreen() {
   const checklistTotal = REQUIRED_TASK_IDS.length;
   const checklistProgress = checklistTotal > 0 ? checklistCompleted / checklistTotal : 0;
 
+  // Recount from storage each time the dashboard is focused
   useFocusEffect(
     useCallback(() => {
-      void AsyncStorage.getItem('checklist.completedCount').then((v) =>
-        setChecklistCompleted(Number(v) || 0),
-      );
+      async function countCompletedTasks() {
+        const keys = REQUIRED_TASK_IDS.map((id) => `checklist.${id}`);
+        const entries = await AsyncStorage.multiGet(keys);
+        const count = entries.filter(([, raw]) => raw && JSON.parse(raw).done).length;
+        setChecklistCompleted(count);
+      }
+      void countCompletedTasks();
     }, []),
   );
 
@@ -142,7 +147,6 @@ export default function DashboardScreen() {
             <TouchableOpacity
               className="bg-brand-blue self-start flex-row items-center gap-1.5 rounded-full px-5 py-3 mt-3.5"
               activeOpacity={0.85}
-              onPress={() => router.push('/(readings)/choose-test-method')}
             >
               <Text className="text-button font-jakarta-bold text-surface-white">
                 {t('dashboard_choose_kit_cta')}
