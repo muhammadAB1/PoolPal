@@ -132,7 +132,7 @@ export const HAVE_RESULTS_FIELDS: readonly HaveResultsField[] = [
     labelKey: 'choose_test_method_salt_label',
     placeholder: '3200',
     unitKey: 'choose_test_method_unit_ppm',
-    idealMin: 2700,
+    idealMin: 3000,
     idealMax: 3400,
   },
 ] as const;

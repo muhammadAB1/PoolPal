@@ -126,6 +126,7 @@ const TEST_META: { match: RegExp; abbr: string; color: string }[] = [
   { match: /free\s*chlorine|available\s*chlorine|fac/i, abbr: 'FC', color: '#E87BA0' },
   { match: /bromine/i, abbr: 'BR', color: '#6B8CAE' },
   { match: /^ph$/i, abbr: 'pH', color: '#E5484D' },
+  { match: /salt/i, abbr: 'S', color: '#C4A484' },
 ];
 
 function testMeta(testName: string) {
@@ -175,7 +176,8 @@ export default function WaterResultsScreen() {
   }));
 
   // this is status of the pool coming from the array declared at the start with the name of OVERALL_STATUS.
-  const poolStatus = getOverallPoolStatus(readings, pools);
+  const { status: poolStatus, messages: poolMessages } =
+    getOverallPoolStatus(readings, pools, idealRanges);
   const { status: swimmingStatus, messages: swimMessages } =
     getOverallSwimmingStatus(readings);
   const overall = OVERALL_STATUS[poolStatus];
@@ -247,75 +249,50 @@ export default function WaterResultsScreen() {
           </Text>
 
           {/* Summary */}
-          <View className="card--info flex-row items-start gap-3 px-4 py-4 mt-4">
-            <Image
-              source={dashboardImages.poolIllustration}
-              className="w-14 h-14"
-              resizeMode="contain"
-            />
-            <View className="flex-1">
-              <View className="flex-row flex-wrap gap-x-4 gap-y-1.5">
-                <View className="gap-1">
+          <View className="card--info px-4 py-4 mt-4">
+            <View className="flex-row items-start gap-3">
+              <Image
+                source={dashboardImages.poolIllustration}
+                className="w-14 h-14"
+                resizeMode="contain"
+              />
+              <View className="flex-1">
+                <Text className="text-body font-jakarta-bold text-brand-navy leading-5">
+                  {t(overall.summaryKey)}
+                </Text>
+                <View className="flex-row items-center gap-1 mt-1.5">
+                  <Ionicons
+                    name="checkmark-circle"
+                    size={14}
+                    color={overall.badgeColor}
+                  />
                   <Text className="text-small font-jakarta-bold text-sub">
-                    {t('water_results_pool_status_label')}
+                    {t('water_results_in_range', {
+                      count: idealCount,
+                      total: rows.length,
+                    })}
                   </Text>
-                  <View
-                    className="self-start flex-row items-center gap-1 rounded-full px-2.5 py-1"
-                    style={{ backgroundColor: overall.badgeColor }}
-                  >
-                    <Ionicons
-                      name={overall.icon}
-                      size={12}
-                      color={colors.surface.white}
-                    />
-                    <Text className="text-tiny font-jakarta-extrabold text-surface-white">
-                      {t(overall.labelKey)}
-                    </Text>
-                  </View>
-                </View>
-                <View className="gap-1">
-                  <Text className="text-small font-jakarta-bold text-sub">
-                    {t('water_results_swim_status_label')}
-                  </Text>
-                  <View
-                    className="self-start flex-row items-center gap-1 rounded-full px-2.5 py-1"
-                    style={{ backgroundColor: swim.badgeColor }}
-                  >
-                    <Ionicons
-                      name={swim.icon}
-                      size={12}
-                      color={colors.surface.white}
-                    />
-                    <Text className="text-tiny font-jakarta-extrabold text-surface-white">
-                      {t(swim.labelKey)}
-                    </Text>
-                  </View>
                 </View>
               </View>
-              <Text className="text-small font-jakarta text-charcoal mt-2 leading-5">
-                {t(overall.summaryKey)}
-              </Text>
-              {swimMessages.map((message) => (
-                <Text
-                  key={message}
-                  className="text-small font-jakarta-bold text-error mt-2 leading-5"
-                >
-                  {message}
-                </Text>
-              ))}
-              <View className="flex-row items-center gap-1 mt-2">
-                <Ionicons
-                  name="checkmark-circle"
-                  size={14}
-                  color={overall.badgeColor}
-                />
-                <Text className="text-small font-jakarta-bold text-brand-navy">
-                  {t('water_results_in_range', {
-                    count: idealCount,
-                    total: rows.length,
-                  })}
-                </Text>
-              </View>
+            </View>
+
+            <View className="divider mt-3.5" />
+
+            <View className="gap-3 mt-3.5">
+              <StatusRow
+                label={t('water_results_pool_status_label')}
+                badgeLabel={t(overall.labelKey)}
+                badgeColor={overall.badgeColor}
+                icon={overall.icon}
+                messages={poolMessages}
+              />
+              <StatusRow
+                label={t('water_results_swim_status_label')}
+                badgeLabel={t(swim.labelKey)}
+                badgeColor={swim.badgeColor}
+                icon={swim.icon}
+                messages={swimMessages}
+              />
             </View>
           </View>
 
@@ -362,6 +339,51 @@ export default function WaterResultsScreen() {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+  );
+}
+
+/** One labelled status line: label, its badge, and any warnings it triggered. */
+function StatusRow({
+  label,
+  badgeLabel,
+  badgeColor,
+  icon,
+  messages,
+}: {
+  label: string;
+  badgeLabel: string;
+  badgeColor: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  messages: string[];
+}) {
+  return (
+    <View>
+      <View className="flex-row items-center justify-between gap-3">
+        <Text className="text-small font-jakarta-bold text-sub">{label}</Text>
+        <View
+          className="flex-row items-center gap-1 rounded-full px-2.5 py-1"
+          style={{ backgroundColor: badgeColor }}
+        >
+          <Ionicons name={icon} size={12} color={colors.surface.white} />
+          <Text className="text-tiny font-jakarta-extrabold text-surface-white">
+            {badgeLabel}
+          </Text>
+        </View>
+      </View>
+
+      {messages.map((message) => (
+        <View key={message} className="flex-row items-start gap-1.5 mt-2">
+          <Ionicons
+            name="alert-circle"
+            size={14}
+            color={colors.status.error}
+          />
+          <Text className="flex-1 text-small font-jakarta text-error leading-5">
+            {message}
+          </Text>
+        </View>
+      ))}
+    </View>
   );
 }
 

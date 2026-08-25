@@ -40,7 +40,8 @@ export type ParamKey =
   | 'total_alkalinity'
   | 'cyanuric_acid'
   | 'ph'
-  | 'calcium_hardness';
+  | 'calcium_hardness'
+  | 'salt';
 
 type CanonicalSelections = {
   values: Partial<Record<ParamKey, number>>;
@@ -63,6 +64,7 @@ const PARAM_ALIASES: { key: ParamKey; match: RegExp }[] = [
   { key: 'bromine', match: /bromine/i },
   { key: 'ph', match: /^ph$/i },
   { key: 'calcium_hardness', match: /calcium\s*hardness/i },
+  { key: 'salt', match: /salt/i },
 ];
 
 /** Every ParamKey that this catalog label maps to (0–n). */
@@ -137,6 +139,7 @@ export function toTestReadingsProps(
   if (values.cyanuric_acid != null) props.cyanuric_acid = values.cyanuric_acid;
   if (values.total_hardness != null) props.total_hardness = Number(values.total_hardness);
   if (values.calcium_hardness != null) props.calcium_hardness = Number(values.calcium_hardness);
+  if (values.salt != null) props.salt = Number(values.salt);
   // If total_chlorine is not present, but combined_chlorine and free_chlorine are, calculate total_chlorine as their sum
   if (values.total_chlorine != null) {
     props.total_chlorine = Number(values.total_chlorine);
@@ -335,6 +338,17 @@ export function getReadingStatus(
     }
   }
 
+  if (originalKey.salt != undefined) {
+    const idealMin = range?.min ?? 3000;
+    const idealMax = range?.max ?? 3400;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+    if (reading < 2000) return 'very_low';
+    if (reading < idealMin) return 'low'; // 2,000–2,599 low + 2,600–2,999 slightly low
+    if (reading < 4000) return 'high'; // 3,401–3,999 slightly high
+    return 'very_high'; // 4,000–4,499 high + ≥4,500
+  }
+
   return 'ideal';
 }
 
@@ -441,6 +455,10 @@ export function getIdealStatusRange(
     }
   }
 
+  if (originalKey.salt != undefined) {
+    out[originalKey.salt] = { min: 3000, max: 3400 };
+  }
+
   return out;
 }
 
@@ -533,6 +551,20 @@ const PARAM_POOL_STATUS: Partial<Record<ParamKey, Record<ReadingStatus, OverallS
     high: 'needs_balancing',
     very_high: 'action_needed',
   },
+  // "Very low" (below 2,000) alone → `very_low`.
+  // "Low" (2,000–2,599) + "Slightly low" (2,600–2,999) collapse into `low`.
+  // `low` flattens to needs_balancing (Low is Needs Balancing, Slightly low
+  // is Mostly Balanced). "Slightly high" maps 1:1 onto `high`.
+  // "High" (4,000–4,499) + "Very high" (≥4,500) collapse into `very_high` —
+  // they disagree (Needs Balancing vs Action Needed); using action_needed
+  // so ≥4,500 stays Action Needed.
+  salt: {
+    very_low: 'needs_balancing',
+    low: 'needs_balancing',
+    ideal: 'looking_great',
+    high: 'mostly_balanced',
+    very_high: 'action_needed',
+  },
 };
 
 /**
@@ -615,7 +647,15 @@ const PARAM_SWIM_STATUS: Partial<Record<ParamKey, Record<ReadingStatus, Exclude<
     ideal: 'safe',
     high: 'safe',
     very_high: 'safe',
-  }
+  },
+  // Every salt row is marked Safe — salinity alone never restricts swimming.
+  salt: {
+    very_low: 'safe',
+    low: 'safe',
+    ideal: 'safe',
+    high: 'safe',
+    very_high: 'safe',
+  },
 };
 
 /** Best (0) to worst — used to pick the most severe result across every param. */
@@ -701,20 +741,137 @@ function swimHardOverrides(readings: ParamReading[]): SwimOverride[] {
     });
   }
 
+  // if cyanuric acid is there but free chlorine is not then do not swim
+  if (cyanuricAcid != null && freeChlorine == null) {
+    overrides.push({
+      status: 'unable_to_determine',
+      message: "Cyanuric acid is present but free chlorine is not. Re-test your strip.",
+    });
+  }
+
+  return overrides;
+}
+
+type PoolOverride = {
+  status: OverallStatus;
+  message?: string;
+  /** When set, this pad's table result is skipped so the override can win. */
+  replaceTestName?: string;
+};
+
+/**
+ * Same shape as swimHardOverrides. `unable_to_determine` is for bad-strip
+ * problems. `action_needed` is for chemistry the 5-band table cannot express
+ * (FC > 10 is still just `very_high`, bromine 8.1–10 is still just `high`).
+ * Set `replaceTestName` when the override is milder than the table so it
+ * can actually win.
+ */
+function poolHardOverrides(
+  readings: ParamReading[],
+  ranges?: Record<string, IdealRange | null>,
+): PoolOverride[] {
+  const overrides: PoolOverride[] = [];
+
+  let freeChlorine: number | null = null;
+  let cyanuricAcid: number | null = null;
+  let totalChlorine: number | null = null;
+
+  for (const { testName, value } of readings) {
+    if (value == null) continue;
+    const keys = toParamKeys(testName);
+
+    if (keys.includes('free_chlorine')) {
+      if (value > 10) overrides.push({ status: 'action_needed' });
+      freeChlorine = value;
+    }
+    if (keys.includes('bromine')) {
+      if (value > 8) overrides.push({ status: 'action_needed' });
+    }
+    if (keys.includes('cyanuric_acid')) {
+      cyanuricAcid = value;
+      const range = ranges?.[testName];
+      if (
+        range?.min === 30 &&
+        range?.max === 50 &&
+        ((value >= 15 && value <= 29) || (value >= 51 && value <= 70))
+      ) {
+        overrides.push({
+          status: 'mostly_balanced',
+          replaceTestName: testName,
+        });
+      }
+    }
+    if (keys.includes('total_chlorine')) {
+      totalChlorine = value;
+    }
+    if (keys.includes('total_alkalinity')) {
+      const range = ranges?.[testName];
+      if (
+        range?.min === 80 &&
+        range?.max === 100 &&
+        value >= 101 &&
+        value <= 120
+      ) {
+        overrides.push({
+          status: 'mostly_balanced',
+          replaceTestName: testName,
+        });
+      }
+    }
+    if (keys.includes('calcium_hardness')) {
+      const range = ranges?.[testName];
+      const slightlyHigh =
+        (range?.min === 150 && range?.max === 250 && value >= 251 && value <= 400) ||
+        (range?.min === 150 && range?.max === 300 && value >= 301 && value <= 400) ||
+        (range?.min === 200 && range?.max === 400 && value >= 401 && value <= 600);
+      if (slightlyHigh) {
+        overrides.push({
+          status: 'mostly_balanced',
+          replaceTestName: testName,
+        });
+      }
+    }
+  }
+
+  if (freeChlorine != null && cyanuricAcid != null && cyanuricAcid / freeChlorine > 45) {
+    overrides.push({
+      status: 'action_needed',
+      message:
+        'Cyanuric acid is more than 45 times your free chlorine, so the chlorine cannot sanitize.',
+    });
+  }
+
+  if (freeChlorine != null && totalChlorine != null && freeChlorine > totalChlorine) {
+    overrides.push({
+      status: 'unable_to_determine',
+      message: "Free chlorine can't be higher than total chlorine. Re-test your strip.",
+    });
+  }
+
   return overrides;
 }
 
 /**
  * Scores every reading against whichever params have a table above, then
- * returns the most severe result. Params without a table yet (e.g. pH)
- * contribute nothing until their table is added.
+ * returns the most severe result plus the messages explaining it. Only
+ * messages belonging to the winning status are returned, so the text never
+ * contradicts the badge.
  */
 export function getOverallPoolStatus(
   readings: ParamReading[],
   pools?: Pool | null,
-): OverallStatus {
+  ranges?: Record<string, IdealRange | null>,
+): { status: OverallStatus; messages: string[] } {
+  const overrides = poolHardOverrides(readings, ranges);
+  const replacedPads = new Set(
+    overrides
+      .map((item) => item.replaceTestName)
+      .filter((name): name is string => name != null),
+  );
+
   const results: OverallStatus[] = [];
   for (const { testName, status } of readings) {
+    if (replacedPads.has(testName)) continue;
     for (const key of toParamKeys(testName)) {
       const poolStatus =
         key === 'calcium_hardness' && pools?.surface_type
@@ -725,10 +882,19 @@ export function getOverallPoolStatus(
     }
   }
 
-  if (results.length === 0) return 'looking_great';
-  return results.reduce((worst, current) =>
+  results.push(...overrides.map((item) => item.status));
+
+  if (results.length === 0) return { status: 'unable_to_determine', messages: [] };
+
+  const status = results.reduce((worst, current) =>
     POOL_STATUS_SEVERITY[current] > POOL_STATUS_SEVERITY[worst] ? current : worst,
   );
+
+  const messages = overrides
+    .filter((item) => item.status === status && item.message)
+    .map((item) => item.message as string);
+
+  return { status, messages };
 }
 
 /**

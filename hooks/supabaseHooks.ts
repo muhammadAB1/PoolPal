@@ -234,7 +234,7 @@ export function useSupabase() {
                 return { data: null, error: new Error('Pool ID not found') }
             }
 
-            const readingRow = { pool_id: poolId, free_chlorine: props.free_chlorine, total_chlorine: props.total_chlorine, bromine: props.bromine, ph: props.ph, total_alkalinity: props.total_alkalinity, cyanuric_acid: props.cyanuric_acid, calcium_hardness: props.calcium_hardness, combined_chlorine: props.combined_chlorine, pool_status: props.pool_status, swimming_status: props.swimming_status, }
+            const readingRow = { pool_id: poolId, free_chlorine: props.free_chlorine, total_chlorine: props.total_chlorine, bromine: props.bromine, ph: props.ph, total_alkalinity: props.total_alkalinity, cyanuric_acid: props.cyanuric_acid, calcium_hardness: props.calcium_hardness, combined_chlorine: props.combined_chlorine, salt: props.salt, pool_status: props.pool_status, swimming_status: props.swimming_status, }
 
             if (id) {
                 const { data, error } = await supabase

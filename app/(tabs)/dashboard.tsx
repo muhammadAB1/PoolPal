@@ -142,7 +142,7 @@ export default function DashboardScreen() {
             <TouchableOpacity
               className="bg-brand-blue self-start flex-row items-center gap-1.5 rounded-full px-5 py-3 mt-3.5"
               activeOpacity={0.85}
-              onPress={() => router.push('/(readings)/choose-strip-brand')}
+              onPress={() => router.push('/(readings)/choose-test-method')}
             >
               <Text className="text-button font-jakarta-bold text-surface-white">
                 {t('dashboard_choose_kit_cta')}

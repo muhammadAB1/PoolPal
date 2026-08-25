@@ -111,6 +111,7 @@ export type testReadingsInsertProps = {
     cyanuric_acid?: string
     total_hardness?: number
     calcium_hardness?: number
+    salt?: number
     total_chlorine?: number
     combined_chlorine?: number
     pool_status?: OverallStatus
