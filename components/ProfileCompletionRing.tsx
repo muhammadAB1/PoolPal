@@ -1,5 +1,7 @@
 import { colors } from '@/constants/colors';
-import { Text, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Animated, Easing, Text, View } from 'react-native';
+import Svg, { Circle } from 'react-native-svg';
 
 type ProfileCompletionRingProps = {
   /** Completion value from 0–100 (e.g. profile_completion_score). */
@@ -12,7 +14,8 @@ type ProfileCompletionRingProps = {
   trackColor?: string;
 };
 
-const TICK_COUNT = 72;
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+const ANIMATION_DURATION_MS = 700;
 
 /**
  * Reusable circular profile-completion indicator.
@@ -28,40 +31,65 @@ export default function ProfileCompletionRing({
   trackColor = '#E6EEF0',
 }: ProfileCompletionRingProps) {
   const clamped = Math.min(100, Math.max(0, Math.round(percentage)));
-  const filledTicks = Math.round((clamped / 100) * TICK_COUNT);
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
-  // Slight overlap so ticks read as a continuous ring
-  const tickWidth = circumference / TICK_COUNT + 0.6;
+  const animatedOffset = useRef(new Animated.Value(circumference)).current;
+
+  useEffect(() => {
+    const animation = Animated.timing(animatedOffset, {
+      toValue: circumference * (1 - clamped / 100),
+      duration: ANIMATION_DURATION_MS,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: false,
+    });
+
+    animation.start();
+
+    return () => animation.stop();
+  }, [animatedOffset, circumference, clamped]);
 
   return (
     <View
       style={{ width: size, height: size }}
       className="items-center justify-center"
+      accessible
+      accessibilityRole="progressbar"
+      accessibilityLabel={label ?? 'Profile completion'}
+      accessibilityValue={{ min: 0, max: 100, now: clamped }}
     >
-      {Array.from({ length: TICK_COUNT }).map((_, index) => {
-        const angle = (index / TICK_COUNT) * 360 - 90;
-        const radians = (angle * Math.PI) / 180;
-        const isFilled = index < filledTicks;
+      <Svg
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        style={{ position: 'absolute' }}
+      >
+        <Circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke={trackColor}
+          strokeWidth={strokeWidth}
+        />
+        <AnimatedCircle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke={progressColor}
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeDasharray={`${circumference} ${circumference}`}
+          strokeDashoffset={animatedOffset}
+          rotation="-90"
+          origin={`${size / 2}, ${size / 2}`}
+        />
+      </Svg>
 
-        return (
-          <View
-            key={index}
-            style={{
-              position: 'absolute',
-              width: tickWidth,
-              height: strokeWidth,
-              borderRadius: strokeWidth / 2,
-              backgroundColor: isFilled ? progressColor : trackColor,
-              left: size / 2 + radius * Math.cos(radians) - tickWidth / 2,
-              top: size / 2 + radius * Math.sin(radians) - strokeWidth / 2,
-              transform: [{ rotate: `${angle + 90}deg` }],
-            }}
-          />
-        );
-      })}
-
-      <View className="items-center justify-center px-3">
+      <View
+        className="items-center justify-center px-3"
+        importantForAccessibility="no-hide-descendants"
+      >
         <Text
           className="font-jakarta-extrabold text-brand-navy"
           style={{ fontSize: size * 0.26, lineHeight: size * 0.3 }}
