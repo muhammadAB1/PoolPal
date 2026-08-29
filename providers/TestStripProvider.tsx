@@ -1,3 +1,5 @@
+import { testReadingRowToSelections } from '@/data/chooseTestMethod';
+import type { OverallStatus, ReadingStatus, SwimmingStatus } from '@/data/readingBands';
 import {
   CATALOG_ROWS,
   toBrands,
@@ -5,7 +7,9 @@ import {
   type TestStripBrandRow,
 } from '@/data/testStripBrands';
 import { supabase } from '@/lib/Supabase';
+import type { TestReadingRow } from '@/lib/types';
 import { useAuth } from '@/providers/AuthProvider';
+import { usePool } from '@/providers/PoolProvider';
 import {
   createContext,
   useCallback,
@@ -14,6 +18,13 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+
+export type LatestReading = {
+  selections: Record<string, string>;
+  poolStatus: OverallStatus | null;
+  swimmingStatus: SwimmingStatus | null;
+  createdAt: string | null;
+};
 
 type TestStripContextValue = {
   /** Bundled catalog brands plus any strips this user added. */
@@ -27,8 +38,17 @@ type TestStripContextValue = {
    *  Back + Continue updates that row instead of inserting a new one. */
   savedReadingId: string | null;
   setSavedReadingId: (id: string | null) => void;
+  poolStatus: OverallStatus | null;
+  readingStatus: ReadingStatus[];
+  swimmingStatus: SwimmingStatus | null;
+  setResultStatus: (pool: OverallStatus, reading: ReadingStatus[], swimming: SwimmingStatus) => void;
+  /** Last saved reading for the Readings tab. Separate from in-progress session state. */
+  latestReading: LatestReading | null;
+  /** Bump after a successful insert/update so the latest-reading effect fetches once more. */
+  bumpSaveCount: () => void;
   /** Call after the user saves a custom strip so it appears in the list. */
   refreshCustomStrips: () => Promise<void>;
+  allReadings: TestReadingRow[];
 };
 
 const TestStripContext = createContext<TestStripContextValue | undefined>(
@@ -36,17 +56,30 @@ const TestStripContext = createContext<TestStripContextValue | undefined>(
 );
 
 /**
- * Mounted by the readings layout so the brand list and the current selection
- * survive every push/back inside the flow without refetching.
+ * One shared box for the test-strip flow and the Readings tab.
+ * Mounted at the root so both screens see the same latest-reading cache.
  */
 export function TestStripProvider({ children }: { children: ReactNode }) {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const { poolId, loading: poolLoading } = usePool();
   const [customRows, setCustomRows] = useState<TestStripBrandRow[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selections, setSelections] = useState<Record<string, string>>({});
   const [savedReadingId, setSavedReadingId] = useState<string | null>(null);
+  const [poolStatus, setPoolStatus] = useState<OverallStatus | null>(null);
+  const [readingStatus, setReadingStatus] = useState<ReadingStatus[]>([]);
+  const [swimmingStatus, setSwimmingStatus] = useState<SwimmingStatus | null>(null);
+  const [latestReading, setLatestReading] = useState<LatestReading | null>(null);
+  const [allReadings, setAllReadings] = useState<TestReadingRow[]>([]);
+  const [saveCount, setSaveCount] = useState(0);
+
+  const bumpSaveCount = useCallback(() => {
+    setSaveCount((count) => count + 1);
+  }, []);
 
   const refreshCustomStrips = useCallback(async () => {
+    if (authLoading || poolLoading) return;
+
     if (!user) {
       setCustomRows([]);
       return;
@@ -58,11 +91,41 @@ export function TestStripProvider({ children }: { children: ReactNode }) {
       .eq('user_id', user.id);
 
     setCustomRows(data ?? []);
-  }, [user]);
+  }, [authLoading, poolLoading, user]);
 
   useEffect(() => {
     refreshCustomStrips();
   }, [refreshCustomStrips]);
+
+  useEffect(() => {
+    if (authLoading || poolLoading) return;
+
+    if (!user || !poolId) {
+      setLatestReading(null);
+      return;
+    }
+
+    void supabase
+      .from('test_reading')
+      .select('*')
+      .eq('pool_id', poolId)
+      .order('created_at', { ascending: false })
+      .then(({ data }) => {
+        if (!data) {
+          setLatestReading(null);
+          return;
+        }
+
+        setAllReadings(data as TestReadingRow[]);
+
+        setLatestReading({
+          selections: testReadingRowToSelections(data[0]),
+          poolStatus: data[0].pool_status ?? null,
+          swimmingStatus: data[0].swimming_status ?? null,
+          createdAt: data[0].created_at ?? null,
+        });
+      });
+  }, [authLoading, poolLoading, user, poolId, saveCount]);
 
   return (
     <TestStripContext.Provider
@@ -74,7 +137,18 @@ export function TestStripProvider({ children }: { children: ReactNode }) {
         setSelections,
         savedReadingId,
         setSavedReadingId,
+        poolStatus,
+        readingStatus,
+        swimmingStatus,
+        setResultStatus: (pool, reading, swimming) => {
+          setPoolStatus(pool);
+          setReadingStatus(reading);
+          setSwimmingStatus(swimming);
+        },
+        latestReading,
+        bumpSaveCount,
         refreshCustomStrips,
+        allReadings,
       }}
     >
       {children}

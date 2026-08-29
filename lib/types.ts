@@ -118,6 +118,25 @@ export type testReadingsInsertProps = {
     swimming_status?: SwimmingStatus
 }
 
+/** One row from the test_reading table. */
+export type TestReadingRow = {
+    id: string
+    pool_id: string
+    created_at: string
+    free_chlorine?: number | null
+    total_chlorine?: number | null
+    bromine?: number | null
+    ph?: number | null
+    total_alkalinity?: number | null
+    cyanuric_acid?: string | number | null
+    calcium_hardness?: number | null
+    salt?: number | null
+    combined_chlorine?: number | null
+    total_hardness?: number | null
+    pool_status?: OverallStatus | null
+    swimming_status?: SwimmingStatus | null
+}
+
 export type Weekday =
     | 'Sunday'
     | 'Monday'

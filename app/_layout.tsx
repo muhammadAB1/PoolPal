@@ -3,6 +3,7 @@ import '../global.css';
 
 import { AuthProvider } from '@/providers/AuthProvider';
 import { PoolProvider } from '@/providers/PoolProvider';
+import { TestStripProvider } from '@/providers/TestStripProvider';
 import {
   PlusJakartaSans_400Regular,
   PlusJakartaSans_600SemiBold,
@@ -48,11 +49,13 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <PoolProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        />
+        <TestStripProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          />
+        </TestStripProvider>
       </PoolProvider>
     </AuthProvider>
   );

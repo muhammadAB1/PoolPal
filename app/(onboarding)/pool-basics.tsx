@@ -49,7 +49,7 @@ export default function PoolBasicsScreen() {
 
         const { error } = await poolBasicInsert({
             poolName,
-            poolType,
+            poolType: poolType === 'Other' ? 'Chlorine' : poolType,
             screened,
             hasHotTub,
             useType,

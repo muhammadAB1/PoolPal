@@ -1,5 +1,6 @@
 import catalog from '@/assets/test-strips/test_strips_rows.json';
 import { testStripBrandIcons } from '@/constants/images';
+import { HAVE_RESULTS_FIELDS } from '@/data/chooseTestMethod';
 import type { ImageSourcePropType } from 'react-native';
 
 /** One pad-level row from the catalog: a single test on a single strip. */
@@ -69,4 +70,25 @@ export function getPads(selection: string, rows = CATALOG_ROWS): TestStripPad[] 
       unit: clean(row.unit ?? ''),
       colors: parseColors(row.displayed_value),
     }));
+}
+
+/**
+ * Pads for the current test session — the full brand pad list when a strip
+ * was scanned/selected, or a synthetic list built from whichever
+ * HAVE_RESULTS_FIELDS the user typed manually. Shared by every screen that
+ * needs to pair `selections` with the pads that produced them.
+ */
+export function resolvePads(
+  selectedBrand: string | null,
+  selections: Record<string, string>,
+): TestStripPad[] {
+  if (selectedBrand) return getPads(selectedBrand);
+
+  return HAVE_RESULTS_FIELDS.filter(
+    (field) => selections[field.testName] != null,
+  ).map((field) => ({
+    testName: field.testName,
+    unit: field.unitKey === 'choose_test_method_unit_none' ? '' : 'ppm',
+    colors: [],
+  }));
 }

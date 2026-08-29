@@ -6,12 +6,14 @@ import {
   getOverallSwimmingStatus,
   getReadingStatus,
   parseReadingValue,
+  READING_RANGE,
+  toParamKey,
   toTestReadingsProps,
-  type OverallStatus,
   type ReadingStatus,
-  type SwimmingStatus,
 } from '@/data/readingBands';
-import { getPads, type TestStripPad } from '@/data/testStripBrands';
+import { OVERALL_STATUS, STATUS_BADGE, STATUS_LABEL, SWIM_STATUS } from '@/data/readingPoolAndSwimStatusUiLabelsColorsAndIcons';
+import { resolvePads, type TestStripPad } from '@/data/testStripBrands';
+import { testMeta } from '@/data/waterTestNameToAbbreviationAndColor';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { usePool } from '@/providers/PoolProvider';
 import { useTestStrips } from '@/providers/TestStripProvider';
@@ -22,124 +24,19 @@ import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const STATUS_LABEL: Record<ReadingStatus, string> = {
-  very_low: 'water_results_status_very_low',
-  low: 'water_results_status_low',
-  ideal: 'water_results_status_ideal',
-  high: 'water_results_status_high',
-  very_high: 'water_results_status_very_high',
-};
-
-const STATUS_BADGE: Record<ReadingStatus, { container: string; text: string }> = {
-  very_low: { container: 'bg-[#FDECEC]', text: 'text-error' },
-  low: { container: 'bg-warning-bg', text: 'text-warning' },
-  ideal: { container: 'bg-surface-mint', text: 'text-success-text' },
-  high: { container: 'bg-warning-bg', text: 'text-warning' },
-  very_high: { container: 'bg-[#FDECEC]', text: 'text-error' },
-};
-
-/** Badge + summary copy/colors for the 4 overall statuses from readingBands. */
-const OVERALL_STATUS: Record<
-  OverallStatus,
-  {
-    labelKey: string;
-    summaryKey: string;
-    badgeColor: string;
-    icon: keyof typeof Ionicons.glyphMap;
-  }
-> = {
-  looking_great: {
-    labelKey: 'water_results_looking_great',
-    summaryKey: 'water_results_summary_looking_great',
-    badgeColor: colors.status.success,
-    icon: 'checkmark',
-  },
-  mostly_balanced: {
-    labelKey: 'water_results_mostly_balanced',
-    summaryKey: 'water_results_summary_mostly_balanced',
-    badgeColor: colors.brand.aqua,
-    icon: 'checkmark',
-  },
-  needs_balancing: {
-    labelKey: 'water_results_needs_balancing',
-    summaryKey: 'water_results_summary_needs_balancing',
-    badgeColor: colors.status.warning,
-    icon: 'alert',
-  },
-  action_needed: {
-    labelKey: 'water_results_action_needed',
-    summaryKey: 'water_results_summary_action_needed',
-    badgeColor: colors.status.error,
-    icon: 'alert',
-  },
-  unable_to_determine: {
-    labelKey: 'water_results_unable_to_determine',
-    summaryKey: 'water_results_summary_unable_to_determine',
-    badgeColor: colors.text.sub,
-    icon: 'help-circle-outline',
-  },
-};
-
-/** Badge copy/colors for the 6 swimming statuses from readingBands. */
-const SWIM_STATUS: Record<
-  SwimmingStatus,
-  { labelKey: string; badgeColor: string; icon: keyof typeof Ionicons.glyphMap }
-> = {
-  safe: {
-    labelKey: 'swim_status_safe',
-    badgeColor: colors.status.success,
-    icon: 'checkmark',
-  },
-  safe_after_circulation: {
-    labelKey: 'swim_status_safe_after_circulation',
-    badgeColor: colors.brand.aqua,
-    icon: 'checkmark',
-  },
-  use_caution: {
-    labelKey: 'swim_status_use_caution',
-    badgeColor: colors.status.warning,
-    icon: 'alert',
-  },
-  wait_before_swimming: {
-    labelKey: 'swim_status_wait_before_swimming',
-    badgeColor: colors.status.warning,
-    icon: 'time-outline',
-  },
-  do_not_swim: {
-    labelKey: 'swim_status_do_not_swim',
-    badgeColor: colors.status.error,
-    icon: 'close-circle',
-  },
-  unable_to_determine: {
-    labelKey: 'swim_status_unable_to_determine',
-    badgeColor: colors.text.sub,
-    icon: 'help-circle-outline',
-  },
-};
-
-const TEST_META: { match: RegExp; abbr: string; color: string }[] = [
-  { match: /hardness/i, abbr: 'H', color: '#6E9C4D' },
-  { match: /alkalinity/i, abbr: 'TA', color: '#8B9A3C' },
-  { match: /cyanuric|stabilizer/i, abbr: 'CYA', color: '#F0983D' },
-  { match: /combined\s*chlorine/i, abbr: 'CC', color: '#9B6BB8' },
-  { match: /total\s*chlorine/i, abbr: 'TC', color: '#2EB8D9' },
-  { match: /free\s*chlorine|available\s*chlorine|fac/i, abbr: 'FC', color: '#E87BA0' },
-  { match: /bromine/i, abbr: 'BR', color: '#6B8CAE' },
-  { match: /^ph$/i, abbr: 'pH', color: '#E5484D' },
-  { match: /salt/i, abbr: 'S', color: '#C4A484' },
-];
-
-function testMeta(testName: string) {
-  const found = TEST_META.find((item) => item.match.test(testName));
-  return found ?? { abbr: testName.slice(0, 2).toUpperCase(), color: colors.brand.blue };
-}
-
 function scaleEnds(pad: TestStripPad) {
   const nums = pad.colors
     .map((c) => parseReadingValue(c.value))
     .filter((n): n is number => n !== null);
-  if (nums.length === 0) return { min: 0, max: 1 };
-  return { min: Math.min(...nums), max: Math.max(...nums) };
+  if (nums.length > 0) {
+    return { min: Math.min(...nums), max: Math.max(...nums) };
+  }
+
+  const key = toParamKey(pad.testName);
+  const axis = key ? READING_RANGE[key] : undefined;
+  if (axis) return axis;
+
+  return { min: 0, max: 1 };
 }
 
 function clamp01(n: number) {
@@ -149,12 +46,12 @@ function clamp01(n: number) {
 export default function WaterResultsScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { selectedBrand, selections, savedReadingId, setSavedReadingId } = useTestStrips();
+  const { selectedBrand, selections, savedReadingId, setSavedReadingId, setResultStatus } = useTestStrips();
   const { pools } = usePool();
   const { testReadingsInsert } = useSupabase();
   const idealRanges = getIdealStatusRange(selections, pools);
 
-  const pads = selectedBrand ? getPads(selectedBrand) : [];
+  const pads = resolvePads(selectedBrand, selections);
   const rows = pads.filter((pad) => selections[pad.testName] != null);
   const statuses = rows.map((pad) =>
     getReadingStatus(
@@ -194,10 +91,12 @@ export default function WaterResultsScreen() {
     const props = toTestReadingsProps(selections);
     props.pool_status = poolStatus;
     props.swimming_status = swimmingStatus;
+    setResultStatus(poolStatus, statuses, swimmingStatus);
+    if (poolStatus === 'unable_to_determine' || swimmingStatus === 'unable_to_determine') return;
     void testReadingsInsert({ props, id: savedReadingId ?? undefined }).then(({ data }) => {
       if (data?.id) setSavedReadingId(data.id);
     });
-  }, [rows.length, selections, poolStatus, swimmingStatus, testReadingsInsert, savedReadingId, setSavedReadingId]);
+  }, [rows.length]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.white }}>
@@ -332,7 +231,11 @@ export default function WaterResultsScreen() {
       </ScrollView>
 
       <View className="px-5 pt-2 pb-3">
-        <TouchableOpacity className="btn btn--primary" activeOpacity={0.85}>
+        <TouchableOpacity
+          className={`btn btn--primary ${poolStatus !== 'unable_to_determine' && swimmingStatus !== 'unable_to_determine' ? '' : 'opacity-50'}`}
+          activeOpacity={0.85}
+          disabled={poolStatus === 'unable_to_determine' || swimmingStatus === 'unable_to_determine'}
+        >
           <Text className="text-button font-jakarta-bold text-surface-white">
             {t('water_results_cta')}
           </Text>

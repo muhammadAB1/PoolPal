@@ -92,7 +92,7 @@ export default function ProfileCompletionRing({
       >
         <Text
           className="font-jakarta-extrabold text-brand-navy"
-          style={{ fontSize: size * 0.26, lineHeight: size * 0.3 }}
+          style={{ fontSize: size * 0.23, lineHeight: size * 0.3 }}
         >
           {clamped}%
         </Text>

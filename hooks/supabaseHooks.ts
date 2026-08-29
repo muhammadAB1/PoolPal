@@ -228,7 +228,6 @@ export function useSupabase() {
     async function testReadingsInsert({ props, id }: { props: testReadingsInsertProps, id?: string }) {
         try {
 
-            console.log(id)
             const poolId = await AsyncStorage.getItem('activePoolId');
             if (!poolId) {
                 return { data: null, error: new Error('Pool ID not found') }

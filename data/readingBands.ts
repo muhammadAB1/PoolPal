@@ -80,6 +80,24 @@ export function toParamKey(testName: string): ParamKey | null {
   return toParamKeys(testName)[0] ?? null;
 }
 
+/**
+ * Full measurable range for each param: what a real-world test can report.
+ * Used as the bar axis when there is no strip color chart, and as the
+ * accepted input range on the have-results form. Not the ideal range.
+ */
+export const READING_RANGE: Partial<Record<ParamKey, IdealRange>> = {
+  free_chlorine: { min: 0, max: 20 },
+  total_chlorine: { min: 0, max: 20 },
+  combined_chlorine: { min: 0, max: 20 },
+  bromine: { min: 0, max: 40 },
+  ph: { min: 6.2, max: 9.0 },
+  total_alkalinity: { min: 0, max: 360 },
+  cyanuric_acid: { min: 0, max: 300 },
+  total_hardness: { min: 0, max: 1000 },
+  calcium_hardness: { min: 0, max: 1000 },
+  salt: { min: 400, max: 7000 },
+};
+
 /** Map brand-specific selection keys into stable ParamKey values + original labels. */
 export function toCanonical(
   selections: Record<string, string>,
@@ -168,7 +186,10 @@ export function getReadingStatus(
   const reading = parseReadingValue(value);
   if (reading == null) return 'ideal';
 
-  if (originalKey.free_chlorine != undefined) {
+  if (
+    originalKey.free_chlorine != undefined ||
+    originalKey.total_chlorine != undefined
+  ) {
     const idealMin = range?.min ?? 1;
     const idealMax = range?.max ?? 3;
     let lowFloor = 0.5;
@@ -387,7 +408,7 @@ export function getIdealStatusRange(
 
   if (originalKey.free_chlorine != undefined) {
     if (originalKey.cyanuric_acid === undefined) {
-      out[originalKey.free_chlorine] = { min: 2, max: 3 };
+      out[originalKey.free_chlorine] = { min: 1, max: 3 };
     } else if (values.cyanuric_acid === 0) {
       out[originalKey.free_chlorine] = { min: 1, max: 3 };
     } else {

@@ -2,9 +2,12 @@ import ProfileCompletionRing from '@/components/ProfileCompletionRing';
 import { dashboardImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import { REQUIRED_TASK_IDS } from '@/data/checklist';
+import { OVERALL_STATUS, SWIM_STATUS } from '@/data/readingPoolAndSwimStatusUiLabelsColorsAndIcons';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { useAuth } from '@/providers/AuthProvider';
 import { usePool } from '@/providers/PoolProvider';
+import { useTestStrips } from '@/providers/TestStripProvider';
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { type User } from '@supabase/supabase-js';
 import { Href, useFocusEffect, useRouter } from 'expo-router';
@@ -12,6 +15,31 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Image, ImageSourcePropType, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+/** Prominent status card used to surface the pool/swim status on the dashboard. */
+function StatusPill({
+  caption,
+  color,
+  icon,
+  label,
+}: {
+  caption: string;
+  color: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
+}) {
+  return (
+    <View className="flex-1 rounded-2xl px-3 py-2.5" style={{ backgroundColor: color }}>
+      <Text className="text-tiny font-jakarta-bold text-surface-white opacity-80 tracking-wide">
+        {caption.toUpperCase()}
+      </Text>
+      <View className="flex-row items-center gap-1.5 mt-1">
+        <Ionicons name={icon} size={18} color={colors.surface.white} />
+        <Text className="text-body font-jakarta-extrabold text-surface-white">{label}</Text>
+      </View>
+    </View>
+  );
+}
 
 type QuickAction = {
   icon: ImageSourcePropType;
@@ -47,6 +75,7 @@ export default function DashboardScreen() {
   const { user } = useAuth();
   const { pools, refreshPools } = usePool();
   const { logout } = useSupabase();
+  const { latestReading } = useTestStrips();
 
   // Keep pool context fresh when landing on dashboard (e.g. after onboarding).
   useFocusEffect(
@@ -97,28 +126,47 @@ export default function DashboardScreen() {
           </View>
 
           {/* Pool summary card */}
-          <View className="card--info mt-4 p-4 flex-row items-center">
-            <Image
-              source={dashboardImages.poolIllustration}
-              className="w-20 h-20 rounded-full -ml-2"
-            />
-            <View className="flex-1 ml-1">
-              <Text className="text-h3 font-jakarta-extrabold text-brand-navy">
-                {pools?.pool_name ?? ''}
-              </Text>
-              <View className="chip--success flex-row items-center self-start  gap-1 mt-1.5 rounded-full">
-                <Image source={dashboardImages.greenCheckIcon} className="w-8 h-8 mt-1 -mr-2" />
-                <Text className="text-small font-jakarta-bold text-success-text mr-2">
-                  {t('dashboard_plan_ready_badge')}
+          <View className="card--info mt-4 p-4">
+            <View className="flex-row items-center">
+              <Image
+                source={dashboardImages.poolIllustration}
+                className="w-20 h-20 rounded-full -ml-2"
+              />
+              <View className="flex-1 ml-1">
+                <Text className="text-h3 font-jakarta-extrabold text-brand-navy">
+                  {pools?.pool_name ?? ''}
                 </Text>
+                <View className="chip--success flex-row items-center self-start  gap-1 mt-1.5 rounded-full">
+                  <Image source={dashboardImages.greenCheckIcon} className="w-8 h-8 mt-1 -mr-2" />
+                  <Text className="text-small font-jakarta-bold text-success-text mr-2">
+                    {t('dashboard_plan_ready_badge')}
+                  </Text>
+                </View>
               </View>
+              <ProfileCompletionRing
+                percentage={completionScore}
+                size={64}
+                strokeWidth={7}
+                progressColor={colors.brand.blue}
+              />
             </View>
-            <ProfileCompletionRing
-              percentage={completionScore}
-              size={64}
-              strokeWidth={7}
-              progressColor={colors.brand.blue}
-            />
+
+            {latestReading?.poolStatus && latestReading.swimmingStatus && (
+              <View className="flex-row gap-3 mt-4 pt-3.5 border-t border-border-default">
+                <StatusPill
+                  caption={t('water_results_pool_status_label')}
+                  color={OVERALL_STATUS[latestReading.poolStatus].badgeColor}
+                  icon={OVERALL_STATUS[latestReading.poolStatus].icon}
+                  label={t(OVERALL_STATUS[latestReading.poolStatus].labelKey)}
+                />
+                <StatusPill
+                  caption={t('water_results_swim_status_label')}
+                  color={SWIM_STATUS[latestReading.swimmingStatus].badgeColor}
+                  icon={SWIM_STATUS[latestReading.swimmingStatus].icon}
+                  label={t(SWIM_STATUS[latestReading.swimmingStatus].labelKey)}
+                />
+              </View>
+            )}
           </View>
 
           {/* Recommended first step */}
@@ -147,6 +195,9 @@ export default function DashboardScreen() {
             <TouchableOpacity
               className="bg-brand-blue self-start flex-row items-center gap-1.5 rounded-full px-5 py-3 mt-3.5"
               activeOpacity={0.85}
+              onPress={() => {
+                router.push('/(readings)/choose-test-method');
+              }}
             >
               <Text className="text-button font-jakarta-bold text-surface-white">
                 {t('dashboard_choose_kit_cta')}
@@ -158,6 +209,7 @@ export default function DashboardScreen() {
                 style={{ tintColor: colors.surface.white }}
               />
             </TouchableOpacity>
+      
           </View>
 
           {/* Profile / Next Step */}

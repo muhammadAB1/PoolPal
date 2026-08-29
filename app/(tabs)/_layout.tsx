@@ -16,7 +16,7 @@ const NAV_ICON_SIZES: Record<
   'home' | 'pool' | 'readings' | 'checklist' | 'learn',
   { active: number; inactive: number }
 > = {
-  home: { active:40 , inactive: 30 },
+  home: { active: 40, inactive: 30 },
   pool: { active: 40, inactive: 70 },
   readings: { active: 40, inactive: 37 },
   checklist: { active: 40, inactive: 37 },
@@ -64,97 +64,97 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: colors.brand.blue,
-        tabBarInactiveTintColor: colors.text.faint,
-        tabBarLabelStyle: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 11 },
-        tabBarStyle: {
-          height: 72,
-          paddingTop: 8,
-          paddingBottom: 10,
-          backgroundColor: colors.surface.white,
-          borderTopWidth: 0.5,
-          borderTopColor: colors.border.default,
-          elevation: 0,
-          shadowOpacity: 0,
-          shadowColor: 'transparent',
-        },
-        tabBarItemStyle: { gap: 2 },
-      }}
-    >
-      <Tabs.Screen
-        name="dashboard"
-        options={{
-          title: t('nav_home'),
-          tabBarIcon: ({ focused }) => (
-            <NavIcon
-              source={navImages.home}
-              focused={focused}
-              activeSize={NAV_ICON_SIZES.home.active}
-              inactiveSize={NAV_ICON_SIZES.home.inactive}
-            />
-          ),
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: colors.brand.blue,
+          tabBarInactiveTintColor: colors.text.faint,
+          tabBarLabelStyle: { fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 11 },
+          tabBarStyle: {
+            height: 72,
+            paddingTop: 8,
+            paddingBottom: 10,
+            backgroundColor: colors.surface.white,
+            borderTopWidth: 0.5,
+            borderTopColor: colors.border.default,
+            elevation: 0,
+            shadowOpacity: 0,
+            shadowColor: 'transparent',
+          },
+          tabBarItemStyle: { gap: 2 },
         }}
-      />
-      <Tabs.Screen
-        name="pool"
-        options={{
-          title: t('nav_pool'),
-          tabBarIcon: ({ focused }) => (
-            <NavIcon
-              source={navImages.pool}
-              focused={focused}
-              activeSize={NAV_ICON_SIZES.pool.active}
-              inactiveSize={NAV_ICON_SIZES.pool.inactive}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="readings"
-        options={{
-          title: t('nav_readings'),
-          tabBarIcon: ({ focused }) => (
-            <NavIcon
-              source={navImages.readings}
-              focused={focused}
-              activeSize={NAV_ICON_SIZES.readings.active}
-              inactiveSize={NAV_ICON_SIZES.readings.inactive}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="checklist"
-        options={{
-          title: t('nav_checklist'),
-          tabBarIcon: ({ focused }) => (
-            <NavIcon
-              source={navImages.checklist}
-              focused={focused}
-              tintActive
-              activeSize={NAV_ICON_SIZES.checklist.active}
-              inactiveSize={NAV_ICON_SIZES.checklist.inactive}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="learn"
-        options={{
-          title: t('nav_learn'),
-          tabBarIcon: ({ focused }) => (
-            <NavIcon
-              source={navImages.learn}
-              focused={focused}
-              activeSize={NAV_ICON_SIZES.learn.active}
-              inactiveSize={NAV_ICON_SIZES.learn.inactive}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen name="profile" options={{ href: null }} />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="dashboard"
+          options={{
+            title: t('nav_home'),
+            tabBarIcon: ({ focused }) => (
+              <NavIcon
+                source={navImages.home}
+                focused={focused}
+                activeSize={NAV_ICON_SIZES.home.active}
+                inactiveSize={NAV_ICON_SIZES.home.inactive}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="pool"
+          options={{
+            title: t('nav_pool'),
+            tabBarIcon: ({ focused }) => (
+              <NavIcon
+                source={navImages.pool}
+                focused={focused}
+                activeSize={NAV_ICON_SIZES.pool.active}
+                inactiveSize={NAV_ICON_SIZES.pool.inactive}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="readings"
+          options={{
+            title: t('nav_readings'),
+            tabBarIcon: ({ focused }) => (
+              <NavIcon
+                source={navImages.readings}
+                focused={focused}
+                activeSize={NAV_ICON_SIZES.readings.active}
+                inactiveSize={NAV_ICON_SIZES.readings.inactive}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="checklist"
+          options={{
+            title: t('nav_checklist'),
+            tabBarIcon: ({ focused }) => (
+              <NavIcon
+                source={navImages.checklist}
+                focused={focused}
+                tintActive
+                activeSize={NAV_ICON_SIZES.checklist.active}
+                inactiveSize={NAV_ICON_SIZES.checklist.inactive}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="learn"
+          options={{
+            title: t('nav_learn'),
+            tabBarIcon: ({ focused }) => (
+              <NavIcon
+                source={navImages.learn}
+                focused={focused}
+                activeSize={NAV_ICON_SIZES.learn.active}
+                inactiveSize={NAV_ICON_SIZES.learn.inactive}
+              />
+            ),
+          }}
+        />
+        <Tabs.Screen name="profile" options={{ href: null }} />
+      </Tabs>
   );
 }
