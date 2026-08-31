@@ -6,7 +6,6 @@ export const CLEANING_TYPES: readonly CleaningType[] = [
     'PressureSide',
     'ManualVacuum',
     'NoVacuum',
-    'NotSure',
 ] as const;
 
 export const cleaningTypeTranslationKeys: Record<
@@ -32,9 +31,5 @@ export const cleaningTypeTranslationKeys: Record<
     NoVacuum: {
         label: 'cleaning_setup_no_vacuum',
         description: 'cleaning_setup_no_vacuum_desc',
-    },
-    NotSure: {
-        label: 'cleaning_setup_not_sure',
-        description: 'cleaning_setup_not_sure_desc',
     },
 };

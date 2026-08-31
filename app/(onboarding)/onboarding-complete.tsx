@@ -1,9 +1,10 @@
 import ProfileCompletionRing from '@/components/ProfileCompletionRing';
 import { onboardingCompleteImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
-import { usePool } from '@/providers/PoolProvider';
+import { useSupabase } from '@/hooks/supabaseHooks';
 import { Ionicons } from '@expo/vector-icons';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Image,
@@ -48,12 +49,18 @@ export default function OnboardingCompleteScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const { percentage } = useLocalSearchParams<{ percentage?: string }>();
-  const { pools } = usePool();
+  const { weeklyReminderInsert } = useSupabase();
+  const [fetchedPercentage, setFetchedPercentage] = useState<string>();
 
-  // Prefer live pool data; route param is only a first-paint fallback when
-  // coming from the initial weekly-reminder → complete path.
-  const rawPercentage =
-    pools?.profile_completion_score?.toString() ?? percentage ?? '0';
+  useEffect(() => {
+    void weeklyReminderInsert({}).then(({ data }) => {
+      if (data?.profile_completion_score != null) {
+        setFetchedPercentage(String(data.profile_completion_score));
+      }
+    });
+  }, []);
+
+  const rawPercentage = fetchedPercentage ?? percentage ?? '0';
   const completionScore = Number.parseInt(rawPercentage, 10);
   const safePercentage = Number.isFinite(completionScore)
     ? Math.min(100, Math.max(0, completionScore))

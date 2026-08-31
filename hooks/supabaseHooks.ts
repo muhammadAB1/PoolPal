@@ -167,6 +167,7 @@ export function useSupabase() {
                 if (!error) markPoolsStale();
                 return { error }
             }
+
             return { error: new Error('Pool ID not found') }
         } catch (error) {
             return { error: error as Error }
@@ -193,12 +194,17 @@ export function useSupabase() {
 
     async function poolSurfaceInsert({ props }: { props: poolSurfaceInsertProps }) {
         try {
+            console.log('I got here')
             const id = await AsyncStorage.getItem('activePoolId');
+            console.log('id', id)
             if (id) {
+                console.log('I got here 2')
                 const { error } = await supabase
                     .from('pools')
                     .update({ surface_type: props.surfaceType })
                     .eq('id', id)
+                console.log('surface error', error)
+
                 if (!error) markPoolsStale();
                 return { error }
             }

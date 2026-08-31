@@ -3,7 +3,7 @@ import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { HotTubType, NumberOfPoolUsers, PoolType, ScreenedType, UsageFrequency, UseType } from '@/lib/types';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
-import { ReactNode, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Image,
@@ -31,6 +31,8 @@ export default function PoolBasicsScreen() {
     const [usageFrequency, setUsageFrequency] = useState<UsageFrequency>();
     const [numberOfPoolUsers, setNumberOfPoolUsers] = useState<NumberOfPoolUsers>();
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    const ScrollViewRef = useRef<ScrollView>(null)
 
     const { poolBasicInsert } = useSupabase();
 
@@ -74,6 +76,7 @@ export default function PoolBasicsScreen() {
                 contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
+                ref={ScrollViewRef}
             >
                 <View className="flex-1 px-5 pt-2 -mt-6">
                     <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-6">
@@ -195,14 +198,13 @@ export default function PoolBasicsScreen() {
                                         value: 'No' as HotTubType,
                                         label: t('pool_basics_hot_tub_no'),
                                         desc: t('pool_basics_hot_tub_no_desc'),
-                                        iconContent: <HotTubNoIcon />,
+                                        image: poolBasicsImages.hotTub.No,
                                     },
                                 ] as const
                             ).map((item) => (
                                 <SelectionCard
                                     key={item.value}
                                     image={'image' in item ? item.image : undefined}
-                                    iconContent={'iconContent' in item ? item.iconContent : undefined}
                                     label={item.label}
                                     description={item.desc}
                                     selected={hasHotTub === item.value}
@@ -253,6 +255,9 @@ export default function PoolBasicsScreen() {
                                         if (item.value !== 'Family') {
                                             setUsageFrequency(undefined);
                                             setNumberOfPoolUsers(undefined);
+                                        }
+                                        if (item.value === 'Family') {
+                                            ScrollViewRef.current?.scrollToEnd({ animated: true });
                                         }
                                         setErrorMessage(null);
                                     }}
@@ -383,7 +388,6 @@ export default function PoolBasicsScreen() {
 
 interface SelectionCardProps {
     image?: ImageSourcePropType;
-    iconContent?: ReactNode;
     label: string;
     description: string;
     selected: boolean;
@@ -393,7 +397,6 @@ interface SelectionCardProps {
 
 function SelectionCard({
     image,
-    iconContent,
     label,
     description,
     selected,
@@ -417,18 +420,16 @@ function SelectionCard({
                 />
             </View>
 
-            {iconContent ?? (
-                <Image
-                    source={image!}
-                    className={imageClassName}
-                    resizeMode="contain"
-                />
-            )}
+            <Image
+                source={image!}
+                className={imageClassName}
+                resizeMode="contain"
+            />
 
             <Text className="mt-2 text-small font-jakarta-bold text-charcoal text-center" numberOfLines={1}>
                 {label}
             </Text>
-            <Text className="mt-0.5 text-tiny font-jakarta text-sub text-center" numberOfLines={2}>
+            <Text className="mt-0.5 text-tiny font-jakarta text-sub text-center" numberOfLines={4}>
                 {description}
             </Text>
         </TouchableOpacity>
@@ -461,13 +462,13 @@ function ChoiceButton({ label, selected, onPress }: ChoiceButtonProps) {
     );
 }
 
-function HotTubNoIcon() {
-    return (
-        <View className="w-18 h-18 flex bg-surface-soft-aqua rounded-full items-center">
-            <Text className="text-[28px] leading-[28px] font-jakarta-bold text-brand-aqua bg-amber-600 ">
-                x
-            </Text>
-        </View>
+// function HotTubNoIcon() {
+//     return (
+//         <View className="w-18 h-18 flex bg-surface-soft-aqua rounded-full items-center">
+//             <Text className="text-[28px] leading-[28px] font-jakarta-bold text-brand-aqua bg-amber-600 ">
+//                 x
+//             </Text>
+//         </View>
 
-    );
-}
+//     );
+// }

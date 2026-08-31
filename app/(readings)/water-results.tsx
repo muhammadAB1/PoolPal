@@ -262,13 +262,13 @@ function StatusRow({
   return (
     <View>
       <View className="flex-row items-center justify-between gap-3">
-        <Text className="text-small font-jakarta-bold text-sub">{label}</Text>
+        <Text className="text-body font-jakarta-bold text-sub">{label}</Text>
         <View
           className="flex-row items-center gap-1 rounded-full px-2.5 py-1"
           style={{ backgroundColor: badgeColor }}
         >
           <Ionicons name={icon} size={12} color={colors.surface.white} />
-          <Text className="text-tiny font-jakarta-extrabold text-surface-white">
+          <Text className="text-small font-jakarta-extrabold text-surface-white">
             {badgeLabel}
           </Text>
         </View>
@@ -281,7 +281,7 @@ function StatusRow({
             size={14}
             color={colors.status.error}
           />
-          <Text className="flex-1 text-small font-jakarta text-error leading-5">
+          <Text className="flex-1 text-body font-jakarta text-error leading-5">
             {message}
           </Text>
         </View>

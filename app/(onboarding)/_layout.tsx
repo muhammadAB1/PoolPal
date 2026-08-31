@@ -45,7 +45,7 @@ function OnboardingHeader({
 export default function OnboardingLayout() {
   const router = useRouter();
   const { user, loading } = useAuth();
-  const { poolId, loading: poolLoading } = usePool();
+  const { poolId, loading: poolLoading, refreshPools } = usePool();
   const { resume } = useGlobalSearchParams<{ resume?: string }>();
 
   // Once a user enters via the dashboard's "resume" link, keep letting them
@@ -81,11 +81,15 @@ export default function OnboardingLayout() {
         headerShadowVisible: false,
         headerTitle: '',
         headerStyle: { backgroundColor: '#FFFFFF' },
-        header: () => (
+        header: ({ navigation }) => (
           <OnboardingHeader
             routeName={route.name}
             onBackPress={() => {
               if (router.canGoBack()) {
+                const stackIndex = navigation.getState()?.index ?? 0;
+                if (resumingRef.current && stackIndex === 0) {
+                  void refreshPools({ silent: true });
+                }
                 router.back();
               }
             }}

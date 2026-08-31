@@ -5,7 +5,6 @@ export const POOL_CONDITIONS: readonly PoolCondition[] = [
     'A_LITTLE_CLOUDY',
     'GREEN',
     'VERY_GREEN_OR_DARK',
-    'NOT_SURE',
 ] as const;
 
 export const poolConditionTranslationKeys: Record<
@@ -27,9 +26,5 @@ export const poolConditionTranslationKeys: Record<
     VERY_GREEN_OR_DARK: {
         label: 'pool_condition_very_green_or_dark',
         description: 'pool_condition_very_green_or_dark_desc',
-    },
-    NOT_SURE: {
-        label: 'pool_condition_not_sure',
-        description: 'pool_condition_not_sure_desc',
     },
 };

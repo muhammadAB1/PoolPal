@@ -16,7 +16,6 @@ export type PoolCondition =
     | 'A_LITTLE_CLOUDY'
     | 'GREEN'
     | 'VERY_GREEN_OR_DARK'
-    | 'NOT_SURE';
 
 export type PoolShape = 'Rectangle' | 'Round' | 'Oval' | 'Freeform' | 'Kidney';
 export type PoolDepthProfile = 'Flat' | 'ShallowDeep' | 'NotSure';
@@ -25,7 +24,7 @@ export type MeasurementUnit = 'us' | 'metric';
 
 export type FilterType = 'Sand' | 'Cartridge' | 'DE';
 export type PumpType = 'Single' | 'Dual' | 'Variable';
-export type HeaterOption = 'Yes' | 'No' | 'NotSure';
+export type HeaterOption = 'Yes' | 'No';
 export type SurfaceType =
     | 'Plaster'
     | 'Pebble'
@@ -40,14 +39,12 @@ export type SurfaceType =
     | 'Copper'
     | 'VinylLiner'
     | 'OtherCustomSurface'
-    | 'NotSure';
 export type CleaningType =
     | 'Robotic'
     | 'SuctionSide'
     | 'PressureSide'
     | 'ManualVacuum'
     | 'NoVacuum'
-    | 'NotSure';
 
 export type Pool = {
     id: string
@@ -60,8 +57,25 @@ export type Pool = {
     number_of_users?: NumberOfPoolUsers | null
     has_hot_tub?: HotTubType
     pool_condition?: PoolCondition | null
+
+    length?: number
+    width?: number
+    shallow_depth?: number
+    deep_depth?: number
+    shape?: PoolShape
+    gallons?: number
+
+
+    pump_type?: PumpType
+    filter_type?: FilterType
+    heater_type?: HeaterOption
+
     surface_type?: SurfaceType | null
     cleaning_type?: CleaningType | null
+
+    reminder_day?: Weekday
+    reminder_time?: string
+
     profile_completion_score: number
     missing_details?: string[] | null
     created_at?: string

@@ -69,7 +69,7 @@ export default function WeeklyReminderScreen() {
                     ? resumeOnboardingHref(remainingSteps)
                     : ({
                         pathname: '/(onboarding)/onboarding-complete',
-                        params: { percentage: data?.profile_completion_score?.toString() ?? '0', poolId: data?.id ?? '' },
+                        params: { percentage: data?.profile_completion_score?.toString() ?? '0' },
                     } as Href)
             );
 
@@ -82,34 +82,12 @@ export default function WeeklyReminderScreen() {
         }
     }
 
-    async function handleSkipForNow() {
-        setErrorMessage(null);
-        setIsSubmitting(true);
-
-        try {
-            const { data, error } = await weeklyReminderInsert({});
-
-            if (error) {
-                setErrorMessage(error.message);
-                return;
-            }
-
-            router.push(
-                isResuming
-                    ? resumeOnboardingHref(remainingSteps)
-                    : ({
-                        pathname: '/(onboarding)/onboarding-complete',
-                        params: { percentage: data?.profile_completion_score?.toString() ?? '0' },
-                    } as Href)
-            );
-
-        } catch (error) {
-            setErrorMessage(
-                error instanceof Error ? error.message : t('pool_basics_error')
-            );
-        } finally {
-            setIsSubmitting(false);
-        }
+    function handleSkipForNow() {
+        router.push(
+            isResuming
+                ? resumeOnboardingHref(remainingSteps)
+                : ('/(onboarding)/onboarding-complete' as Href)
+        );
     }
 
     return (

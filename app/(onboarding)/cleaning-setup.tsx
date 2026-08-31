@@ -89,41 +89,11 @@ export default function CleaningSetupScreen() {
                                     onPress={() => {
                                         setCleaningType(value);
                                         setErrorMessage(null);
-                                        if (value === 'NotSure') {
-                                            setTimeout(() => {
-                                                scrollViewRef.current?.scrollToEnd({
-                                                    animated: true,
-                                                });
-                                            }, 100);
-                                        }
                                     }}
                                 />
                             );
                         })}
 
-                        {cleaningType === 'NotSure' ? (
-                            <TouchableOpacity
-                                className="flex-row items-start gap-3 rounded-2xl border border-dashed border-brand-aqua bg-surface-soft-aqua px-4 py-3.5"
-                                activeOpacity={0.7}
-                                onPress={() => { }}
-                            >
-                                <View className="w-11 h-11 rounded-xl bg-surface-white items-center justify-center">
-                                    <Image
-                                        source={icons.camera}
-                                        className="w-5 h-5"
-                                        resizeMode="contain"
-                                    />
-                                </View>
-                                <View className="flex-1">
-                                    <Text className="text-body font-jakarta-bold text-charcoal">
-                                        {t('cleaning_setup_upload_photo_title')}
-                                    </Text>
-                                    <Text className="text-tiny font-jakarta text-sub mt-1 leading-relaxed">
-                                        {t('cleaning_setup_upload_photo_desc')}
-                                    </Text>
-                                </View>
-                            </TouchableOpacity>
-                        ) : null}
                     </View>
                 </View>
             </ScrollView>

@@ -351,6 +351,7 @@ export default function EquipmentBasicsScreen() {
                 <TouchableOpacity
                     className="bg-brand-blue rounded-full py-4.25 items-center justify-center"
                     onPress={handleContinue}
+                    disabled={isSubmitting}
                     activeOpacity={0.85}
                 >
                     <Text className="text-button font-jakarta-bold text-surface-white">

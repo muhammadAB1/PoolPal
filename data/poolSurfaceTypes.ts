@@ -6,7 +6,6 @@ export const SURFACE_TYPES: readonly SurfaceType[] = [
     'Vinyl',
     'Fiberglass',
     'Tile',
-    'NotSure',
 ] as const;
 
 export const NEW_SURFACE_TYPES: readonly SurfaceType[] = [
@@ -75,9 +74,5 @@ export const surfaceTypeTranslationKeys: Record<
     OtherCustomSurface: {
         label: 'surface_type_other_custom',
         description: 'surface_type_other_custom_desc',
-    },
-    NotSure: {
-        label: 'surface_type_not_sure',
-        description: 'surface_type_not_sure_desc',
     },
 };

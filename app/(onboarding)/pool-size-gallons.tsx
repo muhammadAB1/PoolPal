@@ -29,6 +29,7 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Svg, { Path } from 'react-native-svg';
 
 export default function PoolSizeGallonsScreen() {
     const router = useRouter();
@@ -40,10 +41,10 @@ export default function PoolSizeGallonsScreen() {
     const remainingSteps = parseRemainingSteps(remaining);
     const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('Known');
     const [units, setUnits] = useState<MeasurementUnit>(measurement || 'us');
-    const [length, setLength] = useState('0');
-    const [width, setWidth] = useState('0');
-    const [shallowDepth, setShallowDepth] = useState('0');
-    const [deepDepth, setDeepDepth] = useState('0');
+    const [length, setLength] = useState<string>('');
+    const [width, setWidth] = useState<string>('');
+    const [shallowDepth, setShallowDepth] = useState<string>('');
+    const [deepDepth, setDeepDepth] = useState<string>('');
     const [shape, setShape] = useState<PoolShape>('Rectangle');
     const [depthProfile, setDepthProfile] = useState<PoolDepthProfile>('ShallowDeep');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -64,9 +65,16 @@ export default function PoolSizeGallonsScreen() {
         const numericShallowDepth = parseFloat(shallowDepth) || 0;
         const numericDeepDepth = parseFloat(deepDepth) || 0;
 
-        return Math.round(
-            numericLength * numericWidth * numericShallowDepth * numericDeepDepth
-        );
+        if (isEstimate) {
+            return Math.round(
+                numericLength * numericWidth * numericShallowDepth * numericDeepDepth + 1
+            );
+        }
+        else {
+            return Math.round(
+                numericLength * numericWidth * numericShallowDepth * numericDeepDepth
+            );
+        }
     }, [length, width, shallowDepth, deepDepth]);
 
     const formattedEstimatedVolume = estimatedVolume.toLocaleString(
@@ -83,6 +91,10 @@ export default function PoolSizeGallonsScreen() {
             const defaults = depthsFromProfile(depthProfile);
             setShallowDepth(defaults.shallowDepth);
             setDeepDepth(defaults.deepDepth);
+        }
+        else {
+            setShallowDepth('');
+            setDeepDepth('');
         }
     }
 
@@ -138,7 +150,7 @@ export default function PoolSizeGallonsScreen() {
                 return;
             }
 
-        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/equipment-basics' as Href));
+            router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/equipment-basics' as Href));
         } catch (error) {
             setErrorMessage(
                 error instanceof Error ? error.message : t('pool_basics_error')
@@ -393,13 +405,13 @@ function KnownForm({
                 layout="known"
             />
 
-            <UploadPhotoRow
+            {/* <UploadPhotoRow
                 enabled={canUploadPhoto}
                 label={t('pool_size_upload_photo_label')}
                 description={t('pool_size_upload_photo_desc')}
                 showSkipLink
                 onSkip={onSkipUpload}
-            />
+            /> */}
         </View>
     );
 }
@@ -509,12 +521,12 @@ function EstimateForm({
                 </View>
             </View>
 
-            <UploadPhotoRow
+            {/* <UploadPhotoRow
                 enabled={canUploadPhoto}
                 label={t('pool_size_upload_photo_label_estimate')}
                 description={t('pool_size_upload_photo_desc_estimate')}
                 showChevron
-            />
+            /> */}
 
             <EstimateCard
                 formattedVolume={formattedEstimatedVolume}
@@ -617,22 +629,28 @@ function ShapeIcon({ shape, color }: ShapeIconProps) {
         );
     }
 
-    // Freeform / Kidney — soft bean shape via overlapping rounded views
+    // Freeform — kidney / bean outline: big right lobe, top-center waist, bottom-left foot
     return (
-        <View style={{ width: 16, height: 12, alignItems: 'center', justifyContent: 'center' }}>
-            <View
-                style={{
-                    width: 15,
-                    height: 10,
-                    borderWidth: 1.5,
-                    borderColor: color,
-                    borderTopLeftRadius: 8,
-                    borderTopRightRadius: 5,
-                    borderBottomLeftRadius: 5,
-                    borderBottomRightRadius: 8,
-                }}
+        <Svg width={16} height={11} viewBox="0 0 100 66">
+            <Path
+                d="M8 32
+                   C 8 22 12 16 20 15
+                   C 28 14 30 14 36 15
+                   C 42 15 46 22 52 22
+                   C 60 22 64 10 74 10
+                   C 86 10 95 24 95 40
+                   C 95 54 86 60 76 60
+                   C 64 60 58 59 50 60
+                   C 42 61 38 64 30 63
+                   C 22 62 16 62 14 54
+                   C 11 46 8 40 8 32 Z"
+                fill="none"
+                stroke={color}
+                strokeWidth={9}
+                strokeLinejoin="round"
+                strokeLinecap="round"
             />
-        </View>
+        </Svg>
     );
 }
 
@@ -679,86 +697,86 @@ function EstimateCard({ formattedVolume, volumeSuffix, note, layout }: EstimateC
     );
 }
 
-interface UploadPhotoRowProps {
-    enabled: boolean;
-    label: string;
-    description: string;
-    showSkipLink?: boolean;
-    showChevron?: boolean;
-    onSkip?: () => void;
-}
+// interface UploadPhotoRowProps {
+//     enabled: boolean;
+//     label: string;
+//     description: string;
+//     showSkipLink?: boolean;
+//     showChevron?: boolean;
+//     onSkip?: () => void;
+// }
 
-function UploadPhotoRow({
-    enabled,
-    label,
-    description,
-    showSkipLink = false,
-    showChevron = false,
-    onSkip,
-}: UploadPhotoRowProps) {
-    const { t } = useTranslation();
+// function UploadPhotoRow({
+//     enabled,
+//     label,
+//     description,
+//     showSkipLink = false,
+//     showChevron = false,
+//     onSkip,
+// }: UploadPhotoRowProps) {
+//     const { t } = useTranslation();
 
-    return (
-        <View
-            className={`card flex-row items-center px-4 py-3.5 mt-4 gap-3 ${!enabled ? 'opacity-45' : ''
-                }`}
-        >
-            <TouchableOpacity
-                className="flex-1 flex-row items-center gap-3"
-                activeOpacity={enabled ? 0.7 : 1}
-                disabled={!enabled}
-                onPress={() => { }}
-            >
-                <Image
-                    source={icons.camera}
-                    className="w-6 h-6"
-                    resizeMode="contain"
-                    style={{ tintColor: enabled ? colors.brand.blue : colors.text.faint }}
-                />
-                <View className="flex-1">
-                    <Text
-                        className={`text-body font-jakarta-bold ${enabled ? 'text-charcoal' : 'text-faint'
-                            }`}
-                    >
-                        {label}
-                    </Text>
-                    <Text className="text-tiny font-jakarta text-sub mt-0.5">
-                        {description}
-                    </Text>
-                </View>
-            </TouchableOpacity>
+//     return (
+//         <View
+//             className={`card flex-row items-center px-4 py-3.5 mt-4 gap-3 ${!enabled ? 'opacity-45' : ''
+//                 }`}
+//         >
+//             <TouchableOpacity
+//                 className="flex-1 flex-row items-center gap-3"
+//                 activeOpacity={enabled ? 0.7 : 1}
+//                 disabled={!enabled}
+//                 onPress={() => { }}
+//             >
+//                 <Image
+//                     source={icons.camera}
+//                     className="w-6 h-6"
+//                     resizeMode="contain"
+//                     style={{ tintColor: enabled ? colors.brand.blue : colors.text.faint }}
+//                 />
+//                 <View className="flex-1">
+//                     <Text
+//                         className={`text-body font-jakarta-bold ${enabled ? 'text-charcoal' : 'text-faint'
+//                             }`}
+//                     >
+//                         {label}
+//                     </Text>
+//                     <Text className="text-tiny font-jakarta text-sub mt-0.5">
+//                         {description}
+//                     </Text>
+//                 </View>
+//             </TouchableOpacity>
 
-            {showSkipLink ? (
-                <TouchableOpacity
-                    className="flex-row items-center gap-1"
-                    activeOpacity={enabled ? 0.7 : 1}
-                    disabled={!enabled}
-                    onPress={onSkip}
-                >
-                    <Text
-                        className={`text-small font-jakarta-bold ${enabled ? 'text-brand-blue' : 'text-faint'
-                            }`}
-                    >
-                        {t('pool_size_skip')}
-                    </Text>
-                    <Ionicons
-                        name="chevron-forward"
-                        size={14}
-                        color={enabled ? colors.brand.blue : colors.text.faint}
-                    />
-                </TouchableOpacity>
-            ) : null}
+//             {showSkipLink ? (
+//                 <TouchableOpacity
+//                     className="flex-row items-center gap-1"
+//                     activeOpacity={enabled ? 0.7 : 1}
+//                     disabled={!enabled}
+//                     onPress={onSkip}
+//                 >
+//                     <Text
+//                         className={`text-small font-jakarta-bold ${enabled ? 'text-brand-blue' : 'text-faint'
+//                             }`}
+//                     >
+//                         {t('pool_size_skip')}
+//                     </Text>
+//                     <Ionicons
+//                         name="chevron-forward"
+//                         size={14}
+//                         color={enabled ? colors.brand.blue : colors.text.faint}
+//                     />
+//                 </TouchableOpacity>
+//             ) : null}
 
-            {showChevron ? (
-                <Ionicons
-                    name="chevron-forward"
-                    size={18}
-                    color={enabled ? colors.text.sub : colors.text.faint}
-                />
-            ) : null}
-        </View>
-    );
-}
+//             {showChevron ? (
+//                 <Ionicons
+//                     name="chevron-forward"
+//                     size={18}
+//                     color={enabled ? colors.text.sub : colors.text.faint}
+//                 />
+//             ) : null}
+//         </View>
+//     );
+// }
 
 interface MethodCardProps {
     icon: keyof typeof Ionicons.glyphMap;

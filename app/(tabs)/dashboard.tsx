@@ -73,15 +73,14 @@ export default function DashboardScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { user } = useAuth();
-  const { pools, refreshPools } = usePool();
+  const { pools, refreshPoolsIfStale } = usePool();
   const { logout } = useSupabase();
   const { latestReading } = useTestStrips();
 
-  // Keep pool context fresh when landing on dashboard (e.g. after onboarding).
   useFocusEffect(
     useCallback(() => {
-      void refreshPools({ silent: true });
-    }, [refreshPools]),
+      void refreshPoolsIfStale({ silent: true });
+    }, [refreshPoolsIfStale]),
   );
 
   const displayName = getDisplayName(user);
@@ -209,7 +208,7 @@ export default function DashboardScreen() {
                 style={{ tintColor: colors.surface.white }}
               />
             </TouchableOpacity>
-      
+
           </View>
 
           {/* Profile / Next Step */}

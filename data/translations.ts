@@ -577,6 +577,23 @@ export const en = {
   reading_history_empty_title: 'No saved tests yet',
   reading_history_empty_desc: 'Your past pool tests will appear here after you save readings.',
 
+  // pool tab
+  pool_tab_title: 'My Pool Profile',
+  pool_tab_subtitle: 'Everything PoolWise knows about your pool.',
+  pool_tab_basics: 'Pool Basics',
+  pool_tab_basics_subtitle: 'Backyard Pool \u2022 Not sure \u2022 Screened \u2022 Family use',
+  pool_tab_size: 'Size',
+  pool_tab_not_set: 'Not set',
+  pool_tab_equipment: 'Equipment',
+  pool_tab_surface: 'Surface',
+  pool_tab_surface_subtitle: 'Raw concrete',
+  pool_tab_cleaning: 'Cleaning',
+  pool_tab_cleaning_subtitle: 'Robotic cleaner \u2022 Dolphin / Maytronics',
+  pool_tab_reminder: 'Weekly Reminder',
+  pool_tab_reminder_subtitle: 'Saturday at 9:00 AM',
+  pool_tab_condition: 'Pool Condition',
+  pool_tab_condition_subtitle: 'Crystal clear',
+
   // bottom navigation
   nav_home: 'Home',
   nav_pool: 'Pool',
@@ -1230,6 +1247,18 @@ export const es = {
   reading_history_summary_hint: 'Últimos 30 días \u2022 Más recientes primero',
   reading_history_empty_title: 'Aún no hay pruebas guardadas',
   reading_history_empty_desc: 'Tus pruebas anteriores aparecerán aquí después de guardar valores.',
+
+  // pool tab
+  pool_tab_title: 'Mi perfil de piscina',
+  pool_tab_subtitle: 'Todo lo que PoolWise sabe de tu piscina.',
+  pool_tab_basics: 'Datos de la piscina',
+  pool_tab_size: 'Tamaño',
+  pool_tab_equipment: 'Equipo',
+  pool_tab_surface: 'Superficie',
+  pool_tab_cleaning: 'Limpieza',
+  pool_tab_reminder: 'Recordatorio semanal',
+  pool_tab_condition: 'Estado de la piscina',
+  pool_tab_not_set: 'Sin definir',
 
   // bottom navigation
   nav_home: 'Inicio',
