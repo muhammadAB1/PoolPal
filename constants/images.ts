@@ -156,6 +156,9 @@ import navChecklist from '../assets/dashboard-images/nav_checklist_icon.png';
 import navLearnActive from '../assets/dashboard-images/nav_learn_book_icon_active.png';
 import navLearnInactive from '../assets/dashboard-images/nav_learn_book_icon_inactive.png';
 
+// ─── Pool tab review screens ─────────────────────────────────────────────────
+import poolBasicsHero from '../assets/pool-tab/pool-tab-pool-basic-screen-bg.png';
+
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
 export const graphics = {
@@ -386,6 +389,13 @@ export const navImages = {
     readings: { active: navReadingsActive, inactive: navReadingsInactive },
     checklist: { active: navChecklist, inactive: navChecklist },
     learn: { active: navLearnActive, inactive: navLearnInactive },
+} as const;
+
+/**
+ * Pool tab review-screen images.
+ */
+export const poolTabImages = {
+    basicsHero: poolBasicsHero,
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */

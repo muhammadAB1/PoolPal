@@ -55,7 +55,7 @@ export type Pool = {
     pool_use_type: UseType
     usage_frequency?: UsageFrequency | null
     number_of_users?: NumberOfPoolUsers | null
-    has_hot_tub?: HotTubType
+    hot_tub_type?: HotTubType
     pool_condition?: PoolCondition | null
 
     length?: number
