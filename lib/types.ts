@@ -64,6 +64,7 @@ export type Pool = {
     deep_depth?: number
     shape?: PoolShape
     gallons?: number
+    measurement_unit?: Measurement
 
 
     pump_type?: PumpType
@@ -93,6 +94,7 @@ export type poolSizeInsertProps = {
     deepDepth: number
     shape?: PoolShape
     gallons?: number
+    measurementUnit?: Measurement
 }
 
 export type poolEquipmentInsertProps = {

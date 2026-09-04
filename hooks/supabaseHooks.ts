@@ -162,7 +162,7 @@ export function useSupabase() {
             if (id) {
                 const { error } = await supabase
                     .from('pools')
-                    .update({ length: props.length, width: props.width, shallow_depth: props.shallowDepth, deep_depth: props.deepDepth, shape: props.shape, gallons: props.gallons })
+                    .update({ length: props.length, width: props.width, shallow_depth: props.shallowDepth, deep_depth: props.deepDepth, shape: props.shape, gallons: props.gallons, measurement_unit: props.measurementUnit })
                     .eq('id', id)
                 if (!error) markPoolsStale();
                 return { error }

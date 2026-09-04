@@ -64,18 +64,39 @@ export default function PoolSizeGallonsScreen() {
         const numericWidth = parseFloat(width) || 0;
         const numericShallowDepth = parseFloat(shallowDepth) || 0;
         const numericDeepDepth = parseFloat(deepDepth) || 0;
+        const averageDepth = (numericShallowDepth + numericDeepDepth) / 2;
 
-        if (isEstimate) {
-            return Math.round(
-                numericLength * numericWidth * numericShallowDepth * numericDeepDepth + 1
-            );
+        let volume = 0;
+
+        switch (shape) {
+            case 'Rectangle':
+                if (units === 'us') {
+                    volume = numericLength * numericWidth * averageDepth * 7.48052;
+                } else {
+                    volume = numericLength * numericWidth * averageDepth * 1000;
+                }
+                break;
+            case 'Round':
+                if (units === 'us') {
+                    volume = Math.PI * Math.pow(numericLength / 2, 2) * averageDepth * 7.48052;
+                } else {
+                    volume = Math.PI * Math.pow(numericLength / 2, 2) * averageDepth * 1000;
+                }
+                break;
+            case 'Oval':
+                if (units === 'us') {
+                    volume = numericLength * numericWidth * averageDepth * 5.875;
+                } else {
+                    volume = numericLength * numericWidth * averageDepth * 0.7854 * 1000;
+                }
+                break;
+            default:
+                // Kidney / Freeform — formula TBD
+                break;
         }
-        else {
-            return Math.round(
-                numericLength * numericWidth * numericShallowDepth * numericDeepDepth
-            );
-        }
-    }, [length, width, shallowDepth, deepDepth]);
+
+        return Math.round(volume);
+    }, [length, width, shallowDepth, deepDepth, shape, units]);
 
     const formattedEstimatedVolume = estimatedVolume.toLocaleString(
         i18n.language === 'es' ? 'es-ES' : 'en-US'
@@ -142,6 +163,7 @@ export default function PoolSizeGallonsScreen() {
                     deepDepth: numericDeepDepth,
                     shape,
                     gallons: estimatedVolume,
+                    measurementUnit: units,
                 },
             });
 

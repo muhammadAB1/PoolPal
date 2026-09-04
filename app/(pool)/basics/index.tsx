@@ -1,8 +1,8 @@
-import { icons, poolTabImages } from '@/constants/images';
+import PoolReviewHeader from '@/components/PoolReviewHeader';
+import { poolTabImages } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
 import { usePool } from '@/providers/PoolProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,7 +18,6 @@ const DETAIL_ICONS = {
 } as const;
 
 export default function PoolBasicsScreen() {
-  const router = useRouter();
   const { pools } = usePool();
   const { t, i18n } = useTranslation();
   const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
@@ -43,28 +42,13 @@ export default function PoolBasicsScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
+      <PoolReviewHeader title={t('pool_tab_basics')} />
       <ScrollView
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
       >
         <View className="px-5 pt-2">
-          <View className="flex-row items-center justify-between">
-            <TouchableOpacity
-              className="w-12 h-10 items-start justify-center -ml-1"
-              onPress={() => router.back()}
-              activeOpacity={0.7}
-            >
-              <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
-            </TouchableOpacity>
-
-            <Text className="text-h3 font-jakarta-extrabold text-brand-navy">{t('pool_tab_basics')}</Text>
-
-            <TouchableOpacity className="w-12 h-10 items-end justify-center" activeOpacity={0.7}>
-              <Text className="text-body-lg font-jakarta-bold text-brand-blue">Edit</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View className="rounded-2xl overflow-hidden mt-3 h-48" style={shadow.card}>
+          <View className="rounded-2xl overflow-hidden h-48" style={shadow.card}>
             <Image
               source={poolTabImages.basicsHero}
               className="absolute inset-0 w-full h-full"
@@ -85,10 +69,10 @@ export default function PoolBasicsScreen() {
               <Text className="text-small font-jakarta text-surface-white mt-0.5">
                 {/* List pool attributes in a readable way */}
                 {[
-                  pools?.pool_type,
-                  pools?.pool_screen,
-                  pools?.hot_tub_type === 'Yes' ? 'hot tub and spa' : '',
-                  pools?.pool_use_type,
+                  pools?.pool_type === 'Chlorine' ? t('pool_basics_type_chlorine') : t('pool_basics_type_saltwater'),
+                  pools?.pool_screen === 'Screened' ? t('pool_basics_screened_yes') : t('pool_basics_screened_no'),
+                  pools?.hot_tub_type === 'Yes' ? t('pool_basics_hot_tub_yes') : t('pool_basics_hot_tub_no'),
+                  pools?.pool_use_type === 'Family' ? t('pool_basics_use_family') : pools?.pool_use_type === 'VacationHome' ? t('pool_basics_use_vacation') : t('pool_basics_use_rental'),
                 ]
                   .filter(Boolean)
                   .join(' • ')}
@@ -102,9 +86,11 @@ export default function PoolBasicsScreen() {
                 <MaterialCommunityIcons name="check" size={20} color={colors.surface.white} />
               </View>
               <View className="flex-1 ml-3">
-                <Text className="text-body-lg font-jakarta-bold text-brand-blue">Profile complete</Text>
+                <Text className="text-body-lg font-jakarta-bold text-brand-blue">
+                  {t('pool_basics_review_profile_complete_title')}
+                </Text>
                 <Text className="text-small font-jakarta text-sub mt-0.5">
-                  We have everything we need to personalize your care plan.
+                  {t('pool_basics_review_profile_complete_desc')}
                 </Text>
               </View>
             </View>
@@ -114,16 +100,18 @@ export default function PoolBasicsScreen() {
                 <MaterialCommunityIcons name="alert" size={20} color={colors.surface.white} />
               </View>
               <View className="flex-1 ml-3">
-                <Text className="text-body-lg font-jakarta-bold text-charcoal">Profile incomplete</Text>
+                <Text className="text-body-lg font-jakarta-bold text-charcoal">
+                  {t('pool_basics_review_profile_incomplete_title')}
+                </Text>
                 <Text className="text-small font-jakarta text-sub mt-0.5">
-                  Add the missing details so we can personalize your care plan.
+                  {t('pool_basics_review_profile_incomplete_desc')}
                 </Text>
               </View>
             </View>
           )}
 
           <Text className="text-tiny font-jakarta-bold text-faint tracking-widest uppercase mt-5 mb-2 ml-1">
-            Pool details
+            {t('pool_basics_review_details_heading')}
           </Text>
 
           <View className="card overflow-hidden" style={shadow.card}>
@@ -174,9 +162,11 @@ export default function PoolBasicsScreen() {
               <MaterialCommunityIcons name="information-variant" size={20} color={colors.surface.white} />
             </View>
             <View className="flex-1 ml-3">
-              <Text className="text-body-lg font-jakarta-bold text-brand-blue">Why these details matter</Text>
+              <Text className="text-body-lg font-jakarta-bold text-brand-blue">
+                {t('pool_basics_review_why_title')}
+              </Text>
               <Text className="text-small font-jakarta text-sub mt-0.5">
-                PoolWise uses these answers to personalize your testing ranges, reminders, and maintenance recommendations.
+                {t('pool_basics_review_why_desc')}
               </Text>
             </View>
           </View>
@@ -190,24 +180,30 @@ export default function PoolBasicsScreen() {
               <MaterialCommunityIcons name="plus" size={22} color={colors.surface.white} />
             </View>
             <View className="flex-1 ml-3 mr-2">
-              <Text className="text-body-lg font-jakarta-bold text-brand-navy">Add another pool</Text>
+              <Text className="text-body-lg font-jakarta-bold text-brand-navy">
+                {t('pool_basics_review_add_pool')}
+              </Text>
               <Text className="text-small font-jakarta text-sub mt-0.5">
-                Separate profile, readings, reminders, and care plan.
+                {t('pool_basics_review_add_pool_desc')}
               </Text>
             </View>
-            <Text className="text-body font-jakarta-bold text-brand-blue mr-1">$4.99/month</Text>
+            <Text className="text-body font-jakarta-bold text-brand-blue mr-1">
+              {t('pool_basics_review_add_pool_price')}
+            </Text>
             <MaterialCommunityIcons name="chevron-right" size={22} color={colors.text.faint} />
           </TouchableOpacity>
 
           <Text className="text-small font-jakarta text-faint text-center mt-6">
             {pools?.updated_at
-              ? (() => {
-                const date = new Date(pools.updated_at);
-                const month = date.toLocaleString(locale, { month: 'long', timeZone: 'UTC' });
-                const day = date.getUTCDate();
-                const year = date.getUTCFullYear();
-                return `${month} ${day} ${year}`;
-              })()
+              ? t('pool_basics_review_last_updated', {
+                date: (() => {
+                  const date = new Date(pools.updated_at);
+                  const month = date.toLocaleString(locale, { month: 'long', timeZone: 'UTC' });
+                  const day = date.getUTCDate();
+                  const year = date.getUTCFullYear();
+                  return `${month} ${day} ${year}`;
+                })(),
+              })
               : null}
           </Text>
         </View>

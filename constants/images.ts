@@ -68,11 +68,11 @@ import poolHotTubYes from '../assets/poolbasicsimages/poolbasics/hottub.png';
 import poolHotTubNo from '../assets/poolbasicsimages/poolbasics/no.png';
 
 // ─── Pool Condition (keyed to DB enum values) ──────────────────────────────────
-import poolConditionCrystalClear from '../assets/pool-condition-images/CrystalClear.png';
-import poolConditionALittleCloudy from '../assets/pool-condition-images/ALittleCloudy.png';
-import poolConditionGreen from '../assets/pool-condition-images/Green.png';
-import poolConditionVeryGreenOrDark from '../assets/pool-condition-images/VeryGreen.png';
-import poolConditionNotSure from '../assets/pool-condition-images/NotSure.png';
+import poolConditionCrystalClear from '../assets/pool-condition-images/aa.png';
+import poolConditionALittleCloudy from '../assets/pool-condition-images/bb.png';
+import poolConditionGreen from '../assets/pool-condition-images/cc.png';
+import poolConditionVeryGreenOrDark from '../assets/pool-condition-images/dd.png';
+import poolConditionNotSure from '../assets/pool-condition-images/ee.png';
 
 // ─── Equipment Basics — Filter & Pump examples (keyed to DB enum values) ─────
 import filterSand from '../assets/equipment-basic-images/filter_sand.png';

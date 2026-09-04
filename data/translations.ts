@@ -108,6 +108,22 @@ export const en = {
   pool_basics_pool_users_3_4_desc: 'Usually 3 or 4 people swim at the same time.',
   pool_basics_pool_users_5_plus_desc: 'Usually 5 or more people swim at the same time.',
   pool_basics_review_complete: 'Complete',
+  pool_basics_review_edit: 'Edit',
+  pool_basics_review_profile_complete_title: 'Profile complete',
+  pool_basics_review_profile_complete_desc:
+    'We have everything we need to personalize your care plan.',
+  pool_basics_review_profile_incomplete_title: 'Profile incomplete',
+  pool_basics_review_profile_incomplete_desc:
+    'Add the missing details so we can personalize your care plan.',
+  pool_basics_review_details_heading: 'Pool details',
+  pool_basics_review_why_title: 'Why these details matter',
+  pool_basics_review_why_desc:
+    'PoolWise uses these answers to personalize your testing ranges, reminders, and maintenance recommendations.',
+  pool_basics_review_add_pool: 'Add another pool',
+  pool_basics_review_add_pool_desc: 'Separate profile, readings, reminders, and care plan.',
+  pool_basics_review_add_pool_price: '$4.99/month',
+  pool_basics_review_last_updated: 'Last updated {{date}}',
+  pool_basics_review_hot_tub_tag: 'hot tub and spa',
 
   // pool condition
   pool_condition_title: 'What does your pool look like today?',
@@ -125,6 +141,12 @@ export const en = {
   pool_condition_not_sure_desc: 'Not sure which one matches your pool.',
   pool_condition_continue: 'Continue',
   pool_condition_skip_for_now: 'Skip for now',
+  pool_condition_review_care_note: 'Care note',
+  pool_condition_review_care_note_desc:
+    'Test your water regularly and adjust chemicals based on how clear or cloudy your pool looks.',
+  pool_condition_review_why_title: 'Why pool condition matters',
+  pool_condition_review_why_desc:
+    "Your pool's condition helps us recommend the right shock treatment, filtration time, and next steps to get your water back to crystal clear.",
 
   // pool size & gallons
   pool_size_title: 'Pool Size & Gallons',
@@ -174,12 +196,26 @@ export const en = {
   pool_size_skip_for_now_label: 'Skip for now',
   pool_size_skip_for_now_desc: 'You can skip this and come back later',
   pool_size_continue: 'Continue',
+  pool_size_review_title: 'Pool Size',
+  pool_size_review_estimated_volume: 'Estimated volume',
+  pool_size_review_footer: 'Based on the measurements saved in your pool profile',
+  pool_size_review_details_title: 'How we estimated your pool',
+  pool_size_review_shape: 'Shape',
+  pool_size_review_unit_gallons: 'Gallons',
+  pool_size_review_unit_liters: 'Liters',
+  pool_size_review_improve_title: 'Improve this estimate',
+  pool_size_review_improve_body:
+    'Add shallow and deep end measurements to get a more accurate volume estimate.',
+  pool_size_review_improve_link: 'Add Depth Measurements',
+  pool_size_review_why_title: 'Why volume matters',
+  pool_size_review_why_body:
+    'Pool volume affects chemical dosing. An estimate is fine to begin with, and you can update it whenever you learn the exact size.',
 
   // surface type
   surface_type_title: 'Surface Type',
   surface_type_subtitle: 'What is your pool surface?',
   surface_type_plaster: 'Plaster',
-  surface_type_plaster_desc: 'Smooth white or light-colored cement finish.',
+  surface_type_plaster_desc: 'Smooth cement-based finish, usually white or light-colored.',
   surface_type_pebble: 'Pebble',
   surface_type_pebble_desc: 'Textured finish made with small pebbles or aggregate.',
   surface_type_vinyl: 'Vinyl',
@@ -210,6 +246,13 @@ export const en = {
   surface_type_see_less: 'See Less',
   surface_type_continue: 'Continue',
   surface_type_skip_for_now: 'Skip for now',
+  pool_surface_review_selected: 'Selected by you',
+  pool_surface_review_care_note: 'Care note',
+  pool_surface_review_care_note_desc:
+    'Use an appropriate pool brush and keep the water balanced to help protect the finish.',
+  pool_surface_review_why_title: 'Why surface type matters',
+  pool_surface_review_why_desc:
+    'Your surface affects brushing, chemical guidance, and stain treatment.',
 
   // cleaning setup
   cleaning_setup_title: 'Cleaning Setup',
@@ -787,6 +830,22 @@ export const es = {
   pool_basics_pool_users_3_4_desc: 'Suelen nadar 3 o 4 personas al mismo tiempo.',
   pool_basics_pool_users_5_plus_desc: 'Suelen nadar 5 o más personas al mismo tiempo.',
   pool_basics_review_complete: 'Completar',
+  pool_basics_review_edit: 'Editar',
+  pool_basics_review_profile_complete_title: 'Perfil completo',
+  pool_basics_review_profile_complete_desc:
+    'Tenemos todo lo que necesitamos para personalizar tu plan de cuidado.',
+  pool_basics_review_profile_incomplete_title: 'Perfil incompleto',
+  pool_basics_review_profile_incomplete_desc:
+    'Añade los datos que faltan para personalizar tu plan de cuidado.',
+  pool_basics_review_details_heading: 'Datos de la piscina',
+  pool_basics_review_why_title: 'Por qué importan estos datos',
+  pool_basics_review_why_desc:
+    'PoolWise usa estas respuestas para personalizar tus rangos de prueba, recordatorios y recomendaciones de mantenimiento.',
+  pool_basics_review_add_pool: 'Añadir otra piscina',
+  pool_basics_review_add_pool_desc: 'Perfil, valores, recordatorios y plan de cuidado separados.',
+  pool_basics_review_add_pool_price: '$4.99/mes',
+  pool_basics_review_last_updated: 'Última actualización {{date}}',
+  pool_basics_review_hot_tub_tag: 'jacuzzi y spa',
 
   // pool condition
   pool_condition_title: '¿Cómo se ve tu piscina hoy?',
@@ -804,6 +863,12 @@ export const es = {
   pool_condition_not_sure_desc: 'No estoy seguro cuál coincide con mi piscina.',
   pool_condition_continue: 'Continuar',
   pool_condition_skip_for_now: 'Saltar por ahora',
+  pool_condition_review_care_note: 'Nota de cuidado',
+  pool_condition_review_care_note_desc:
+    'Prueba el agua con regularidad y ajusta los químicos según lo clara o turbia que se vea tu piscina.',
+  pool_condition_review_why_title: 'Por qué importa el estado de la piscina',
+  pool_condition_review_why_desc:
+    'El estado de tu piscina nos ayuda a recomendar el tratamiento de choque, el tiempo de filtración y los siguientes pasos para que el agua vuelva a estar cristalina.',
 
   // pool size & gallons
   pool_size_title: 'Tamaño y galones de la piscina',
@@ -853,12 +918,26 @@ export const es = {
   pool_size_skip_for_now_label: 'Saltar por ahora',
   pool_size_skip_for_now_desc: 'Puedes saltarte este paso y volver más tarde',
   pool_size_continue: 'Continuar',
+  pool_size_review_title: 'Tamaño de la piscina',
+  pool_size_review_estimated_volume: 'Volumen estimado',
+  pool_size_review_footer: 'Según las medidas guardadas en tu perfil de piscina',
+  pool_size_review_details_title: 'Cómo estimamos tu piscina',
+  pool_size_review_shape: 'Forma',
+  pool_size_review_unit_gallons: 'Galones',
+  pool_size_review_unit_liters: 'Litros',
+  pool_size_review_improve_title: 'Mejora esta estimación',
+  pool_size_review_improve_body:
+    'Añade las medidas del extremo poco profundo y el profundo para obtener un volumen más preciso.',
+  pool_size_review_improve_link: 'Añadir profundidades',
+  pool_size_review_why_title: 'Por qué importa el volumen',
+  pool_size_review_why_body:
+    'El volumen de la piscina afecta la dosificación de químicos. Una estimación está bien para empezar, y puedes actualizarla cuando sepas el tamaño exacto.',
 
   // surface type
   surface_type_title: 'Tipo de superficie',
   surface_type_subtitle: '¿Qué superficie tiene tu piscina?',
   surface_type_plaster: 'Yeso',
-  surface_type_plaster_desc: 'Acabado liso de cemento blanco o de color claro.',
+  surface_type_plaster_desc: 'Acabado liso de cemento, normalmente blanco o de color claro.',
   surface_type_pebble: 'Pebble',
   surface_type_pebble_desc: 'Acabado texturizado hecho con pequeñas piedras o áridos.',
   surface_type_vinyl: 'Vinilo',
@@ -889,6 +968,13 @@ export const es = {
   surface_type_see_less: 'Ver menos',
   surface_type_continue: 'Continuar',
   surface_type_skip_for_now: 'Saltar por ahora',
+  pool_surface_review_selected: 'Seleccionada por ti',
+  pool_surface_review_care_note: 'Nota de cuidado',
+  pool_surface_review_care_note_desc:
+    'Usa un cepillo adecuado y mantén el agua equilibrada para proteger el acabado.',
+  pool_surface_review_why_title: 'Por qué importa el tipo de superficie',
+  pool_surface_review_why_desc:
+    'La superficie afecta el cepillado, las indicaciones químicas y el tratamiento de manchas.',
 
   // cleaning setup
   cleaning_setup_title: 'Configuración de limpieza',
