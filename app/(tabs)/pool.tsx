@@ -27,7 +27,7 @@ export default function PoolScreen() {
         description = [
           pools?.pool_type ? pools.pool_type : '',
           pools?.pool_screen ? pools.pool_screen : '',
-          pools?.has_hot_tub ? 'hot tub and spa' : '',
+          pools?.hot_tub_type ? 'hot tub and spa' : '',
           pools?.pool_use_type ? pools.pool_use_type : '',
         ].filter(Boolean).join(' • ');
         break;

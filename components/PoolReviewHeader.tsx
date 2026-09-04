@@ -15,7 +15,7 @@ export default function PoolReviewHeader({ title }: PoolReviewHeaderProps) {
     <View className="px-5 pt-2 pb-2 bg-surface-bg">
       <View className="flex-row items-center">
         <TouchableOpacity
-          className="flex-1 h-10 items-start justify-center -ml-1"
+          className="w-16 h-10 items-start justify-center -ml-1"
           onPress={() => router.back()}
           activeOpacity={0.7}
         >
@@ -29,7 +29,7 @@ export default function PoolReviewHeader({ title }: PoolReviewHeaderProps) {
           {title}
         </Text>
 
-        <TouchableOpacity className="flex-1 h-10 items-end justify-center" activeOpacity={0.7}>
+        <TouchableOpacity className="w-16 h-10 items-end justify-center" activeOpacity={0.7}>
           <Text className="text-body-lg font-jakarta-bold text-brand-blue">
             {t('pool_basics_review_edit')}
           </Text>

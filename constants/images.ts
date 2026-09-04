@@ -99,11 +99,11 @@ import surfaceOtherCustom from '../assets/pool-surface-images/Additional_Pool_Su
 import surfaceNotSure from '../assets/pool-surface-images/pool_surface_not_sure_icon.png';
 
 // ─── Cleaning Setup (keyed to CleaningType values) ────────────────────────────
-import cleaningRobotic from '../assets/cleaning-setup-images/robotic-cleaner.png';
-import cleaningSuctionSide from '../assets/cleaning-setup-images/suction-side-cleaner.png';
-import cleaningPressureSide from '../assets/cleaning-setup-images/pressure-side-cleaner.png';
-import cleaningManualVacuum from '../assets/cleaning-setup-images/manual-vaccum.png';
-import cleaningNoVacuum from '../assets/cleaning-setup-images/no-vaccum.png';
+import cleaningRobotic from '../assets/cleaning-setup-images/robotic-cleaner1.png';
+import cleaningSuctionSide from '../assets/cleaning-setup-images/suction-side-cleaner1.jpg';
+import cleaningPressureSide from '../assets/cleaning-setup-images/pressure-side-cleaner1.jpg';
+import cleaningManualVacuum from '../assets/cleaning-setup-images/manual-vaccum1.jpg';
+import cleaningNoVacuum from '../assets/cleaning-setup-images/no-vaccum1.jpg';
 import cleaningNotSure from '../assets/cleaning-setup-images/pool_surface_not_sure_icon.png';
 
 // ─── Test Readings (keyed to TestReadingsMethod values) ───────────────────────

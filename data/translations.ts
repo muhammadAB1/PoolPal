@@ -276,6 +276,24 @@ export const en = {
     "Not sure? Upload a photo and we'll help identify it.",
   cleaning_setup_continue: 'Continue',
   cleaning_setup_skip_for_now: 'Skip for now',
+  pool_cleaning_review_confirmed: 'Confirmed by you',
+  pool_cleaning_review_brand: 'Brand',
+  pool_cleaning_review_model: 'Model',
+  pool_cleaning_review_at_a_glance: 'AT A GLANCE',
+  pool_cleaning_review_coverage: 'Cleaning coverage',
+  pool_cleaning_review_coverage_value: 'Floor + walls + waterline',
+  pool_cleaning_review_frequency: 'Cleaning frequency',
+  pool_cleaning_review_frequency_value: 'Twice weekly',
+  pool_cleaning_review_power: 'Power source',
+  pool_cleaning_review_power_value: 'Corded electric',
+  pool_cleaning_review_duration: 'Cycle duration',
+  pool_cleaning_review_duration_value: '2 hours',
+  pool_cleaning_review_care_note: 'Care note',
+  pool_cleaning_review_care_note_desc:
+    'Empty and rinse the filter basket, inspect the cable and brushes, and store the cleaner out of direct sunlight when not in use.',
+  pool_cleaning_review_why_title: 'Why cleaning setup matters',
+  pool_cleaning_review_why_desc:
+    'Your cleaning setup helps PoolWise build the right checklist, recommend equipment care, and troubleshoot cleaning or circulation problems.',
 
   // equipment basics
   equipment_basics_title: 'Equipment Basics',
@@ -347,6 +365,25 @@ export const en = {
     'Has a digital display or advanced control panel with multiple speed settings.',
   equipment_examples_pump_footer:
     "Not sure which pump you have? Upload a photo of your equipment pad and we'll help you identify it.",
+
+  equipment_filter_details: 'Filter details',
+  equipment_pump_details: 'Pump details',
+  equipment_details_help:
+    'Adding these helps us give you more specific maintenance and troubleshooting advice.',
+  equipment_select_brand: 'Select brand',
+  equipment_identify_filter_title: 'Identify your filter from a photo',
+  equipment_identify_filter_desc:
+    'Take a clear photo of your filter and PoolWise can help identify its type, brand, and model.',
+  equipment_identify_pump_title: 'Identify your pump from a photo',
+  equipment_identify_pump_desc:
+    'Take a clear photo of your pump and PoolWise can help identify its type, brand, and model.',
+  equipment_photo_id_button: 'Use Photo Identification',
+  equipment_premium_badge: 'PREMIUM',
+  equipment_premium_feature: 'PoolWise Premium feature',
+  equipment_heater_yes_title: 'Yes, I have a heater',
+  equipment_heater_yes_desc: 'Keeps your pool water warm whenever you want to swim.',
+  equipment_heater_no_title: 'No heater',
+  equipment_heater_no_desc: 'Your pool relies on the sun to warm the water.',
 
   // test readings
   test_readings_title: 'Do you have recent pool test results?',
@@ -650,6 +687,24 @@ export const en = {
   pool_tab_cleaning_subtitle: 'Robotic cleaner \u2022 Dolphin / Maytronics',
   pool_tab_reminder: 'Weekly Reminder',
   pool_tab_reminder_subtitle: 'Saturday at 9:00 AM',
+  pool_reminder_review_every_day: 'Every {{day}}',
+  pool_reminder_review_hero_subtitle: 'Weekly pool-care reminder',
+  pool_reminder_review_settings_title: 'Reminder settings',
+  pool_reminder_review_toggle_subtitle: 'Get a reminder to check and clean your pool.',
+  pool_reminder_review_day: 'Day',
+  pool_reminder_review_time: 'Time',
+  pool_reminder_review_next_title: 'Next reminder',
+  pool_reminder_review_next_value: '{{day}}, {{month}} {{date}} at {{time}}',
+  pool_reminder_review_month_september: 'September',
+  pool_reminder_review_why_title: 'Why reminders help',
+  pool_reminder_review_why_body:
+    'A regular schedule helps you stay ahead of water and cleaning problems and keeps your pool looking its best.',
+  pool_reminder_review_includes_title: 'What this reminder includes',
+  pool_reminder_review_includes_test: 'Test the pool water',
+  pool_reminder_review_includes_readings: 'Review chemical readings',
+  pool_reminder_review_includes_baskets: 'Empty baskets',
+  pool_reminder_review_includes_clarity: 'Inspect water clarity',
+  pool_reminder_review_includes_checklist: 'Complete the weekly cleaning checklist',
   pool_tab_condition: 'Pool Condition',
   pool_tab_condition_subtitle: 'Crystal clear',
 
@@ -998,6 +1053,24 @@ export const es = {
     '¿No estás seguro? Sube una foto y te ayudamos a identificarlo.',
   cleaning_setup_continue: 'Continuar',
   cleaning_setup_skip_for_now: 'Saltar por ahora',
+  pool_cleaning_review_confirmed: 'Confirmado por ti',
+  pool_cleaning_review_brand: 'Marca',
+  pool_cleaning_review_model: 'Modelo',
+  pool_cleaning_review_at_a_glance: 'DE UN VISTAZO',
+  pool_cleaning_review_coverage: 'Cobertura de limpieza',
+  pool_cleaning_review_coverage_value: 'Suelo + paredes + línea de agua',
+  pool_cleaning_review_frequency: 'Frecuencia de limpieza',
+  pool_cleaning_review_frequency_value: 'Dos veces por semana',
+  pool_cleaning_review_power: 'Fuente de energía',
+  pool_cleaning_review_power_value: 'Eléctrico con cable',
+  pool_cleaning_review_duration: 'Duración del ciclo',
+  pool_cleaning_review_duration_value: '2 horas',
+  pool_cleaning_review_care_note: 'Nota de cuidado',
+  pool_cleaning_review_care_note_desc:
+    'Vacía y enjuaga la cesta del filtro, inspecciona el cable y los cepillos, y guarda el limpiafondos fuera de la luz solar directa cuando no lo uses.',
+  pool_cleaning_review_why_title: 'Por qué importa la configuración de limpieza',
+  pool_cleaning_review_why_desc:
+    'Tu configuración de limpieza ayuda a PoolWise a armar el checklist correcto, recomendar el cuidado del equipo y resolver problemas de limpieza o circulación.',
 
   // equipment basics
   equipment_basics_title: 'Datos básicos del equipo',
@@ -1069,6 +1142,25 @@ export const es = {
     'Tiene una pantalla digital o un panel de control avanzado con múltiples opciones de velocidad.',
   equipment_examples_pump_footer:
     '¿No sabes qué bomba tienes? Sube una foto de tu zona de equipos y te ayudaremos a identificarla.',
+
+  equipment_filter_details: 'Detalles del filtro',
+  equipment_pump_details: 'Detalles de la bomba',
+  equipment_details_help:
+    'Añadir estos datos nos ayuda a darte consejos más específicos de mantenimiento y solución de problemas.',
+  equipment_select_brand: 'Seleccionar marca',
+  equipment_identify_filter_title: 'Identifica tu filtro con una foto',
+  equipment_identify_filter_desc:
+    'Haz una foto clara de tu filtro y PoolWise puede ayudar a identificar su tipo, marca y modelo.',
+  equipment_identify_pump_title: 'Identifica tu bomba con una foto',
+  equipment_identify_pump_desc:
+    'Haz una foto clara de tu bomba y PoolWise puede ayudar a identificar su tipo, marca y modelo.',
+  equipment_photo_id_button: 'Usar identificación por foto',
+  equipment_premium_badge: 'PREMIUM',
+  equipment_premium_feature: 'Función de PoolWise Premium',
+  equipment_heater_yes_title: 'Sí, tengo un calentador',
+  equipment_heater_yes_desc: 'Mantiene el agua de tu piscina caliente cuando quieras nadar.',
+  equipment_heater_no_title: 'Sin calentador',
+  equipment_heater_no_desc: 'Tu piscina se calienta con el sol.',
 
   // test readings
   test_readings_title: '¿Tienes resultados recientes del agua de tu piscina?',
@@ -1375,6 +1467,24 @@ export const es = {
   pool_tab_surface: 'Superficie',
   pool_tab_cleaning: 'Limpieza',
   pool_tab_reminder: 'Recordatorio semanal',
+  pool_reminder_review_every_day: 'Cada {{day}}',
+  pool_reminder_review_hero_subtitle: 'Recordatorio semanal de cuidado de la piscina',
+  pool_reminder_review_settings_title: 'Ajustes del recordatorio',
+  pool_reminder_review_toggle_subtitle: 'Recibe un recordatorio para revisar y limpiar tu piscina.',
+  pool_reminder_review_day: 'Día',
+  pool_reminder_review_time: 'Hora',
+  pool_reminder_review_next_title: 'Próximo recordatorio',
+  pool_reminder_review_next_value: '{{day}}, {{date}} de {{month}} a las {{time}}',
+  pool_reminder_review_month_september: 'septiembre',
+  pool_reminder_review_why_title: 'Por qué ayudan los recordatorios',
+  pool_reminder_review_why_body:
+    'Una rutina regular te ayuda a adelantarte a los problemas del agua y la limpieza, y a mantener tu piscina en su mejor estado.',
+  pool_reminder_review_includes_title: 'Qué incluye este recordatorio',
+  pool_reminder_review_includes_test: 'Analiza el agua de la piscina',
+  pool_reminder_review_includes_readings: 'Revisa las lecturas de químicos',
+  pool_reminder_review_includes_baskets: 'Vacía las cestas',
+  pool_reminder_review_includes_clarity: 'Inspecciona la claridad del agua',
+  pool_reminder_review_includes_checklist: 'Completa el checklist semanal de limpieza',
   pool_tab_condition: 'Estado de la piscina',
   pool_tab_not_set: 'Sin definir',
 

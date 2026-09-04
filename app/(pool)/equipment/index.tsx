@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { HeaterChoice, POOL_EQUIPMENT } from './_data';
+import { useTranslation } from 'react-i18next';
 
 
 /** A single selectable card used inside the filter / pump / heater lists. */
@@ -64,16 +65,30 @@ function EquipmentOptionCard({
 function EquipmentSectionHeader({
   label,
   onViewExamples,
+  isUnset = false,
 }: {
   label: string;
   onViewExamples?: () => void;
+  isUnset?: boolean;
 }) {
+  const { t } = useTranslation();
+
   return (
     <View className="flex-row items-center justify-between">
-      <Text className="section__title">{label}</Text>
+      <View className="flex-row items-center flex-1 mr-2">
+        <Text className="section__title shrink" numberOfLines={1}>{t(label)}</Text>
+        {isUnset ? (
+          <View className="flex-row items-center bg-warning-bg border border-warning rounded-full px-2 py-0.5 ml-2 shrink-0">
+            <View className="w-1.5 h-1.5 rounded-full bg-warning" />
+            <Text className="text-tiny font-jakarta-bold text-warning ml-1">{t('pool_tab_not_set')}</Text>
+          </View>
+        ) : null}
+      </View>
       {onViewExamples ? (
         <TouchableOpacity onPress={onViewExamples} activeOpacity={0.7}>
-          <Text className="text-small font-jakarta-bold text-brand-blue">View examples</Text>
+          <Text className="text-small font-jakarta-bold text-brand-blue">
+            {t('equipment_basics_see_examples')}
+          </Text>
         </TouchableOpacity>
       ) : null}
     </View>
@@ -94,16 +109,16 @@ function EquipmentDetailsBlock({
   identifyTitle: string;
   identifyDescription: string;
 }) {
-
+  const { t } = useTranslation();
   const { user } = useAuth();
 
   return (
     <>
       <Text className="text-label font-jakarta-bold text-charcoal mt-5">
-        {detailsLabel} <Text className="text-sub font-jakarta">(optional)</Text>
+        {t(detailsLabel)} <Text className="text-sub font-jakarta">{t('signup_phone_optional')}</Text>
       </Text>
       <Text className="text-small font-jakarta text-sub mt-1 leading-relaxed">
-        Adding these helps us give you more specific maintenance and troubleshooting advice.
+        {t('equipment_details_help')}
       </Text>
 
       <TouchableOpacity
@@ -112,7 +127,7 @@ function EquipmentDetailsBlock({
       >
         <View className="flex-row items-center gap-2">
           <Ionicons name="pricetag-outline" size={16} color={colors.text.faint} />
-          <Text className="text-body font-jakarta text-faint">Select brand</Text>
+          <Text className="text-body font-jakarta text-faint">{t('equipment_select_brand')}</Text>
         </View>
         <Ionicons name="chevron-down" size={18} color={colors.text.faint} />
       </TouchableOpacity>
@@ -120,24 +135,28 @@ function EquipmentDetailsBlock({
       {user?.user_metadata?.plan === 'free' ? (
         <>
           <TouchableOpacity className="self-start mt-2.5" activeOpacity={0.7}>
-            <Text className="text-small font-jakarta-bold text-brand-blue">Not sure</Text>
+            <Text className="text-small font-jakarta-bold text-brand-blue">
+              {t('equipment_basics_heater_not_sure')}
+            </Text>
           </TouchableOpacity >
 
           <View className="rounded-2xl border border-dashed border-brand-aqua bg-surface-soft-aqua p-4 mt-4">
             <View className="flex-row items-center justify-end gap-1">
               <Ionicons name="sparkles" size={12} color={colors.brand.blue} />
-              <Text className="text-tiny font-jakarta-extrabold text-brand-blue">PREMIUM</Text>
+              <Text className="text-tiny font-jakarta-extrabold text-brand-blue">
+                {t('equipment_premium_badge')}
+              </Text>
             </View>
 
             <View className="flex-row items-center gap-2 mt-1.5">
               <Ionicons name="camera-outline" size={18} color={colors.brand.navy} />
               <Text className="flex-1 text-body-lg font-jakarta-bold text-charcoal">
-                {identifyTitle}
+                {t(identifyTitle)}
               </Text>
             </View>
 
             <Text className="text-small font-jakarta text-sub mt-2 leading-relaxed">
-              {identifyDescription}
+              {t(identifyDescription)}
             </Text>
 
             <TouchableOpacity
@@ -146,14 +165,14 @@ function EquipmentDetailsBlock({
             >
               <Ionicons name="camera-outline" size={16} color={colors.brand.blue} />
               <Text className="text-body font-jakarta-bold text-brand-blue">
-                Use Photo Identification
+                {t('equipment_photo_id_button')}
               </Text>
             </TouchableOpacity>
 
             <View className="flex-row items-center justify-center gap-1 mt-2">
               <Ionicons name="lock-closed" size={10} color={colors.text.faint} />
               <Text className="text-tiny font-jakarta text-faint">
-                PoolWise Premium feature
+                {t('equipment_premium_feature')}
               </Text>
             </View>
           </View>
@@ -164,6 +183,7 @@ function EquipmentDetailsBlock({
 }
 
 export default function PoolEquipmentScreen() {
+  const { t } = useTranslation();
   const { pools } = usePool();
 
   const savedHeater = (pools as { heater?: HeaterChoice } | null)?.heater ?? pools?.heater_type;
@@ -184,6 +204,8 @@ export default function PoolEquipmentScreen() {
     },
   };
 
+
+
   const [filterType, setFilterType] = useState<FilterType | null>(updatePoolEquipment.filter.defaultValue);
   const [pumpType, setPumpType] = useState<PumpType | null>(updatePoolEquipment.pump.defaultValue);
   const [heater, setHeater] = useState<HeaterChoice | null>(updatePoolEquipment.heater.defaultValue);
@@ -194,24 +216,24 @@ export default function PoolEquipmentScreen() {
   const filterExampleItems: EquipmentExampleItem[] = updatePoolEquipment.filter.options.map((option) => ({
     key: option.value,
     image: equipmentImages.filter[option.value],
-    title: option.title,
-    description: option.exampleDescription ?? option.description,
-    identifyLabel: 'How to identify it:',
-    identify: option.identifyHint ?? '',
+    title: t(option.title),
+    description: t(option.exampleDescription ?? option.description),
+    identifyLabel: t('equipment_how_to_identify'),
+    identify: option.identifyHint ? t(option.identifyHint) : '',
   }));
 
   const pumpExampleItems: EquipmentExampleItem[] = updatePoolEquipment.pump.options.map((option) => ({
     key: option.value,
     image: equipmentImages.pump[option.value],
-    title: option.title,
-    description: option.exampleDescription ?? option.description,
-    identifyLabel: 'How to identify it:',
-    identify: option.identifyHint ?? '',
+    title: t(option.title),
+    description: t(option.exampleDescription ?? option.description),
+    identifyLabel: t('equipment_how_to_identify_pump'),
+    identify: option.identifyHint ? t(option.identifyHint) : '',
   }));
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
-      <PoolReviewHeader title="Equipment" />
+      <PoolReviewHeader title={t('pool_tab_equipment')} />
 
       <ScrollView
         contentContainerStyle={{ paddingBottom: 32 }}
@@ -219,7 +241,7 @@ export default function PoolEquipmentScreen() {
       >
         <View className="px-5 pt-2">
           <Text className="text-body font-jakarta text-sub mb-5">
-            Tell us about your pool equipment so we can provide the best guidance.
+            {t('equipment_basics_subtitle')}
           </Text>
 
           {/* Filter type */}
@@ -227,6 +249,7 @@ export default function PoolEquipmentScreen() {
             <EquipmentSectionHeader
               label={updatePoolEquipment.filter.label}
               onViewExamples={() => setFilterExamplesVisible(true)}
+              isUnset={!filterType}
             />
 
             <View className="gap-3 mt-3">
@@ -235,8 +258,8 @@ export default function PoolEquipmentScreen() {
                   key={option.value}
                   selected={filterType === option.value}
                   onPress={() => setFilterType(option.value)}
-                  title={option.title}
-                  description={option.description}
+                  title={t(option.title)}
+                  description={t(option.description)}
                   thumbnail={
                     <Image
                       source={equipmentImages.filter[option.value] as ImageSourcePropType}
@@ -249,9 +272,9 @@ export default function PoolEquipmentScreen() {
             </View>
 
             <EquipmentDetailsBlock
-              detailsLabel="Filter details"
-              identifyTitle="Identify your filter from a photo"
-              identifyDescription="Take a clear photo of your filter and PoolWise can help identify its type, brand, and model."
+              detailsLabel="equipment_filter_details"
+              identifyTitle="equipment_identify_filter_title"
+              identifyDescription="equipment_identify_filter_desc"
             />
           </View>
 
@@ -260,6 +283,7 @@ export default function PoolEquipmentScreen() {
             <EquipmentSectionHeader
               label={updatePoolEquipment.pump.label}
               onViewExamples={() => setPumpExamplesVisible(true)}
+              isUnset={!pumpType}
             />
 
             <View className="gap-3 mt-3">
@@ -268,8 +292,8 @@ export default function PoolEquipmentScreen() {
                   key={option.value}
                   selected={pumpType === option.value}
                   onPress={() => setPumpType(option.value)}
-                  title={option.title}
-                  description={option.description}
+                  title={t(option.title)}
+                  description={t(option.description)}
                   thumbnail={
                     <Image
                       source={equipmentImages.pump[option.value] as ImageSourcePropType}
@@ -282,15 +306,18 @@ export default function PoolEquipmentScreen() {
             </View>
 
             <EquipmentDetailsBlock
-              detailsLabel="Pump details"
-              identifyTitle="Identify your pump from a photo"
-              identifyDescription="Take a clear photo of your pump and PoolWise can help identify its type, brand, and model."
+              detailsLabel="equipment_pump_details"
+              identifyTitle="equipment_identify_pump_title"
+              identifyDescription="equipment_identify_pump_desc"
             />
           </View>
 
           {/* Heater */}
           <View className="mt-8">
-            <EquipmentSectionHeader label={updatePoolEquipment.heater.label} />
+            <EquipmentSectionHeader
+              label={updatePoolEquipment.heater.label}
+              isUnset={!heater}
+            />
 
             <View className="gap-3 mt-3">
               {updatePoolEquipment.heater.options.map((option) => (
@@ -298,8 +325,8 @@ export default function PoolEquipmentScreen() {
                   key={option.value}
                   selected={heater === option.value}
                   onPress={() => setHeater(option.value)}
-                  title={option.title}
-                  description={option.description}
+                  title={t(option.title)}
+                  description={t(option.description)}
                   thumbnailClassName={HEATER_ICON[option.value].bg}
                   thumbnail={
                     <MaterialCommunityIcons
@@ -318,18 +345,18 @@ export default function PoolEquipmentScreen() {
       <EquipmentExamplesModal
         visible={filterExamplesVisible}
         onClose={() => setFilterExamplesVisible(false)}
-        title="Examples of Filter Types"
-        subtitle="These are common filter types you may have."
-        footerNote="Not sure which filter you have? Upload a photo of your filter equipment and we'll help you identify it."
+        title={t('equipment_examples_filter_title')}
+        subtitle={t('equipment_examples_filter_subtitle')}
+        footerNote={t('equipment_examples_filter_footer')}
         items={filterExampleItems}
       />
 
       <EquipmentExamplesModal
         visible={pumpExamplesVisible}
         onClose={() => setPumpExamplesVisible(false)}
-        title="Examples of Pump Types"
-        subtitle="These are common pump types you may have."
-        footerNote="Not sure which pump you have? Upload a photo of your equipment pad and we'll help you identify it."
+        title={t('equipment_examples_pump_title')}
+        subtitle={t('equipment_examples_pump_subtitle')}
+        footerNote={t('equipment_examples_pump_footer')}
         items={pumpExampleItems}
       />
     </SafeAreaView>
