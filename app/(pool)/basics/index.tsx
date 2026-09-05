@@ -1,8 +1,11 @@
+import PoolBasicsForm from '@/app/(onboarding)/pool-basics';
 import PoolReviewHeader from '@/components/PoolReviewHeader';
 import { poolTabImages } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
 import { usePool } from '@/providers/PoolProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -18,9 +21,11 @@ const DETAIL_ICONS = {
 } as const;
 
 export default function PoolBasicsScreen() {
-  const { pools } = usePool();
+  const { pools, refreshPools } = usePool();
   const { t, i18n } = useTranslation();
   const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
+  const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
 
   const updatedPoolBasics = POOL_BASICS.details.map((detail) => {
     const selected = pools?.[detail.database_column_name];
@@ -37,12 +42,41 @@ export default function PoolBasicsScreen() {
     };
   });
 
-  const sectionCompleted = updatedPoolBasics.every((row) => row.value.name != null);
+  const sectionCompleted = pools?.missing_details?.includes('pool-basics') ? false : true;
 
+  if (isEditing) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
+        <PoolReviewHeader
+          title={t('pool_tab_basics')}
+          onBackPress={() => setIsEditing(false)}
+          showEdit={false}
+        />
+        <PoolBasicsForm
+          initialPoolBasics={{
+            poolName: pools?.pool_name ?? undefined,
+            poolType: pools?.pool_type ?? undefined,
+            screened: pools?.pool_screen ?? undefined,
+            hasHotTub: pools?.hot_tub_type ?? undefined,
+            useType: pools?.pool_use_type ?? undefined,
+            usageFrequency: pools?.usage_frequency ?? undefined,
+            numberOfPoolUsers: pools?.number_of_users ?? undefined,
+          }}
+          showSkip={false}
+          markStale={false}
+          onSuccess={async () => {
+            await refreshPools({ silent: true });
+            setIsEditing(false);
+            router.replace('/(tabs)/pool');
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
-      <PoolReviewHeader title={t('pool_tab_basics')} />
+      <PoolReviewHeader title={t('pool_tab_basics')} onEditPress={() => setIsEditing(true)} />
       <ScrollView
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
@@ -116,6 +150,8 @@ export default function PoolBasicsScreen() {
 
           <View className="card overflow-hidden" style={shadow.card}>
             {updatedPoolBasics.map((row, index) => {
+              if (pools?.pool_use_type !== 'Family' && (row.database_column_name === 'usage_frequency' || row.database_column_name === 'number_of_users')) return null;
+
               const isLast = index === updatedPoolBasics.length - 1;
               const icon = DETAIL_ICONS[row.database_column_name];
               const isMissing = row.value.name == null;

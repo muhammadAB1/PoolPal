@@ -16,20 +16,52 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function PoolBasicsScreen() {
+type PoolBasicsFields = {
+    poolName?: string;
+    poolType?: PoolType;
+    screened?: ScreenedType;
+    hasHotTub?: HotTubType;
+    useType?: UseType;
+    usageFrequency?: UsageFrequency;
+    numberOfPoolUsers?: NumberOfPoolUsers;
+};
+
+type PoolBasicsScreenProps = {
+    /** Preselects every field, e.g. the pool's current basics when editing from the Pool tab. */
+    initialPoolBasics?: PoolBasicsFields | null;
+    /** Hides "Skip for now". Defaults to true (onboarding keeps the skip option). */
+    showSkip?: boolean;
+    /**
+     * When provided, this screen is being embedded (e.g. from the Basics review "Edit" action)
+     * instead of rendered as an onboarding route. On success this is called instead of the
+     * normal onboarding navigation, and the outer SafeAreaView is skipped so the parent screen
+     * stays in control of the safe area and header.
+     */
+    onSuccess?: () => void;
+    /** Defaults to true for onboarding. Pool tab Edit passes false because it refreshes the provider itself. */
+    markStale?: boolean;
+};
+
+export default function PoolBasicsScreen({
+    initialPoolBasics,
+    showSkip = true,
+    onSuccess,
+    markStale = true,
+}: PoolBasicsScreenProps = {}) {
     const router = useRouter();
     const { t } = useTranslation();
     const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
     const isResuming = resume === '1';
     const remainingSteps = parseRemainingSteps(remaining);
+    const isEmbedded = Boolean(onSuccess);
 
-    const [poolName, setPoolName] = useState('');
-    const [poolType, setPoolType] = useState<PoolType>();
-    const [screened, setScreened] = useState<ScreenedType>();
-    const [hasHotTub, setHasHotTub] = useState<HotTubType>();
-    const [useType, setUseType] = useState<UseType>();
-    const [usageFrequency, setUsageFrequency] = useState<UsageFrequency>();
-    const [numberOfPoolUsers, setNumberOfPoolUsers] = useState<NumberOfPoolUsers>();
+    const [poolName, setPoolName] = useState(initialPoolBasics?.poolName ?? '');
+    const [poolType, setPoolType] = useState<PoolType | undefined>(initialPoolBasics?.poolType);
+    const [screened, setScreened] = useState<ScreenedType | undefined>(initialPoolBasics?.screened);
+    const [hasHotTub, setHasHotTub] = useState<HotTubType | undefined>(initialPoolBasics?.hasHotTub);
+    const [useType, setUseType] = useState<UseType | undefined>(initialPoolBasics?.useType);
+    const [usageFrequency, setUsageFrequency] = useState<UsageFrequency | undefined>(initialPoolBasics?.usageFrequency);
+    const [numberOfPoolUsers, setNumberOfPoolUsers] = useState<NumberOfPoolUsers | undefined>(initialPoolBasics?.numberOfPoolUsers);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const ScrollViewRef = useRef<ScrollView>(null)
@@ -57,9 +89,15 @@ export default function PoolBasicsScreen() {
             useType,
             usageFrequency,
             numberOfUsers: numberOfPoolUsers,
+            markStale,
         });
         if (error) {
             setErrorMessage(error.message);
+            return;
+        }
+
+        if (onSuccess) {
+            onSuccess();
             return;
         }
 
@@ -70,8 +108,8 @@ export default function PoolBasicsScreen() {
         router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
     }
 
-    return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+    const content = (
+        <>
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
                 showsVerticalScrollIndicator={false}
@@ -372,16 +410,28 @@ export default function PoolBasicsScreen() {
                         {t('pool_basics_continue')}
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    className="items-center justify-center mt-3.5 py-1"
-                    onPress={handleSkipForNow}
-                    activeOpacity={0.7}
-                >
-                    <Text className="text-body font-jakarta-bold text-brand-blue">
-                        {t('pool_basics_skip_for_now')}
-                    </Text>
-                </TouchableOpacity>
+                {showSkip ? (
+                    <TouchableOpacity
+                        className="items-center justify-center mt-3.5 py-1"
+                        onPress={handleSkipForNow}
+                        activeOpacity={0.7}
+                    >
+                        <Text className="text-body font-jakarta-bold text-brand-blue">
+                            {t('pool_basics_skip_for_now')}
+                        </Text>
+                    </TouchableOpacity>
+                ) : null}
             </View>
+        </>
+    );
+
+    if (isEmbedded) {
+        return <View className="flex-1">{content}</View>;
+    }
+
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+            {content}
         </SafeAreaView>
     );
 }

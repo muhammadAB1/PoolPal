@@ -1,3 +1,4 @@
+import PoolSizeGallonsScreen from '@/app/(onboarding)/pool-size-gallons';
 import PoolReviewHeader from '@/components/PoolReviewHeader';
 import { icons } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
@@ -5,6 +6,8 @@ import { poolShapeTranslationKeys } from '@/data/poolShapes';
 import type { PoolShape } from '@/lib/types';
 import { usePool } from '@/providers/PoolProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,7 +16,9 @@ import { POOL_SIZE } from './_data';
 export default function PoolSizeScreen() {
   const { estimatedVolume, estimationDetails, improveBanner, infoBanner } = POOL_SIZE;
 
-  const { pools } = usePool();
+  const { pools, refreshPools } = usePool();
+  const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
 
   const { t, i18n } = useTranslation();
   const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
@@ -45,9 +50,38 @@ export default function PoolSizeScreen() {
     return { ...row, value };
   });
 
+  if (isEditing) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
+        <PoolReviewHeader
+          title={t(POOL_SIZE.title)}
+          onBackPress={() => setIsEditing(false)}
+          showEdit={false}
+        />
+        <PoolSizeGallonsScreen
+          initialPoolSize={{
+            units: pools?.measurement_unit ?? undefined,
+            length: pools?.length ?? undefined,
+            width: pools?.width ?? undefined,
+            shallowDepth: pools?.shallow_depth ?? undefined,
+            deepDepth: pools?.deep_depth ?? undefined,
+            shape: pools?.shape ?? undefined,
+          }}
+          showSkip={false}
+          markStale={false}
+          onSuccess={async () => {
+            await refreshPools({ silent: true });
+            setIsEditing(false);
+            router.replace('/(tabs)/pool');
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
-      <PoolReviewHeader title={t(POOL_SIZE.title)} />
+      <PoolReviewHeader title={t(POOL_SIZE.title)} onEditPress={() => setIsEditing(true)} />
       <ScrollView
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}

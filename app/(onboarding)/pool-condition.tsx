@@ -19,15 +19,37 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function PoolConditionScreen() {
+type PoolConditionScreenProps = {
+    /** Preselects a condition, e.g. the pool's current `pool_condition` when editing from the Pool tab. */
+    initialPoolCondition?: PoolCondition | null;
+    /** Hides "Skip for now". Defaults to true (onboarding keeps the skip option). */
+    showSkip?: boolean;
+    /**
+     * When provided, this screen is being embedded (e.g. from the Pool Condition review "Edit" action)
+     * instead of rendered as an onboarding route. On success this is called instead of the
+     * normal onboarding navigation, and the outer SafeAreaView is skipped so the parent screen
+     * stays in control of the safe area and header.
+     */
+    onSuccess?: () => void;
+    /** Defaults to true for onboarding. Pool tab Edit passes false because it refreshes the provider itself. */
+    markStale?: boolean;
+};
+
+export default function PoolConditionScreen({
+    initialPoolCondition,
+    showSkip = true,
+    onSuccess,
+    markStale = true,
+}: PoolConditionScreenProps = {}) {
     const router = useRouter();
     const { t } = useTranslation();
     const { poolBasicUpdate } = useSupabase();
     const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
     const isResuming = resume === '1';
     const remainingSteps = parseRemainingSteps(remaining);
+    const isEmbedded = Boolean(onSuccess);
 
-    const [poolCondition, setPoolCondition] = useState<PoolCondition>('CRYSTAL_CLEAR');
+    const [poolCondition, setPoolCondition] = useState<PoolCondition>(initialPoolCondition ?? 'CRYSTAL_CLEAR');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     async function handleContinue() {
@@ -41,10 +63,16 @@ export default function PoolConditionScreen() {
             props: {
                 poolCondition,
             },
+            markStale,
         });
 
         if (error) {
             setErrorMessage(error.message);
+            return;
+        }
+
+        if (onSuccess) {
+            onSuccess();
             return;
         }
 
@@ -55,8 +83,8 @@ export default function PoolConditionScreen() {
         router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-size-gallons' as Href));
     }
 
-    return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+    const content = (
+        <>
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
                 showsVerticalScrollIndicator={false}
@@ -108,16 +136,28 @@ export default function PoolConditionScreen() {
                         {t('pool_condition_continue')}
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    className="items-center justify-center mt-3.5 py-1"
-                    onPress={handleSkipForNow}
-                    activeOpacity={0.7}
-                >
-                    <Text className="text-body font-jakarta-bold text-brand-blue">
-                        {t('pool_condition_skip_for_now')}
-                    </Text>
-                </TouchableOpacity>
+                {showSkip ? (
+                    <TouchableOpacity
+                        className="items-center justify-center mt-3.5 py-1"
+                        onPress={handleSkipForNow}
+                        activeOpacity={0.7}
+                    >
+                        <Text className="text-body font-jakarta-bold text-brand-blue">
+                            {t('pool_condition_skip_for_now')}
+                        </Text>
+                    </TouchableOpacity>
+                ) : null}
             </View>
+        </>
+    );
+
+    if (isEmbedded) {
+        return <View className="flex-1">{content}</View>;
+    }
+
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+            {content}
         </SafeAreaView>
     );
 }

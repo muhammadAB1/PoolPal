@@ -1,25 +1,52 @@
+import SurfaceTypeScreen from '@/app/(onboarding)/surface-type';
 import PoolReviewHeader from '@/components/PoolReviewHeader';
 import { icons, poolSurfaceImages } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
 import { usePool } from '@/providers/PoolProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { POOL_SURFACE } from './_data';
 
 export default function PoolSurfaceScreen() {
-  const { pools } = usePool();
+  const { pools, refreshPools } = usePool();
   const { t, i18n } = useTranslation();
   const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
+  const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
 
   const detail = POOL_SURFACE.details;
   const selected = pools?.[detail.database_column_name];
   const option = selected ? detail.value[selected] : undefined;
 
+  if (isEditing) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
+        <PoolReviewHeader
+          title={t('pool_tab_surface')}
+          onBackPress={() => setIsEditing(false)}
+          showEdit={false}
+        />
+        <SurfaceTypeScreen
+          initialSurfaceType={selected ?? null}
+          showSkip={false}
+          markStale={false}
+          onSuccess={async () => {
+            await refreshPools({ silent: true });
+            setIsEditing(false);
+            router.replace('/(tabs)/pool');
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
-      <PoolReviewHeader title={t('pool_tab_surface')} />
+      <PoolReviewHeader title={t('pool_tab_surface')} onEditPress={() => setIsEditing(true)} />
       <View className="divider" />
       <ScrollView
         contentContainerStyle={{ paddingBottom: 32 }}

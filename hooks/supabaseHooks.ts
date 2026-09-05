@@ -102,8 +102,8 @@ export function useSupabase() {
 
     }
 
-    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub, usageFrequency, numberOfUsers }:
-        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType, usageFrequency?: UsageFrequency, numberOfUsers?: NumberOfPoolUsers }) {
+    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub, usageFrequency, numberOfUsers, markStale = true }:
+        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType, usageFrequency?: UsageFrequency, numberOfUsers?: NumberOfPoolUsers, markStale?: boolean }) {
 
         const id = await AsyncStorage.getItem('activePoolId');
         const poolBasics = {
@@ -123,7 +123,7 @@ export function useSupabase() {
                 .eq('id', id)
                 .select()
                 .single()
-            if (!error) markPoolsStale();
+            if (!error && markStale) markPoolsStale();
             return { data, error }
         }
 
@@ -136,13 +136,13 @@ export function useSupabase() {
             if (data) {
                 await AsyncStorage.setItem('activePoolId', data.id);
             }
-            if (!error) markPoolsStale();
+            if (!error && markStale) markPoolsStale();
             return { data, error }
         }
     }
 
-    async function poolBasicUpdate({ props }:
-        { props: poolBasicUpdateProps }) {
+    async function poolBasicUpdate({ props, markStale = true }:
+        { props: poolBasicUpdateProps, markStale?: boolean }) {
 
         const id = await AsyncStorage.getItem('activePoolId');
 
@@ -151,12 +151,12 @@ export function useSupabase() {
             .update({ pool_condition: props.poolCondition })
             .eq('id', id);
 
-        if (!error) markPoolsStale();
+        if (!error && markStale) markPoolsStale();
         return { data, error }
 
     }
 
-    async function poolSizeInsert({ props }: { props: poolSizeInsertProps }) {
+    async function poolSizeInsert({ props, markStale = true }: { props: poolSizeInsertProps, markStale?: boolean }) {
         try {
             const id = await AsyncStorage.getItem('activePoolId');
             if (id) {
@@ -164,7 +164,7 @@ export function useSupabase() {
                     .from('pools')
                     .update({ length: props.length, width: props.width, shallow_depth: props.shallowDepth, deep_depth: props.deepDepth, shape: props.shape, gallons: props.gallons, measurement_unit: props.measurementUnit })
                     .eq('id', id)
-                if (!error) markPoolsStale();
+                if (!error && markStale) markPoolsStale();
                 return { error }
             }
 
@@ -192,20 +192,23 @@ export function useSupabase() {
         }
     }
 
-    async function poolSurfaceInsert({ props }: { props: poolSurfaceInsertProps }) {
+    async function poolSurfaceInsert({
+        props,
+        markStale = true,
+    }: {
+        props: poolSurfaceInsertProps
+        /** Set false when the caller will refresh the provider itself (Pool tab Edit). */
+        markStale?: boolean
+    }) {
         try {
-            console.log('I got here')
             const id = await AsyncStorage.getItem('activePoolId');
-            console.log('id', id)
             if (id) {
-                console.log('I got here 2')
                 const { error } = await supabase
                     .from('pools')
                     .update({ surface_type: props.surfaceType })
                     .eq('id', id)
-                console.log('surface error', error)
 
-                if (!error) markPoolsStale();
+                if (!error && markStale) markPoolsStale();
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -214,7 +217,14 @@ export function useSupabase() {
         }
     }
 
-    async function poolCleaningInsert({ props }: { props: poolCleaningInsertProps }) {
+    async function poolCleaningInsert({
+        props,
+        markStale = true,
+    }: {
+        props: poolCleaningInsertProps
+        /** Set false when the caller will refresh the provider itself (Pool tab Edit). */
+        markStale?: boolean
+    }) {
         try {
             const id = await AsyncStorage.getItem('activePoolId');
             if (id) {
@@ -222,7 +232,7 @@ export function useSupabase() {
                     .from('pools')
                     .update({ cleaning_type: props.cleaningType })
                     .eq('id', id)
-                if (!error) markPoolsStale();
+                if (!error && markStale) markPoolsStale();
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
