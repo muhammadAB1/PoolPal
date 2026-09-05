@@ -295,6 +295,29 @@ export default function DashboardScreen() {
             <Image source={dashboardImages.chevronRight} className="w-8 h-8 ml-2" />
           </TouchableOpacity>
 
+          {/* Solve Visible Problems */}
+          <TouchableOpacity
+            className="card mt-4 p-4 flex-row items-center"
+            activeOpacity={0.7}
+          >
+            <View className="icon-circle icon-circle--success">
+              <Ionicons name="search-outline" size={20} color={colors.brand.navy} />
+            </View>
+            <View className="flex-1 ml-3 mr-2">
+              <Text className="text-body-lg font-jakarta-bold text-brand-navy">
+                {t('dashboard_solve_problems_title')}
+              </Text>
+              <Text className="text-small font-jakarta text-sub mt-0.5">
+                {t('dashboard_solve_problems_desc')}
+              </Text>
+            </View>
+            <Image
+              source={dashboardImages.chevronRight}
+              className="w-6 h-6"
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+
           {/* Latest Readings */}
           <TouchableOpacity className="card mt-4 p-4 flex-row items-start" activeOpacity={0.7}>
             <Image source={dashboardImages.readingsIcon} className="w-13 h-13 self-center -ml-1" />
