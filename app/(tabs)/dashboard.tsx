@@ -1,3 +1,4 @@
+import NextStepCard from '@/components/NextStepCard';
 import ProfileCompletionRing from '@/components/ProfileCompletionRing';
 import { dashboardImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
@@ -213,6 +214,7 @@ export default function DashboardScreen() {
 
           {/* Profile / Next Step */}
           <View className="flex-row gap-3 mt-4">
+            {/* Profile */}
             <TouchableOpacity
               className="card flex-1 p-4"
               activeOpacity={0.7}
@@ -242,23 +244,8 @@ export default function DashboardScreen() {
                 {t('dashboard_details_left', { count: detailsLeft })}
               </Text>
             </TouchableOpacity>
-
-            <TouchableOpacity className="card flex-1 p-4" activeOpacity={0.7}>
-              <View className="flex-row items-start justify-between">
-                <Image source={dashboardImages.nextStepIcon} className="w-10 h-10 -ml-2" />
-                <Image
-                  source={dashboardImages.chevronRight}
-                  className="w-8 h-8 mt-1"
-                  resizeMode="contain"
-                />
-              </View>
-              <Text className="text-body-lg font-jakarta-bold text-brand-navy mt-4">
-                {t('dashboard_next_step_label')}
-              </Text>
-              <Text className="text-small font-jakarta text-sub mt-1">
-                {t('dashboard_testing_kit_title')}
-              </Text>
-            </TouchableOpacity>
+            {/* Next Step */}
+            <NextStepCard pool={pools} latestReading={latestReading} />
           </View>
 
           {/* Weekly Care Checklist */}

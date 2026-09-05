@@ -118,7 +118,9 @@ export default function PoolSizeScreen() {
                   className={`flex-row items-center justify-between px-4 py-3.5 ${isLast ? '' : 'border-b border-border-default'}`}
                 >
                   <Text className="text-body font-jakarta text-brand-navy flex-1 mr-3">
-                    {t(row.label)}
+                    {row.database_column_name === 'width' && pools?.shape === 'Kidney'
+                      ? `${t('pool_size_width_widest_hint')} ${t(row.label)}`
+                      : t(row.label)}
                   </Text>
                   <Text className="text-body font-jakarta-bold text-brand-navy text-right">
                     {row.value}

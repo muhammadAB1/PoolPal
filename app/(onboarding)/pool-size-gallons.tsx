@@ -121,8 +121,15 @@ export default function PoolSizeGallonsScreen({
                     volume = numericLength * numericWidth * averageDepth * 0.7854 * 1000;
                 }
                 break;
+            case 'Kidney':
+                if (units === 'us') {
+                    volume = numericLength * numericWidth * averageDepth * 0.80 * 7.4850;
+                } else {
+                    volume = numericLength * numericWidth * averageDepth * 0.80 * 1000;
+                }
+                break;
             default:
-                // Kidney / Freeform — formula TBD
+                // Freeform — formula TBD
                 break;
         }
 
@@ -448,6 +455,7 @@ function KnownForm({
                 />
                 <MeasurementField
                     label={t('pool_size_width_label')}
+                    hint={shape === 'Kidney' ? t('pool_size_width_widest_hint') : undefined}
                     value={width}
                     onChangeText={onWidthChange}
                     suffix={distanceSuffix}
@@ -547,9 +555,16 @@ function EstimateForm({
             </View>
 
             <View className="border-t border-border-default mt-4 pt-4">
-                <Text className="text-body font-jakarta-bold text-charcoal">
-                    {t('pool_size_q_width')}
-                </Text>
+                <View className="flex-row items-baseline flex-wrap gap-1">
+                    <Text className="text-body font-jakarta-bold text-charcoal">
+                        {t('pool_size_q_width')}
+                    </Text>
+                    {shape === 'Kidney' ? (
+                        <Text className="text-tiny font-jakarta text-sub">
+                            {t('pool_size_q_width_kidney_hint')}
+                        </Text>
+                    ) : null}
+                </View>
                 <View className="form-input flex-row items-center justify-between mt-2.5">
                     <TextInput
                         className="flex-1 text-body font-jakarta text-charcoal p-0"
@@ -894,15 +909,21 @@ function MethodCard({ icon, label, description, selected, onPress }: MethodCardP
 
 interface MeasurementFieldProps {
     label: string;
+    hint?: string;
     value: string;
     onChangeText: (text: string) => void;
     suffix: string;
 }
 
-function MeasurementField({ label, value, onChangeText, suffix }: MeasurementFieldProps) {
+function MeasurementField({ label, hint, value, onChangeText, suffix }: MeasurementFieldProps) {
     return (
         <View className="flex-1">
-            <Text className="form-label">{label}</Text>
+            <View className="flex-row items-baseline gap-1">
+                {hint ? (
+                    <Text className="text-tiny font-jakarta text-sub">{hint}</Text>
+                ) : null}
+                <Text className="form-label">{label}</Text>
+            </View>
             <View className="form-input flex-row items-center justify-between">
                 <TextInput
                     className="flex-1 text-body font-jakarta text-charcoal p-0"
