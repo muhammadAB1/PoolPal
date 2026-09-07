@@ -55,7 +55,7 @@ export default function WeeklyReminderScreen() {
             const { data, error } = await weeklyReminderInsert({
                 props: {
                     reminderDay: day,
-                    reminderTime: `${hour}:${period}`,
+                    reminderTime: `${hour}:00 ${period}`,
                 },
             });
 

@@ -92,6 +92,38 @@ export const en = {
   pool_basics_continue: 'Continue',
   pool_basics_skip_for_now: 'Skip for now',
   pool_basics_error: 'Please fill in all fields.',
+  pool_basics_review_sanitizer: 'Sanitizer',
+  pool_basics_review_environment: 'Pool environment',
+  pool_basics_review_hot_tub: 'Hot tub or spa',
+  pool_basics_review_primary_use: 'Primary use',
+  pool_basics_review_usage_frequency: 'Usage frequency',
+  pool_basics_review_number_of_users: 'Number of users',
+  pool_basics_hot_tub_yes_review_desc: 'Included in reminders and care guidance.',
+  pool_basics_hot_tub_no_review_desc: 'Not included in reminders and care guidance.',
+  pool_basics_usage_frequency_0_1_desc: 'Light use. Reminders stay on a slower cadence.',
+  pool_basics_usage_frequency_2_3_desc: 'Used a few days each week.',
+  pool_basics_usage_frequency_4_5_desc: 'Used most days of the week.',
+  pool_basics_usage_frequency_6_7_desc: 'Used almost every day.',
+  pool_basics_pool_users_1_2_desc: 'Usually 1 or 2 people swim at the same time.',
+  pool_basics_pool_users_3_4_desc: 'Usually 3 or 4 people swim at the same time.',
+  pool_basics_pool_users_5_plus_desc: 'Usually 5 or more people swim at the same time.',
+  pool_basics_review_complete: 'Complete',
+  pool_basics_review_edit: 'Edit',
+  pool_basics_review_profile_complete_title: 'Profile complete',
+  pool_basics_review_profile_complete_desc:
+    'We have everything we need to personalize your care plan.',
+  pool_basics_review_profile_incomplete_title: 'Profile incomplete',
+  pool_basics_review_profile_incomplete_desc:
+    'Add the missing details so we can personalize your care plan.',
+  pool_basics_review_details_heading: 'Pool details',
+  pool_basics_review_why_title: 'Why these details matter',
+  pool_basics_review_why_desc:
+    'PoolWise uses these answers to personalize your testing ranges, reminders, and maintenance recommendations.',
+  pool_basics_review_add_pool: 'Add another pool',
+  pool_basics_review_add_pool_desc: 'Separate profile, readings, reminders, and care plan.',
+  pool_basics_review_add_pool_price: '$4.99/month',
+  pool_basics_review_last_updated: 'Last updated {{date}}',
+  pool_basics_review_hot_tub_tag: 'hot tub and spa',
 
   // pool condition
   pool_condition_title: 'What does your pool look like today?',
@@ -109,6 +141,12 @@ export const en = {
   pool_condition_not_sure_desc: 'Not sure which one matches your pool.',
   pool_condition_continue: 'Continue',
   pool_condition_skip_for_now: 'Skip for now',
+  pool_condition_review_care_note: 'Care note',
+  pool_condition_review_care_note_desc:
+    'Test your water regularly and adjust chemicals based on how clear or cloudy your pool looks.',
+  pool_condition_review_why_title: 'Why pool condition matters',
+  pool_condition_review_why_desc:
+    "Your pool's condition helps us recommend the right shock treatment, filtration time, and next steps to get your water back to crystal clear.",
 
   // pool size & gallons
   pool_size_title: 'Pool Size & Gallons',
@@ -128,6 +166,8 @@ export const en = {
   pool_size_measurements_subtitle: 'We use your shallow and deep ends to estimate average depth.',
   pool_size_length_label: 'Length',
   pool_size_width_label: 'Width',
+  pool_size_width_widest_hint: 'widest',
+  pool_size_q_width_kidney_hint: 'widest width',
   pool_size_shallow_depth_label: 'Shallow depth',
   pool_size_deep_depth_label: 'Deep depth',
   pool_size_shape_label: 'Pool shape',
@@ -158,12 +198,26 @@ export const en = {
   pool_size_skip_for_now_label: 'Skip for now',
   pool_size_skip_for_now_desc: 'You can skip this and come back later',
   pool_size_continue: 'Continue',
+  pool_size_review_title: 'Pool Size',
+  pool_size_review_estimated_volume: 'Estimated volume',
+  pool_size_review_footer: 'Based on the measurements saved in your pool profile',
+  pool_size_review_details_title: 'How we estimated your pool',
+  pool_size_review_shape: 'Shape',
+  pool_size_review_unit_gallons: 'Gallons',
+  pool_size_review_unit_liters: 'Liters',
+  pool_size_review_improve_title: 'Improve this estimate',
+  pool_size_review_improve_body:
+    'Add shallow and deep end measurements to get a more accurate volume estimate.',
+  pool_size_review_improve_link: 'Add Depth Measurements',
+  pool_size_review_why_title: 'Why volume matters',
+  pool_size_review_why_body:
+    'Pool volume affects chemical dosing. An estimate is fine to begin with, and you can update it whenever you learn the exact size.',
 
   // surface type
   surface_type_title: 'Surface Type',
   surface_type_subtitle: 'What is your pool surface?',
   surface_type_plaster: 'Plaster',
-  surface_type_plaster_desc: 'Smooth white or light-colored cement finish.',
+  surface_type_plaster_desc: 'Smooth cement-based finish, usually white or light-colored.',
   surface_type_pebble: 'Pebble',
   surface_type_pebble_desc: 'Textured finish made with small pebbles or aggregate.',
   surface_type_vinyl: 'Vinyl',
@@ -194,6 +248,13 @@ export const en = {
   surface_type_see_less: 'See Less',
   surface_type_continue: 'Continue',
   surface_type_skip_for_now: 'Skip for now',
+  pool_surface_review_selected: 'Selected by you',
+  pool_surface_review_care_note: 'Care note',
+  pool_surface_review_care_note_desc:
+    'Use an appropriate pool brush and keep the water balanced to help protect the finish.',
+  pool_surface_review_why_title: 'Why surface type matters',
+  pool_surface_review_why_desc:
+    'Your surface affects brushing, chemical guidance, and stain treatment.',
 
   // cleaning setup
   cleaning_setup_title: 'Cleaning Setup',
@@ -217,6 +278,24 @@ export const en = {
     "Not sure? Upload a photo and we'll help identify it.",
   cleaning_setup_continue: 'Continue',
   cleaning_setup_skip_for_now: 'Skip for now',
+  pool_cleaning_review_confirmed: 'Confirmed by you',
+  pool_cleaning_review_brand: 'Brand',
+  pool_cleaning_review_model: 'Model',
+  pool_cleaning_review_at_a_glance: 'AT A GLANCE',
+  pool_cleaning_review_coverage: 'Cleaning coverage',
+  pool_cleaning_review_coverage_value: 'Floor + walls + waterline',
+  pool_cleaning_review_frequency: 'Cleaning frequency',
+  pool_cleaning_review_frequency_value: 'Twice weekly',
+  pool_cleaning_review_power: 'Power source',
+  pool_cleaning_review_power_value: 'Corded electric',
+  pool_cleaning_review_duration: 'Cycle duration',
+  pool_cleaning_review_duration_value: '2 hours',
+  pool_cleaning_review_care_note: 'Care note',
+  pool_cleaning_review_care_note_desc:
+    'Empty and rinse the filter basket, inspect the cable and brushes, and store the cleaner out of direct sunlight when not in use.',
+  pool_cleaning_review_why_title: 'Why cleaning setup matters',
+  pool_cleaning_review_why_desc:
+    'Your cleaning setup helps PoolWise build the right checklist, recommend equipment care, and troubleshoot cleaning or circulation problems.',
 
   // equipment basics
   equipment_basics_title: 'Equipment Basics',
@@ -288,6 +367,25 @@ export const en = {
     'Has a digital display or advanced control panel with multiple speed settings.',
   equipment_examples_pump_footer:
     "Not sure which pump you have? Upload a photo of your equipment pad and we'll help you identify it.",
+
+  equipment_filter_details: 'Filter details',
+  equipment_pump_details: 'Pump details',
+  equipment_details_help:
+    'Adding these helps us give you more specific maintenance and troubleshooting advice.',
+  equipment_select_brand: 'Select brand',
+  equipment_identify_filter_title: 'Identify your filter from a photo',
+  equipment_identify_filter_desc:
+    'Take a clear photo of your filter and PoolWise can help identify its type, brand, and model.',
+  equipment_identify_pump_title: 'Identify your pump from a photo',
+  equipment_identify_pump_desc:
+    'Take a clear photo of your pump and PoolWise can help identify its type, brand, and model.',
+  equipment_photo_id_button: 'Use Photo Identification',
+  equipment_premium_badge: 'PREMIUM',
+  equipment_premium_feature: 'PoolWise Premium feature',
+  equipment_heater_yes_title: 'Yes, I have a heater',
+  equipment_heater_yes_desc: 'Keeps your pool water warm whenever you want to swim.',
+  equipment_heater_no_title: 'No heater',
+  equipment_heater_no_desc: 'Your pool relies on the sun to warm the water.',
 
   // test readings
   test_readings_title: 'Do you have recent pool test results?',
@@ -753,6 +851,24 @@ export const en = {
   pool_tab_cleaning_subtitle: 'Robotic cleaner \u2022 Dolphin / Maytronics',
   pool_tab_reminder: 'Weekly Reminder',
   pool_tab_reminder_subtitle: 'Saturday at 9:00 AM',
+  pool_reminder_review_every_day: 'Every {{day}}',
+  pool_reminder_review_hero_subtitle: 'Weekly pool-care reminder',
+  pool_reminder_review_settings_title: 'Reminder settings',
+  pool_reminder_review_toggle_subtitle: 'Get a reminder to check and clean your pool.',
+  pool_reminder_review_day: 'Day',
+  pool_reminder_review_time: 'Time',
+  pool_reminder_review_next_title: 'Next reminder',
+  pool_reminder_review_next_value: '{{day}}, {{month}} {{date}} at {{time}}',
+  pool_reminder_review_month_september: 'September',
+  pool_reminder_review_why_title: 'Why reminders help',
+  pool_reminder_review_why_body:
+    'A regular schedule helps you stay ahead of water and cleaning problems and keeps your pool looking its best.',
+  pool_reminder_review_includes_title: 'What this reminder includes',
+  pool_reminder_review_includes_test: 'Test the pool water',
+  pool_reminder_review_includes_readings: 'Review chemical readings',
+  pool_reminder_review_includes_baskets: 'Empty baskets',
+  pool_reminder_review_includes_clarity: 'Inspect water clarity',
+  pool_reminder_review_includes_checklist: 'Complete the weekly cleaning checklist',
   pool_tab_condition: 'Pool Condition',
   pool_tab_condition_subtitle: 'Crystal clear',
 
@@ -917,6 +1033,38 @@ export const es = {
   pool_basics_continue: 'Continuar',
   pool_basics_skip_for_now: 'Saltar por ahora',
   pool_basics_error: 'Por favor, rellena todos los campos.',
+  pool_basics_review_sanitizer: 'Desinfectante',
+  pool_basics_review_environment: 'Entorno de la piscina',
+  pool_basics_review_hot_tub: 'Jacuzzi o spa',
+  pool_basics_review_primary_use: 'Uso principal',
+  pool_basics_review_usage_frequency: 'Frecuencia de uso',
+  pool_basics_review_number_of_users: 'Número de usuarios',
+  pool_basics_hot_tub_yes_review_desc: 'Incluido en recordatorios y guía de cuidado.',
+  pool_basics_hot_tub_no_review_desc: 'No incluido en recordatorios y guía de cuidado.',
+  pool_basics_usage_frequency_0_1_desc: 'Uso ligero. Los recordatorios se mantienen en un ritmo más lento.',
+  pool_basics_usage_frequency_2_3_desc: 'Se usa unos cuantos días por semana.',
+  pool_basics_usage_frequency_4_5_desc: 'Se usa la mayoría de los días de la semana.',
+  pool_basics_usage_frequency_6_7_desc: 'Se usa casi todos los días.',
+  pool_basics_pool_users_1_2_desc: 'Suelen nadar 1 o 2 personas al mismo tiempo.',
+  pool_basics_pool_users_3_4_desc: 'Suelen nadar 3 o 4 personas al mismo tiempo.',
+  pool_basics_pool_users_5_plus_desc: 'Suelen nadar 5 o más personas al mismo tiempo.',
+  pool_basics_review_complete: 'Completar',
+  pool_basics_review_edit: 'Editar',
+  pool_basics_review_profile_complete_title: 'Perfil completo',
+  pool_basics_review_profile_complete_desc:
+    'Tenemos todo lo que necesitamos para personalizar tu plan de cuidado.',
+  pool_basics_review_profile_incomplete_title: 'Perfil incompleto',
+  pool_basics_review_profile_incomplete_desc:
+    'Añade los datos que faltan para personalizar tu plan de cuidado.',
+  pool_basics_review_details_heading: 'Datos de la piscina',
+  pool_basics_review_why_title: 'Por qué importan estos datos',
+  pool_basics_review_why_desc:
+    'PoolWise usa estas respuestas para personalizar tus rangos de prueba, recordatorios y recomendaciones de mantenimiento.',
+  pool_basics_review_add_pool: 'Añadir otra piscina',
+  pool_basics_review_add_pool_desc: 'Perfil, valores, recordatorios y plan de cuidado separados.',
+  pool_basics_review_add_pool_price: '$4.99/mes',
+  pool_basics_review_last_updated: 'Última actualización {{date}}',
+  pool_basics_review_hot_tub_tag: 'jacuzzi y spa',
 
   // pool condition
   pool_condition_title: '¿Cómo se ve tu piscina hoy?',
@@ -934,6 +1082,12 @@ export const es = {
   pool_condition_not_sure_desc: 'No estoy seguro cuál coincide con mi piscina.',
   pool_condition_continue: 'Continuar',
   pool_condition_skip_for_now: 'Saltar por ahora',
+  pool_condition_review_care_note: 'Nota de cuidado',
+  pool_condition_review_care_note_desc:
+    'Prueba el agua con regularidad y ajusta los químicos según lo clara o turbia que se vea tu piscina.',
+  pool_condition_review_why_title: 'Por qué importa el estado de la piscina',
+  pool_condition_review_why_desc:
+    'El estado de tu piscina nos ayuda a recomendar el tratamiento de choque, el tiempo de filtración y los siguientes pasos para que el agua vuelva a estar cristalina.',
 
   // pool size & gallons
   pool_size_title: 'Tamaño y galones de la piscina',
@@ -953,6 +1107,8 @@ export const es = {
   pool_size_measurements_subtitle: 'Usamos el extremo poco profundo y el profundo para estimar la profundidad media.',
   pool_size_length_label: 'Largo',
   pool_size_width_label: 'Ancho',
+  pool_size_width_widest_hint: 'más ancho',
+  pool_size_q_width_kidney_hint: 'ancho más amplio',
   pool_size_shallow_depth_label: 'Profundidad mínima',
   pool_size_deep_depth_label: 'Profundidad máxima',
   pool_size_shape_label: 'Forma de la piscina',
@@ -983,12 +1139,26 @@ export const es = {
   pool_size_skip_for_now_label: 'Saltar por ahora',
   pool_size_skip_for_now_desc: 'Puedes saltarte este paso y volver más tarde',
   pool_size_continue: 'Continuar',
+  pool_size_review_title: 'Tamaño de la piscina',
+  pool_size_review_estimated_volume: 'Volumen estimado',
+  pool_size_review_footer: 'Según las medidas guardadas en tu perfil de piscina',
+  pool_size_review_details_title: 'Cómo estimamos tu piscina',
+  pool_size_review_shape: 'Forma',
+  pool_size_review_unit_gallons: 'Galones',
+  pool_size_review_unit_liters: 'Litros',
+  pool_size_review_improve_title: 'Mejora esta estimación',
+  pool_size_review_improve_body:
+    'Añade las medidas del extremo poco profundo y el profundo para obtener un volumen más preciso.',
+  pool_size_review_improve_link: 'Añadir profundidades',
+  pool_size_review_why_title: 'Por qué importa el volumen',
+  pool_size_review_why_body:
+    'El volumen de la piscina afecta la dosificación de químicos. Una estimación está bien para empezar, y puedes actualizarla cuando sepas el tamaño exacto.',
 
   // surface type
   surface_type_title: 'Tipo de superficie',
   surface_type_subtitle: '¿Qué superficie tiene tu piscina?',
   surface_type_plaster: 'Yeso',
-  surface_type_plaster_desc: 'Acabado liso de cemento blanco o de color claro.',
+  surface_type_plaster_desc: 'Acabado liso de cemento, normalmente blanco o de color claro.',
   surface_type_pebble: 'Pebble',
   surface_type_pebble_desc: 'Acabado texturizado hecho con pequeñas piedras o áridos.',
   surface_type_vinyl: 'Vinilo',
@@ -1019,6 +1189,13 @@ export const es = {
   surface_type_see_less: 'Ver menos',
   surface_type_continue: 'Continuar',
   surface_type_skip_for_now: 'Saltar por ahora',
+  pool_surface_review_selected: 'Seleccionada por ti',
+  pool_surface_review_care_note: 'Nota de cuidado',
+  pool_surface_review_care_note_desc:
+    'Usa un cepillo adecuado y mantén el agua equilibrada para proteger el acabado.',
+  pool_surface_review_why_title: 'Por qué importa el tipo de superficie',
+  pool_surface_review_why_desc:
+    'La superficie afecta el cepillado, las indicaciones químicas y el tratamiento de manchas.',
 
   // cleaning setup
   cleaning_setup_title: 'Configuración de limpieza',
@@ -1042,6 +1219,24 @@ export const es = {
     '¿No estás seguro? Sube una foto y te ayudamos a identificarlo.',
   cleaning_setup_continue: 'Continuar',
   cleaning_setup_skip_for_now: 'Saltar por ahora',
+  pool_cleaning_review_confirmed: 'Confirmado por ti',
+  pool_cleaning_review_brand: 'Marca',
+  pool_cleaning_review_model: 'Modelo',
+  pool_cleaning_review_at_a_glance: 'DE UN VISTAZO',
+  pool_cleaning_review_coverage: 'Cobertura de limpieza',
+  pool_cleaning_review_coverage_value: 'Suelo + paredes + línea de agua',
+  pool_cleaning_review_frequency: 'Frecuencia de limpieza',
+  pool_cleaning_review_frequency_value: 'Dos veces por semana',
+  pool_cleaning_review_power: 'Fuente de energía',
+  pool_cleaning_review_power_value: 'Eléctrico con cable',
+  pool_cleaning_review_duration: 'Duración del ciclo',
+  pool_cleaning_review_duration_value: '2 horas',
+  pool_cleaning_review_care_note: 'Nota de cuidado',
+  pool_cleaning_review_care_note_desc:
+    'Vacía y enjuaga la cesta del filtro, inspecciona el cable y los cepillos, y guarda el limpiafondos fuera de la luz solar directa cuando no lo uses.',
+  pool_cleaning_review_why_title: 'Por qué importa la configuración de limpieza',
+  pool_cleaning_review_why_desc:
+    'Tu configuración de limpieza ayuda a PoolWise a armar el checklist correcto, recomendar el cuidado del equipo y resolver problemas de limpieza o circulación.',
 
   // equipment basics
   equipment_basics_title: 'Datos básicos del equipo',
@@ -1113,6 +1308,25 @@ export const es = {
     'Tiene una pantalla digital o un panel de control avanzado con múltiples opciones de velocidad.',
   equipment_examples_pump_footer:
     '¿No sabes qué bomba tienes? Sube una foto de tu zona de equipos y te ayudaremos a identificarla.',
+
+  equipment_filter_details: 'Detalles del filtro',
+  equipment_pump_details: 'Detalles de la bomba',
+  equipment_details_help:
+    'Añadir estos datos nos ayuda a darte consejos más específicos de mantenimiento y solución de problemas.',
+  equipment_select_brand: 'Seleccionar marca',
+  equipment_identify_filter_title: 'Identifica tu filtro con una foto',
+  equipment_identify_filter_desc:
+    'Haz una foto clara de tu filtro y PoolWise puede ayudar a identificar su tipo, marca y modelo.',
+  equipment_identify_pump_title: 'Identifica tu bomba con una foto',
+  equipment_identify_pump_desc:
+    'Haz una foto clara de tu bomba y PoolWise puede ayudar a identificar su tipo, marca y modelo.',
+  equipment_photo_id_button: 'Usar identificación por foto',
+  equipment_premium_badge: 'PREMIUM',
+  equipment_premium_feature: 'Función de PoolWise Premium',
+  equipment_heater_yes_title: 'Sí, tengo un calentador',
+  equipment_heater_yes_desc: 'Mantiene el agua de tu piscina caliente cuando quieras nadar.',
+  equipment_heater_no_title: 'Sin calentador',
+  equipment_heater_no_desc: 'Tu piscina se calienta con el sol.',
 
   // test readings
   test_readings_title: '¿Tienes resultados recientes del agua de tu piscina?',
@@ -1581,6 +1795,24 @@ export const es = {
   pool_tab_surface: 'Superficie',
   pool_tab_cleaning: 'Limpieza',
   pool_tab_reminder: 'Recordatorio semanal',
+  pool_reminder_review_every_day: 'Cada {{day}}',
+  pool_reminder_review_hero_subtitle: 'Recordatorio semanal de cuidado de la piscina',
+  pool_reminder_review_settings_title: 'Ajustes del recordatorio',
+  pool_reminder_review_toggle_subtitle: 'Recibe un recordatorio para revisar y limpiar tu piscina.',
+  pool_reminder_review_day: 'Día',
+  pool_reminder_review_time: 'Hora',
+  pool_reminder_review_next_title: 'Próximo recordatorio',
+  pool_reminder_review_next_value: '{{day}}, {{date}} de {{month}} a las {{time}}',
+  pool_reminder_review_month_september: 'septiembre',
+  pool_reminder_review_why_title: 'Por qué ayudan los recordatorios',
+  pool_reminder_review_why_body:
+    'Una rutina regular te ayuda a adelantarte a los problemas del agua y la limpieza, y a mantener tu piscina en su mejor estado.',
+  pool_reminder_review_includes_title: 'Qué incluye este recordatorio',
+  pool_reminder_review_includes_test: 'Analiza el agua de la piscina',
+  pool_reminder_review_includes_readings: 'Revisa las lecturas de químicos',
+  pool_reminder_review_includes_baskets: 'Vacía las cestas',
+  pool_reminder_review_includes_clarity: 'Inspecciona la claridad del agua',
+  pool_reminder_review_includes_checklist: 'Completa el checklist semanal de limpieza',
   pool_tab_condition: 'Estado de la piscina',
   pool_tab_not_set: 'Sin definir',
 

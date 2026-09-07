@@ -1,10 +1,11 @@
 import type { PoolDepthProfile, PoolShape } from '@/lib/types';
 
-/** Shapes shown in the Pool Size UI (matches design — Kidney kept in type for backend). */
+/** Shapes shown in the Pool Size UI. */
 export const POOL_SHAPES: readonly PoolShape[] = [
     'Rectangle',
     'Round',
     'Oval',
+    'Kidney',
     'Freeform',
 ] as const;
 

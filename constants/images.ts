@@ -68,11 +68,11 @@ import poolHotTubYes from '../assets/poolbasicsimages/poolbasics/hottub.png';
 import poolHotTubNo from '../assets/poolbasicsimages/poolbasics/no.png';
 
 // ─── Pool Condition (keyed to DB enum values) ──────────────────────────────────
-import poolConditionCrystalClear from '../assets/pool-condition-images/CrystalClear.png';
-import poolConditionALittleCloudy from '../assets/pool-condition-images/ALittleCloudy.png';
-import poolConditionGreen from '../assets/pool-condition-images/Green.png';
-import poolConditionVeryGreenOrDark from '../assets/pool-condition-images/VeryGreen.png';
-import poolConditionNotSure from '../assets/pool-condition-images/NotSure.png';
+import poolConditionCrystalClear from '../assets/pool-condition-images/aa.png';
+import poolConditionALittleCloudy from '../assets/pool-condition-images/bb.png';
+import poolConditionGreen from '../assets/pool-condition-images/cc.png';
+import poolConditionVeryGreenOrDark from '../assets/pool-condition-images/dd.png';
+import poolConditionNotSure from '../assets/pool-condition-images/ee.png';
 
 // ─── Equipment Basics — Filter & Pump examples (keyed to DB enum values) ─────
 import filterSand from '../assets/equipment-basic-images/filter_sand.png';
@@ -99,11 +99,11 @@ import surfaceOtherCustom from '../assets/pool-surface-images/Additional_Pool_Su
 import surfaceNotSure from '../assets/pool-surface-images/pool_surface_not_sure_icon.png';
 
 // ─── Cleaning Setup (keyed to CleaningType values) ────────────────────────────
-import cleaningRobotic from '../assets/cleaning-setup-images/robotic-cleaner.png';
-import cleaningSuctionSide from '../assets/cleaning-setup-images/suction-side-cleaner.png';
-import cleaningPressureSide from '../assets/cleaning-setup-images/pressure-side-cleaner.png';
-import cleaningManualVacuum from '../assets/cleaning-setup-images/manual-vaccum.png';
-import cleaningNoVacuum from '../assets/cleaning-setup-images/no-vaccum.png';
+import cleaningRobotic from '../assets/cleaning-setup-images/robotic-cleaner1.png';
+import cleaningSuctionSide from '../assets/cleaning-setup-images/suction-side-cleaner1.jpg';
+import cleaningPressureSide from '../assets/cleaning-setup-images/pressure-side-cleaner1.jpg';
+import cleaningManualVacuum from '../assets/cleaning-setup-images/manual-vaccum1.jpg';
+import cleaningNoVacuum from '../assets/cleaning-setup-images/no-vaccum1.jpg';
 import cleaningNotSure from '../assets/cleaning-setup-images/pool_surface_not_sure_icon.png';
 
 // ─── Test Readings (keyed to TestReadingsMethod values) ───────────────────────
@@ -155,6 +155,9 @@ import navReadingsInactive from '../assets/dashboard-images/nav_readings_drop_ic
 import navChecklist from '../assets/dashboard-images/nav_checklist_icon.png';
 import navLearnActive from '../assets/dashboard-images/nav_learn_book_icon_active.png';
 import navLearnInactive from '../assets/dashboard-images/nav_learn_book_icon_inactive.png';
+
+// ─── Pool tab review screens ─────────────────────────────────────────────────
+import poolBasicsHero from '../assets/pool-tab/pool-tab-pool-basic-screen-bg.png';
 
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
@@ -386,6 +389,13 @@ export const navImages = {
     readings: { active: navReadingsActive, inactive: navReadingsInactive },
     checklist: { active: navChecklist, inactive: navChecklist },
     learn: { active: navLearnActive, inactive: navLearnInactive },
+} as const;
+
+/**
+ * Pool tab review-screen images.
+ */
+export const poolTabImages = {
+    basicsHero: poolBasicsHero,
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */

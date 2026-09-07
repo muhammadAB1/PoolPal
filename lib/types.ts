@@ -55,7 +55,7 @@ export type Pool = {
     pool_use_type: UseType
     usage_frequency?: UsageFrequency | null
     number_of_users?: NumberOfPoolUsers | null
-    has_hot_tub?: HotTubType
+    hot_tub_type?: HotTubType
     pool_condition?: PoolCondition | null
 
     length?: number
@@ -64,6 +64,7 @@ export type Pool = {
     deep_depth?: number
     shape?: PoolShape
     gallons?: number
+    measurement_unit?: Measurement
 
 
     pump_type?: PumpType
@@ -93,6 +94,7 @@ export type poolSizeInsertProps = {
     deepDepth: number
     shape?: PoolShape
     gallons?: number
+    measurementUnit?: Measurement
 }
 
 export type poolEquipmentInsertProps = {

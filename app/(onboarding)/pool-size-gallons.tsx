@@ -31,7 +31,37 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
-export default function PoolSizeGallonsScreen() {
+type PoolSizeFields = {
+    units?: MeasurementUnit;
+    length?: number;
+    width?: number;
+    shallowDepth?: number;
+    deepDepth?: number;
+    shape?: PoolShape;
+};
+
+type PoolSizeGallonsScreenProps = {
+    /** Preselects every field, e.g. the pool's current size when editing from the Pool tab. */
+    initialPoolSize?: PoolSizeFields | null;
+    /** Hides "Skip for now". Defaults to true (onboarding keeps the skip option). */
+    showSkip?: boolean;
+    /**
+     * When provided, this screen is being embedded (e.g. from the Size review "Edit" action)
+     * instead of rendered as an onboarding route. On success this is called instead of the
+     * normal onboarding navigation, and the outer SafeAreaView is skipped so the parent screen
+     * stays in control of the safe area and header.
+     */
+    onSuccess?: () => void;
+    /** Defaults to true for onboarding. Pool tab Edit passes false because it refreshes the provider itself. */
+    markStale?: boolean;
+};
+
+export default function PoolSizeGallonsScreen({
+    initialPoolSize,
+    showSkip = true,
+    onSuccess,
+    markStale = true,
+}: PoolSizeGallonsScreenProps = {}) {
     const router = useRouter();
     const { t, i18n } = useTranslation();
     const { measurement } = useAuth();
@@ -39,13 +69,14 @@ export default function PoolSizeGallonsScreen() {
     const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
     const isResuming = resume === '1';
     const remainingSteps = parseRemainingSteps(remaining);
+    const isEmbedded = Boolean(onSuccess);
     const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('Known');
-    const [units, setUnits] = useState<MeasurementUnit>(measurement || 'us');
-    const [length, setLength] = useState<string>('');
-    const [width, setWidth] = useState<string>('');
-    const [shallowDepth, setShallowDepth] = useState<string>('');
-    const [deepDepth, setDeepDepth] = useState<string>('');
-    const [shape, setShape] = useState<PoolShape>('Rectangle');
+    const [units, setUnits] = useState<MeasurementUnit>(initialPoolSize?.units ?? (measurement || 'us'));
+    const [length, setLength] = useState<string>(initialPoolSize?.length != null ? String(initialPoolSize.length) : '');
+    const [width, setWidth] = useState<string>(initialPoolSize?.width != null ? String(initialPoolSize.width) : '');
+    const [shallowDepth, setShallowDepth] = useState<string>(initialPoolSize?.shallowDepth != null ? String(initialPoolSize.shallowDepth) : '');
+    const [deepDepth, setDeepDepth] = useState<string>(initialPoolSize?.deepDepth != null ? String(initialPoolSize.deepDepth) : '');
+    const [shape, setShape] = useState<PoolShape>(initialPoolSize?.shape ?? 'Rectangle');
     const [depthProfile, setDepthProfile] = useState<PoolDepthProfile>('ShallowDeep');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -64,18 +95,46 @@ export default function PoolSizeGallonsScreen() {
         const numericWidth = parseFloat(width) || 0;
         const numericShallowDepth = parseFloat(shallowDepth) || 0;
         const numericDeepDepth = parseFloat(deepDepth) || 0;
+        const averageDepth = (numericShallowDepth + numericDeepDepth) / 2;
 
-        if (isEstimate) {
-            return Math.round(
-                numericLength * numericWidth * numericShallowDepth * numericDeepDepth + 1
-            );
+        let volume = 0;
+
+        switch (shape) {
+            case 'Rectangle':
+                if (units === 'us') {
+                    volume = numericLength * numericWidth * averageDepth * 7.48052;
+                } else {
+                    volume = numericLength * numericWidth * averageDepth * 1000;
+                }
+                break;
+            case 'Round':
+                if (units === 'us') {
+                    volume = Math.PI * Math.pow(numericLength / 2, 2) * averageDepth * 7.48052;
+                } else {
+                    volume = Math.PI * Math.pow(numericLength / 2, 2) * averageDepth * 1000;
+                }
+                break;
+            case 'Oval':
+                if (units === 'us') {
+                    volume = numericLength * numericWidth * averageDepth * 5.875;
+                } else {
+                    volume = numericLength * numericWidth * averageDepth * 0.7854 * 1000;
+                }
+                break;
+            case 'Kidney':
+                if (units === 'us') {
+                    volume = numericLength * numericWidth * averageDepth * 0.80 * 7.4850;
+                } else {
+                    volume = numericLength * numericWidth * averageDepth * 0.80 * 1000;
+                }
+                break;
+            default:
+                // Freeform — formula TBD
+                break;
         }
-        else {
-            return Math.round(
-                numericLength * numericWidth * numericShallowDepth * numericDeepDepth
-            );
-        }
-    }, [length, width, shallowDepth, deepDepth]);
+
+        return Math.round(volume);
+    }, [length, width, shallowDepth, deepDepth, shape, units]);
 
     const formattedEstimatedVolume = estimatedVolume.toLocaleString(
         i18n.language === 'es' ? 'es-ES' : 'en-US'
@@ -142,11 +201,18 @@ export default function PoolSizeGallonsScreen() {
                     deepDepth: numericDeepDepth,
                     shape,
                     gallons: estimatedVolume,
+                    measurementUnit: units,
                 },
+                markStale,
             });
 
             if (error) {
                 setErrorMessage(error.message);
+                return;
+            }
+
+            if (onSuccess) {
+                onSuccess();
                 return;
             }
 
@@ -189,8 +255,8 @@ export default function PoolSizeGallonsScreen() {
         { value: 'metric', label: t('pool_size_units_metric') },
     ];
 
-    return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }} >
+    const content = (
+        <>
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1, paddingBottom: 140 }}
                 showsVerticalScrollIndicator={false}
@@ -305,16 +371,28 @@ export default function PoolSizeGallonsScreen() {
                         {t('pool_size_continue')}
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    className="items-center justify-center mt-3.5 py-1"
-                    onPress={handleSkipForNow}
-                    activeOpacity={0.7}
-                >
-                    <Text className="text-body font-jakarta-bold text-brand-blue">
-                        {t('pool_size_skip_for_now_label')}
-                    </Text>
-                </TouchableOpacity>
+                {showSkip ? (
+                    <TouchableOpacity
+                        className="items-center justify-center mt-3.5 py-1"
+                        onPress={handleSkipForNow}
+                        activeOpacity={0.7}
+                    >
+                        <Text className="text-body font-jakarta-bold text-brand-blue">
+                            {t('pool_size_skip_for_now_label')}
+                        </Text>
+                    </TouchableOpacity>
+                ) : null}
             </View>
+        </>
+    );
+
+    if (isEmbedded) {
+        return <View className="flex-1">{content}</View>;
+    }
+
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+            {content}
         </SafeAreaView>
     );
 }
@@ -377,6 +455,7 @@ function KnownForm({
                 />
                 <MeasurementField
                     label={t('pool_size_width_label')}
+                    hint={shape === 'Kidney' ? t('pool_size_width_widest_hint') : undefined}
                     value={width}
                     onChangeText={onWidthChange}
                     suffix={distanceSuffix}
@@ -476,9 +555,16 @@ function EstimateForm({
             </View>
 
             <View className="border-t border-border-default mt-4 pt-4">
-                <Text className="text-body font-jakarta-bold text-charcoal">
-                    {t('pool_size_q_width')}
-                </Text>
+                <View className="flex-row items-baseline flex-wrap gap-1">
+                    <Text className="text-body font-jakarta-bold text-charcoal">
+                        {t('pool_size_q_width')}
+                    </Text>
+                    {shape === 'Kidney' ? (
+                        <Text className="text-tiny font-jakarta text-sub">
+                            {t('pool_size_q_width_kidney_hint')}
+                        </Text>
+                    ) : null}
+                </View>
                 <View className="form-input flex-row items-center justify-between mt-2.5">
                     <TextInput
                         className="flex-1 text-body font-jakarta text-charcoal p-0"
@@ -823,15 +909,21 @@ function MethodCard({ icon, label, description, selected, onPress }: MethodCardP
 
 interface MeasurementFieldProps {
     label: string;
+    hint?: string;
     value: string;
     onChangeText: (text: string) => void;
     suffix: string;
 }
 
-function MeasurementField({ label, value, onChangeText, suffix }: MeasurementFieldProps) {
+function MeasurementField({ label, hint, value, onChangeText, suffix }: MeasurementFieldProps) {
     return (
         <View className="flex-1">
-            <Text className="form-label">{label}</Text>
+            <View className="flex-row items-baseline gap-1">
+                {hint ? (
+                    <Text className="text-tiny font-jakarta text-sub">{hint}</Text>
+                ) : null}
+                <Text className="form-label">{label}</Text>
+            </View>
             <View className="form-input flex-row items-center justify-between">
                 <TextInput
                     className="flex-1 text-body font-jakarta text-charcoal p-0"

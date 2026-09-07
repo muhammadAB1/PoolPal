@@ -119,10 +119,10 @@ export function TestStripProvider({ children }: { children: ReactNode }) {
         setAllReadings(data as TestReadingRow[]);
 
         setLatestReading({
-          selections: testReadingRowToSelections(data[0]),
-          poolStatus: data[0].pool_status ?? null,
-          swimmingStatus: data[0].swimming_status ?? null,
-          createdAt: data[0].created_at ?? null,
+          selections: data[0] ? testReadingRowToSelections(data[0]) : {},
+          poolStatus: data[0] ? data[0].pool_status ?? null : null,
+          swimmingStatus: data[0] ? data[0].swimming_status ?? null : null,
+          createdAt: data[0] ? data[0].created_at ?? null : null,
         });
       });
   }, [authLoading, poolLoading, user, poolId, saveCount]);
