@@ -48,8 +48,9 @@ export default function ChecklistScreen() {
       <View className="px-4 pt-2 pb-3">
         <View className="flex-row items-center justify-between">
           <TouchableOpacity
-            className="w-10 h-10 items-center justify-center"
+            className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
             onPress={() => router.navigate('/(tabs)/dashboard')}
+            activeOpacity={0.7}
           >
             <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
           </TouchableOpacity>

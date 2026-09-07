@@ -1,7 +1,5 @@
 import { graphics, icons } from '@/constants/images';
-import { colors } from '@/constants/theme';
 import { READINGS_INFO } from '@/data/poolReadings';
-import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import {
     Image,
@@ -31,12 +29,15 @@ export default function ReadingsInfoModal({ visible, onClose }: ReadingsInfoModa
             <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
                 <View className="px-5 pt-2">
                     <TouchableOpacity
-                        className="w-9 h-9 items-center justify-center -ml-2"
+                        className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
                         onPress={onClose}
                         activeOpacity={0.7}
-                        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                     >
-                        <Ionicons name="chevron-back" size={22} color={colors.brand.navy} />
+                        <Image
+                            source={icons.backArrow}
+                            className="w-5 h-5"
+                            resizeMode="contain"
+                        />
                     </TouchableOpacity>
                 </View>
 

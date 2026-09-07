@@ -299,6 +299,7 @@ export default function DashboardScreen() {
           <TouchableOpacity
             className="card mt-4 p-4 flex-row items-center"
             activeOpacity={0.7}
+            onPress={() => router.push('/(problems)/questions' as Href)}
           >
             <View className="icon-circle icon-circle--success">
               <Ionicons name="search-outline" size={20} color={colors.brand.navy} />

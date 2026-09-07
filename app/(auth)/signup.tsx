@@ -72,7 +72,7 @@ export default function SignupScreen() {
                     <View className="flex-1 px-5 pt-2">
 
                         <TouchableOpacity
-                            className="w-10 h-10 items-center justify-center -ml-2"
+                            className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
                             onPress={() => router.back()}
                             activeOpacity={0.7}
                         >

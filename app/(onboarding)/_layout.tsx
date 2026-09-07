@@ -24,7 +24,7 @@ function OnboardingHeader({
   return (
     <View className="bg-surface-white px-5 pb-1" style={{ paddingTop: Math.max(insets.top, 4) }}>
       <TouchableOpacity
-        className="w-10 h-10 items-center justify-center -ml-2"
+        className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
         onPress={onBackPress}
         activeOpacity={0.7}
       >

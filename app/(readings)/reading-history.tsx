@@ -72,7 +72,7 @@ export default function ReadingHistoryScreen() {
           {/* Header */}
           <View className="flex-row items-center">
             <TouchableOpacity
-              className="w-10 h-10 items-start justify-center -ml-1"
+              className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
               onPress={() => router.back()}
               activeOpacity={0.7}
             >
