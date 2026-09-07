@@ -1,5 +1,6 @@
 import { colors } from '@/constants/theme';
 import type { ChecklistTask } from '@/data/checklist';
+import { isChecklistTaskExpired } from '@/lib/checklistStorage';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { memo, useEffect, useState } from 'react';
@@ -7,15 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 const TEAL = '#2EC4B6';
-
-/** Monday 00:00 of the current week — anything saved before this has expired. */
-function getWeekStart() {
-  const now = new Date();
-  const monday = new Date(now);
-  monday.setDate(now.getDate() + (now.getDay() === 0 ? -6 : 1 - now.getDay()));
-  monday.setHours(0, 0, 0, 0);
-  return monday;
-}
 
 const BADGE_COLORS: Record<string, { bg: string; text: string }> = {
   required: { bg: '#E6F8F6', text: '#1A9E94' },
@@ -61,18 +53,19 @@ function TaskComponent({ task, disabled, onChange }: TaskComponentProps) {
       const raw = await AsyncStorage.getItem(`checklist.${task.id}`);
       if (!raw) return;
       const rawData = JSON.parse(raw);
-      if (rawData.completedAt && new Date(rawData.completedAt) < getWeekStart()) {
+      if (rawData.done && isChecklistTaskExpired(rawData.completedAt)) {
         setDone(false);
         setCompletedAt(null);
         await AsyncStorage.setItem(`checklist.${task.id}`,
           JSON.stringify({ done: false, completedAt: null }));
+        onChange(false, task.optional);
       } else {
         setDone(rawData.done);
         setCompletedAt(rawData.completedAt ? new Date(rawData.completedAt) : null);
       }
     }
-    fetchTaskStatus();
-  }, [task.id])
+    void fetchTaskStatus();
+  }, [task.id, task.optional, onChange]);
 
   let subtext: string | null = null;
   if (task.subtextKey) {

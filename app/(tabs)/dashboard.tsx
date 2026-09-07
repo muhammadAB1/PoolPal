@@ -2,6 +2,7 @@ import ProfileCompletionRing from '@/components/ProfileCompletionRing';
 import { dashboardImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import { REQUIRED_TASK_IDS } from '@/data/checklist';
+import { expireStaleChecklistTasks } from '@/lib/checklistStorage';
 import { OVERALL_STATUS, SWIM_STATUS } from '@/data/readingPoolAndSwimStatusUiLabelsColorsAndIcons';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { useAuth } from '@/providers/AuthProvider';
@@ -91,13 +92,12 @@ export default function DashboardScreen() {
   const checklistTotal = REQUIRED_TASK_IDS.length;
   const checklistProgress = checklistTotal > 0 ? checklistCompleted / checklistTotal : 0;
 
-  // Recount from storage each time the dashboard is focused
+  // Recount from storage each time the dashboard is focused.
+  // Tasks completed before this Monday are cleared so a new week shows 0, not stale 14/14.
   useFocusEffect(
     useCallback(() => {
       async function countCompletedTasks() {
-        const keys = REQUIRED_TASK_IDS.map((id) => `checklist.${id}`);
-        const entries = await AsyncStorage.multiGet(keys);
-        const count = entries.filter(([, raw]) => raw && JSON.parse(raw).done).length;
+        const count = await expireStaleChecklistTasks();
         setChecklistCompleted(count);
       }
       void countCompletedTasks();

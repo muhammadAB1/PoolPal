@@ -8,10 +8,11 @@ import {
   getNextMondayLabel,
   getWeekLabel,
 } from '@/data/checklist';
+import { expireStaleChecklistTasks } from '@/lib/checklistStorage';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -36,11 +37,20 @@ export default function ChecklistScreen() {
   const handleTaskChange = useCallback((done: boolean, optional?: boolean) => {
     if (optional) return;
     setCompleted((n) => {
-      const next = done ? n + 1 : n - 1;
+      const next = Math.max(0, done ? n + 1 : n - 1);
       void AsyncStorage.setItem('checklist.completedCount', String(next));
       return next;
     });
   }, []);
+
+  useEffect(() => {
+    void expireStaleChecklistTasks().then(setCompleted);
+  }, []);
+
+  // When the week rolls over and every task expires, unlock the list for the new week.
+  useEffect(() => {
+    if (completed === 0) setWeekDone(false);
+  }, [completed]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
