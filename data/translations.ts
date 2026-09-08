@@ -518,6 +518,14 @@ export const en = {
   dashboard_next_step_label: 'Next Step',
   dashboard_next_step_desc: 'Set up your testing method',
   dashboard_next_step_go: 'Go',
+  dashboard_next_step_weekly_tasks: '{{completed}} of {{total}} weekly tasks completed.',
+  dashboard_next_step_do_not_swim:
+    'Your latest water results need attention before the pool is swim-ready.',
+  dashboard_next_step_wait_before_swimming:
+    'Your water needs more time or treatment before swimming.',
+  dashboard_next_step_use_caution: 'Review your latest water results before swimming.',
+  dashboard_next_step_safe_after_circulation:
+    'Your water is on track. Give the pool time to circulate before swimming.',
   dashboard_checklist_title: 'Weekly Care Checklist',
   dashboard_checklist_progress: '{{completed}} of {{total}} complete',
   dashboard_readings_title: 'Latest Readings',
@@ -1464,6 +1472,14 @@ export const es = {
   dashboard_next_step_label: 'Siguiente paso',
   dashboard_next_step_desc: 'Configura tu método de análisis',
   dashboard_next_step_go: 'Ir',
+  dashboard_next_step_weekly_tasks: '{{completed}} de {{total}} tareas semanales completadas.',
+  dashboard_next_step_do_not_swim:
+    'Los últimos resultados del agua necesitan atención antes de que la piscina esté lista para nadar.',
+  dashboard_next_step_wait_before_swimming:
+    'El agua necesita más tiempo o tratamiento antes de nadar.',
+  dashboard_next_step_use_caution: 'Revisa los últimos resultados del agua antes de nadar.',
+  dashboard_next_step_safe_after_circulation:
+    'El agua va bien. Deja que la piscina circule antes de nadar.',
   dashboard_checklist_title: 'Checklist semanal de cuidado',
   dashboard_checklist_progress: '{{completed}} de {{total}} completados',
   dashboard_readings_title: 'Últimos valores',

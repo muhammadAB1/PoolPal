@@ -38,7 +38,7 @@ export default function PoolScreen() {
         description = [
           pools?.pump_type ? `${pools.pump_type} pump` : '',
           pools?.filter_type ? `${pools.filter_type} filter` : '',
-          pools?.heater_type === 'Yes' ? 'heater' : '',
+          pools?.heater === 'Yes' ? 'Heater' : '',
         ].filter(Boolean).join(' • ');
         break;
       case 'pool-size-gallons':
@@ -62,8 +62,12 @@ export default function PoolScreen() {
         description = undefined;
     }
 
+
+
     return { ...row, showWarning, description };
-    });
+  });
+
+  console.log(poolProfileRowsDescription.map((row) => row.description));
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>

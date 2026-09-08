@@ -90,6 +90,7 @@ export default function DashboardScreen() {
   const detailsLeft = pools?.missing_details?.length ?? 0;
 
   const [checklistCompleted, setChecklistCompleted] = useState(0);
+  const [incompleteTasks, setIncompleteTasks] = useState<string[]>([]);
   const checklistTotal = REQUIRED_TASK_IDS.length;
   const checklistProgress = checklistTotal > 0 ? checklistCompleted / checklistTotal : 0;
 
@@ -98,8 +99,9 @@ export default function DashboardScreen() {
   useFocusEffect(
     useCallback(() => {
       async function countCompletedTasks() {
-        const count = await expireStaleChecklistTasks();
-        setChecklistCompleted(count);
+        const { completed, incompleteIds } = await expireStaleChecklistTasks();
+        setChecklistCompleted(completed);
+        setIncompleteTasks(incompleteIds);
       }
       void countCompletedTasks();
     }, []),
@@ -245,7 +247,7 @@ export default function DashboardScreen() {
               </Text>
             </TouchableOpacity>
             {/* Next Step */}
-            <NextStepCard pool={pools} latestReading={latestReading} />
+            <NextStepCard pool={pools} latestReading={latestReading} checklistCompleted={checklistCompleted} checklistTotal={checklistTotal} incompleteTasks={incompleteTasks} />
           </View>
 
           {/* Weekly Care Checklist */}

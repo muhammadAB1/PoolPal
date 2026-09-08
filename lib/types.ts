@@ -69,7 +69,7 @@ export type Pool = {
 
     pump_type?: PumpType
     filter_type?: FilterType
-    heater_type?: HeaterOption
+    heater?: HeaterOption
 
     surface_type?: SurfaceType | null
     cleaning_type?: CleaningType | null

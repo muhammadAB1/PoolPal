@@ -44,7 +44,7 @@ export default function ChecklistScreen() {
   }, []);
 
   useEffect(() => {
-    void expireStaleChecklistTasks().then(setCompleted);
+    void expireStaleChecklistTasks().then(({ completed }) => setCompleted(completed));
   }, []);
 
   // When the week rolls over and every task expires, unlock the list for the new week.

@@ -7,6 +7,7 @@ import { useAuth } from '@/providers/AuthProvider';
 import { usePool } from '@/providers/PoolProvider';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Image,
   ImageSourcePropType,
@@ -17,7 +18,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { HeaterChoice, POOL_EQUIPMENT } from './_data';
-import { useTranslation } from 'react-i18next';
 
 
 /** A single selectable card used inside the filter / pump / heater lists. */
@@ -186,7 +186,7 @@ export default function PoolEquipmentScreen() {
   const { t } = useTranslation();
   const { pools } = usePool();
 
-  const savedHeater = (pools as { heater?: HeaterChoice } | null)?.heater ?? pools?.heater_type;
+  const savedHeater = (pools as { heater?: HeaterChoice } | null)?.heater ?? pools?.heater;
 
   const updatePoolEquipment = {
     ...POOL_EQUIPMENT,

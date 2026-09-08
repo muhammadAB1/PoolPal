@@ -24,15 +24,18 @@ export function isChecklistTaskExpired(completedAt: string | null | undefined): 
 }
 
 /**
- * Clears expired tasks in AsyncStorage and returns how many required tasks are still done.
- * Dashboard and checklist both use this so a Monday cold start shows 0, not stale 14/14.
+ * Clears expired tasks in AsyncStorage and returns how many required tasks are still done,
+ * plus the ids of required tasks that are not done yet.
  */
-export async function expireStaleChecklistTasks(): Promise<number> {
+export async function expireStaleChecklistTasks(): Promise<{
+  completed: number;
+  incompleteIds: string[];
+}> {
   const ids = CHECKLIST_SECTIONS.flatMap((section) => section.tasks.map((task) => task.id));
   const keys = ids.map((id) => `checklist.${id}`);
   const entries = await AsyncStorage.multiGet(keys);
   const updates: [string, string][] = [];
-  let completed = 0;
+  const doneRequired = new Set<string>();
 
   for (const [key, raw] of entries) {
     if (!raw) continue;
@@ -44,12 +47,17 @@ export async function expireStaleChecklistTasks(): Promise<number> {
     }
 
     const taskId = key.replace('checklist.', '');
-    if (data.done && REQUIRED_IDS.has(taskId)) completed += 1;
+    if (data.done && REQUIRED_IDS.has(taskId)) doneRequired.add(taskId);
   }
 
   if (updates.length > 0) {
     await AsyncStorage.multiSet(updates);
   }
+
+  const completed = doneRequired.size;
   await AsyncStorage.setItem('checklist.completedCount', String(completed));
-  return completed;
+  return {
+    completed,
+    incompleteIds: REQUIRED_TASK_IDS.filter((id) => !doneRequired.has(id)),
+  };
 }

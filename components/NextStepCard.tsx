@@ -8,12 +8,15 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 type NextStepCardProps = {
   pool: Pool | null;
   latestReading: LatestReading | null;
+  checklistCompleted: number;
+  checklistTotal: number;
+  incompleteTasks: string[];
 };
 
 /** Dashboard card that surfaces the single most useful next action for the user's pool. */
-export default function NextStepCard({ pool, latestReading }: NextStepCardProps) {
+export default function NextStepCard({ pool, latestReading, checklistCompleted, checklistTotal, incompleteTasks }: NextStepCardProps) {
   const { t } = useTranslation();
-  const nextStep = getNextStep({ pool, latestReading });
+  const nextStep = getNextStep({ pool, latestReading, checklistCompleted, checklistTotal, incompleteTasks });
 
   return (
     <TouchableOpacity className="card flex-1 p-4" activeOpacity={0.7}>
