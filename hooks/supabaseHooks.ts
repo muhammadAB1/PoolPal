@@ -37,6 +37,9 @@ export function useSupabase() {
             options: {
                 redirectTo,
                 skipBrowserRedirect: true,
+                queryParams: {
+                    prompt: "select_account",
+                },
             },
         })
 
@@ -46,7 +49,8 @@ export function useSupabase() {
 
         const result = await WebBrowser.openAuthSessionAsync(
             data.url,
-            redirectTo
+            redirectTo,
+            { preferEphemeralSession: true },
         )
 
         if (result.type !== "success") {
