@@ -120,6 +120,10 @@
     @apply bg-warning-bg rounded-2xl border border-warning;
   }
 
+  .card--error {
+    @apply bg-[#FDECEC] rounded-2xl border border-error;
+  }
+
   .card--navy {
     @apply bg-brand-navy rounded-2xl;
   }

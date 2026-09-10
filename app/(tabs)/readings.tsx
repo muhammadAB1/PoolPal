@@ -228,7 +228,7 @@ export default function ReadingsScreen() {
             <TouchableOpacity
               className="flex-row items-center justify-center gap-1.5 rounded-full bg-success px-5 py-3.5 mt-3"
               activeOpacity={0.85}
-              onPress={() => router.push('/(readings)/water-results')}
+              onPress={() => router.push('/(treatment)/reading/plan')}
             >
               <Text className="text-button font-jakarta-bold text-surface-white">
                 {t('readings_view_treatment_plan')}

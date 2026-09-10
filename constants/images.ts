@@ -157,7 +157,7 @@ import navLearnActive from '../assets/dashboard-images/nav_learn_book_icon_activ
 import navLearnInactive from '../assets/dashboard-images/nav_learn_book_icon_inactive.png';
 
 // ─── Pool tab review screens ─────────────────────────────────────────────────
-import poolBasicsHero from '../assets/pool-tab/pool-tab-pool-basic-screen-bg.png';
+import poolBasicsHero from '../assets/pool-tab/pool-tab-pool-basic-screen-bg.jpg';
 
 // ─── Exports ─────────────────────────────────────────────────────────────────
 

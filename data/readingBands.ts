@@ -401,7 +401,7 @@ export function getIdealStatusRange(
 
   if (originalKey.cyanuric_acid != undefined) {
     out[originalKey.cyanuric_acid] = { min: 30, max: 50 };
-    if (pools?.has_hot_tub === 'Yes') {
+    if (pools?.hot_tub_type === 'Yes') {
       out[originalKey.cyanuric_acid] = { min: 0, max: 0 };
     }
   }
@@ -418,7 +418,7 @@ export function getIdealStatusRange(
     if (pools?.pool_use_type === 'ShortTermRental' || isHeavyUse) {
       out[originalKey.free_chlorine] = { min: 2, max: 4 };
     }
-    if (pools?.has_hot_tub === 'Yes') {
+    if (pools?.hot_tub_type === 'Yes') {
       out[originalKey.free_chlorine] = { min: 3, max: 5 };
     }
   }
@@ -428,7 +428,7 @@ export function getIdealStatusRange(
     if (pools?.pool_use_type === 'ShortTermRental' || isHeavyUse) {
       out[originalKey.bromine] = { min: 3, max: 5 };
     }
-    if (pools?.has_hot_tub === 'Yes') {
+    if (pools?.hot_tub_type === 'Yes') {
       out[originalKey.bromine] = { min: 4, max: 8 };
     }
   }

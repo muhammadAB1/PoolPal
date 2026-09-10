@@ -19,7 +19,7 @@ import { usePool } from '@/providers/PoolProvider';
 import { useTestStrips } from '@/providers/TestStripProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -46,9 +46,10 @@ function clamp01(n: number) {
 export default function WaterResultsScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const { selectedBrand, selections, savedReadingId, setSavedReadingId, setResultStatus } = useTestStrips();
+  const { selectedBrand, selections, savedReadingId, setSavedReadingId, setResultStatus, bumpSaveCount } = useTestStrips();
   const { pools } = usePool();
   const { testReadingsInsert } = useSupabase();
+  const [saving, setSaving] = useState(false);
   const idealRanges = getIdealStatusRange(selections, pools);
 
   const pads = resolvePads(selectedBrand, selections);
@@ -80,23 +81,25 @@ export default function WaterResultsScreen() {
   const overall = OVERALL_STATUS[poolStatus];
   const swim = SWIM_STATUS[swimmingStatus];
 
-  // Save the readings once per visit — moved from select-strip-results so the
-  // insert happens alongside the statuses shown here instead of twice.
-  // If the user went Back to change pads and returned, savedReadingId is
-  // still set, so this updates the existing row instead of inserting again.
-  const hasInsertedRef = useRef(false);
   useEffect(() => {
-    if (hasInsertedRef.current || rows.length === 0) return;
-    hasInsertedRef.current = true;
+    if (rows.length === 0) return;
+    setResultStatus(poolStatus, statuses, swimmingStatus);
+  }, [rows.length]);
+
+  async function handleContinue() {
+    setSaving(true);
     const props = toTestReadingsProps(selections);
     props.pool_status = poolStatus;
     props.swimming_status = swimmingStatus;
-    setResultStatus(poolStatus, statuses, swimmingStatus);
-    if (poolStatus === 'unable_to_determine' || swimmingStatus === 'unable_to_determine') return;
-    void testReadingsInsert({ props, id: savedReadingId ?? undefined }).then(({ data }) => {
-      if (data?.id) setSavedReadingId(data.id);
-    });
-  }, [rows.length]);
+    const { data, error } = await testReadingsInsert({ props, id: savedReadingId ?? undefined });
+    if (error) {
+      setSaving(false);
+      return;
+    }
+    if (data?.id) setSavedReadingId(data.id);
+    bumpSaveCount();
+    router.push('/(treatment)/reading/plan');
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.white }}>
@@ -232,9 +235,10 @@ export default function WaterResultsScreen() {
 
       <View className="px-5 pt-2 pb-3">
         <TouchableOpacity
-          className={`btn btn--primary ${poolStatus !== 'unable_to_determine' && swimmingStatus !== 'unable_to_determine' ? '' : 'opacity-50'}`}
+          className={`btn btn--primary ${poolStatus !== 'unable_to_determine' && swimmingStatus !== 'unable_to_determine' && !saving ? '' : 'opacity-50'}`}
           activeOpacity={0.85}
-          disabled={poolStatus === 'unable_to_determine' || swimmingStatus === 'unable_to_determine'}
+          disabled={saving || poolStatus === 'unable_to_determine' || swimmingStatus === 'unable_to_determine'}
+          onPress={handleContinue}
         >
           <Text className="text-button font-jakarta-bold text-surface-white">
             {t('water_results_cta')}
