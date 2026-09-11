@@ -16,6 +16,8 @@ type ProfileCompletionRingProps = {
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const ANIMATION_DURATION_MS = 700;
+/** Raise this to make the % text bigger (e.g. 0.32). */
+const PERCENT_FONT_RATIO = 0.23;
 
 /**
  * Reusable circular profile-completion indicator.
@@ -34,6 +36,7 @@ export default function ProfileCompletionRing({
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const animatedOffset = useRef(new Animated.Value(circumference)).current;
+  const fontSize = size * PERCENT_FONT_RATIO;
 
   useEffect(() => {
     const animation = Animated.timing(animatedOffset, {
@@ -87,12 +90,15 @@ export default function ProfileCompletionRing({
       </Svg>
 
       <View
-        className="items-center justify-center px-3"
+        className="items-center justify-center"
+        style={{ width: size - strokeWidth * 2 }}
         importantForAccessibility="no-hide-descendants"
       >
         <Text
-          className="font-jakarta-extrabold text-brand-navy"
-          style={{ fontSize: size * 0.23, lineHeight: size * 0.3 }}
+          className="font-jakarta-extrabold text-brand-navy text-center"
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={{ fontSize, lineHeight: fontSize * 1.15 }}
         >
           {clamped}%
         </Text>
