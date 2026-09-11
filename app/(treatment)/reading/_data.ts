@@ -73,6 +73,25 @@ export type TreatmentPlanContent = {
     };
 };
 
+export type NoTreatmentContent = {
+    title: string;
+    body: string;
+    tip: string;
+    footer: {
+        primaryLabel: string;
+    };
+};
+
+/** Shown on the Treatment Plan screen when no reading currently needs treatment. */
+export const NO_TREATMENT_NEEDED: NoTreatmentContent = {
+    title: 'Your pool is safe!',
+    body: 'All your tested levels are within their ideal ranges. No treatment is needed right now.',
+    tip: 'Keep testing regularly so you can catch changes early.',
+    footer: {
+        primaryLabel: 'Back to Readings',
+    },
+};
+
 /** Low pH treatment plan — the only scenario built so far. */
 export const TREATMENT_PLAN: TreatmentPlanContent = {
     brandLabel: 'PoolWise',
