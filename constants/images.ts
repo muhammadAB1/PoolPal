@@ -66,6 +66,8 @@ import poolUseShortTermRental from '../assets/poolbasicsimages/poolbasics/ShortT
 // ─── Pool Basics — Hot Tub / Spa ──────────────────────────────────────────────
 import poolHotTubYes from '../assets/poolbasicsimages/poolbasics/hottub.png';
 import poolHotTubNo from '../assets/poolbasicsimages/poolbasics/no.png';
+import poolSpaAttached from '../assets/poolbasicsimages/poolbasics/attached_spa.webp';
+import poolSpaDetached from '../assets/poolbasicsimages/poolbasics/detatched_spa.webp';
 
 // ─── Pool Condition (keyed to DB enum values) ──────────────────────────────────
 import poolConditionCrystalClear from '../assets/pool-condition-images/aa.png';
@@ -226,6 +228,8 @@ export const poolBasicsImages = {
     hotTub: {
         Yes: poolHotTubYes,
         No: poolHotTubNo,
+        Attached: poolSpaAttached,
+        Detached: poolSpaDetached,
     },
 } as const;
 

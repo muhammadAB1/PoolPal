@@ -58,6 +58,7 @@ export default function PoolBasicsScreen() {
             poolType: pools?.pool_type ?? undefined,
             screened: pools?.pool_screen ?? undefined,
             hasHotTub: pools?.hot_tub_type ?? undefined,
+            spaAttachment: pools?.spa_attachment ?? undefined,
             useType: pools?.pool_use_type ?? undefined,
             usageFrequency: pools?.usage_frequency ?? undefined,
             numberOfPoolUsers: pools?.number_of_users ?? undefined,
