@@ -3,6 +3,7 @@ import type {
   NumberOfPoolUsers,
   PoolType,
   ScreenedType,
+  SpaAttachmentType,
   UsageFrequency,
   UseType,
 } from '@/lib/types';
@@ -36,6 +37,14 @@ export const POOL_BASICS = {
         Yes: { name: 'pool_basics_hot_tub_yes', description: 'pool_basics_hot_tub_yes_review_desc' },
         No: { name: 'pool_basics_hot_tub_no', description: 'pool_basics_hot_tub_no_review_desc' },
       } as Record<HotTubType, { name: string; description: string }>,
+    },
+    {
+      database_column_name: 'spa_attachment' as const,
+      title: 'pool_basics_review_hot_tub',
+      value: {
+        Attached: { name: 'pool_basics_spa_attached', description: 'pool_basics_spa_attached_desc' },
+        Detached: { name: 'pool_basics_spa_detached', description: 'pool_basics_spa_detached_desc' },
+      } as Record<SpaAttachmentType, { name: string; description: string }>,
     },
     {
       database_column_name: 'pool_use_type' as const,

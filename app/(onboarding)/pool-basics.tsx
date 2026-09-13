@@ -104,11 +104,11 @@ export default function PoolBasicsScreen({
             return;
         }
 
-        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-size-gallons' as Href));
     }
 
     function handleSkipForNow() {
-        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-size-gallons' as Href));
     }
 
     const content = (

@@ -23,12 +23,12 @@ export const POOL_PROFILE_ROWS: PoolProfileRow[] = [
     titleKey: 'pool_tab_basics',
     href: '/(pool)/basics' as Href,
   },
-  {
-    heading: 'pool-condition',
-    icon: 'water-outline',
-    titleKey: 'pool_tab_condition',
-    href: '/(pool)/condition' as Href,
-  },
+  // {
+  //   heading: 'pool-condition',
+  //   icon: 'water-outline',
+  //   titleKey: 'pool_tab_condition',
+  //   href: '/(pool)/condition' as Href,
+  // },
   {
     heading: 'pool-size-gallons',
     icon: 'ruler',

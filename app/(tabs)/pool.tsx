@@ -27,7 +27,9 @@ export default function PoolScreen() {
         description = [
           pools?.pool_type ? pools.pool_type : '',
           pools?.pool_screen ? pools.pool_screen : '',
-          pools?.hot_tub_type ? 'hot tub and spa' : '',
+          pools?.hot_tub_type === 'Yes' && pools?.spa_attachment
+            ? `${t(pools.spa_attachment === 'Attached' ? 'pool_basics_spa_attached' : 'pool_basics_spa_detached')} ${t('pool_basics_review_hot_tub_tag')}`
+            : '',
           pools?.pool_use_type ? pools.pool_use_type : '',
         ].filter(Boolean).join(' • ');
         break;
