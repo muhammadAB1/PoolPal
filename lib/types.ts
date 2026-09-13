@@ -4,6 +4,17 @@ export type Country = 'us' | 'es';
 export type Language = 'en' | 'es';
 export type Measurement = 'us' | 'metric';
 
+/** One row from the profile table. id is the same as auth.users.id. */
+export type Profile = {
+    id: string
+    membership_tier: string
+    country: Country
+    language: Language
+    measurement: Measurement
+    created_at?: string
+    updated_at?: string
+}
+
 export type PoolType = 'Chlorine' | 'Saltwater' | 'Other';
 export type ScreenedType = 'Screened' | 'Unscreened';
 export type UseType = 'Family' | 'VacationHome' | 'ShortTermRental';

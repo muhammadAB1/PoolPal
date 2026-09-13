@@ -22,7 +22,7 @@ type OAuthResult = {
 
 export function useSupabase() {
 
-    const { user, setUser } = useAuth();
+    const { user, setUser, refreshProfile } = useAuth();
     const { markPoolsStale } = usePool();
 
     async function signInWithOAuth(
@@ -77,20 +77,20 @@ export function useSupabase() {
         const isNewUser = await AsyncStorage.getItem('activePoolId') ? false : true;
 
         if (isNewUser && (country || language || measurement)) {
-            const { data, error: updateError } = await supabase.auth.updateUser({
-                data: {
-                    plan: "free",
+            const { error: updateError } = await supabase
+                .from('profile')
+                .update({
                     country,
                     language,
                     measurement,
-                },
-            })
-
-            setUser(data.user)
+                })
+                .eq('id', sessionData.session.user.id)
 
             if (updateError) {
                 return { data: sessionData, redirectTo: null, error: updateError }
             }
+
+            await refreshProfile()
         }
 
         const postAuthRoute = isNewUser ? '/(onboarding)/pool-basics' : '/(tabs)/dashboard'

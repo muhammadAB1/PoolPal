@@ -110,7 +110,7 @@ function EquipmentDetailsBlock({
   identifyDescription: string;
 }) {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { plan } = useAuth();
 
   return (
     <>
@@ -132,7 +132,7 @@ function EquipmentDetailsBlock({
         <Ionicons name="chevron-down" size={18} color={colors.text.faint} />
       </TouchableOpacity>
 
-      {user?.user_metadata?.plan === 'free' ? (
+      {plan === 'free' ? (
         <>
           <TouchableOpacity className="self-start mt-2.5" activeOpacity={0.7}>
             <Text className="text-small font-jakarta-bold text-brand-blue">
