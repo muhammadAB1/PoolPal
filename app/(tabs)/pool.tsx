@@ -85,19 +85,44 @@ export default function PoolScreen() {
         </Text>
 
         {allPools.length > 1 ? (
-          <View className="flex-row flex-wrap gap-2 mb-5">
-            {allPools.map((pool) => (
-              <TouchableOpacity
-                key={pool.id}
-                className={`px-3 py-1.5 rounded-full ${pool.id === poolId ? 'bg-brand-blue' : 'bg-surface-soft-aqua'}`}
-                activeOpacity={0.7}
-                onPress={() => void switchPool(pool.id)}
-              >
-                <Text className={`text-small font-jakarta-bold ${pool.id === poolId ? 'text-surface-white' : 'text-brand-navy'}`}>
-                  {pool.pool_name}
-                </Text>
-              </TouchableOpacity>
-            ))}
+          <View className="mb-5">
+            <View className="flex-row items-center gap-1.5 mb-2">
+              <MaterialCommunityIcons name="pool" size={16} color={colors.brand.blue} />
+              <Text className="text-tiny font-jakarta-extrabold text-brand-blue tracking-wide">
+                {t('pool_tab_your_pools').toUpperCase()}
+              </Text>
+            </View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View className="flex-row gap-2.5">
+                {allPools.map((pool) => {
+                  const isActive = pool.id === poolId;
+                  return (
+                    <TouchableOpacity
+                      key={pool.id}
+                      className={`flex-row items-center px-3.5 py-2 rounded-2xl border-2 ${isActive ? 'bg-brand-blue border-brand-blue' : 'bg-surface-white border-border-default'}`}
+                      style={isActive ? shadow.card : undefined}
+                      activeOpacity={0.7}
+                      onPress={() => void switchPool(pool.id)}
+                    >
+                      {isActive ? (
+                        <MaterialCommunityIcons
+                          name="check-circle"
+                          size={16}
+                          color={colors.surface.white}
+                          style={{ marginRight: 6 }}
+                        />
+                      ) : null}
+                      <Text className={`text-small font-jakarta-bold ${isActive ? 'text-surface-white' : 'text-brand-navy'}`}>
+                        {pool.pool_name}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </ScrollView>
+            <Text className="text-tiny font-jakarta text-faint mt-1.5">
+              {t('pool_tab_switch_pool_hint')}
+            </Text>
           </View>
         ) : null}
 
