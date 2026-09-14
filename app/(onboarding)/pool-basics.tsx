@@ -1,7 +1,7 @@
 import { icons, poolBasicsImages } from '@/constants/images';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
-import type { HotTubType, NumberOfPoolUsers, PoolType, ScreenedType, UsageFrequency, UseType } from '@/lib/types';
+import type { HotTubType, NumberOfPoolUsers, PoolType, ScreenedType, SpaAttachmentType, UsageFrequency, UseType } from '@/lib/types';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +21,7 @@ type PoolBasicsFields = {
     poolType?: PoolType;
     screened?: ScreenedType;
     hasHotTub?: HotTubType;
+    spaAttachment?: SpaAttachmentType;
     useType?: UseType;
     usageFrequency?: UsageFrequency;
     numberOfPoolUsers?: NumberOfPoolUsers;
@@ -59,6 +60,7 @@ export default function PoolBasicsScreen({
     const [poolType, setPoolType] = useState<PoolType | undefined>(initialPoolBasics?.poolType);
     const [screened, setScreened] = useState<ScreenedType | undefined>(initialPoolBasics?.screened);
     const [hasHotTub, setHasHotTub] = useState<HotTubType | undefined>(initialPoolBasics?.hasHotTub);
+    const [spaAttachment, setSpaAttachment] = useState<SpaAttachmentType | undefined>(initialPoolBasics?.spaAttachment);
     const [useType, setUseType] = useState<UseType | undefined>(initialPoolBasics?.useType);
     const [usageFrequency, setUsageFrequency] = useState<UsageFrequency | undefined>(initialPoolBasics?.usageFrequency);
     const [numberOfPoolUsers, setNumberOfPoolUsers] = useState<NumberOfPoolUsers | undefined>(initialPoolBasics?.numberOfPoolUsers);
@@ -86,6 +88,7 @@ export default function PoolBasicsScreen({
             poolType: poolType === 'Other' ? 'Chlorine' : poolType,
             screened,
             hasHotTub,
+            spaAttachment,
             useType,
             usageFrequency,
             numberOfUsers: numberOfPoolUsers,
@@ -101,11 +104,11 @@ export default function PoolBasicsScreen({
             return;
         }
 
-        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-size-gallons' as Href));
     }
 
     function handleSkipForNow() {
-        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-condition' as Href));
+        router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/pool-size-gallons' as Href));
     }
 
     const content = (
@@ -248,6 +251,7 @@ export default function PoolBasicsScreen({
                                     selected={hasHotTub === item.value}
                                     onPress={() => {
                                         setHasHotTub(item.value);
+                                        if (item.value === 'No') setSpaAttachment(undefined);
                                         setErrorMessage(null);
                                     }}
                                     imageClassName="w-[72px] h-[72px] rounded-full"
@@ -255,6 +259,42 @@ export default function PoolBasicsScreen({
                             ))}
                         </View>
                     </View>
+
+                    {hasHotTub === 'Yes' ? (
+                        <View className="mt-6">
+                            <Text className="section__title">{t('pool_basics_spa_attached_label')}</Text>
+                            <Text className="section__subtitle mt-0.5">
+                                {t('pool_basics_spa_attached_subtitle')}
+                            </Text>
+
+                            <View className="flex-row mt-3 gap-2">
+                                {(
+                                    [
+                                        {
+                                            value: 'Attached' as SpaAttachmentType,
+                                            label: t('pool_basics_spa_attached'),
+                                            desc: t('pool_basics_spa_attached_desc'),
+                                        },
+                                        {
+                                            value: 'Detached' as SpaAttachmentType,
+                                            label: t('pool_basics_spa_detached'),
+                                            desc: t('pool_basics_spa_detached_desc'),
+                                        },
+                                    ] as const
+                                ).map((item) => (
+                                    <SelectionCard
+                                        key={item.value}
+                                        image={poolBasicsImages.hotTub[item.value]}
+                                        label={item.label}
+                                        description={item.desc}
+                                        selected={spaAttachment === item.value}
+                                        onPress={() => setSpaAttachment(item.value)}
+                                        imageClassName="w-[72px] h-[72px] rounded-full"
+                                    />
+                                ))}
+                            </View>
+                        </View>
+                    ) : null}
 
                     <View className="mt-6">
                         <Text className="section__title">{t('pool_basics_use_label')}</Text>

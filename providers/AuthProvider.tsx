@@ -5,9 +5,10 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import type { User } from '@supabase/supabase-js';
+import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/Supabase';
-import { Measurement } from '@/lib/types';
+import { Country, Language, Measurement, Profile } from '@/lib/types';
+import { setLanguage as setAppLanguage } from '@/lib/i18n';
 
 type AuthContextValue = {
   user: User | null;
@@ -16,6 +17,11 @@ type AuthContextValue = {
   loading: boolean;
   setUser: (user: User | null) => void;
   measurement: Measurement;
+  country: Country | null;
+  language: Language | null;
+  name: string | null;
+  /** Re-fetches the signed-in user's profile row (call after writing prefs). */
+  refreshProfile: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -26,35 +32,80 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [measurement, setMeasurement] = useState<Measurement>('us');
+  const [country, setCountry] = useState<Country | null>(null);
+  const [language, setLanguage] = useState<Language | null>(null);
+  const [name, setName] = useState<string | null>(null);
+
+  async function loadProfile(userId: string) {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
+    if (error || !data) {
+      setPlan(null);
+      setCountry(null);
+      setLanguage(null);
+      setMeasurement('us');
+      setName(null);
+      return;
+    }
+
+    const profile = data as Profile;
+    setPlan(profile.membership_tier ?? null);
+    setCountry(profile.country ?? null);
+    setLanguage(profile.language ?? null);
+    setMeasurement(profile.measurement ?? 'us');
+    setName(profile.name ?? null);
+    if (profile.language === 'en' || profile.language === 'es') {
+      setAppLanguage(profile.language);
+    }
+  }
+
+  function clearProfile() {
+    setPlan(null);
+    setCountry(null);
+    setLanguage(null);
+    setMeasurement('us');
+    setName(null);
+  }
 
   useEffect(() => {
-    console.log('Ran from auth provider')
-    supabase.auth.getSession().then(({ data }) => {
-      const session = data.session;
-
+    async function syncSession(session: Session | null) {
       setUser(session?.user ?? null);
       setAccessToken(session?.access_token ?? null);
-      setPlan(session?.user?.user_metadata?.plan ?? null);
-      setMeasurement(session?.user?.user_metadata?.measurement);
+
+      if (session?.user) {
+        await loadProfile(session.user.id);
+      } else {
+        clearProfile();
+      }
+
       setLoading(false);
+    }
+
+    supabase.auth.getSession().then(({ data }) => {
+      syncSession(data.session);
     });
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      setAccessToken(session?.access_token ?? null);
-      setPlan(session?.user?.user_metadata?.plan ?? null);
-      setMeasurement(session?.user?.user_metadata?.measurement);
-      setLoading(false);
-
+      syncSession(session);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
+  async function refreshProfile() {
+    if (user) await loadProfile(user.id);
+  }
+
   return (
-    <AuthContext.Provider value={{ user, accessToken, plan, loading, setUser, measurement }}>
+    <AuthContext.Provider
+      value={{ user, accessToken, plan, loading, setUser, measurement, country, language, name, refreshProfile }}
+    >
       {children}
     </AuthContext.Provider>
   );

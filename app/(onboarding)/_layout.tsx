@@ -6,7 +6,7 @@ import { useRef } from 'react';
 import { ActivityIndicator, Image, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const onboardingSteps = ['pool-basics', 'pool-condition', 'pool-size-gallons', 'equipment-basics', 'surface-type', 'cleaning-setup', 'weekly-reminder'] as const;
+const onboardingSteps = ['pool-basics', 'pool-size-gallons', 'equipment-basics', 'surface-type', 'cleaning-setup', 'weekly-reminder'] as const;
 
 function OnboardingHeader({
   routeName,

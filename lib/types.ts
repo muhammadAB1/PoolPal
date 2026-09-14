@@ -4,10 +4,23 @@ export type Country = 'us' | 'es';
 export type Language = 'en' | 'es';
 export type Measurement = 'us' | 'metric';
 
+/** One row from the profile table. id is the same as auth.users.id. */
+export type Profile = {
+    id: string
+    membership_tier: string
+    country: Country
+    language: Language
+    measurement: Measurement
+    name: string
+    created_at?: string
+    updated_at?: string
+}
+
 export type PoolType = 'Chlorine' | 'Saltwater' | 'Other';
 export type ScreenedType = 'Screened' | 'Unscreened';
 export type UseType = 'Family' | 'VacationHome' | 'ShortTermRental';
 export type HotTubType = 'Yes' | 'No';
+export type SpaAttachmentType = 'Attached' | 'Detached';
 export type UsageFrequency = '0-1' | '2-3' | '4-5' | '6-7';
 export type NumberOfPoolUsers = '1-2' | '3-4' | '5+';
 
@@ -56,6 +69,7 @@ export type Pool = {
     usage_frequency?: UsageFrequency | null
     number_of_users?: NumberOfPoolUsers | null
     hot_tub_type?: HotTubType
+    spa_attachment?: SpaAttachmentType | null
     pool_condition?: PoolCondition | null
 
     length?: number

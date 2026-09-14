@@ -1,7 +1,7 @@
 import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
 
 import { supabase } from "@/lib/Supabase"
-import { HotTubType, NumberOfPoolUsers, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
+import { HotTubType, NumberOfPoolUsers, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, SpaAttachmentType, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
 import { usePool } from "@/providers/PoolProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -22,7 +22,7 @@ type OAuthResult = {
 
 export function useSupabase() {
 
-    const { user, setUser } = useAuth();
+    const { user, setUser, refreshProfile } = useAuth();
     const { markPoolsStale } = usePool();
 
     async function signInWithOAuth(
@@ -77,20 +77,20 @@ export function useSupabase() {
         const isNewUser = await AsyncStorage.getItem('activePoolId') ? false : true;
 
         if (isNewUser && (country || language || measurement)) {
-            const { data, error: updateError } = await supabase.auth.updateUser({
-                data: {
-                    plan: "free",
+            const { error: updateError } = await supabase
+                .from('profile')
+                .update({
                     country,
                     language,
                     measurement,
-                },
-            })
-
-            setUser(data.user)
+                })
+                .eq('id', sessionData.session.user.id)
 
             if (updateError) {
                 return { data: sessionData, redirectTo: null, error: updateError }
             }
+
+            await refreshProfile()
         }
 
         const postAuthRoute = isNewUser ? '/(onboarding)/pool-basics' : '/(tabs)/dashboard'
@@ -106,8 +106,8 @@ export function useSupabase() {
 
     }
 
-    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub, usageFrequency, numberOfUsers, markStale = true }:
-        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType, usageFrequency?: UsageFrequency, numberOfUsers?: NumberOfPoolUsers, markStale?: boolean }) {
+    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub, spaAttachment, usageFrequency, numberOfUsers, markStale = true }:
+        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType, spaAttachment?: SpaAttachmentType, usageFrequency?: UsageFrequency, numberOfUsers?: NumberOfPoolUsers, markStale?: boolean }) {
 
         const id = await AsyncStorage.getItem('activePoolId');
         const poolBasics = {
@@ -115,6 +115,7 @@ export function useSupabase() {
             pool_type: poolType ?? null,
             pool_screen: screened ?? null,
             hot_tub_type: hasHotTub ?? null,
+            spa_attachment: hasHotTub === 'Yes' ? spaAttachment ?? null : null,
             pool_use_type: useType ?? null,
             usage_frequency: usageFrequency ?? null,
             number_of_users: numberOfUsers ?? null,

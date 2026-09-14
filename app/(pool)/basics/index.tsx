@@ -15,6 +15,7 @@ const DETAIL_ICONS = {
   pool_type: 'help-circle-outline',
   pool_screen: 'shield-outline',
   hot_tub_type: 'waves',
+  spa_attachment: 'waves',
   pool_use_type: 'account-multiple-outline',
   usage_frequency: 'calendar-week',
   number_of_users: 'account-group-outline',
@@ -58,6 +59,7 @@ export default function PoolBasicsScreen() {
             poolType: pools?.pool_type ?? undefined,
             screened: pools?.pool_screen ?? undefined,
             hasHotTub: pools?.hot_tub_type ?? undefined,
+            spaAttachment: pools?.spa_attachment ?? undefined,
             useType: pools?.pool_use_type ?? undefined,
             usageFrequency: pools?.usage_frequency ?? undefined,
             numberOfPoolUsers: pools?.number_of_users ?? undefined,
@@ -105,7 +107,9 @@ export default function PoolBasicsScreen() {
                 {[
                   pools?.pool_type === 'Chlorine' ? t('pool_basics_type_chlorine') : t('pool_basics_type_saltwater'),
                   pools?.pool_screen === 'Screened' ? t('pool_basics_screened_yes') : t('pool_basics_screened_no'),
-                  pools?.hot_tub_type === 'Yes' ? t('pool_basics_hot_tub_yes') : t('pool_basics_hot_tub_no'),
+                  pools?.hot_tub_type === 'Yes' && pools?.spa_attachment
+                    ? `${t(pools.spa_attachment === 'Attached' ? 'pool_basics_spa_attached' : 'pool_basics_spa_detached')} ${t('pool_basics_review_hot_tub_tag')}`
+                    : '',
                   pools?.pool_use_type === 'Family' ? t('pool_basics_use_family') : pools?.pool_use_type === 'VacationHome' ? t('pool_basics_use_vacation') : t('pool_basics_use_rental'),
                 ]
                   .filter(Boolean)
@@ -151,6 +155,7 @@ export default function PoolBasicsScreen() {
           <View className="card overflow-hidden" style={shadow.card}>
             {updatedPoolBasics.map((row, index) => {
               if (pools?.pool_use_type !== 'Family' && (row.database_column_name === 'usage_frequency' || row.database_column_name === 'number_of_users')) return null;
+              if (row.database_column_name === 'hot_tub_type' || (pools?.hot_tub_type !== 'Yes' && row.database_column_name === 'spa_attachment')) return null;
 
               const isLast = index === updatedPoolBasics.length - 1;
               const icon = DETAIL_ICONS[row.database_column_name];
