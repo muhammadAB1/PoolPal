@@ -189,10 +189,261 @@ export type TreatmentAlert = {
     actionable: boolean;
 };
 
+const PRIOR_TREATMENT_MESSAGE = 'Complete the prior treatment first.';
+
+type TreatmentCaseId =
+    | 'fc_very_high'
+    | 'fc_low'
+    | 'ph_high'
+    | 'ph_low'
+    | 'alk_low'
+    | 'alk_high'
+    | 'alk_very_high'
+    | 'bromine_low'
+    | 'cya_low'
+    | 'cya_mid'
+    | 'cya_very_high'
+    | 'salt_low'
+    | 'salt_high'
+    | 'salt_very_high'
+    | 'cc_high';
+
+type TreatmentCase = {
+    id: TreatmentCaseId;
+    testName: string;
+    value: string;
+    treatMessage: string;
+};
+
+const CASE_DISPLAY_ORDER: TreatmentCaseId[] = [
+    'fc_very_high',
+    'alk_low',
+    'ph_low',
+    'ph_high',
+    'fc_low',
+    'bromine_low',
+    'cc_high',
+    'alk_very_high',
+    'alk_high',
+    'cya_very_high',
+    'cya_mid',
+    'cya_low',
+    'salt_very_high',
+    'salt_high',
+    'salt_low',
+];
+
+function pickFirstCase(ids: Set<TreatmentCaseId>): TreatmentCaseId | null {
+    if (ids.has('fc_very_high')) return 'fc_very_high';
+
+    if (ids.has('ph_low') && ids.has('alk_low')) return 'alk_low';
+    if (ids.has('ph_low')) return 'ph_low';
+    if (ids.has('ph_high')) return 'ph_high';
+
+    if (ids.has('fc_low')) return 'fc_low';
+    if (ids.has('bromine_low')) return 'bromine_low';
+
+    if (ids.has('cc_high')) return 'cc_high';
+
+    if (ids.has('alk_low')) return 'alk_low';
+    if (ids.has('alk_very_high')) return 'alk_very_high';
+    if (ids.has('alk_high')) return 'alk_high';
+
+    if (ids.has('cya_very_high')) return 'cya_very_high';
+    if (ids.has('cya_mid')) return 'cya_mid';
+    if (ids.has('cya_low')) return 'cya_low';
+
+    if (ids.has('salt_very_high')) return 'salt_very_high';
+    if (ids.has('salt_high')) return 'salt_high';
+    if (ids.has('salt_low')) return 'salt_low';
+
+    return null;
+}
+
 /**
- * Standalone checks first (same shape as very high chlorine). Combined
- * rules nest inside those branches.
+ * Independent case checks, then a ranker picks who is treated first.
+ * Deferred cards share one message. Combination overrides live in pickFirstCase.
  */
+export function getReadingsThatNeedTreatment(readings: LatestReading | null): TreatmentAlert[] {
+    const cases: TreatmentCase[] = [];
+
+    const freeChlorine = readings?.selections['Free Chlorine'];
+    const ph = readings?.selections['pH'];
+    const alkalinity = readings?.selections['Total Alkalinity'];
+    const bromine = readings?.selections['Bromine'];
+    const cya = readings?.selections['Cyanuric Acid'];
+    const salt = readings?.selections['Salt'];
+    const combinedChlorine = readings?.selections['Combined Chlorine'];
+    const alkStatus = alkalinity
+        ? getReadingStatus('Total Alkalinity', alkalinity)
+        : null;
+
+    if (freeChlorine && Number(freeChlorine) >= 10) {
+        cases.push({
+            id: 'fc_very_high',
+            testName: 'Free Chlorine',
+            value: freeChlorine,
+            treatMessage:
+                'Free chlorine is very high. Stop adding chlorine and avoid swimming until it drops back into range.',
+        });
+    }
+    if (
+        freeChlorine &&
+        ['low', 'very_low'].includes(getReadingStatus('Free Chlorine', freeChlorine))
+    ) {
+        cases.push({
+            id: 'fc_low',
+            testName: 'Free Chlorine',
+            value: freeChlorine,
+            treatMessage: 'Sanitizer is low. Add chlorine to bring it back into range, then retest.',
+        });
+    }
+    if (ph && Number(ph) > 8.0 && !(freeChlorine && Number(freeChlorine) >= 10)) {
+        cases.push({
+            id: 'ph_high',
+            testName: 'pH',
+            value: ph,
+            treatMessage:
+                alkStatus === 'high' || alkStatus === 'very_high'
+                    ? 'pH and Alkalinity are too high. Lower pH only — alkalinity will come down as pH drops.'
+                    : 'pH is too high. Lower pH first.',
+        });
+    }
+    if (ph && Number(ph) < 7.0) {
+        cases.push({
+            id: 'ph_low',
+            testName: 'pH',
+            value: ph,
+            treatMessage:
+                'pH is too low. Raise pH first — chlorine will not sanitize well until pH is back in range.',
+        });
+    }
+    if (alkalinity && Number(alkalinity) < 80) {
+        cases.push({
+            id: 'alk_low',
+            testName: 'Total Alkalinity',
+            value: alkalinity,
+            treatMessage: 'Alkalinity is below 80 ppm. Raise alkalinity first, then retest.',
+        });
+    }
+    if (alkalinity && alkStatus === 'high') {
+        cases.push({
+            id: 'alk_high',
+            testName: 'Total Alkalinity',
+            value: alkalinity,
+            treatMessage: 'Alkalinity is high. Lower alkalinity to bring it back into range, then retest.',
+        });
+    }
+    if (alkalinity && alkStatus === 'very_high') {
+        cases.push({
+            id: 'alk_very_high',
+            testName: 'Total Alkalinity',
+            value: alkalinity,
+            treatMessage: 'Alkalinity is very high. Lower alkalinity to bring it back into range, then retest.',
+        });
+    }
+    if (bromine && ['low', 'very_low'].includes(getReadingStatus('Bromine', bromine))) {
+        cases.push({
+            id: 'bromine_low',
+            testName: 'Bromine',
+            value: bromine,
+            treatMessage: 'Bromine is low. Add bromine to bring it back into range, then retest.',
+        });
+    }
+    if (cya && ['low', 'very_low'].includes(getReadingStatus('Cyanuric Acid', cya))) {
+        cases.push({
+            id: 'cya_low',
+            testName: 'Cyanuric Acid',
+            value: cya,
+            treatMessage: 'Cyanuric acid is low. Add cyanuric acid to bring it back into range, then retest.',
+        });
+    }
+    if (cya && Number(cya) >= 51 && Number(cya) < 150) {
+        cases.push({
+            id: 'cya_mid',
+            testName: 'Cyanuric Acid',
+            value: cya,
+            treatMessage:
+                'Cyanuric acid is high. Remove cyanuric acid to bring it back into range, then retest.',
+        });
+    }
+    if (cya && Number(cya) >= 150) {
+        cases.push({
+            id: 'cya_very_high',
+            testName: 'Cyanuric Acid',
+            value: cya,
+            treatMessage:
+                'Cyanuric acid is too high. Remove cyanuric acid first — chlorine will not sanitize well until CYA is back in range.',
+        });
+    }
+    if (salt && ['low', 'very_low'].includes(getReadingStatus('Salt', salt))) {
+        cases.push({
+            id: 'salt_low',
+            testName: 'Salt',
+            value: salt,
+            treatMessage: 'Salt is low. Add salt to bring it back into range, then retest.',
+        });
+    }
+    if (salt && Number(salt) >= 4501 && Number(salt) <= 5999) {
+        cases.push({
+            id: 'salt_high',
+            testName: 'Salt',
+            value: salt,
+            treatMessage: 'Salt is too high. Remove salt to bring it back into range, then retest.',
+        });
+    }
+    if (salt && Number(salt) >= 6000) {
+        cases.push({
+            id: 'salt_very_high',
+            testName: 'Salt',
+            value: salt,
+            treatMessage:
+                'Salt is too high. Remove salt first — chlorine will not sanitize well until salt is back in range.',
+        });
+    }
+    if (
+        combinedChlorine &&
+        ['high', 'very_high'].includes(getReadingStatus('Combined Chlorine', combinedChlorine))
+    ) {
+        cases.push({
+            id: 'cc_high',
+            testName: 'Combined Chlorine',
+            value: combinedChlorine,
+            treatMessage: 'Combined chlorine is high. Bring it back into range, then retest.',
+        });
+    }
+
+    const firstId = pickFirstCase(new Set(cases.map((item) => item.id)));
+    if (!firstId) return [];
+
+    const first = cases.find((item) => item.id === firstId);
+    if (!first) return [];
+
+    const rest = cases
+        .filter((item) => item.id !== firstId)
+        .sort(
+            (a, b) => CASE_DISPLAY_ORDER.indexOf(a.id) - CASE_DISPLAY_ORDER.indexOf(b.id),
+        );
+
+    return [
+        {
+            testName: first.testName,
+            value: first.value,
+            actionable: true,
+            message: first.treatMessage,
+        },
+        ...rest.map((item) => ({
+            testName: item.testName,
+            value: item.value,
+            actionable: false,
+            message: PRIOR_TREATMENT_MESSAGE,
+        })),
+    ];
+}
+
+/*
+ * Nested else-if implementation — kept for reference, not called.
+ *
 export function getReadingsThatNeedTreatment(readings: LatestReading | null): TreatmentAlert[] {
     const alerts: TreatmentAlert[] = [];
 
@@ -429,3 +680,4 @@ export function getReadingsThatNeedTreatment(readings: LatestReading | null): Tr
     }
     return alerts;
 }
+*/
