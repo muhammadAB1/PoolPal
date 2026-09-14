@@ -11,6 +11,7 @@ export type Profile = {
     country: Country
     language: Language
     measurement: Measurement
+    name: string
     created_at?: string
     updated_at?: string
 }

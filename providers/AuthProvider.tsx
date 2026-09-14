@@ -19,6 +19,7 @@ type AuthContextValue = {
   measurement: Measurement;
   country: Country | null;
   language: Language | null;
+  name: string | null;
   /** Re-fetches the signed-in user's profile row (call after writing prefs). */
   refreshProfile: () => Promise<void>;
 };
@@ -33,10 +34,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [measurement, setMeasurement] = useState<Measurement>('us');
   const [country, setCountry] = useState<Country | null>(null);
   const [language, setLanguage] = useState<Language | null>(null);
+  const [name, setName] = useState<string | null>(null);
 
   async function loadProfile(userId: string) {
     const { data, error } = await supabase
-      .from('profile')
+      .from('profiles')
       .select('*')
       .eq('id', userId)
       .single();
@@ -46,6 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setCountry(null);
       setLanguage(null);
       setMeasurement('us');
+      setName(null);
       return;
     }
 
@@ -54,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setCountry(profile.country ?? null);
     setLanguage(profile.language ?? null);
     setMeasurement(profile.measurement ?? 'us');
-
+    setName(profile.name ?? null);
     if (profile.language === 'en' || profile.language === 'es') {
       setAppLanguage(profile.language);
     }
@@ -65,6 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setCountry(null);
     setLanguage(null);
     setMeasurement('us');
+    setName(null);
   }
 
   useEffect(() => {
@@ -100,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, accessToken, plan, loading, setUser, measurement, country, language, refreshProfile }}
+      value={{ user, accessToken, plan, loading, setUser, measurement, country, language, name, refreshProfile }}
     >
       {children}
     </AuthContext.Provider>

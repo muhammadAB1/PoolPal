@@ -532,6 +532,13 @@ export const en = {
   dashboard_next_step_use_caution: 'Review your latest water results before swimming.',
   dashboard_next_step_safe_after_circulation:
     'Your water is on track. Give the pool time to circulate before swimming.',
+  dashboard_next_step_swim_cta: 'View Latest Readings',
+  dashboard_next_step_setup_title: 'Finish your pool profile',
+  dashboard_next_step_setup_cta: 'Continue Setup',
+  dashboard_next_step_checklist_title: "This week's next task",
+  dashboard_next_step_checklist_cta: 'Open Checklist',
+  dashboard_next_step_all_caught_up_title: "You're all caught up!",
+  dashboard_next_step_all_caught_up_desc: 'Check back after your next test or task.',
   dashboard_checklist_title: 'Weekly Care Checklist',
   dashboard_checklist_progress: '{{completed}} of {{total}} complete',
   dashboard_readings_title: 'Latest Readings',
@@ -542,6 +549,15 @@ export const en = {
   dashboard_upload_photo_desc: 'Track progress and get better guidance',
   dashboard_solve_problems_title: 'Solve Visible Problems',
   dashboard_solve_problems_desc: 'Troubleshoot common pool problems like cloudy, green, foamy, or stained water.',
+
+  // account
+  account_title: 'Account',
+  account_plan_label: 'Plan',
+  account_logout: 'Log Out',
+  account_logout_confirm_title: 'Log out?',
+  account_logout_confirm_desc: "You'll need to sign in again to access your pool.",
+  account_logout_cancel: 'Cancel',
+
   problems_step: 'Step {{n}}',
   problems_continue: 'Continue',
   problems_more_signs_title: 'What else are you noticing?',
@@ -1492,6 +1508,13 @@ export const es = {
   dashboard_next_step_use_caution: 'Revisa los últimos resultados del agua antes de nadar.',
   dashboard_next_step_safe_after_circulation:
     'El agua va bien. Deja que la piscina circule antes de nadar.',
+  dashboard_next_step_swim_cta: 'Ver últimos valores',
+  dashboard_next_step_setup_title: 'Completa tu perfil de piscina',
+  dashboard_next_step_setup_cta: 'Continuar configuración',
+  dashboard_next_step_checklist_title: 'Tu próxima tarea de la semana',
+  dashboard_next_step_checklist_cta: 'Abrir checklist',
+  dashboard_next_step_all_caught_up_title: '¡Estás al día!',
+  dashboard_next_step_all_caught_up_desc: 'Vuelve después de tu próxima prueba o tarea.',
   dashboard_checklist_title: 'Checklist semanal de cuidado',
   dashboard_checklist_progress: '{{completed}} de {{total}} completados',
   dashboard_readings_title: 'Últimos valores',
@@ -1503,6 +1526,15 @@ export const es = {
   dashboard_solve_problems_title: 'Resolver problemas visibles',
   dashboard_solve_problems_desc:
     'Soluciona problemas comunes como agua turbia, verde, espumosa o manchada.',
+
+  // cuenta
+  account_title: 'Cuenta',
+  account_plan_label: 'Plan',
+  account_logout: 'Cerrar sesión',
+  account_logout_confirm_title: '¿Cerrar sesión?',
+  account_logout_confirm_desc: 'Tendrás que iniciar sesión de nuevo para acceder a tu piscina.',
+  account_logout_cancel: 'Cancelar',
+
   problems_step: 'Paso {{n}}',
   problems_continue: 'Continuar',
   problems_more_signs_title: '¿Qué más estás notando?',
