@@ -15,6 +15,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -72,10 +73,15 @@ export function TestStripProvider({ children }: { children: ReactNode }) {
   const [latestReading, setLatestReading] = useState<LatestReading | null>(null);
   const [allReadings, setAllReadings] = useState<TestReadingRow[]>([]);
   const [saveCount, setSaveCount] = useState(0);
+  const readingsByPoolRef = useRef<Record<string, { rows: TestReadingRow[]; latest: LatestReading | null }>>({});
+  const invalidatePoolIdRef = useRef<string | null>(null);
+  const poolIdRef = useRef(poolId);
+  poolIdRef.current = poolId;
 
   const bumpSaveCount = useCallback(() => {
+    invalidatePoolIdRef.current = poolId;
     setSaveCount((count) => count + 1);
-  }, []);
+  }, [poolId]);
 
   const refreshCustomStrips = useCallback(async () => {
     if (authLoading || poolLoading) return;
@@ -102,28 +108,40 @@ export function TestStripProvider({ children }: { children: ReactNode }) {
 
     if (!user || !poolId) {
       setLatestReading(null);
+      setAllReadings([]);
+      if (!user) readingsByPoolRef.current = {};
+      return;
+    }
+
+    const requestedId = poolId;
+    const cached = readingsByPoolRef.current[requestedId];
+    const readingsChanged = invalidatePoolIdRef.current === requestedId;
+    if (cached && !readingsChanged) {
+      setAllReadings(cached.rows);
+      setLatestReading(cached.latest);
       return;
     }
 
     void supabase
       .from('test_reading')
       .select('*')
-      .eq('pool_id', poolId)
+      .eq('pool_id', requestedId)
       .order('created_at', { ascending: false })
       .then(({ data }) => {
-        if (!data) {
-          setLatestReading(null);
-          return;
-        }
-
-        setAllReadings(data as TestReadingRow[]);
-
-        setLatestReading({
-          selections: data[0] ? testReadingRowToSelections(data[0]) : {},
-          poolStatus: data[0] ? data[0].pool_status ?? null : null,
-          swimmingStatus: data[0] ? data[0].swimming_status ?? null : null,
-          createdAt: data[0] ? data[0].created_at ?? null : null,
-        });
+        const rows = (data ?? []) as TestReadingRow[];
+        const latest = rows[0]
+          ? {
+              selections: testReadingRowToSelections(rows[0]),
+              poolStatus: rows[0].pool_status ?? null,
+              swimmingStatus: rows[0].swimming_status ?? null,
+              createdAt: rows[0].created_at ?? null,
+            }
+          : null;
+        readingsByPoolRef.current[requestedId] = { rows, latest };
+        if (invalidatePoolIdRef.current === requestedId) invalidatePoolIdRef.current = null;
+        if (poolIdRef.current !== requestedId) return;
+        setAllReadings(rows);
+        setLatestReading(latest);
       });
   }, [authLoading, poolLoading, user, poolId, saveCount]);
 

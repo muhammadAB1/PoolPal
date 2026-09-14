@@ -870,6 +870,8 @@ export const en = {
   // pool tab
   pool_tab_title: 'My Pool Profile',
   pool_tab_subtitle: 'Everything PoolWise knows about your pool.',
+  pool_tab_your_pools: 'Your Pools',
+  pool_tab_switch_pool_hint: 'Tap a pool to switch',
   pool_tab_basics: 'Pool Basics',
   pool_tab_basics_subtitle: 'Backyard Pool \u2022 Not sure \u2022 Screened \u2022 Family use',
   pool_tab_size: 'Size',
@@ -1849,6 +1851,8 @@ export const es = {
   // pool tab
   pool_tab_title: 'Mi perfil de piscina',
   pool_tab_subtitle: 'Todo lo que PoolWise sabe de tu piscina.',
+  pool_tab_your_pools: 'Tus piscinas',
+  pool_tab_switch_pool_hint: 'Toca una piscina para cambiar',
   pool_tab_basics: 'Datos de la piscina',
   pool_tab_size: 'Tamaño',
   pool_tab_equipment: 'Equipo',

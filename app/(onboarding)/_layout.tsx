@@ -46,14 +46,18 @@ export default function OnboardingLayout() {
   const router = useRouter();
   const { user, loading } = useAuth();
   const { poolId, loading: poolLoading, refreshPools } = usePool();
-  const { resume } = useGlobalSearchParams<{ resume?: string }>();
+  const { resume, newPool } = useGlobalSearchParams<{ resume?: string; newPool?: string }>();
 
   // Once a user enters via the dashboard's "resume" link, keep letting them
   // move between onboarding steps for the rest of this session, even though
   // internal navigation won't keep re-sending the `resume` param on every screen.
   const resumingRef = useRef(false);
+  const newPoolRef = useRef(false);
   if (resume === '1') {
     resumingRef.current = true;
+  }
+  if (newPool === '1') {
+    newPoolRef.current = true;
   }
 
   if (loading || poolLoading) {
@@ -70,7 +74,7 @@ export default function OnboardingLayout() {
     return <Redirect href="/" />;
   }
 
-  if (poolId && !resumingRef.current) {
+  if (poolId && !resumingRef.current && !newPoolRef.current) {
     return <Redirect href="/(tabs)/dashboard" />;
   }
 

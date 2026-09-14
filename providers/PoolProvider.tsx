@@ -21,9 +21,11 @@ type PoolContextValue = {
   poolId: string | null;
   setPoolId: (poolId: string | null) => void;
   pools: Pool | null;
+  allPools: Pool[];
   loading: boolean;
   error: Error | null;
   refreshPools: (options?: RefreshPoolsOptions) => Promise<void>;
+  switchPool: (id: string) => Promise<void>;
   /** Silent flag — does not re-render. Call after a successful pool write. */
   markPoolsStale: () => void;
   /** Refreshes only if markPoolsStale was called since the last refresh. */
@@ -36,10 +38,12 @@ export function PoolProvider({ children }: { children: ReactNode }) {
   const { user, loading: authLoading } = useAuth();
   const [poolId, setPoolId] = useState<string | null>(null);
   const [pools, setPools] = useState<Pool | null>(null);
+  const [allPools, setAllPools] = useState<Pool[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   // Ref (not state): marking stale must not re-render or set poolId during onboarding.
   const poolsStaleRef = useRef(false);
+  const allPoolsRef = useRef<Pool[]>([]);
 
   const markPoolsStale = useCallback(() => {
     poolsStaleRef.current = true;
@@ -55,49 +59,46 @@ export function PoolProvider({ children }: { children: ReactNode }) {
 
     if (!user) {
       setPools(null);
+      setAllPools([]);
+      allPoolsRef.current = [];
       setPoolId(null);
       setLoading(false);
       await AsyncStorage.removeItem('activePoolId');
       return;
     }
 
-    const activePoolId = await AsyncStorage.getItem('activePoolId');
-    if (activePoolId) {
-      setPoolId(activePoolId);
-      const activePool = await supabase
-        .from('pools')
-        .select('*')
-        .eq('id', activePoolId)
-        .single();
-      const userPools = activePool.data ?? null;
-      setPools(userPools);
+    const { data: list, error: fetchError } = await supabase
+      .from('pools')
+      .select('*')
+      .eq('owner_user_id', user.id)
+      .order('created_at', { ascending: true });
 
-      if (activePool.error) {
-        setError(activePool.error);
-      }
-    } else {
-      const { data, error: fetchError } = await supabase
-        .from('pools')
-        .select('*')
-        .eq('owner_user_id', user?.id ?? '')
-        .single();
+    if (fetchError) {
+      setError(fetchError);
+      setAllPools([]);
+      allPoolsRef.current = [];
+      setPools(null);
+      setPoolId(null);
+      setLoading(false);
+      return;
+    }
 
-      if (fetchError) {
-        setError(fetchError);
-        setPools(null);
-        setPoolId(null);
+    const poolsList = list ?? [];
+    allPoolsRef.current = poolsList;
+    setAllPools(poolsList);
+
+    let activeId = await AsyncStorage.getItem('activePoolId');
+    if (!activeId || !poolsList.some((pool) => pool.id === activeId)) {
+      activeId = poolsList[0]?.id ?? null;
+      if (activeId) {
+        await AsyncStorage.setItem('activePoolId', activeId);
       } else {
-        const userPools = data ?? null;
-        setPools(userPools);
-
-        const resolvedId = userPools?.id ?? null;
-        setPoolId(resolvedId);
-
-        if (resolvedId) {
-          await AsyncStorage.setItem('activePoolId', resolvedId);
-        }
+        await AsyncStorage.removeItem('activePoolId');
       }
     }
+
+    setPoolId(activeId);
+    setPools(poolsList.find((pool) => pool.id === activeId) ?? null);
     setLoading(false);
   }, [user, authLoading]);
 
@@ -110,6 +111,14 @@ export function PoolProvider({ children }: { children: ReactNode }) {
     [refreshPools],
   );
 
+  const switchPool = useCallback(async (id: string) => {
+    const next = allPoolsRef.current.find((pool) => pool.id === id);
+    if (!next) return;
+    await AsyncStorage.setItem('activePoolId', id);
+    setPoolId(id);
+    setPools(next);
+  }, []);
+
   useEffect(() => {
     refreshPools();
   }, [refreshPools]);
@@ -120,9 +129,11 @@ export function PoolProvider({ children }: { children: ReactNode }) {
         poolId,
         setPoolId,
         pools,
+        allPools,
         loading,
         error,
         refreshPools,
+        switchPool,
         markPoolsStale,
         refreshPoolsIfStale,
       }}
