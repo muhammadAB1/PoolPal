@@ -115,6 +115,28 @@ export default function PoolScreen() {
             <MaterialCommunityIcons name="chevron-right" size={22} color={colors.text.faint} />
           </TouchableOpacity>
         ))}
+
+        <TouchableOpacity
+          className="card flex-row items-center px-4 py-3.5 mt-1"
+          style={shadow.card}
+          activeOpacity={0.7}
+        >
+          <View className="w-11 h-11 rounded-full bg-brand-blue items-center justify-center">
+            <MaterialCommunityIcons name="plus" size={22} color={colors.surface.white} />
+          </View>
+          <View className="flex-1 ml-3 mr-2">
+            <Text className="text-body-lg font-jakarta-bold text-brand-navy">
+              {t('pool_basics_review_add_pool')}
+            </Text>
+            <Text className="text-small font-jakarta text-sub mt-0.5">
+              {t('pool_basics_review_add_pool_desc')}
+            </Text>
+          </View>
+          <Text className="text-body font-jakarta-bold text-brand-blue mr-1">
+            {t('pool_basics_review_add_pool_price')}
+          </Text>
+          <MaterialCommunityIcons name="chevron-right" size={22} color={colors.text.faint} />
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
