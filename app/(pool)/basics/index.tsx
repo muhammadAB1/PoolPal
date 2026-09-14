@@ -4,7 +4,7 @@ import { poolTabImages } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
 import { usePool } from '@/providers/PoolProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { Href, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
@@ -216,6 +216,7 @@ export default function PoolBasicsScreen() {
             className="card mt-4 p-3.5 flex-row items-center"
             style={shadow.card}
             activeOpacity={0.7}
+            onPress={() => router.push({ pathname: '/(onboarding)/pool-basics', params: { newPool: '1' } } as Href)}
           >
             <View className="w-10 h-10 rounded-full bg-brand-blue items-center justify-center">
               <MaterialCommunityIcons name="plus" size={22} color={colors.surface.white} />

@@ -106,10 +106,10 @@ export function useSupabase() {
 
     }
 
-    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub, spaAttachment, usageFrequency, numberOfUsers, markStale = true }:
-        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType, spaAttachment?: SpaAttachmentType, usageFrequency?: UsageFrequency, numberOfUsers?: NumberOfPoolUsers, markStale?: boolean }) {
+    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub, spaAttachment, usageFrequency, numberOfUsers, markStale = true, forceCreate = false }:
+        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType, spaAttachment?: SpaAttachmentType, usageFrequency?: UsageFrequency, numberOfUsers?: NumberOfPoolUsers, markStale?: boolean, forceCreate?: boolean }) {
 
-        const id = await AsyncStorage.getItem('activePoolId');
+        const id = forceCreate ? null : await AsyncStorage.getItem('activePoolId');
         const poolBasics = {
             pool_name: poolName,
             pool_type: poolType ?? null,

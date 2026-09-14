@@ -2,6 +2,7 @@ import { icons, poolBasicsImages } from '@/constants/images';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { HotTubType, NumberOfPoolUsers, PoolType, ScreenedType, SpaAttachmentType, UsageFrequency, UseType } from '@/lib/types';
+import { usePool } from '@/providers/PoolProvider';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -51,10 +52,12 @@ export default function PoolBasicsScreen({
 }: PoolBasicsScreenProps = {}) {
     const router = useRouter();
     const { t } = useTranslation();
-    const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
+    const { resume, remaining, newPool } = useLocalSearchParams<{ resume?: string; remaining?: string; newPool?: string }>();
     const isResuming = resume === '1';
+    const isNewPool = newPool === '1';
     const remainingSteps = parseRemainingSteps(remaining);
     const isEmbedded = Boolean(onSuccess);
+    const createdNewPool = useRef(false);
 
     const [poolName, setPoolName] = useState(initialPoolBasics?.poolName ?? '');
     const [poolType, setPoolType] = useState<PoolType | undefined>(initialPoolBasics?.poolType);
@@ -69,6 +72,7 @@ export default function PoolBasicsScreen({
     const ScrollViewRef = useRef<ScrollView>(null)
 
     const { poolBasicInsert } = useSupabase();
+    const { refreshPools } = usePool();
 
     async function handleContinue() {
         setErrorMessage(null);
@@ -93,10 +97,15 @@ export default function PoolBasicsScreen({
             usageFrequency,
             numberOfUsers: numberOfPoolUsers,
             markStale,
+            forceCreate: isNewPool && !createdNewPool.current,
         });
         if (error) {
             setErrorMessage(error.message);
             return;
+        }
+        if (isNewPool) {
+            createdNewPool.current = true;
+            await refreshPools({ silent: true });
         }
 
         if (onSuccess) {
@@ -450,7 +459,7 @@ export default function PoolBasicsScreen({
                         {t('pool_basics_continue')}
                     </Text>
                 </TouchableOpacity>
-                {showSkip ? (
+                {showSkip && !isNewPool ? (
                     <TouchableOpacity
                         className="items-center justify-center mt-3.5 py-1"
                         onPress={handleSkipForNow}
