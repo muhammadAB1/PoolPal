@@ -26,9 +26,8 @@ export function useSupabase() {
     const { markPoolsStale } = usePool();
 
     async function signInWithOAuth(
-
-        { provider, country, language, measurement }:
-            { provider: "google" | "apple", country?: string, language?: string, measurement?: string }): Promise<OAuthResult> {
+        { provider }:
+            { provider: "google" | "apple" }): Promise<OAuthResult> {
 
         const redirectTo = Linking.createURL("/")
         const { data, error } = await supabase.auth.signInWithOAuth({
@@ -74,29 +73,83 @@ export function useSupabase() {
         if (sessionError || !sessionData.session) {
             return { data: null, redirectTo: null, error: sessionError }
         }
+
         const isNewUser = await AsyncStorage.getItem('activePoolId') ? false : true;
-
-        if (isNewUser && (country || language || measurement)) {
-            const { error: updateError } = await supabase
-                .from('profile')
-                .update({
-                    country,
-                    language,
-                    measurement,
-                })
-                .eq('id', sessionData.session.user.id)
-
-            if (updateError) {
-                return { data: sessionData, redirectTo: null, error: updateError }
-            }
-
-            await refreshProfile()
-        }
-
         const postAuthRoute = isNewUser ? '/(onboarding)/pool-basics' : '/(tabs)/dashboard'
-        console.log(postAuthRoute)
 
         return { data: sessionData, redirectTo: postAuthRoute, error: null }
+    }
+
+    async function signUpWithEmail(
+        firstName: string,
+        email: string,
+        password: string,
+    ): Promise<OAuthResult> {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    first_name: firstName,
+                },
+            },
+        })
+
+        await AsyncStorage.removeItem('activePoolId')
+        setUser(data.session?.user || null)
+
+        if (error || !data.session) {
+            return { data: null, redirectTo: null, error }
+        }
+
+        const isNewUser = await AsyncStorage.getItem('activePoolId') ? false : true;
+        const postAuthRoute = isNewUser ? '/(onboarding)/pool-basics' : '/(tabs)/dashboard'
+
+        return { data: { session: data.session }, redirectTo: postAuthRoute, error: null }
+    }
+
+    async function signInWithEmail(
+        email: string,
+        password: string,
+    ): Promise<OAuthResult> {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        })
+
+        await AsyncStorage.removeItem('activePoolId')
+        setUser(data.session?.user || null)
+
+        if (error || !data.session) {
+            return { data: null, redirectTo: null, error }
+        }
+
+        const isNewUser = await AsyncStorage.getItem('activePoolId') ? false : true;
+        const postAuthRoute = isNewUser ? '/(onboarding)/pool-basics' : '/(tabs)/dashboard'
+
+        return { data: { session: data.session }, redirectTo: postAuthRoute, error: null }
+    }
+
+    async function saveAccountBasics({
+        country,
+        language,
+        measurement,
+    }: {
+        country: string
+        language: string
+        measurement: string
+    }) {
+        const { data, error } = await supabase
+            .from('profiles')
+            .update({
+                country,
+                language,
+                measurement,
+            })
+            .eq('id', user?.id)
+
+        if (!error) await refreshProfile()
+        return { data, error }
     }
 
     async function logout() {
@@ -306,7 +359,10 @@ export function useSupabase() {
         }
     }
     return {
-        signInWithGoogle: (country?: string, language?: string, measurement?: string) => signInWithOAuth({ provider: "google", country, language, measurement }),
+        signInWithGoogle: () => signInWithOAuth({ provider: "google" }),
+        signUpWithEmail,
+        signInWithEmail,
+        saveAccountBasics,
         logout,
         poolBasicInsert,
         poolBasicUpdate,

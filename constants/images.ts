@@ -17,6 +17,18 @@ import testKitCardGraphic from '../assets/graphics/test_kit_card_graphic.png';
 import checklistSuccess from '../assets/graphics/checklist_success.png';
 import completionRing from '../assets/graphics/completion_ring.png';
 import emptyStatePool from '../assets/graphics/empty_state_pool.png';
+import poolTonicWelcomeBackground from '../assets/welcome/pooltonic_home_image.png';
+import poolTonicGradient from '../assets/welcome/pooltonic_gradient.png';
+import poolTonicButtonGradient from '../assets/welcome/pooltonic_button_gradient.png';
+import poolTonicLogo from '../assets/welcome/pooltonic_logo.png';
+import poolTonicFeatureTest from '../assets/welcome/pooltonic_feature_test.png';
+import poolTonicFeatureFix from '../assets/welcome/pooltonic_feature_fix.png';
+import poolTonicFeatureEnjoy from '../assets/welcome/pooltonic_feature_enjoy.png';
+import poolTonicRemedy from '../assets/welcome/pooltonic_pool_remedy.png';
+import poolTonicTrustShield from '../assets/welcome/pooltonic_trust_shield.png';
+import poolTonicStars from '../assets/welcome/pooltonic_stars.png';
+import poolTonicWave from '../assets/welcome/pooltonic_wave.png';
+import poolTonicLogoFullLight from '../assets/pooltonic-ui/pooltonic-logo-full-light.png';
 
 // ─── Icons (1x) ──────────────────────────────────────────────────────────────
 
@@ -172,6 +184,21 @@ export const graphics = {
     checklistSuccess,
     completionRing,
     emptyStatePool,
+    poolTonicWelcomeBackground,
+    poolTonicGradient,
+    poolTonicButtonGradient,
+    poolTonicLogo,
+    poolTonicFeatureTest,
+    poolTonicFeatureFix,
+    poolTonicFeatureEnjoy,
+    poolTonicRemedy,
+    poolTonicTrustShield,
+    poolTonicStars,
+    poolTonicWave,
+} as const;
+
+export const brandAssets = {
+    logoFull: poolTonicLogoFullLight,
 } as const;
 
 export const icons = {

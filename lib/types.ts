@@ -1,6 +1,6 @@
 import type { OverallStatus, SwimmingStatus } from '@/data/readingBands'
 
-export type Country = 'us' | 'es';
+export type Country = string;
 export type Language = 'en' | 'es';
 export type Measurement = 'us' | 'metric';
 
