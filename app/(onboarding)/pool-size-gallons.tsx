@@ -1,5 +1,4 @@
 import { icons, poolSizeGraphics } from '@/constants/images';
-import { colors } from '@/constants/theme';
 import {
     depthsFromProfile,
     POOL_DEPTH_PROFILES,
@@ -10,34 +9,57 @@ import {
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type {
+    FreeformSection,
     MeasurementMethod,
     MeasurementUnit,
     PoolDepthProfile,
     PoolShape,
 } from '@/lib/types';
 import { useAuth } from '@/providers/AuthProvider';
-import { Ionicons } from '@expo/vector-icons';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Image,
+    type ImageSourcePropType,
     ScrollView,
+    StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { Path } from 'react-native-svg';
+
+const US_GALLONS_PER_CUBIC_FOOT = 7.48052;
+const LITERS_PER_CUBIC_METER = 1000;
+const LITERS_PER_US_GALLON = 3.785411784;
+const MAX_FREEFORM_SECTIONS = 6;
+
+const POOL_SHAPE_IMAGES: Record<PoolShape, ImageSourcePropType> = {
+    Rectangle: poolSizeGraphics.shapeRectangle,
+    Round: poolSizeGraphics.shapeRound,
+    Oval: poolSizeGraphics.shapeOval,
+    Freeform: poolSizeGraphics.shapeFreeform,
+    Kidney: poolSizeGraphics.shapeFreeform,
+};
+
+type EditableSection = {
+    id: string;
+    length: string;
+    averageWidth: string;
+    shallowDepth: string;
+    deepDepth: string;
+};
 
 type PoolSizeFields = {
     units?: MeasurementUnit;
-    length?: number;
-    width?: number;
-    shallowDepth?: number;
-    deepDepth?: number;
-    shape?: PoolShape;
+    length?: number | null;
+    width?: number | null;
+    shallowDepth?: number | null;
+    deepDepth?: number | null;
+    shape?: PoolShape | null;
+    freeformSections?: FreeformSection[] | null;
 };
 
 type PoolSizeGallonsScreenProps = {
@@ -56,6 +78,53 @@ type PoolSizeGallonsScreenProps = {
     markStale?: boolean;
 };
 
+function numeric(value: string) {
+    const n = Number.parseFloat(value);
+    return Number.isFinite(n) && n > 0 ? n : null;
+}
+
+function toCanonicalVolumes(nativeVolume: number, unit: MeasurementUnit) {
+    if (unit === 'us') return { gallons: nativeVolume, liters: nativeVolume * LITERS_PER_US_GALLON };
+    return { liters: nativeVolume, gallons: nativeVolume / LITERS_PER_US_GALLON };
+}
+
+function shapeVolume(
+    shape: Exclude<PoolShape, 'Freeform' | 'Kidney'>,
+    length: number,
+    width: number,
+    shallow: number,
+    deep: number,
+    unit: MeasurementUnit,
+) {
+    const avgDepth = (shallow + deep) / 2;
+    const cubic =
+        shape === 'Round'
+            ? Math.PI * Math.pow(length / 2, 2) * avgDepth
+            : shape === 'Oval'
+                ? Math.PI * (length / 2) * (width / 2) * avgDepth
+                : length * width * avgDepth;
+    return cubic * (unit === 'us' ? US_GALLONS_PER_CUBIC_FOOT : LITERS_PER_CUBIC_METER);
+}
+
+function sectionVolume(section: EditableSection, unit: MeasurementUnit) {
+    const length = numeric(section.length);
+    const width = numeric(section.averageWidth);
+    const shallow = numeric(section.shallowDepth);
+    const deep = numeric(section.deepDepth);
+    if (length == null || width == null || shallow == null || deep == null) return null;
+    return length * width * ((shallow + deep) / 2) * (unit === 'us' ? US_GALLONS_PER_CUBIC_FOOT : LITERS_PER_CUBIC_METER);
+}
+
+function newSection(index: number): EditableSection {
+    return {
+        id: `section-${index}-${Date.now()}`,
+        length: '',
+        averageWidth: '',
+        shallowDepth: '',
+        deepDepth: '',
+    };
+}
+
 export default function PoolSizeGallonsScreen({
     initialPoolSize,
     showSkip = true,
@@ -65,84 +134,61 @@ export default function PoolSizeGallonsScreen({
     const router = useRouter();
     const { t, i18n } = useTranslation();
     const { measurement } = useAuth();
-    const { poolSizeInsert } = useSupabase();
+    const { poolSizeInsert, updateMeasurementPreference } = useSupabase();
     const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
     const isResuming = resume === '1';
     const remainingSteps = parseRemainingSteps(remaining);
     const isEmbedded = Boolean(onSuccess);
+    const initialShape = initialPoolSize?.shape === 'Kidney' ? 'Freeform' : initialPoolSize?.shape ?? 'Rectangle';
+
     const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('Known');
     const [units, setUnits] = useState<MeasurementUnit>(initialPoolSize?.units ?? (measurement || 'us'));
     const [length, setLength] = useState<string>(initialPoolSize?.length != null ? String(initialPoolSize.length) : '');
     const [width, setWidth] = useState<string>(initialPoolSize?.width != null ? String(initialPoolSize.width) : '');
-    const [shallowDepth, setShallowDepth] = useState<string>(initialPoolSize?.shallowDepth != null ? String(initialPoolSize.shallowDepth) : '');
-    const [deepDepth, setDeepDepth] = useState<string>(initialPoolSize?.deepDepth != null ? String(initialPoolSize.deepDepth) : '');
-    const [shape, setShape] = useState<PoolShape>(initialPoolSize?.shape ?? 'Rectangle');
+    const [shallowDepth, setShallowDepth] = useState<string>(
+        initialPoolSize?.shallowDepth != null ? String(initialPoolSize.shallowDepth) : '',
+    );
+    const [deepDepth, setDeepDepth] = useState<string>(
+        initialPoolSize?.deepDepth != null ? String(initialPoolSize.deepDepth) : '',
+    );
+    const [shape, setShape] = useState<PoolShape>(initialShape);
     const [depthProfile, setDepthProfile] = useState<PoolDepthProfile>('ShallowDeep');
+    const [sections, setSections] = useState<EditableSection[]>(() => {
+        if (initialPoolSize?.freeformSections?.length) {
+            return initialPoolSize.freeformSections.map((section, index) => ({
+                id: section.id || `section-${index + 1}`,
+                length: section.length?.toString() ?? '',
+                averageWidth: section.averageWidth?.toString() ?? '',
+                shallowDepth: section.shallowDepth?.toString() ?? '',
+                deepDepth: section.deepDepth?.toString() ?? '',
+            }));
+        }
+        return [newSection(1)];
+    });
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const isEstimate = measurementMethod === 'Estimate';
-    const canUploadPhoto = measurementMethod === 'Estimate';
-    const distanceSuffix = units === 'us'
-        ? t('pool_size_unit_suffix_ft')
-        : t('pool_size_unit_suffix_m');
-    const volumeSuffix = units === 'us'
-        ? t('pool_size_unit_gal')
-        : t('pool_size_unit_liters');
-
-    const estimatedVolume = useMemo(() => {
-        const numericLength = parseFloat(length) || 0;
-        const numericWidth = parseFloat(width) || 0;
-        const numericShallowDepth = parseFloat(shallowDepth) || 0;
-        const numericDeepDepth = parseFloat(deepDepth) || 0;
-        const averageDepth = (numericShallowDepth + numericDeepDepth) / 2;
-
-        let volume = 0;
-
-        switch (shape) {
-            case 'Rectangle':
-                if (units === 'us') {
-                    volume = numericLength * numericWidth * averageDepth * 7.48052;
-                } else {
-                    volume = numericLength * numericWidth * averageDepth * 1000;
-                }
-                break;
-            case 'Round':
-                if (units === 'us') {
-                    volume = Math.PI * Math.pow(numericLength / 2, 2) * averageDepth * 7.48052;
-                } else {
-                    volume = Math.PI * Math.pow(numericLength / 2, 2) * averageDepth * 1000;
-                }
-                break;
-            case 'Oval':
-                if (units === 'us') {
-                    volume = numericLength * numericWidth * averageDepth * 5.875;
-                } else {
-                    volume = numericLength * numericWidth * averageDepth * 0.7854 * 1000;
-                }
-                break;
-            case 'Kidney':
-                if (units === 'us') {
-                    volume = numericLength * numericWidth * averageDepth * 0.80 * 7.4850;
-                } else {
-                    volume = numericLength * numericWidth * averageDepth * 0.80 * 1000;
-                }
-                break;
-            default:
-                // Freeform — formula TBD
-                break;
+    const isFreeform = shape === 'Freeform' || shape === 'Kidney';
+    const nativeVolume = useMemo(() => {
+        if (isFreeform) {
+            const volumes = sections.map((section) => sectionVolume(section, units));
+            if (volumes.some((value) => value == null)) return null;
+            return volumes.reduce<number>((sum, value) => sum + (value ?? 0), 0);
         }
-
-        return Math.round(volume);
-    }, [length, width, shallowDepth, deepDepth, shape, units]);
-
-    const formattedEstimatedVolume = estimatedVolume.toLocaleString(
-        i18n.language === 'es' ? 'es-ES' : 'en-US'
-    );
-
-    const subtitle = isEstimate
-        ? t('pool_size_subtitle_estimate')
-        : t('pool_size_subtitle_known');
+        const numericLength = numeric(length);
+        const numericShallow = numeric(shallowDepth);
+        const numericDeep = numeric(deepDepth);
+        const numericWidth = shape === 'Round' ? numericLength : numeric(width);
+        if (numericLength == null || numericWidth == null || numericShallow == null || numericDeep == null) return null;
+        return shapeVolume(shape as 'Rectangle' | 'Round' | 'Oval', numericLength, numericWidth, numericShallow, numericDeep, units);
+    }, [isFreeform, sections, units, length, width, shallowDepth, deepDepth, shape]);
+    const volumes = nativeVolume == null ? null : toCanonicalVolumes(nativeVolume, units);
+    const primaryVolume = nativeVolume == null ? null : Math.round(nativeVolume);
+    const numberLocale = i18n.language.startsWith('es') ? 'es-ES' : 'en-US';
+    const distanceSuffix = units === 'us' ? t('pool_size_unit_suffix_ft') : t('pool_size_unit_suffix_m');
+    const volumeSuffix = units === 'us' ? t('pool_size_unit_gal') : t('pool_size_unit_liters');
+    const valid = nativeVolume != null && nativeVolume > 0;
+    const continueDisabled = !valid || isSubmitting;
 
     function handleMethodChange(method: MeasurementMethod) {
         setMeasurementMethod(method);
@@ -151,10 +197,7 @@ export default function PoolSizeGallonsScreen({
             setShallowDepth(defaults.shallowDepth);
             setDeepDepth(defaults.deepDepth);
         }
-        else {
-            setShallowDepth('');
-            setDeepDepth('');
-        }
+        setErrorMessage(null);
     }
 
     function handleDepthProfileChange(profile: PoolDepthProfile) {
@@ -164,43 +207,74 @@ export default function PoolSizeGallonsScreen({
         setDeepDepth(defaults.deepDepth);
     }
 
+    function updateSection(id: string, key: keyof Omit<EditableSection, 'id'>, value: string) {
+        setSections((current) => current.map((section) => (section.id === id ? { ...section, [key]: value } : section)));
+    }
+
+    function addSection() {
+        if (sections.length < MAX_FREEFORM_SECTIONS) {
+            setSections((current) => [...current, newSection(current.length + 1)]);
+        }
+    }
+
+    function removeSection(id: string) {
+        setSections((current) => (current.length <= 1 ? current : current.filter((section) => section.id !== id)));
+    }
+
+    function buildFreeformSections(): FreeformSection[] {
+        return sections.map((section, index) => {
+            const volume = sectionVolume(section, units);
+            const canonical = volume == null ? null : toCanonicalVolumes(volume, units);
+            return {
+                id: section.id,
+                index: index + 1,
+                length: numeric(section.length),
+                averageWidth: numeric(section.averageWidth),
+                shallowDepth: numeric(section.shallowDepth),
+                deepDepth: numeric(section.deepDepth),
+                measurementUnit: units,
+                volumeUsGallons: canonical?.gallons ?? null,
+                volumeLiters: canonical?.liters ?? null,
+            };
+        });
+    }
+
     async function handleContinue() {
         setErrorMessage(null);
 
-        const numericLength = parseFloat(length);
-        const numericWidth = parseFloat(width);
-        const numericShallowDepth = parseFloat(shallowDepth);
-        const numericDeepDepth = parseFloat(deepDepth);
-
-        if (
-            !length.trim() ||
-            !width.trim() ||
-            !shallowDepth.trim() ||
-            !deepDepth.trim() ||
-            Number.isNaN(numericLength) ||
-            Number.isNaN(numericWidth) ||
-            Number.isNaN(numericShallowDepth) ||
-            Number.isNaN(numericDeepDepth) ||
-            numericLength <= 0 ||
-            numericWidth <= 0 ||
-            numericShallowDepth <= 0 ||
-            numericDeepDepth <= 0
-        ) {
-            setErrorMessage(t('pool_basics_error'));
+        if (!valid || !volumes) {
+            setErrorMessage(t('pool_size_validation_dimensions'));
             return;
         }
 
         setIsSubmitting(true);
 
         try {
+            if (units !== measurement) {
+                const preferenceResult = await updateMeasurementPreference(units);
+                if (preferenceResult.error) {
+                    setErrorMessage(t('pool_size_validation_dimensions'));
+                    return;
+                }
+            }
+
+            const numericLength = numeric(length);
+            const numericWidth = shape === 'Round' ? numeric(length) : numeric(width);
+            const numericShallow = numeric(shallowDepth);
+            const numericDeep = numeric(deepDepth);
+
             const { error } = await poolSizeInsert({
                 props: {
-                    length: numericLength,
-                    width: numericWidth,
-                    shallowDepth: numericShallowDepth,
-                    deepDepth: numericDeepDepth,
-                    shape,
-                    gallons: estimatedVolume,
+                    length: isFreeform ? null : numericLength,
+                    width: isFreeform ? null : numericWidth,
+                    shallowDepth: isFreeform ? null : numericShallow,
+                    deepDepth: isFreeform ? null : numericDeep,
+                    shape: isFreeform ? 'Freeform' : shape,
+                    gallons: units === 'us' ? Math.round(nativeVolume!) : Math.round(volumes.gallons),
+                    volumeUsGallons: volumes.gallons,
+                    volumeLiters: volumes.liters,
+                    volumeSource: 'calculated',
+                    freeformSections: isFreeform ? buildFreeformSections() : [],
                     measurementUnit: units,
                 },
                 markStale,
@@ -219,7 +293,7 @@ export default function PoolSizeGallonsScreen({
             router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/equipment-basics' as Href));
         } catch (error) {
             setErrorMessage(
-                error instanceof Error ? error.message : t('pool_basics_error')
+                error instanceof Error ? error.message : t('pool_size_validation_dimensions'),
             );
         } finally {
             setIsSubmitting(false);
@@ -230,128 +304,223 @@ export default function PoolSizeGallonsScreen({
         router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/equipment-basics' as Href));
     }
 
-    const methodOptions: {
-        value: MeasurementMethod;
-        icon: keyof typeof Ionicons.glyphMap;
-        label: string;
-        description: string;
-    }[] = [
-            {
-                value: 'Known',
-                icon: 'resize-outline',
-                label: t('pool_size_option_yes_label'),
-                description: t('pool_size_option_yes_desc'),
-            },
-            {
-                value: 'Estimate',
-                icon: 'chatbubble-ellipses-outline',
-                label: t('pool_size_option_estimate_label'),
-                description: t('pool_size_option_estimate_desc'),
-            },
-        ];
-
-    const unitOptions: { value: MeasurementUnit; label: string }[] = [
-        { value: 'us', label: t('pool_size_units_us') },
-        { value: 'metric', label: t('pool_size_units_metric') },
-    ];
-
     const content = (
         <>
             <ScrollView
-                contentContainerStyle={{ flexGrow: 1, paddingBottom: 140 }}
+                style={{ flex: 1 }}
+                contentContainerStyle={{ paddingBottom: showSkip ? 168 : 124 }}
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
             >
-                <View className="flex-1 px-5 pt-2 -mt-6">
-                    <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-6">
-                        {t('pool_size_title')}
-                    </Text>
-                    <Text className="text-body font-jakarta text-sub mt-1">
-                        {subtitle}
+                <View style={styles.page}>
+                    <Text style={styles.h1}>{t('pool_size_title')}</Text>
+                    <Text style={styles.subtitle}>
+                        {t(measurementMethod === 'Estimate' ? 'pool_size_subtitle_estimate' : 'pool_size_subtitle_known')}
                     </Text>
 
-                    <View className="flex-row mt-5 gap-2.5">
-                        {methodOptions.map((item) => (
-                            <MethodCard
-                                key={item.value}
-                                icon={item.icon}
-                                label={item.label}
-                                description={item.description}
-                                selected={measurementMethod === item.value}
-                                onPress={() => handleMethodChange(item.value)}
-                            />
-                        ))}
-                    </View>
-
-                    <View className="flex-row items-center justify-center gap-1.5 mt-4">
-                        <Image
-                            source={poolSizeGraphics.reminderShield}
-                            className="w-4 h-4"
-                            resizeMode="contain"
+                    <View style={styles.methodRow}>
+                        <MethodCard
+                            image={poolSizeGraphics.measurementsKnown}
+                            title={t('pool_size_option_yes_label')}
+                            description={t('pool_size_option_yes_desc')}
+                            selected={measurementMethod === 'Known'}
+                            onPress={() => handleMethodChange('Known')}
                         />
-                        <Text className="text-tiny font-jakarta text-brand-blue">
-                            {t('pool_size_adjust_later_note')}
-                        </Text>
+                        <MethodCard
+                            image={poolSizeGraphics.helpEstimate}
+                            title={t('pool_size_option_estimate_label')}
+                            description={t('pool_size_option_estimate_desc')}
+                            selected={measurementMethod === 'Estimate'}
+                            onPress={() => handleMethodChange('Estimate')}
+                        />
                     </View>
 
-                    <View className="mt-5">
-                        <Text className="section__title">{t('pool_size_units_label')}</Text>
-                        <View className="flex-row bg-surface-bg rounded-full p-1 border border-border-default mt-2.5">
-                            {unitOptions.map((item) => {
-                                const selected = units === item.value;
-                                return (
-                                    <TouchableOpacity
-                                        key={item.value}
-                                        onPress={() => setUnits(item.value)}
-                                        activeOpacity={0.8}
-                                        className={`flex-1 rounded-full py-2.5 items-center ${selected ? 'bg-brand-blue' : ''}`}
+                    <Text style={styles.label}>{t('pool_size_units_label')}</Text>
+                    <View style={styles.segmentRow}>
+                        {(['us', 'metric'] as const).map((unit) => {
+                            const selected = units === unit;
+                            return (
+                                <TouchableOpacity
+                                    key={unit}
+                                    style={[styles.segment, selected && styles.selected]}
+                                    onPress={() => setUnits(unit)}
+                                    activeOpacity={0.86}
+                                >
+                                    <Text style={styles.segmentText}>
+                                        {t(unit === 'us' ? 'pool_size_units_us' : 'pool_size_units_metric')}
+                                    </Text>
+                                    {selected ? (
+                                        <Image source={icons.selectedCheckBadge} style={styles.check} resizeMode="contain" />
+                                    ) : null}
+                                </TouchableOpacity>
+                            );
+                        })}
+                    </View>
+
+                    <Text style={styles.label}>{t('pool_size_shape_label')}</Text>
+                    <View style={styles.shapeGrid}>
+                        {POOL_SHAPES.map((item) => {
+                            const selected = shape === item;
+                            const shapeImage = POOL_SHAPE_IMAGES[item];
+                            return (
+                                <TouchableOpacity
+                                    key={item}
+                                    style={[styles.shapeCard, selected && styles.selected]}
+                                    onPress={() => setShape(item)}
+                                    activeOpacity={0.86}
+                                >
+                                    {shapeImage ? (
+                                        <View style={styles.shapeIconShell}>
+                                            <Image source={shapeImage} style={styles.shapeIcon} resizeMode="contain" />
+                                        </View>
+                                    ) : null}
+                                    <Text
+                                        style={styles.shapeText}
+                                        numberOfLines={1}
+                                        adjustsFontSizeToFit
+                                        minimumFontScale={0.78}
                                     >
-                                        <Text
-                                            className={`text-small font-jakarta-bold ${selected ? 'text-surface-white' : 'text-sub'
-                                                }`}
-                                        >
-                                            {item.label}
-                                        </Text>
-                                    </TouchableOpacity>
-                                );
-                            })}
-                        </View>
+                                        {t(poolShapeTranslationKeys[item])}
+                                    </Text>
+                                    {selected ? (
+                                        <Image source={icons.selectedCheckBadge} style={styles.shapeCheck} resizeMode="contain" />
+                                    ) : null}
+                                </TouchableOpacity>
+                            );
+                        })}
                     </View>
 
-                    {isEstimate ? (
-                        <EstimateForm
-                            shape={shape}
-                            onShapeChange={setShape}
-                            length={length}
-                            onLengthChange={setLength}
-                            width={width}
-                            onWidthChange={setWidth}
-                            depthProfile={depthProfile}
-                            onDepthProfileChange={handleDepthProfileChange}
-                            distanceSuffix={distanceSuffix}
-                            formattedEstimatedVolume={formattedEstimatedVolume}
-                            volumeSuffix={volumeSuffix}
-                            canUploadPhoto={canUploadPhoto}
-                        />
+                    {isFreeform ? (
+                        <>
+                            <View style={styles.infoBox}>
+                                <Text style={styles.infoText}>{t('pool_size_freeform_explanation')}</Text>
+                            </View>
+                            {sections.map((section, index) => (
+                                <View key={section.id} style={styles.sectionCard}>
+                                    <View style={styles.sectionHeader}>
+                                        <Text style={styles.sectionTitle}>{t('pool_size_section_label', { index: index + 1 })}</Text>
+                                        {index > 0 ? (
+                                            <TouchableOpacity onPress={() => removeSection(section.id)}>
+                                                <Text style={styles.removeText}>{t('pool_size_remove_section')}</Text>
+                                            </TouchableOpacity>
+                                        ) : null}
+                                    </View>
+                                    <Dimension
+                                        label={t('pool_size_length_label')}
+                                        suffix={distanceSuffix}
+                                        value={section.length}
+                                        onChange={(value) => updateSection(section.id, 'length', value)}
+                                    />
+                                    <Dimension
+                                        label={t('pool_size_average_width_label')}
+                                        suffix={distanceSuffix}
+                                        value={section.averageWidth}
+                                        onChange={(value) => updateSection(section.id, 'averageWidth', value)}
+                                    />
+                                    <View style={styles.twoInputs}>
+                                        <View style={{ flex: 1 }}>
+                                            <Dimension
+                                                label={t('pool_size_shallow_depth_label')}
+                                                suffix={distanceSuffix}
+                                                value={section.shallowDepth}
+                                                onChange={(value) => updateSection(section.id, 'shallowDepth', value)}
+                                            />
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <Dimension
+                                                label={t('pool_size_deep_depth_label')}
+                                                suffix={distanceSuffix}
+                                                value={section.deepDepth}
+                                                onChange={(value) => updateSection(section.id, 'deepDepth', value)}
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
+                            ))}
+                            {sections.length < MAX_FREEFORM_SECTIONS ? (
+                                <TouchableOpacity style={styles.addSection} onPress={addSection}>
+                                    <Text style={styles.addSectionText}>+ {t('pool_size_add_section')}</Text>
+                                </TouchableOpacity>
+                            ) : null}
+                        </>
                     ) : (
-                        <KnownForm
-                            shape={shape}
-                            onShapeChange={setShape}
-                            length={length}
-                            onLengthChange={setLength}
-                            width={width}
-                            onWidthChange={setWidth}
-                            shallowDepth={shallowDepth}
-                            onShallowDepthChange={setShallowDepth}
-                            deepDepth={deepDepth}
-                            onDeepDepthChange={setDeepDepth}
-                            distanceSuffix={distanceSuffix}
-                            formattedEstimatedVolume={formattedEstimatedVolume}
-                            volumeSuffix={volumeSuffix}
-                            canUploadPhoto={canUploadPhoto}
-                            onSkipUpload={handleSkipForNow}
-                        />
+                        <>
+                            {measurementMethod === 'Estimate' ? (
+                                <>
+                                    <Text style={styles.label}>{t('pool_size_q_depth')}</Text>
+                                    <View style={styles.stack}>
+                                        {POOL_DEPTH_PROFILES.map((profile) => {
+                                            const selected = depthProfile === profile;
+                                            return (
+                                                <TouchableOpacity
+                                                    key={profile}
+                                                    style={[styles.row, selected && styles.selected]}
+                                                    onPress={() => handleDepthProfileChange(profile)}
+                                                    activeOpacity={0.86}
+                                                >
+                                                    <Text style={styles.rowText}>
+                                                        {t(poolDepthProfileTranslationKeys[profile])}
+                                                    </Text>
+                                                </TouchableOpacity>
+                                            );
+                                        })}
+                                    </View>
+                                </>
+                            ) : null}
+                            <View style={styles.measurements}>
+                                <Dimension
+                                    label={shape === 'Round' ? t('pool_size_diameter_label') : t('pool_size_length_label')}
+                                    suffix={distanceSuffix}
+                                    value={length}
+                                    onChange={setLength}
+                                />
+                                {shape !== 'Round' ? (
+                                    <Dimension
+                                        label={t('pool_size_width_label')}
+                                        suffix={distanceSuffix}
+                                        value={width}
+                                        onChange={setWidth}
+                                    />
+                                ) : null}
+                                <View style={styles.twoInputs}>
+                                    <View style={{ flex: 1 }}>
+                                        <Dimension
+                                            label={t('pool_size_shallow_depth_label')}
+                                            suffix={distanceSuffix}
+                                            value={shallowDepth}
+                                            onChange={setShallowDepth}
+                                        />
+                                    </View>
+                                    <View style={{ flex: 1 }}>
+                                        <Dimension
+                                            label={t('pool_size_deep_depth_label')}
+                                            suffix={distanceSuffix}
+                                            value={deepDepth}
+                                            onChange={setDeepDepth}
+                                        />
+                                    </View>
+                                </View>
+                            </View>
+                        </>
                     )}
+
+                    <View style={styles.volumeCard}>
+                        <Text style={styles.volumeLabel}>{t('pool_size_estimated_volume')}</Text>
+                        <Text style={styles.volumeValue}>
+                            {primaryVolume == null ? '—' : `${primaryVolume.toLocaleString(numberLocale)} ${volumeSuffix}`}
+                        </Text>
+                        {volumes ? (
+                            <Text style={styles.volumeSecondary}>
+                                {units === 'us'
+                                    ? `${Math.round(volumes.liters).toLocaleString(numberLocale)} L`
+                                    : `${Math.round(volumes.gallons).toLocaleString(numberLocale)} gal`}
+                            </Text>
+                        ) : null}
+                    </View>
+                    <View style={styles.tip}>
+                        <Image source={poolSizeGraphics.tipsIcon} style={styles.tipIcon} resizeMode="contain" />
+                        <Text style={styles.tipText}>{t('pool_size_adjust_later_note')}</Text>
+                    </View>
                 </View>
             </ScrollView>
 
@@ -362,10 +531,10 @@ export default function PoolSizeGallonsScreen({
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
+                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${continueDisabled ? 'opacity-50' : ''}`}
                     onPress={handleContinue}
                     activeOpacity={0.85}
-                    disabled={isSubmitting}
+                    disabled={continueDisabled}
                 >
                     <Text className="text-button font-jakarta-bold text-surface-white">
                         {t('pool_size_continue')}
@@ -378,7 +547,7 @@ export default function PoolSizeGallonsScreen({
                         activeOpacity={0.7}
                     >
                         <Text className="text-body font-jakarta-bold text-brand-blue">
-                            {t('pool_size_skip_for_now_label')}
+                            {t('pool_size_skip_for_now')}
                         </Text>
                     </TouchableOpacity>
                 ) : null}
@@ -397,544 +566,182 @@ export default function PoolSizeGallonsScreen({
     );
 }
 
-/* ─── Known measurements form (design image 3) ─────────────────────────────── */
-
-interface KnownFormProps {
-    shape: PoolShape;
-    onShapeChange: (shape: PoolShape) => void;
-    length: string;
-    onLengthChange: (value: string) => void;
-    width: string;
-    onWidthChange: (value: string) => void;
-    shallowDepth: string;
-    onShallowDepthChange: (value: string) => void;
-    deepDepth: string;
-    onDeepDepthChange: (value: string) => void;
-    distanceSuffix: string;
-    formattedEstimatedVolume: string;
-    volumeSuffix: string;
-    canUploadPhoto: boolean;
-    onSkipUpload: () => void;
-}
-
-function KnownForm({
-    shape,
-    onShapeChange,
-    length,
-    onLengthChange,
-    width,
-    onWidthChange,
-    shallowDepth,
-    onShallowDepthChange,
-    deepDepth,
-    onDeepDepthChange,
-    distanceSuffix,
-    formattedEstimatedVolume,
-    volumeSuffix,
-    canUploadPhoto,
-    onSkipUpload,
-}: KnownFormProps) {
-    const { t } = useTranslation();
-
-    return (
-        <View className="mt-5">
-            <Text className="section__title">{t('pool_size_shape_label')}</Text>
-            <ShapePillRow shape={shape} onShapeChange={onShapeChange} />
-
-            <Text className="section__title mt-5">{t('pool_size_measurements_title')}</Text>
-            <Text className="text-tiny font-jakarta text-sub mt-0.5">
-                {t('pool_size_measurements_subtitle')}
-            </Text>
-
-            <View className="flex-row gap-3 mt-3">
-                <MeasurementField
-                    label={t('pool_size_length_label')}
-                    value={length}
-                    onChangeText={onLengthChange}
-                    suffix={distanceSuffix}
-                />
-                <MeasurementField
-                    label={t('pool_size_width_label')}
-                    hint={shape === 'Kidney' ? t('pool_size_width_widest_hint') : undefined}
-                    value={width}
-                    onChangeText={onWidthChange}
-                    suffix={distanceSuffix}
-                />
-            </View>
-
-            <View className="flex-row gap-3 mt-3">
-                <MeasurementField
-                    label={t('pool_size_shallow_depth_label')}
-                    value={shallowDepth}
-                    onChangeText={onShallowDepthChange}
-                    suffix={distanceSuffix}
-                />
-                <MeasurementField
-                    label={t('pool_size_deep_depth_label')}
-                    value={deepDepth}
-                    onChangeText={onDeepDepthChange}
-                    suffix={distanceSuffix}
-                />
-            </View>
-
-            <EstimateCard
-                formattedVolume={formattedEstimatedVolume}
-                volumeSuffix={volumeSuffix}
-                note={t('pool_size_estimated_gallons_note')}
-                layout="known"
-            />
-
-            {/* <UploadPhotoRow
-                enabled={canUploadPhoto}
-                label={t('pool_size_upload_photo_label')}
-                description={t('pool_size_upload_photo_desc')}
-                showSkipLink
-                onSkip={onSkipUpload}
-            /> */}
-        </View>
-    );
-}
-
-/* ─── Help me estimate form (design image 2) ───────────────────────────────── */
-
-interface EstimateFormProps {
-    shape: PoolShape;
-    onShapeChange: (shape: PoolShape) => void;
-    length: string;
-    onLengthChange: (value: string) => void;
-    width: string;
-    onWidthChange: (value: string) => void;
-    depthProfile: PoolDepthProfile;
-    onDepthProfileChange: (profile: PoolDepthProfile) => void;
-    distanceSuffix: string;
-    formattedEstimatedVolume: string;
-    volumeSuffix: string;
-    canUploadPhoto: boolean;
-}
-
-function EstimateForm({
-    shape,
-    onShapeChange,
-    length,
-    onLengthChange,
-    width,
-    onWidthChange,
-    depthProfile,
-    onDepthProfileChange,
-    distanceSuffix,
-    formattedEstimatedVolume,
-    volumeSuffix,
-    canUploadPhoto,
-}: EstimateFormProps) {
-    const { t } = useTranslation();
-
-    return (
-        <View className="mt-5">
-            <View className="border-t border-border-default pt-4">
-                <Text className="text-body font-jakarta-bold text-charcoal">
-                    {t('pool_size_q_shape')}
-                </Text>
-                <ShapePillRow shape={shape} onShapeChange={onShapeChange} />
-            </View>
-
-            <View className="border-t border-border-default mt-4 pt-4">
-                <Text className="text-body font-jakarta-bold text-charcoal">
-                    {t('pool_size_q_length')}
-                </Text>
-                <View className="form-input flex-row items-center justify-between mt-2.5">
-                    <TextInput
-                        className="flex-1 text-body font-jakarta text-charcoal p-0"
-                        value={length}
-                        onChangeText={onLengthChange}
-                        keyboardType="decimal-pad"
-                        placeholder="0"
-                        placeholderTextColor={colors.text.faint}
-                    />
-                    <Text className="text-small font-jakarta text-sub ml-2">{distanceSuffix}</Text>
-                </View>
-            </View>
-
-            <View className="border-t border-border-default mt-4 pt-4">
-                <View className="flex-row items-baseline flex-wrap gap-1">
-                    <Text className="text-body font-jakarta-bold text-charcoal">
-                        {t('pool_size_q_width')}
-                    </Text>
-                    {shape === 'Kidney' ? (
-                        <Text className="text-tiny font-jakarta text-sub">
-                            {t('pool_size_q_width_kidney_hint')}
-                        </Text>
-                    ) : null}
-                </View>
-                <View className="form-input flex-row items-center justify-between mt-2.5">
-                    <TextInput
-                        className="flex-1 text-body font-jakarta text-charcoal p-0"
-                        value={width}
-                        onChangeText={onWidthChange}
-                        keyboardType="decimal-pad"
-                        placeholder="0"
-                        placeholderTextColor={colors.text.faint}
-                    />
-                    <Text className="text-small font-jakarta text-sub ml-2">{distanceSuffix}</Text>
-                </View>
-            </View>
-
-            <View className="border-t border-border-default mt-4 pt-4">
-                <Text className="text-body font-jakarta-bold text-charcoal">
-                    {t('pool_size_q_depth')}
-                </Text>
-                <View className="flex-row flex-wrap gap-2 mt-3">
-                    {POOL_DEPTH_PROFILES.map((item) => {
-                        const selected = depthProfile === item;
-                        return (
-                            <TouchableOpacity
-                                key={item}
-                                onPress={() => onDepthProfileChange(item)}
-                                activeOpacity={0.8}
-                                className={`rounded-full px-3.5 py-2.5 border ${selected
-                                    ? 'bg-surface-soft-aqua border-brand-blue'
-                                    : 'bg-surface-white border-border-default'
-                                    }`}
-                            >
-                                <Text
-                                    className={`text-small font-jakarta-bold ${selected ? 'text-brand-blue' : 'text-sub'
-                                        }`}
-                                >
-                                    {t(poolDepthProfileTranslationKeys[item])}
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
-            </View>
-
-            {/* <UploadPhotoRow
-                enabled={canUploadPhoto}
-                label={t('pool_size_upload_photo_label_estimate')}
-                description={t('pool_size_upload_photo_desc_estimate')}
-                showChevron
-            /> */}
-
-            <EstimateCard
-                formattedVolume={formattedEstimatedVolume}
-                volumeSuffix={volumeSuffix}
-                note={t('pool_size_estimated_gallons_note_estimate')}
-                layout="estimate"
-            />
-        </View>
-    );
-}
-
-/* ─── Shared pieces ────────────────────────────────────────────────────────── */
-
-interface ShapePillRowProps {
-    shape: PoolShape;
-    onShapeChange: (shape: PoolShape) => void;
-}
-
-function ShapePillRow({ shape, onShapeChange }: ShapePillRowProps) {
-    const { t } = useTranslation();
-
-    return (
-        <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: 8, paddingTop: 12 }}
-        >
-            {POOL_SHAPES.map((item) => {
-                const selected = shape === item;
-                const color = selected ? colors.brand.blue : colors.text.sub;
-                return (
-                    <TouchableOpacity
-                        key={item}
-                        onPress={() => onShapeChange(item)}
-                        activeOpacity={0.8}
-                        className={`flex-row items-center gap-1.5 rounded-full px-3 py-2.5 border ${selected
-                            ? 'bg-surface-soft-aqua border-brand-blue'
-                            : 'bg-surface-white border-border-default'
-                            }`}
-                    >
-                        <ShapeIcon shape={item} color={color} />
-                        <Text
-                            className={`text-small font-jakarta-bold ${selected ? 'text-brand-blue' : 'text-sub'
-                                }`}
-                        >
-                            {t(poolShapeTranslationKeys[item])}
-                        </Text>
-                    </TouchableOpacity>
-                );
-            })}
-        </ScrollView>
-    );
-}
-
-interface ShapeIconProps {
-    shape: PoolShape;
-    color: string;
-}
-
-function ShapeIcon({ shape, color }: ShapeIconProps) {
-    if (shape === 'Rectangle') {
-        return (
-            <View
-                style={{
-                    width: 14,
-                    height: 11,
-                    borderWidth: 1.5,
-                    borderColor: color,
-                    borderRadius: 1.5,
-                }}
-            />
-        );
-    }
-
-    if (shape === 'Round') {
-        return (
-            <View
-                style={{
-                    width: 13,
-                    height: 13,
-                    borderWidth: 1.5,
-                    borderColor: color,
-                    borderRadius: 7,
-                }}
-            />
-        );
-    }
-
-    if (shape === 'Oval') {
-        return (
-            <View
-                style={{
-                    width: 16,
-                    height: 11,
-                    borderWidth: 1.5,
-                    borderColor: color,
-                    borderRadius: 8,
-                }}
-            />
-        );
-    }
-
-    // Freeform — kidney / bean outline: big right lobe, top-center waist, bottom-left foot
-    return (
-        <Svg width={16} height={11} viewBox="0 0 100 66">
-            <Path
-                d="M8 32
-                   C 8 22 12 16 20 15
-                   C 28 14 30 14 36 15
-                   C 42 15 46 22 52 22
-                   C 60 22 64 10 74 10
-                   C 86 10 95 24 95 40
-                   C 95 54 86 60 76 60
-                   C 64 60 58 59 50 60
-                   C 42 61 38 64 30 63
-                   C 22 62 16 62 14 54
-                   C 11 46 8 40 8 32 Z"
-                fill="none"
-                stroke={color}
-                strokeWidth={9}
-                strokeLinejoin="round"
-                strokeLinecap="round"
-            />
-        </Svg>
-    );
-}
-
-interface EstimateCardProps {
-    formattedVolume: string;
-    volumeSuffix: string;
-    note: string;
-    layout: 'known' | 'estimate';
-}
-
-function EstimateCard({ formattedVolume, volumeSuffix, note, layout }: EstimateCardProps) {
-    const { t } = useTranslation();
-
-    if (layout === 'known') {
-        return (
-            <View className="card--info flex-row items-center px-4 py-4 mt-5 gap-3">
-                <Text className="text-h2 font-jakarta-bold text-brand-blue">~</Text>
-                <View className="flex-1">
-                    <Text className="text-tiny font-jakarta text-sub">
-                        {t('pool_size_estimated_gallons_label')}
-                    </Text>
-                    <Text className="text-h2 font-jakarta-extrabold text-brand-navy mt-0.5">
-                        {formattedVolume} {volumeSuffix}
-                    </Text>
-                    <Text className="text-tiny font-jakarta text-sub mt-1">{note}</Text>
-                </View>
-            </View>
-        );
-    }
-
-    return (
-        <View className="card--info px-4 py-4 mt-4">
-            <View className="flex-row items-center gap-2">
-                <Ionicons name="water-outline" size={18} color={colors.brand.blue} />
-                <Text className="text-tiny font-jakarta text-sub">
-                    {t('pool_size_estimated_gallons_label')}
-                </Text>
-            </View>
-            <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-1.5">
-                {formattedVolume} {volumeSuffix}
-            </Text>
-            <Text className="text-tiny font-jakarta text-sub mt-1.5">{note}</Text>
-        </View>
-    );
-}
-
-// interface UploadPhotoRowProps {
-//     enabled: boolean;
-//     label: string;
-//     description: string;
-//     showSkipLink?: boolean;
-//     showChevron?: boolean;
-//     onSkip?: () => void;
-// }
-
-// function UploadPhotoRow({
-//     enabled,
-//     label,
-//     description,
-//     showSkipLink = false,
-//     showChevron = false,
-//     onSkip,
-// }: UploadPhotoRowProps) {
-//     const { t } = useTranslation();
-
-//     return (
-//         <View
-//             className={`card flex-row items-center px-4 py-3.5 mt-4 gap-3 ${!enabled ? 'opacity-45' : ''
-//                 }`}
-//         >
-//             <TouchableOpacity
-//                 className="flex-1 flex-row items-center gap-3"
-//                 activeOpacity={enabled ? 0.7 : 1}
-//                 disabled={!enabled}
-//                 onPress={() => { }}
-//             >
-//                 <Image
-//                     source={icons.camera}
-//                     className="w-6 h-6"
-//                     resizeMode="contain"
-//                     style={{ tintColor: enabled ? colors.brand.blue : colors.text.faint }}
-//                 />
-//                 <View className="flex-1">
-//                     <Text
-//                         className={`text-body font-jakarta-bold ${enabled ? 'text-charcoal' : 'text-faint'
-//                             }`}
-//                     >
-//                         {label}
-//                     </Text>
-//                     <Text className="text-tiny font-jakarta text-sub mt-0.5">
-//                         {description}
-//                     </Text>
-//                 </View>
-//             </TouchableOpacity>
-
-//             {showSkipLink ? (
-//                 <TouchableOpacity
-//                     className="flex-row items-center gap-1"
-//                     activeOpacity={enabled ? 0.7 : 1}
-//                     disabled={!enabled}
-//                     onPress={onSkip}
-//                 >
-//                     <Text
-//                         className={`text-small font-jakarta-bold ${enabled ? 'text-brand-blue' : 'text-faint'
-//                             }`}
-//                     >
-//                         {t('pool_size_skip')}
-//                     </Text>
-//                     <Ionicons
-//                         name="chevron-forward"
-//                         size={14}
-//                         color={enabled ? colors.brand.blue : colors.text.faint}
-//                     />
-//                 </TouchableOpacity>
-//             ) : null}
-
-//             {showChevron ? (
-//                 <Ionicons
-//                     name="chevron-forward"
-//                     size={18}
-//                     color={enabled ? colors.text.sub : colors.text.faint}
-//                 />
-//             ) : null}
-//         </View>
-//     );
-// }
-
-interface MethodCardProps {
-    icon: keyof typeof Ionicons.glyphMap;
-    label: string;
+function MethodCard({
+    image,
+    title,
+    description,
+    selected,
+    onPress,
+}: {
+    image: ImageSourcePropType;
+    title: string;
     description: string;
     selected: boolean;
     onPress: () => void;
-}
-
-function MethodCard({ icon, label, description, selected, onPress }: MethodCardProps) {
+}) {
     return (
         <TouchableOpacity
+            style={[styles.methodCard, selected && styles.selected]}
             onPress={onPress}
-            activeOpacity={0.8}
-            className={`flex-1 rounded-2xl px-3 py-3.5 border-[1.5px] relative ${selected
-                ? 'bg-surface-soft-aqua border-brand-blue'
-                : 'bg-surface-white border-border-default'
-                }`}
+            activeOpacity={0.86}
         >
-            <View className="absolute top-2.5 left-2.5">
-                <Image
-                    source={selected ? icons.selectedCheckBadge : icons.unselectedRadioIndicator}
-                    className="w-5 h-5"
-                    resizeMode="contain"
-                />
+            <View style={styles.methodImageShell}>
+                <Image source={image} style={styles.methodImage} resizeMode="contain" />
             </View>
-
-            <View className="items-center mt-5">
-                <Ionicons
-                    name={icon}
-                    size={28}
-                    color={colors.brand.navy}
-                />
-                <Text className="mt-2.5 text-small font-jakarta-bold text-brand-navy text-center">
-                    {label}
-                </Text>
-                <Text className="mt-0.5 text-tiny font-jakarta text-sub text-center">
-                    {description}
-                </Text>
-            </View>
+            <Text style={styles.methodTitle}>{title}</Text>
+            <Text style={styles.methodDesc}>{description}</Text>
+            {selected ? (
+                <Image source={icons.selectedCheckBadge} style={styles.methodCheck} resizeMode="contain" />
+            ) : null}
         </TouchableOpacity>
     );
 }
 
-interface MeasurementFieldProps {
+function Dimension({
+    label,
+    suffix,
+    value,
+    onChange,
+}: {
     label: string;
-    hint?: string;
-    value: string;
-    onChangeText: (text: string) => void;
     suffix: string;
-}
-
-function MeasurementField({ label, hint, value, onChangeText, suffix }: MeasurementFieldProps) {
+    value: string;
+    onChange: (value: string) => void;
+}) {
     return (
-        <View className="flex-1">
-            <View className="flex-row items-baseline gap-1">
-                {hint ? (
-                    <Text className="text-tiny font-jakarta text-sub">{hint}</Text>
-                ) : null}
-                <Text className="form-label">{label}</Text>
-            </View>
-            <View className="form-input flex-row items-center justify-between">
+        <View style={styles.dimension}>
+            <Text style={styles.inputLabel}>{label}</Text>
+            <View style={styles.inputShell}>
                 <TextInput
-                    className="flex-1 text-body font-jakarta text-charcoal p-0"
                     value={value}
-                    onChangeText={onChangeText}
+                    onChangeText={onChange}
                     keyboardType="decimal-pad"
+                    style={styles.input}
                     placeholder="0"
-                    placeholderTextColor={colors.text.faint}
+                    placeholderTextColor="#98A2B3"
                 />
-                <Text className="text-small font-jakarta text-sub ml-2">{suffix}</Text>
+                <Text style={styles.suffix}>{suffix}</Text>
             </View>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    page: { paddingHorizontal: 20, paddingTop: 4 },
+    h1: { color: '#073B5C', fontFamily: 'PlusJakartaSans_800ExtraBold', fontSize: 31, lineHeight: 38 },
+    subtitle: { color: '#6F7A91', fontFamily: 'PlusJakartaSans_400Regular', fontSize: 15, lineHeight: 22, marginTop: 5 },
+    methodRow: { flexDirection: 'row', gap: 12, marginTop: 22 },
+    methodCard: {
+        flex: 1,
+        minHeight: 178,
+        borderWidth: 1.5,
+        borderColor: '#D9E2EA',
+        borderRadius: 20,
+        padding: 12,
+        alignItems: 'center',
+        position: 'relative',
+        backgroundColor: '#FFFFFF',
+        overflow: 'hidden',
+    },
+    methodImageShell: { width: '100%', height: 84, alignItems: 'center', justifyContent: 'center', borderRadius: 14 },
+    methodImage: { width: '90%', height: 74 },
+    methodTitle: { color: '#073B5C', fontFamily: 'PlusJakartaSans_700Bold', fontSize: 14, textAlign: 'center', marginTop: 8 },
+    methodDesc: { color: '#6F7A91', fontFamily: 'PlusJakartaSans_400Regular', fontSize: 11, lineHeight: 16, textAlign: 'center', marginTop: 3 },
+    methodCheck: { position: 'absolute', width: 21, height: 21, right: 8, top: 8 },
+    label: { color: '#073B5C', fontFamily: 'PlusJakartaSans_700Bold', fontSize: 16, marginTop: 24, marginBottom: 10 },
+    segmentRow: { flexDirection: 'row', gap: 10 },
+    segment: {
+        flex: 1,
+        minHeight: 54,
+        borderRadius: 15,
+        borderWidth: 1.5,
+        borderColor: '#D9E2EA',
+        backgroundColor: '#FFFFFF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        gap: 7,
+        padding: 9,
+        overflow: 'hidden',
+    },
+    segmentText: { color: '#073B5C', fontFamily: 'PlusJakartaSans_700Bold', fontSize: 12, textAlign: 'center' },
+    check: { width: 20, height: 20 },
+    selected: { borderColor: '#0FB7BC', backgroundColor: '#EAFBF9' },
+    shapeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 9 },
+    shapeCard: {
+        width: '48.5%',
+        minHeight: 62,
+        borderRadius: 15,
+        borderWidth: 1.5,
+        borderColor: '#D9E2EA',
+        backgroundColor: '#FFFFFF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        gap: 6,
+        paddingHorizontal: 8,
+        paddingVertical: 8,
+        overflow: 'hidden',
+        position: 'relative',
+    },
+    shapeIconShell: {
+        width: 38,
+        height: 30,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        flexShrink: 0,
+    },
+    shapeIcon: { width: 46, height: 38 },
+    shapeText: {
+        color: '#073B5C',
+        fontFamily: 'PlusJakartaSans_700Bold',
+        fontSize: 12.5,
+        flexShrink: 1,
+        minWidth: 0,
+        textAlign: 'center',
+    },
+    shapeCheck: { position: 'absolute', width: 18, height: 18, right: 5, top: 5 },
+    measurements: { marginTop: 12 },
+    dimension: { marginTop: 12 },
+    inputLabel: { color: '#344054', fontFamily: 'PlusJakartaSans_700Bold', fontSize: 13, marginBottom: 6 },
+    inputShell: {
+        minHeight: 52,
+        borderWidth: 1,
+        borderColor: '#D9E2EA',
+        borderRadius: 14,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+    },
+    input: { flex: 1, minHeight: 50, paddingHorizontal: 14, color: '#1E293B', fontFamily: 'PlusJakartaSans_400Regular', fontSize: 16 },
+    suffix: { color: '#667085', fontFamily: 'PlusJakartaSans_600SemiBold', paddingRight: 14 },
+    twoInputs: { flexDirection: 'row', gap: 10 },
+    stack: { gap: 8 },
+    row: {
+        borderRadius: 14,
+        borderWidth: 1.5,
+        borderColor: '#D9E2EA',
+        minHeight: 48,
+        justifyContent: 'center',
+        paddingHorizontal: 14,
+        overflow: 'hidden',
+    },
+    rowText: { color: '#073B5C', fontFamily: 'PlusJakartaSans_700Bold', fontSize: 13 },
+    infoBox: { marginTop: 16, borderRadius: 15, backgroundColor: '#F1FBFD', padding: 13 },
+    infoText: { color: '#526174', fontFamily: 'PlusJakartaSans_400Regular', fontSize: 13, lineHeight: 19 },
+    sectionCard: { marginTop: 14, borderRadius: 18, borderWidth: 1, borderColor: '#D9E2EA', padding: 14, backgroundColor: '#FFFFFF' },
+    sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+    sectionTitle: { color: '#073B5C', fontFamily: 'PlusJakartaSans_700Bold', fontSize: 15 },
+    removeText: { color: '#C3363A', fontFamily: 'PlusJakartaSans_700Bold', fontSize: 12 },
+    addSection: { alignSelf: 'flex-start', marginTop: 14, paddingVertical: 8 },
+    addSectionText: { color: '#0B84F3', fontFamily: 'PlusJakartaSans_700Bold', fontSize: 14 },
+    volumeCard: { marginTop: 22, borderRadius: 20, backgroundColor: '#073B5C', padding: 18, alignItems: 'center' },
+    volumeLabel: { color: '#D9EFF8', fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 13 },
+    volumeValue: { color: '#FFFFFF', fontFamily: 'PlusJakartaSans_800ExtraBold', fontSize: 28, marginTop: 4 },
+    volumeSecondary: { color: '#BDEDEA', fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 12, marginTop: 3 },
+    tip: { marginTop: 16, flexDirection: 'row', alignItems: 'center', gap: 10, borderRadius: 16, backgroundColor: '#FFFBEA', padding: 13 },
+    tipIcon: { width: 30, height: 30 },
+    tipText: { flex: 1, color: '#526174', fontFamily: 'PlusJakartaSans_400Regular', fontSize: 13, lineHeight: 19 },
+});

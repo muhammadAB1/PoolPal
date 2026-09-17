@@ -1,11 +1,10 @@
 import type { PoolDepthProfile, PoolShape } from '@/lib/types';
 
-/** Shapes shown in the Pool Size UI. */
+/** Shapes shown in the Pool Size UI. Legacy Kidney rows are treated as Freeform. */
 export const POOL_SHAPES: readonly PoolShape[] = [
     'Rectangle',
     'Round',
     'Oval',
-    'Kidney',
     'Freeform',
 ] as const;
 
@@ -14,7 +13,7 @@ export const poolShapeTranslationKeys: Record<PoolShape, string> = {
     Round: 'pool_size_shape_round',
     Oval: 'pool_size_shape_oval',
     Freeform: 'pool_size_shape_freeform',
-    Kidney: 'pool_size_shape_kidney',
+    Kidney: 'pool_size_shape_freeform',
 };
 
 export const POOL_DEPTH_PROFILES: readonly PoolDepthProfile[] = [

@@ -133,6 +133,13 @@ import testReadingsInfoIcon from '../assets/pool-reading-images/info_icon.png';
 import testReadingsStripPhoto from '../assets/pool-reading-images/test_strips.png';
 import testReadingsBackyardPhoto from '../assets/pool-reading-images/pool-backyard.png';
 import reminderShield from '../assets/pool-reading-images/reminder_shield.png';
+import poolTonicTipsIcon from '../assets/pooltonic-ui/pooltonic-tips-icon.png';
+import poolTonicMeasurementsKnown from '../assets/pooltonic-ui/pooltonic-measurements-known.png';
+import poolTonicHelp from '../assets/pooltonic-ui/pooltonic-help.png';
+import poolTonicShapeRectangle from '../assets/pooltonic-ui/pooltonic-rectangle.png';
+import poolTonicShapeCircle from '../assets/pooltonic-ui/pooltonic-circle.png';
+import poolTonicShapeOval from '../assets/pooltonic-ui/pooltonic-oval.png';
+import poolTonicShapeKidney from '../assets/pooltonic-ui/pooltonic-kidney.png';
 
 // ─── Choose Test Method ───────────────────────────────────────────────────────
 import chooseTestMethodStrip from '../assets/pool-reading-images-new/strip.webp';
@@ -387,6 +394,13 @@ export const testStripBrandIcons = [
 export const poolSizeGraphics = {
     reminderShield,
     infoIcon: testReadingsInfoIcon,
+    tipsIcon: poolTonicTipsIcon,
+    measurementsKnown: poolTonicMeasurementsKnown,
+    helpEstimate: poolTonicHelp,
+    shapeRectangle: poolTonicShapeRectangle,
+    shapeRound: poolTonicShapeCircle,
+    shapeOval: poolTonicShapeOval,
+    shapeFreeform: poolTonicShapeKidney,
 } as const;
 
 /**

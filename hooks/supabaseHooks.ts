@@ -152,6 +152,16 @@ export function useSupabase() {
         return { data, error }
     }
 
+    async function updateMeasurementPreference(measurement: 'us' | 'metric') {
+        const { data, error } = await supabase
+            .from('profiles')
+            .update({ measurement })
+            .eq('id', user?.id)
+
+        if (!error) await refreshProfile()
+        return { data, error }
+    }
+
     async function logout() {
 
         const { error } = await supabase.auth.signOut()
@@ -268,7 +278,19 @@ export function useSupabase() {
             if (id) {
                 const { error } = await supabase
                     .from('pools')
-                    .update({ length: props.length, width: props.width, shallow_depth: props.shallowDepth, deep_depth: props.deepDepth, shape: props.shape, gallons: props.gallons, measurement_unit: props.measurementUnit })
+                    .update({
+                        length: props.length ?? null,
+                        width: props.width ?? null,
+                        shallow_depth: props.shallowDepth ?? null,
+                        deep_depth: props.deepDepth ?? null,
+                        shape: props.shape === 'Kidney' ? 'Freeform' : props.shape,
+                        gallons: props.gallons ?? props.volumeUsGallons ?? null,
+                        measurement_unit: props.measurementUnit,
+                        volume_us_gallons: props.volumeUsGallons ?? null,
+                        volume_liters: props.volumeLiters ?? null,
+                        volume_source: props.volumeSource ?? 'calculated',
+                        freeform_sections: props.freeformSections ?? [],
+                    })
                     .eq('id', id)
                 if (!error && markStale) markPoolsStale();
                 return { error }
@@ -411,6 +433,7 @@ export function useSupabase() {
         signUpWithEmail,
         signInWithEmail,
         saveAccountBasics,
+        updateMeasurementPreference,
         logout,
         poolBasicInsert,
         poolBasicUpdate,

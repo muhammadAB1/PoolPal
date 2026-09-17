@@ -27,7 +27,11 @@ export default function PoolSizeScreen() {
     pools?.measurement_unit === 'us'
       ? t('pool_size_review_unit_gallons')
       : t('pool_size_review_unit_liters');
-  const volumeValue = pools?.gallons ?? estimatedVolume.value;
+  const rawVolume =
+    pools?.measurement_unit === 'metric'
+      ? (pools?.volume_liters ?? pools?.gallons ?? estimatedVolume.value)
+      : (pools?.volume_us_gallons ?? pools?.gallons ?? estimatedVolume.value);
+  const volumeValue = typeof rawVolume === 'number' ? Math.round(rawVolume) : rawVolume;
   const volumeDisplay =
     volumeValue == null ? `— ${volumeUnit}`.trim() : `${volumeValue} ${volumeUnit}`.trim();
 
@@ -66,6 +70,7 @@ export default function PoolSizeScreen() {
             shallowDepth: pools?.shallow_depth ?? undefined,
             deepDepth: pools?.deep_depth ?? undefined,
             shape: pools?.shape ?? undefined,
+            freeformSections: pools?.freeform_sections ?? undefined,
           }}
           showSkip={false}
           markStale={false}

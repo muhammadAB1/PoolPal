@@ -39,6 +39,19 @@ export type PoolShape = 'Rectangle' | 'Round' | 'Oval' | 'Freeform' | 'Kidney';
 export type PoolDepthProfile = 'Flat' | 'ShallowDeep' | 'NotSure';
 export type MeasurementMethod = 'Known' | 'Estimate';
 export type MeasurementUnit = 'us' | 'metric';
+export type VolumeSource = 'calculated' | 'manual';
+
+export type FreeformSection = {
+    id: string;
+    index: number;
+    length: number | null;
+    averageWidth: number | null;
+    shallowDepth: number | null;
+    deepDepth: number | null;
+    measurementUnit: MeasurementUnit;
+    volumeUsGallons: number | null;
+    volumeLiters: number | null;
+};
 
 export type FilterType = 'Sand' | 'Cartridge' | 'DE';
 export type PumpType = 'Single' | 'Dual' | 'Variable';
@@ -84,13 +97,17 @@ export type Pool = {
     rental_active_months?: string[] | null
     pool_condition?: PoolCondition | null
 
-    length?: number
-    width?: number
-    shallow_depth?: number
-    deep_depth?: number
-    shape?: PoolShape
-    gallons?: number
-    measurement_unit?: Measurement
+    length?: number | null
+    width?: number | null
+    shallow_depth?: number | null
+    deep_depth?: number | null
+    shape?: PoolShape | null
+    gallons?: number | null
+    measurement_unit?: Measurement | null
+    volume_us_gallons?: number | null
+    volume_liters?: number | null
+    volume_source?: VolumeSource | null
+    freeform_sections?: FreeformSection[] | null
 
 
     pump_type?: PumpType
@@ -114,12 +131,16 @@ export type poolBasicUpdateProps = {
 }
 
 export type poolSizeInsertProps = {
-    length: number
-    width: number
-    shallowDepth: number
-    deepDepth: number
+    length?: number | null
+    width?: number | null
+    shallowDepth?: number | null
+    deepDepth?: number | null
     shape?: PoolShape
-    gallons?: number
+    gallons?: number | null
+    volumeUsGallons?: number | null
+    volumeLiters?: number | null
+    volumeSource?: VolumeSource
+    freeformSections?: FreeformSection[]
     measurementUnit?: Measurement
 }
 
