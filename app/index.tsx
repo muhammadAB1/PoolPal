@@ -30,7 +30,7 @@ export default function HomeScreen() {
       <View className="flex-1 items-center justify-center gap-6">
         <PoolTonicLogo width={220} height={64} />
         <TouchableOpacity
-          className="bg-brand-blue rounded-full py-[14px] px-8 items-center"
+          className="bg-brand-blue rounded-full py-3.5 px-8 items-center"
           onPress={() => router.replace('/welcome')}
           activeOpacity={0.85}
         >

@@ -20,6 +20,8 @@ export const POOL_BASICS = {
       value: {
         Chlorine: { name: 'pool_basics_type_chlorine', description: 'pool_basics_type_chlorine_desc' },
         Saltwater: { name: 'pool_basics_type_saltwater', description: 'pool_basics_type_saltwater_desc' },
+        Bromine: { name: 'pool_basics_type_bromine', description: 'pool_basics_type_bromine_desc' },
+        Other: { name: 'pool_basics_type_other', description: 'pool_basics_type_other_desc' },
       } as Record<PoolType, { name: string; description: string }>,
     },
     {
@@ -69,9 +71,10 @@ export const POOL_BASICS = {
       database_column_name: 'number_of_users' as const,
       title: 'pool_basics_review_number_of_users',
       value: {
-        '1-2': { name: 'pool_basics_pool_users_1_2', description: 'pool_basics_pool_users_1_2_desc' },
-        '3-4': { name: 'pool_basics_pool_users_3_4', description: 'pool_basics_pool_users_3_4_desc' },
-        '5+': { name: 'pool_basics_pool_users_5_plus', description: 'pool_basics_pool_users_5_plus_desc' },
+        '1-2': { name: 'pool_basics_bather_1_2', description: 'pool_basics_pool_users_1_2_desc' },
+        '3-5': { name: 'pool_basics_bather_3_5', description: 'pool_basics_pool_users_3_5_desc' },
+        '6-10': { name: 'pool_basics_bather_6_10', description: 'pool_basics_pool_users_6_10_desc' },
+        '10+': { name: 'pool_basics_bather_10_plus', description: 'pool_basics_pool_users_10_plus_desc' },
       } as Record<NumberOfPoolUsers, { name: string; description: string }>,
     },
   ],

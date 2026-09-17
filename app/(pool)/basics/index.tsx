@@ -63,6 +63,13 @@ export default function PoolBasicsScreen() {
             useType: pools?.pool_use_type ?? undefined,
             usageFrequency: pools?.usage_frequency ?? undefined,
             numberOfPoolUsers: pools?.number_of_users ?? undefined,
+            saltSystemStatus: pools?.salt_system_status ?? undefined,
+            manualChlorine: pools?.manual_chlorine_during_salt_failure ?? undefined,
+            spaSanitizer: pools?.standalone_spa_sanitizer ?? undefined,
+            occupancyPattern: pools?.occupancy_pattern ?? undefined,
+            unusedMonths: pools?.seasonal_unused_months ?? [],
+            rentalActivity: pools?.rental_activity ?? undefined,
+            activeMonths: pools?.rental_active_months ?? [],
           }}
           showSkip={false}
           markStale={false}
@@ -105,7 +112,13 @@ export default function PoolBasicsScreen() {
               <Text className="text-small font-jakarta text-surface-white mt-0.5">
                 {/* List pool attributes in a readable way */}
                 {[
-                  pools?.pool_type === 'Chlorine' ? t('pool_basics_type_chlorine') : t('pool_basics_type_saltwater'),
+                  pools?.pool_type === 'Chlorine'
+                    ? t('pool_basics_type_chlorine')
+                    : pools?.pool_type === 'Bromine'
+                      ? t('pool_basics_type_bromine')
+                      : pools?.pool_type === 'Other'
+                        ? t('pool_basics_type_other')
+                        : t('pool_basics_type_saltwater'),
                   pools?.pool_screen === 'Screened' ? t('pool_basics_screened_yes') : t('pool_basics_screened_no'),
                   pools?.hot_tub_type === 'Yes' && pools?.spa_attachment
                     ? `${t(pools.spa_attachment === 'Attached' ? 'pool_basics_spa_attached' : 'pool_basics_spa_detached')} ${t('pool_basics_review_hot_tub_tag')}`

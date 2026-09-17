@@ -83,14 +83,14 @@ export default function AccountBasicsScreen() {
                 >
                     <View className="flex-1 px-5 pt-2">
 
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
                             onPress={() => router.back()}
                             activeOpacity={0.7}
                             disabled={submitting}
                         >
                             <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                         <View className="progress-bar mt-2">
                             <View className="progress-bar__fill" style={{ width: '10%' }} />

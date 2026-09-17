@@ -64,7 +64,12 @@ import unselectedRadioIndicator from '../assets/poolbasicsimages/poolwise_remain
 // ─── Pool Basics — Pool Type (keyed to DB enum values) ───────────────────────
 import poolTypeChlorine from '../assets/poolbasicsimages/poolbasics/Chlorine.png';
 import poolTypeSaltwater from '../assets/poolbasicsimages/poolbasics/Saltwater.png';
-import poolTypeOther from '../assets/poolbasicsimages/poolbasics/Other.png';
+import poolTypeBromine from '../assets/poolbasicsimages/poolbasics/Bromine.png';
+import poolEnvOutdoor from '../assets/pool-basics-v2/pooltonic-outdoor.png';
+import poolEnvScreened from '../assets/pool-basics-v2/pooltonic-screened-pool.png';
+import poolEnvCovered from '../assets/pool-basics-v2/pooltonic-covered-pool.png';
+import poolEnvIndoor from '../assets/pool-basics-v2/pooltonic-indoor-pool.png';
+import poolTypeUnknown from '../assets/pool-basics-v2/pooltonic-idontknow.png';
 
 // ─── Pool Basics — Screened ───────────────────────────────────────────────────
 import poolScreenedYes from '../assets/poolbasicsimages/poolbasics/Screened.png';
@@ -235,13 +240,20 @@ export const icons = {
 /**
  * Pool Basics screen images.
  * Keys for poolType match the Supabase DB enum values exactly:
- *   Chlorine | Saltwater | Other
+ *   Chlorine | Saltwater | Bromine | Other
  */
 export const poolBasicsImages = {
     poolType: {
         Chlorine: poolTypeChlorine,
         Saltwater: poolTypeSaltwater,
-        Other: poolTypeOther,
+        Bromine: poolTypeBromine,
+        Other: poolTypeUnknown,
+    },
+    environment: {
+        outdoor: poolEnvOutdoor,
+        screened: poolEnvScreened,
+        covered: poolEnvCovered,
+        indoor: poolEnvIndoor,
     },
     screened: {
         Screened: poolScreenedYes,

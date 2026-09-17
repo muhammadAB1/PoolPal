@@ -388,7 +388,7 @@ export function getIdealStatusRange(
   const isFrequentUse =
     pools?.usage_frequency === '4-5' || pools?.usage_frequency === '6-7';
   const hasEnoughUsers =
-    pools?.number_of_users === '3-4' || pools?.number_of_users === '5+';
+    pools?.number_of_users === '3-5' || pools?.number_of_users === '6-10' || pools?.number_of_users === '10+';
   const isHeavyUse = isFrequentUse && hasEnoughUsers;
 
   if (originalKey.ph != undefined) {

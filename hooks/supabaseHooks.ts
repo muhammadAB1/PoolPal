@@ -1,7 +1,7 @@
 import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
 
 import { supabase } from "@/lib/Supabase"
-import { HotTubType, NumberOfPoolUsers, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, SpaAttachmentType, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
+import { HotTubType, ManualChlorineStatus, NumberOfPoolUsers, OccupancyPattern, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, RentalActivity, SaltSystemStatus, ScreenedType, SpaAttachmentType, SpaSanitizer, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
 import { usePool } from "@/providers/PoolProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -159,19 +159,67 @@ export function useSupabase() {
 
     }
 
-    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub, spaAttachment, usageFrequency, numberOfUsers, markStale = true, forceCreate = false }:
-        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType, spaAttachment?: SpaAttachmentType, usageFrequency?: UsageFrequency, numberOfUsers?: NumberOfPoolUsers, markStale?: boolean, forceCreate?: boolean }) {
+    async function poolBasicInsert({
+        poolName,
+        poolType,
+        screened,
+        useType,
+        hasHotTub,
+        spaAttachment,
+        usageFrequency,
+        numberOfUsers,
+        saltSystemStatus,
+        manualChlorine,
+        spaSanitizer,
+        occupancyPattern,
+        unusedMonths,
+        rentalActivity,
+        activeMonths,
+        markStale = true,
+        forceCreate = false,
+    }: {
+        poolName: string
+        poolType?: PoolType
+        screened?: ScreenedType
+        useType?: UseType
+        hasHotTub?: HotTubType
+        spaAttachment?: SpaAttachmentType
+        usageFrequency?: UsageFrequency
+        numberOfUsers?: NumberOfPoolUsers
+        saltSystemStatus?: SaltSystemStatus
+        manualChlorine?: ManualChlorineStatus
+        spaSanitizer?: SpaSanitizer
+        occupancyPattern?: OccupancyPattern
+        unusedMonths?: string[]
+        rentalActivity?: RentalActivity
+        activeMonths?: string[]
+        markStale?: boolean
+        forceCreate?: boolean
+    }) {
 
         const id = forceCreate ? null : await AsyncStorage.getItem('activePoolId');
         const poolBasics = {
             pool_name: poolName,
-            pool_type: poolType ?? null,
+            pool_type: poolType === 'Other' ? 'Chlorine' : poolType ?? null,
             pool_screen: screened ?? null,
             hot_tub_type: hasHotTub ?? null,
             spa_attachment: hasHotTub === 'Yes' ? spaAttachment ?? null : null,
             pool_use_type: useType ?? null,
             usage_frequency: usageFrequency ?? null,
             number_of_users: numberOfUsers ?? null,
+            salt_system_status: poolType === 'Saltwater' ? saltSystemStatus ?? null : null,
+            manual_chlorine_during_salt_failure:
+                poolType === 'Saltwater' && saltSystemStatus === 'not_working' ? manualChlorine ?? null : null,
+            standalone_spa_sanitizer:
+                hasHotTub === 'Yes' && spaAttachment === 'Detached'
+                    ? spaSanitizer === 'unknown' ? 'chlorine' : spaSanitizer ?? null
+                    : null,
+            occupancy_pattern: useType === 'VacationHome' ? occupancyPattern ?? null : null,
+            seasonal_unused_months:
+                useType === 'VacationHome' && occupancyPattern === 'seasonal' ? unusedMonths ?? [] : [],
+            rental_activity: useType === 'ShortTermRental' ? rentalActivity ?? null : null,
+            rental_active_months:
+                useType === 'ShortTermRental' && rentalActivity === 'seasonal' ? activeMonths ?? [] : [],
         };
 
         if (id) {
