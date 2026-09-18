@@ -275,6 +275,7 @@ export function useSupabase() {
     async function poolSizeInsert({ props, markStale = true }: { props: poolSizeInsertProps, markStale?: boolean }) {
         try {
             const id = await AsyncStorage.getItem('activePoolId');
+            console.log(props)
             if (id) {
                 const { error } = await supabase
                     .from('pools')

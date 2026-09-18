@@ -125,6 +125,44 @@ function newSection(index: number): EditableSection {
     };
 }
 
+function toEditableSection(section: FreeformSection, index: number): EditableSection {
+    return {
+        id: section.id || `section-${index + 1}`,
+        length: section.length?.toString() ?? '',
+        averageWidth: section.averageWidth?.toString() ?? '',
+        shallowDepth: section.shallowDepth?.toString() ?? '',
+        deepDepth: section.deepDepth?.toString() ?? '',
+    };
+}
+
+function initialReading(initial?: PoolSizeFields | null) {
+    const extras = initial?.freeformSections ?? [];
+    const hasMainDimensions =
+        initial?.length != null ||
+        initial?.width != null ||
+        initial?.shallowDepth != null ||
+        initial?.deepDepth != null;
+
+    if (hasMainDimensions || extras.length === 0) {
+        return {
+            length: initial?.length != null ? String(initial.length) : '',
+            width: initial?.width != null ? String(initial.width) : '',
+            shallowDepth: initial?.shallowDepth != null ? String(initial.shallowDepth) : '',
+            deepDepth: initial?.deepDepth != null ? String(initial.deepDepth) : '',
+            extraSections: extras.map(toEditableSection),
+        };
+    }
+
+    const [first, ...rest] = extras;
+    return {
+        length: first.length?.toString() ?? '',
+        width: first.averageWidth?.toString() ?? '',
+        shallowDepth: first.shallowDepth?.toString() ?? '',
+        deepDepth: first.deepDepth?.toString() ?? '',
+        extraSections: rest.map((section, index) => toEditableSection(section, index + 1)),
+    };
+}
+
 export default function PoolSizeGallonsScreen({
     initialPoolSize,
     showSkip = true,
@@ -140,47 +178,35 @@ export default function PoolSizeGallonsScreen({
     const remainingSteps = parseRemainingSteps(remaining);
     const isEmbedded = Boolean(onSuccess);
     const initialShape = initialPoolSize?.shape === 'Kidney' ? 'Freeform' : initialPoolSize?.shape ?? 'Rectangle';
+    const seededReading = initialReading(initialPoolSize);
 
     const [measurementMethod, setMeasurementMethod] = useState<MeasurementMethod>('Known');
     const [units, setUnits] = useState<MeasurementUnit>(initialPoolSize?.units ?? (measurement || 'us'));
-    const [length, setLength] = useState<string>(initialPoolSize?.length != null ? String(initialPoolSize.length) : '');
-    const [width, setWidth] = useState<string>(initialPoolSize?.width != null ? String(initialPoolSize.width) : '');
-    const [shallowDepth, setShallowDepth] = useState<string>(
-        initialPoolSize?.shallowDepth != null ? String(initialPoolSize.shallowDepth) : '',
-    );
-    const [deepDepth, setDeepDepth] = useState<string>(
-        initialPoolSize?.deepDepth != null ? String(initialPoolSize.deepDepth) : '',
-    );
+    const [length, setLength] = useState<string>(seededReading.length);
+    const [width, setWidth] = useState<string>(seededReading.width);
+    const [shallowDepth, setShallowDepth] = useState<string>(seededReading.shallowDepth);
+    const [deepDepth, setDeepDepth] = useState<string>(seededReading.deepDepth);
     const [shape, setShape] = useState<PoolShape>(initialShape);
     const [depthProfile, setDepthProfile] = useState<PoolDepthProfile>('ShallowDeep');
-    const [sections, setSections] = useState<EditableSection[]>(() => {
-        if (initialPoolSize?.freeformSections?.length) {
-            return initialPoolSize.freeformSections.map((section, index) => ({
-                id: section.id || `section-${index + 1}`,
-                length: section.length?.toString() ?? '',
-                averageWidth: section.averageWidth?.toString() ?? '',
-                shallowDepth: section.shallowDepth?.toString() ?? '',
-                deepDepth: section.deepDepth?.toString() ?? '',
-            }));
-        }
-        return [newSection(1)];
-    });
+    const [sections, setSections] = useState<EditableSection[]>(seededReading.extraSections);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const isFreeform = shape === 'Freeform' || shape === 'Kidney';
     const nativeVolume = useMemo(() => {
-        if (isFreeform) {
-            const volumes = sections.map((section) => sectionVolume(section, units));
-            if (volumes.some((value) => value == null)) return null;
-            return volumes.reduce<number>((sum, value) => sum + (value ?? 0), 0);
-        }
         const numericLength = numeric(length);
         const numericShallow = numeric(shallowDepth);
         const numericDeep = numeric(deepDepth);
         const numericWidth = shape === 'Round' ? numericLength : numeric(width);
         if (numericLength == null || numericWidth == null || numericShallow == null || numericDeep == null) return null;
-        return shapeVolume(shape as 'Rectangle' | 'Round' | 'Oval', numericLength, numericWidth, numericShallow, numericDeep, units);
+
+        const mainShape = isFreeform ? 'Rectangle' : (shape as 'Rectangle' | 'Round' | 'Oval');
+        const mainVolume = shapeVolume(mainShape, numericLength, numericWidth, numericShallow, numericDeep, units);
+        if (!isFreeform) return mainVolume;
+
+        const extraVolumes = sections.map((section) => sectionVolume(section, units));
+        if (extraVolumes.some((value) => value == null)) return null;
+        return extraVolumes.reduce<number>((sum, value) => sum + (value ?? 0), mainVolume);
     }, [isFreeform, sections, units, length, width, shallowDepth, deepDepth, shape]);
     const volumes = nativeVolume == null ? null : toCanonicalVolumes(nativeVolume, units);
     const primaryVolume = nativeVolume == null ? null : Math.round(nativeVolume);
@@ -218,7 +244,7 @@ export default function PoolSizeGallonsScreen({
     }
 
     function removeSection(id: string) {
-        setSections((current) => (current.length <= 1 ? current : current.filter((section) => section.id !== id)));
+        setSections((current) => current.filter((section) => section.id !== id));
     }
 
     function buildFreeformSections(): FreeformSection[] {
@@ -227,7 +253,7 @@ export default function PoolSizeGallonsScreen({
             const canonical = volume == null ? null : toCanonicalVolumes(volume, units);
             return {
                 id: section.id,
-                index: index + 1,
+                index: index + 2,
                 length: numeric(section.length),
                 averageWidth: numeric(section.averageWidth),
                 shallowDepth: numeric(section.shallowDepth),
@@ -265,10 +291,10 @@ export default function PoolSizeGallonsScreen({
 
             const { error } = await poolSizeInsert({
                 props: {
-                    length: isFreeform ? null : numericLength,
-                    width: isFreeform ? null : numericWidth,
-                    shallowDepth: isFreeform ? null : numericShallow,
-                    deepDepth: isFreeform ? null : numericDeep,
+                    length: numericLength,
+                    width: numericWidth,
+                    shallowDepth: numericShallow,
+                    deepDepth: numericDeep,
                     shape: isFreeform ? 'Freeform' : shape,
                     gallons: units === 'us' ? Math.round(nativeVolume!) : Math.round(volumes.gallons),
                     volumeUsGallons: volumes.gallons,
@@ -390,6 +416,64 @@ export default function PoolSizeGallonsScreen({
                         })}
                     </View>
 
+                    {measurementMethod === 'Estimate' ? (
+                        <>
+                            <Text style={styles.label}>{t('pool_size_q_depth')}</Text>
+                            <View style={styles.stack}>
+                                {POOL_DEPTH_PROFILES.map((profile) => {
+                                    const selected = depthProfile === profile;
+                                    return (
+                                        <TouchableOpacity
+                                            key={profile}
+                                            style={[styles.row, selected && styles.selected]}
+                                            onPress={() => handleDepthProfileChange(profile)}
+                                            activeOpacity={0.86}
+                                        >
+                                            <Text style={styles.rowText}>
+                                                {t(poolDepthProfileTranslationKeys[profile])}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    );
+                                })}
+                            </View>
+                        </>
+                    ) : null}
+
+                    <View style={styles.measurements}>
+                        <Dimension
+                            label={shape === 'Round' ? t('pool_size_diameter_label') : t('pool_size_length_label')}
+                            suffix={distanceSuffix}
+                            value={length}
+                            onChange={setLength}
+                        />
+                        {shape !== 'Round' ? (
+                            <Dimension
+                                label={t('pool_size_width_label')}
+                                suffix={distanceSuffix}
+                                value={width}
+                                onChange={setWidth}
+                            />
+                        ) : null}
+                        <View style={styles.twoInputs}>
+                            <View style={{ flex: 1 }}>
+                                <Dimension
+                                    label={t('pool_size_shallow_depth_label')}
+                                    suffix={distanceSuffix}
+                                    value={shallowDepth}
+                                    onChange={setShallowDepth}
+                                />
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Dimension
+                                    label={t('pool_size_deep_depth_label')}
+                                    suffix={distanceSuffix}
+                                    value={deepDepth}
+                                    onChange={setDeepDepth}
+                                />
+                            </View>
+                        </View>
+                    </View>
+
                     {isFreeform ? (
                         <>
                             <View style={styles.infoBox}>
@@ -398,12 +482,10 @@ export default function PoolSizeGallonsScreen({
                             {sections.map((section, index) => (
                                 <View key={section.id} style={styles.sectionCard}>
                                     <View style={styles.sectionHeader}>
-                                        <Text style={styles.sectionTitle}>{t('pool_size_section_label', { index: index + 1 })}</Text>
-                                        {index > 0 ? (
-                                            <TouchableOpacity onPress={() => removeSection(section.id)}>
-                                                <Text style={styles.removeText}>{t('pool_size_remove_section')}</Text>
-                                            </TouchableOpacity>
-                                        ) : null}
+                                        <Text style={styles.sectionTitle}>{t('pool_size_section_label', { index: index + 2 })}</Text>
+                                        <TouchableOpacity onPress={() => removeSection(section.id)}>
+                                            <Text style={styles.removeText}>{t('pool_size_remove_section')}</Text>
+                                        </TouchableOpacity>
                                     </View>
                                     <Dimension
                                         label={t('pool_size_length_label')}
@@ -443,66 +525,7 @@ export default function PoolSizeGallonsScreen({
                                 </TouchableOpacity>
                             ) : null}
                         </>
-                    ) : (
-                        <>
-                            {measurementMethod === 'Estimate' ? (
-                                <>
-                                    <Text style={styles.label}>{t('pool_size_q_depth')}</Text>
-                                    <View style={styles.stack}>
-                                        {POOL_DEPTH_PROFILES.map((profile) => {
-                                            const selected = depthProfile === profile;
-                                            return (
-                                                <TouchableOpacity
-                                                    key={profile}
-                                                    style={[styles.row, selected && styles.selected]}
-                                                    onPress={() => handleDepthProfileChange(profile)}
-                                                    activeOpacity={0.86}
-                                                >
-                                                    <Text style={styles.rowText}>
-                                                        {t(poolDepthProfileTranslationKeys[profile])}
-                                                    </Text>
-                                                </TouchableOpacity>
-                                            );
-                                        })}
-                                    </View>
-                                </>
-                            ) : null}
-                            <View style={styles.measurements}>
-                                <Dimension
-                                    label={shape === 'Round' ? t('pool_size_diameter_label') : t('pool_size_length_label')}
-                                    suffix={distanceSuffix}
-                                    value={length}
-                                    onChange={setLength}
-                                />
-                                {shape !== 'Round' ? (
-                                    <Dimension
-                                        label={t('pool_size_width_label')}
-                                        suffix={distanceSuffix}
-                                        value={width}
-                                        onChange={setWidth}
-                                    />
-                                ) : null}
-                                <View style={styles.twoInputs}>
-                                    <View style={{ flex: 1 }}>
-                                        <Dimension
-                                            label={t('pool_size_shallow_depth_label')}
-                                            suffix={distanceSuffix}
-                                            value={shallowDepth}
-                                            onChange={setShallowDepth}
-                                        />
-                                    </View>
-                                    <View style={{ flex: 1 }}>
-                                        <Dimension
-                                            label={t('pool_size_deep_depth_label')}
-                                            suffix={distanceSuffix}
-                                            value={deepDepth}
-                                            onChange={setDeepDepth}
-                                        />
-                                    </View>
-                                </View>
-                            </View>
-                        </>
-                    )}
+                    ) : null}
 
                     <View style={styles.volumeCard}>
                         <Text style={styles.volumeLabel}>{t('pool_size_estimated_volume')}</Text>
