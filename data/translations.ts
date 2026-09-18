@@ -505,13 +505,13 @@ export const en = {
   equipment_select_brand: 'Select brand',
   equipment_identify_filter_title: 'Identify your filter from a photo',
   equipment_identify_filter_desc:
-    'Take a clear photo of your filter and PoolWise can help identify its type, brand, and model.',
+    'Take a clear photo of your filter and PoolTonic can help identify its type, brand, and model.',
   equipment_identify_pump_title: 'Identify your pump from a photo',
   equipment_identify_pump_desc:
-    'Take a clear photo of your pump and PoolWise can help identify its type, brand, and model.',
+    'Take a clear photo of your pump and PoolTonic can help identify its type, brand, and model.',
   equipment_photo_id_button: 'Use Photo Identification',
   equipment_premium_badge: 'PREMIUM',
-  equipment_premium_feature: 'PoolWise Premium feature',
+  equipment_premium_feature: 'PoolTonic Premium feature',
   equipment_heater_yes_title: 'Yes, I have a heater',
   equipment_heater_yes_desc: 'Keeps your pool water warm whenever you want to swim.',
   equipment_heater_no_title: 'No heater',
@@ -1546,7 +1546,7 @@ export const es = {
   equipment_basics_heater_label: 'Calentador',
   equipment_basics_heater_yes: 'Sí',
   equipment_basics_heater_no: 'No',
-  equipment_basics_heater_not_sure: 'No estoy seguro',
+  equipment_basics_heater_not_sure: 'No lo sé',
   equipment_basics_continue: 'Continuar',
   equipment_basics_skip_for_now: 'Saltar por ahora',
 
@@ -1609,13 +1609,13 @@ export const es = {
   equipment_select_brand: 'Seleccionar marca',
   equipment_identify_filter_title: 'Identifica tu filtro con una foto',
   equipment_identify_filter_desc:
-    'Haz una foto clara de tu filtro y PoolWise puede ayudar a identificar su tipo, marca y modelo.',
+    'Haz una foto clara de tu filtro y PoolTonic puede ayudar a identificar su tipo, marca y modelo.',
   equipment_identify_pump_title: 'Identifica tu bomba con una foto',
   equipment_identify_pump_desc:
-    'Haz una foto clara de tu bomba y PoolWise puede ayudar a identificar su tipo, marca y modelo.',
+    'Haz una foto clara de tu bomba y PoolTonic puede ayudar a identificar su tipo, marca y modelo.',
   equipment_photo_id_button: 'Usar identificación por foto',
   equipment_premium_badge: 'PREMIUM',
-  equipment_premium_feature: 'Función de PoolWise Premium',
+  equipment_premium_feature: 'Función de PoolTonic Premium',
   equipment_heater_yes_title: 'Sí, tengo un calentador',
   equipment_heater_yes_desc: 'Mantiene el agua de tu piscina caliente cuando quieras nadar.',
   equipment_heater_no_title: 'Sin calentador',

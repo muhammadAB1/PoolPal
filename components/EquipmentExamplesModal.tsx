@@ -26,7 +26,7 @@ interface EquipmentExamplesModalProps {
     onClose: () => void;
     title: string;
     subtitle: string;
-    footerNote: string;
+    footerNote?: string;
     items: EquipmentExampleItem[];
 }
 
@@ -45,8 +45,8 @@ export default function EquipmentExamplesModal({
             presentationStyle="pageSheet"
             onRequestClose={onClose}
         >
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-                <View className="flex-row items-start px-5 pt-2 pb-2">
+            <SafeAreaView className="flex-1 bg-surface-white" style={{ flex: 1 }}>
+                <View className="flex-row items-start px-5 pt-4 pb-3">
                     <TouchableOpacity
                         className="w-9 h-9 items-center justify-center"
                         onPress={onClose}
@@ -68,20 +68,17 @@ export default function EquipmentExamplesModal({
                     <View className="w-9" />
                 </View>
 
-                <ScrollView
-                    className="flex-1"
-                    contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 8, paddingBottom: 24 }}
-                    showsVerticalScrollIndicator={false}
-                >
-                    <View className="gap-4">
+                <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+                    <View className="px-5 pt-2 pb-6 gap-4">
                         {items.map((item) => (
                             <View key={item.key} className="card overflow-hidden">
-                                <Image
-                                    source={item.image}
-                                    className="w-62.5 h-37.5 self-center"
-                                    resizeMode="stretch"
-                                    
-                                />
+                                <View className="w-full h-56 bg-surface-bg overflow-hidden items-center justify-center">
+                                    <Image
+                                        source={item.image}
+                                        style={{ width: '100%', height: 224 }}
+                                        resizeMode="contain"
+                                    />
+                                </View>
                                 <View className="px-4 pt-3 pb-4">
                                     <Text className="text-h3 font-jakarta-extrabold text-charcoal">
                                         {item.title}
@@ -108,17 +105,19 @@ export default function EquipmentExamplesModal({
                                 </View>
                             </View>
                         ))}
-                    </View>
 
-                    <View className="flex-row items-start gap-2 mt-4 px-1">
-                        <Image
-                            source={icons.info}
-                            className="w-4 h-4 mt-0.5"
-                            resizeMode="contain"
-                        />
-                        <Text className="flex-1 text-tiny font-jakarta text-sub leading-relaxed">
-                            {footerNote}
-                        </Text>
+                        {footerNote ? (
+                            <View className="flex-row items-start gap-2 mt-4 px-1">
+                                <Image
+                                    source={icons.info}
+                                    className="w-4 h-4 mt-0.5"
+                                    resizeMode="contain"
+                                />
+                                <Text className="flex-1 text-tiny font-jakarta text-sub leading-relaxed">
+                                    {footerNote}
+                                </Text>
+                            </View>
+                        ) : null}
                     </View>
                 </ScrollView>
             </SafeAreaView>

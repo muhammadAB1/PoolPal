@@ -1,8 +1,8 @@
 import EquipmentExamplesModal, {
     EquipmentExampleItem,
 } from '@/components/EquipmentExamplesModal';
-import { equipmentImages, icons } from '@/constants/images';
-import { colors } from '@/constants/theme';
+import { equipmentChoiceImages, equipmentImages } from '@/constants/images';
+import { colors, shadow } from '@/constants/theme';
 import {
     FILTER_TYPES,
     filterExampleTranslationKeys,
@@ -22,12 +22,57 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Image,
+    type ImageSourcePropType,
     ScrollView,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+function EquipmentChoiceCard({
+    selected,
+    onPress,
+    image,
+    title,
+    description,
+}: {
+    selected: boolean;
+    onPress: () => void;
+    image: ImageSourcePropType;
+    title: string;
+    description: string;
+}) {
+    return (
+        <TouchableOpacity
+            activeOpacity={0.82}
+            onPress={onPress}
+            className={`rounded-2xl border p-3 flex-row items-center ${
+                selected
+                    ? 'bg-surface-mint border-surface-mint-border'
+                    : 'bg-surface-white border-border-default'
+            }`}
+            style={shadow.card}
+        >
+            <View className="w-16 h-16 rounded-xl bg-surface-bg overflow-hidden items-center justify-center">
+                <Image source={image} style={{ width: 64, height: 64 }} resizeMode="contain" />
+            </View>
+
+            <View className="flex-1 ml-3 mr-2">
+                <Text className="text-body-lg font-jakarta-bold text-charcoal">{title}</Text>
+                <Text className="text-small font-jakarta text-sub mt-1 leading-relaxed">
+                    {description}
+                </Text>
+            </View>
+
+            <Ionicons
+                name={selected ? 'radio-button-on' : 'radio-button-off'}
+                size={24}
+                color={colors.brand.navy}
+            />
+        </TouchableOpacity>
+    );
+}
 
 export default function EquipmentBasicsScreen() {
     const router = useRouter();
@@ -38,16 +83,14 @@ export default function EquipmentBasicsScreen() {
     const remainingSteps = parseRemainingSteps(remaining);
 
     const [filterType, setFilterType] = useState<FilterType>('Sand');
-    const [filterMenuOpen, setFilterMenuOpen] = useState(false);
     const [filterExamplesVisible, setFilterExamplesVisible] = useState(false);
 
     const [pumpType, setPumpType] = useState<PumpType>('Variable');
-    const [pumpMenuOpen, setPumpMenuOpen] = useState(false);
     const [pumpExamplesVisible, setPumpExamplesVisible] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [heater, setHeater] = useState<HeaterOption>('Yes');
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const filterExampleItems: EquipmentExampleItem[] = FILTER_TYPES.map((item) => {
         const keys = filterExampleTranslationKeys[item];
@@ -108,25 +151,22 @@ export default function EquipmentBasicsScreen() {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+        <SafeAreaView className="flex-1 bg-surface-white" style={{ flex: 1 }}>
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
                 showsVerticalScrollIndicator={false}
             >
-                <View className="flex-1 px-5 pt-2 -mt-6">
-                    <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-6">
+                <View className="flex-1 px-5 pt-2">
+                    <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-2">
                         {t('equipment_basics_title')}
                     </Text>
                     <Text className="text-body font-jakarta text-sub mt-1">
                         {t('equipment_basics_subtitle')}
                     </Text>
 
-                    {/* Filter Type */}
                     <View className="mt-6">
                         <View className="flex-row items-center justify-between">
-                            <Text className="section__title">
-                                {t('equipment_basics_filter_label')}
-                            </Text>
+                            <Text className="section__title">{t('equipment_basics_filter_label')}</Text>
                             <TouchableOpacity
                                 onPress={() => setFilterExamplesVisible(true)}
                                 activeOpacity={0.7}
@@ -137,90 +177,26 @@ export default function EquipmentBasicsScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        <TouchableOpacity
-                            className="form-input flex-row items-center justify-between mt-3"
-                            activeOpacity={0.8}
-                            onPress={() => setFilterMenuOpen((prev) => !prev)}
-                        >
-                            <View className="flex-row items-center gap-2.5">
-                                <View className="w-2 h-2 rounded-full bg-brand-blue" />
-                                <Text className="text-body font-jakarta text-charcoal">
-                                    {t(filterTypeTranslationKeys[filterType])}
-                                </Text>
-                            </View>
-                            <Ionicons
-                                name={filterMenuOpen ? 'chevron-up' : 'chevron-down'}
-                                size={18}
-                                color={colors.text.sub}
-                            />
-                        </TouchableOpacity>
-
-                        {filterMenuOpen ? (
-                            <View className="mt-2 rounded-xl border border-border-default bg-surface-white overflow-hidden">
-                                {FILTER_TYPES.map((item, index) => {
-                                    const selected = filterType === item;
-                                    return (
-                                        <TouchableOpacity
-                                            key={item}
-                                            activeOpacity={0.7}
-                                            onPress={() => {
-                                                setFilterType(item);
-                                                setFilterMenuOpen(false);
-                                            }}
-                                            className={`px-4 py-3 ${index !== FILTER_TYPES.length - 1
-                                                ? 'border-b border-border-default'
-                                                : ''
-                                                } ${selected ? 'bg-surface-soft-aqua' : ''}`}
-                                        >
-                                            <Text
-                                                className={`text-body font-jakarta ${selected
-                                                    ? 'font-jakarta-bold text-brand-blue'
-                                                    : 'text-charcoal'
-                                                    }`}
-                                            >
-                                                {t(filterTypeTranslationKeys[item])}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    );
-                                })}
-                            </View>
-                        ) : null}
-
-                        <TouchableOpacity
-                            className="flex-row items-start gap-3 rounded-2xl border border-dashed border-brand-aqua bg-surface-soft-aqua px-4 py-3.5 mt-3"
-                            activeOpacity={0.7}
-                            onPress={() => { }}
-                        >
-                            <View className="w-14 h-14 rounded-xl bg-surface-white items-center justify-center">
-                                <Image
-                                    source={icons.camera}
-                                    className="w-7 h-7"
-                                    resizeMode="contain"
-                                />
-                            </View>
-                            <View className="flex-1">
-                                <Text className="text-body font-jakarta-bold text-charcoal">
-                                    {t('equipment_basics_upload_filter_title')}
-                                </Text>
-                                <Text className="text-tiny font-jakarta text-sub mt-1 leading-relaxed">
-                                    {t('equipment_basics_upload_filter_desc')}
-                                </Text>
-                            </View>
-                            <Ionicons
-                                name="chevron-forward"
-                                size={18}
-                                color={colors.text.sub}
-                                style={{ marginTop: 4 }}
-                            />
-                        </TouchableOpacity>
+                        <View className="gap-3 mt-3">
+                            {FILTER_TYPES.map((item) => {
+                                const keys = filterExampleTranslationKeys[item];
+                                return (
+                                    <EquipmentChoiceCard
+                                        key={item}
+                                        selected={filterType === item}
+                                        onPress={() => setFilterType(item)}
+                                        image={equipmentChoiceImages.filter[item]}
+                                        title={t(filterTypeTranslationKeys[item])}
+                                        description={t(keys.description)}
+                                    />
+                                );
+                            })}
+                        </View>
                     </View>
 
-                    {/* Pump Type */}
-                    <View className="mt-6">
+                    <View className="mt-8">
                         <View className="flex-row items-center justify-between">
-                            <Text className="section__title">
-                                {t('equipment_basics_pump_label')}
-                            </Text>
+                            <Text className="section__title">{t('equipment_basics_pump_label')}</Text>
                             <TouchableOpacity
                                 onPress={() => setPumpExamplesVisible(true)}
                                 activeOpacity={0.7}
@@ -231,86 +207,55 @@ export default function EquipmentBasicsScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        <TouchableOpacity
-                            className="form-input flex-row items-center justify-between mt-3"
-                            activeOpacity={0.8}
-                            onPress={() => setPumpMenuOpen((prev) => !prev)}
-                        >
-                            <View className="flex-row items-center gap-2.5">
-                                <View className="w-2 h-2 rounded-full bg-brand-blue" />
-                                <Text className="text-body font-jakarta text-charcoal">
-                                    {t(pumpTypeTranslationKeys[pumpType])}
-                                </Text>
-                            </View>
-                            <Ionicons
-                                name={pumpMenuOpen ? 'chevron-up' : 'chevron-down'}
-                                size={18}
-                                color={colors.text.sub}
-                            />
-                        </TouchableOpacity>
+                        <View className="gap-3 mt-3">
+                            {PUMP_TYPES.map((item) => {
+                                const keys = pumpExampleTranslationKeys[item];
+                                return (
+                                    <EquipmentChoiceCard
+                                        key={item}
+                                        selected={pumpType === item}
+                                        onPress={() => setPumpType(item)}
+                                        image={equipmentChoiceImages.pump[item]}
+                                        title={t(pumpTypeTranslationKeys[item])}
+                                        description={t(keys.description)}
+                                    />
+                                );
+                            })}
+                        </View>
 
-                        {pumpMenuOpen ? (
-                            <View className="mt-2 rounded-xl border border-border-default bg-surface-white overflow-hidden">
-                                {PUMP_TYPES.map((item, index) => {
-                                    const selected = pumpType === item;
-                                    return (
-                                        <TouchableOpacity
-                                            key={item}
-                                            activeOpacity={0.7}
-                                            onPress={() => {
-                                                setPumpType(item);
-                                                setPumpMenuOpen(false);
-                                            }}
-                                            className={`px-4 py-3 ${index !== PUMP_TYPES.length - 1
-                                                ? 'border-b border-border-default'
-                                                : ''
-                                                } ${selected ? 'bg-surface-soft-aqua' : ''}`}
-                                        >
-                                            <Text
-                                                className={`text-body font-jakarta ${selected
-                                                    ? 'font-jakarta-bold text-brand-blue'
-                                                    : 'text-charcoal'
-                                                    }`}
-                                            >
-                                                {t(pumpTypeTranslationKeys[item])}
-                                            </Text>
-                                        </TouchableOpacity>
-                                    );
-                                })}
+                        <View className="rounded-2xl border border-dashed border-brand-aqua bg-surface-soft-aqua p-4 mt-5">
+                            <View className="flex-row items-center justify-end gap-1">
+                                <Ionicons name="sparkles" size={12} color={colors.brand.blue} />
+                                <Text className="text-tiny font-jakarta-extrabold text-brand-blue">
+                                    {t('equipment_premium_badge')}
+                                </Text>
                             </View>
-                        ) : null}
 
-                        <TouchableOpacity
-                            className="flex-row items-start gap-3 rounded-2xl border border-dashed border-brand-aqua bg-surface-soft-aqua px-4 py-3.5 mt-3"
-                            activeOpacity={0.7}
-                            onPress={() => { }}
-                        >
-                            <View className="w-14 h-14 rounded-xl bg-surface-white items-center justify-center">
-                                <Image
-                                    source={icons.camera}
-                                    className="w-7 h-7"
-                                    resizeMode="contain"
-                                />
-                            </View>
-                            <View className="flex-1">
-                                <Text className="text-body font-jakarta-bold text-charcoal">
-                                    {t('equipment_basics_upload_pump_title')}
-                                </Text>
-                                <Text className="text-tiny font-jakarta text-sub mt-1 leading-relaxed">
-                                    {t('equipment_basics_upload_pump_desc')}
+                            <View className="flex-row items-center gap-2 mt-1.5">
+                                <Ionicons name="camera-outline" size={20} color={colors.brand.navy} />
+                                <Text className="flex-1 text-body-lg font-jakarta-bold text-charcoal">
+                                    {t('equipment_identify_pump_title')}
                                 </Text>
                             </View>
-                            <Ionicons
-                                name="chevron-forward"
-                                size={18}
-                                color={colors.text.sub}
-                                style={{ marginTop: 4 }}
-                            />
-                        </TouchableOpacity>
+
+                            <Text className="text-small font-jakarta text-sub mt-2 leading-relaxed">
+                                {t('equipment_identify_pump_desc')}
+                            </Text>
+
+                            <TouchableOpacity
+                                className="bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2 mt-3"
+                                activeOpacity={0.85}
+                                onPress={() => {}}
+                            >
+                                <Ionicons name="images-outline" size={18} color={colors.brand.blue} />
+                                <Text className="text-body font-jakarta-bold text-brand-blue">
+                                    {t('equipment_photo_id_button')}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
 
-                    {/* Heater */}
-                    <View className="mt-6">
+                    <View className="mt-8">
                         <Text className="section__title">{t('equipment_basics_heater_label')}</Text>
 
                         <View className="flex-row gap-2.5 mt-3">
@@ -319,16 +264,18 @@ export default function EquipmentBasicsScreen() {
                                 return (
                                     <TouchableOpacity
                                         key={item}
-                                        activeOpacity={0.8}
+                                        activeOpacity={0.86}
                                         onPress={() => setHeater(item)}
-                                        className={`flex-1 rounded-full py-3.5 items-center border-[1.5px] ${selected
-                                            ? 'bg-surface-mint border-surface-mint-border'
-                                            : 'bg-surface-white border-border-default'
-                                            }`}
+                                        className={`flex-1 rounded-full py-3.5 items-center border-[1.5px] ${
+                                            selected
+                                                ? 'bg-surface-mint border-surface-mint-border'
+                                                : 'bg-surface-white border-border-default'
+                                        }`}
                                     >
                                         <Text
-                                            className={`text-body font-jakarta-bold ${selected ? 'text-success-text' : 'text-charcoal'
-                                                }`}
+                                            className={`text-body font-jakarta-bold ${
+                                                selected ? 'text-brand-navy' : 'text-charcoal'
+                                            }`}
                                         >
                                             {t(heaterOptionTranslationKeys[item])}
                                         </Text>
@@ -349,7 +296,9 @@ export default function EquipmentBasicsScreen() {
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className="bg-brand-blue rounded-full py-4.25 items-center justify-center"
+                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${
+                        isSubmitting ? 'opacity-50' : ''
+                    }`}
                     onPress={handleContinue}
                     disabled={isSubmitting}
                     activeOpacity={0.85}
@@ -375,7 +324,6 @@ export default function EquipmentBasicsScreen() {
                 onClose={() => setFilterExamplesVisible(false)}
                 title={t('equipment_examples_filter_title')}
                 subtitle={t('equipment_examples_filter_subtitle')}
-                footerNote={t('equipment_examples_filter_footer')}
                 items={filterExampleItems}
             />
 
@@ -384,7 +332,6 @@ export default function EquipmentBasicsScreen() {
                 onClose={() => setPumpExamplesVisible(false)}
                 title={t('equipment_examples_pump_title')}
                 subtitle={t('equipment_examples_pump_subtitle')}
-                footerNote={t('equipment_examples_pump_footer')}
                 items={pumpExampleItems}
             />
         </SafeAreaView>

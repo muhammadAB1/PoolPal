@@ -100,6 +100,12 @@ import filterDe from '../assets/equipment-basic-images/filter_de.png';
 import pumpSingleSpeed from '../assets/equipment-basic-images/pump_single_speed.png';
 import pumpDualSpeed from '../assets/equipment-basic-images/pump_dual_speed.png';
 import pumpVariableSpeed from '../assets/equipment-basic-images/pump_variable_speed.png';
+import equipmentChoiceSand from '../assets/equipment-basic-images/pooltonic-sand_filter.png';
+import equipmentChoiceCartridge from '../assets/equipment-basic-images/pooltonic-cartridge_filter.png';
+import equipmentChoiceDe from '../assets/equipment-basic-images/pooltonic-de_filter.png';
+import equipmentChoiceSingle from '../assets/equipment-basic-images/pooltonic-single_speed_pump.png';
+import equipmentChoiceDual from '../assets/equipment-basic-images/pooltonic-dual_speed_pump.png';
+import equipmentChoiceVariable from '../assets/equipment-basic-images/pooltonic-variable_speed_pump.png';
 
 // ─── Pool Surface Type (keyed to DB enum values) ─────────────────────────────
 import surfacePlaster from '../assets/pool-surface-images/plaster.png';
@@ -308,6 +314,23 @@ export const equipmentImages = {
         Single: pumpSingleSpeed,
         Dual: pumpDualSpeed,
         Variable: pumpVariableSpeed,
+    },
+} as const;
+
+/**
+ * Selectable Equipment Basics cards use this PoolTonic artwork.
+ * See Examples uses `equipmentImages` above.
+ */
+export const equipmentChoiceImages = {
+    filter: {
+        Sand: equipmentChoiceSand,
+        Cartridge: equipmentChoiceCartridge,
+        DE: equipmentChoiceDe,
+    },
+    pump: {
+        Single: equipmentChoiceSingle,
+        Dual: equipmentChoiceDual,
+        Variable: equipmentChoiceVariable,
     },
 } as const;
 
