@@ -6,10 +6,10 @@ import type {
     ManualChlorineStatus,
     NumberOfPoolUsers,
     OccupancyPattern,
+    PoolEnvironment,
     PoolType,
     RentalActivity,
     SaltSystemStatus,
-    ScreenedType,
     SpaAttachmentType,
     SpaSanitizer,
     UsageFrequency,
@@ -37,7 +37,7 @@ const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 type PoolBasicsFields = {
     poolName?: string;
     poolType?: PoolType;
-    screened?: ScreenedType;
+    screened?: PoolEnvironment | 'Unscreened';
     hasHotTub?: HotTubType;
     spaAttachment?: SpaAttachmentType;
     useType?: UseType;
@@ -408,10 +408,10 @@ export default function PoolBasicsScreen({
                     <Section title={t('pool_basics_environment_title')} subtitle={t('pool_basics_environment_subtitle')}>
                         <View style={styles.grid}>
                             {([
-                                { value: 'outdoor' as const, label: t('pool_basics_environment_outdoor'), description: t('pool_basics_environment_outdoor_desc'), image: poolBasicsImages.environment.outdoor },
-                                { value: 'screened' as const, label: t('pool_basics_environment_screened'), description: t('pool_basics_environment_screened_desc'), image: poolBasicsImages.environment.screened },
-                                { value: 'covered' as const, label: t('pool_basics_environment_covered'), description: t('pool_basics_environment_covered_desc'), image: poolBasicsImages.environment.covered },
-                                { value: 'indoor' as const, label: t('pool_basics_environment_indoor'), description: t('pool_basics_environment_indoor_desc'), image: poolBasicsImages.environment.indoor },
+                                { value: 'outdoor' as const, label: t('pool_basics_environment_outdoor'), description: t('pool_basics_environment_outdoor_desc'), image: poolBasicsImages.environment.Outdoor },
+                                { value: 'screened' as const, label: t('pool_basics_environment_screened'), description: t('pool_basics_environment_screened_desc'), image: poolBasicsImages.environment.Screened },
+                                { value: 'covered' as const, label: t('pool_basics_environment_covered'), description: t('pool_basics_environment_covered_desc'), image: poolBasicsImages.environment.Covered },
+                                { value: 'indoor' as const, label: t('pool_basics_environment_indoor'), description: t('pool_basics_environment_indoor_desc'), image: poolBasicsImages.environment.Indoor },
                             ]).map((option) => (
                                 <SelectionCard
                                     key={option.value}

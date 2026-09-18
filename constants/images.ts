@@ -252,8 +252,9 @@ export const icons = {
 
 /**
  * Pool Basics screen images.
- * Keys for poolType match the Supabase DB enum values exactly:
+ * Keys for poolType and environment match the stored pool values:
  *   Chlorine | Saltwater | Bromine | Other
+ *   Outdoor | Screened | Covered | Indoor
  */
 export const poolBasicsImages = {
     poolType: {
@@ -263,10 +264,10 @@ export const poolBasicsImages = {
         Other: poolTypeUnknown,
     },
     environment: {
-        outdoor: poolEnvOutdoor,
-        screened: poolEnvScreened,
-        covered: poolEnvCovered,
-        indoor: poolEnvIndoor,
+        Outdoor: poolEnvOutdoor,
+        Screened: poolEnvScreened,
+        Covered: poolEnvCovered,
+        Indoor: poolEnvIndoor,
     },
     screened: {
         Screened: poolScreenedYes,

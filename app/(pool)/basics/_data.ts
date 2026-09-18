@@ -1,8 +1,8 @@
 import type {
   HotTubType,
   NumberOfPoolUsers,
+  PoolEnvironment,
   PoolType,
-  ScreenedType,
   SpaAttachmentType,
   UsageFrequency,
   UseType,
@@ -28,9 +28,11 @@ export const POOL_BASICS = {
       database_column_name: 'pool_screen' as const,
       title: 'pool_basics_review_environment',
       value: {
-        Screened: { name: 'pool_basics_screened_yes', description: 'pool_basics_screened_yes_desc' },
-        Unscreened: { name: 'pool_basics_screened_no', description: 'pool_basics_screened_no_desc' },
-      } as Record<ScreenedType, { name: string; description: string }>,
+        Outdoor: { name: 'pool_basics_environment_outdoor', description: 'pool_basics_environment_outdoor_desc' },
+        Screened: { name: 'pool_basics_environment_screened', description: 'pool_basics_environment_screened_desc' },
+        Covered: { name: 'pool_basics_environment_covered', description: 'pool_basics_environment_covered_desc' },
+        Indoor: { name: 'pool_basics_environment_indoor', description: 'pool_basics_environment_indoor_desc' },
+      } as Record<PoolEnvironment, { name: string; description: string }>,
     },
     {
       database_column_name: 'hot_tub_type' as const,

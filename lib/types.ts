@@ -17,7 +17,7 @@ export type Profile = {
 }
 
 export type PoolType = 'Chlorine' | 'Saltwater' | 'Bromine' | 'Other';
-export type ScreenedType = 'Screened' | 'Unscreened';
+export type PoolEnvironment = 'Outdoor' | 'Screened' | 'Covered' | 'Indoor';
 export type UseType = 'Family' | 'VacationHome' | 'ShortTermRental';
 export type HotTubType = 'Yes' | 'No';
 export type SpaAttachmentType = 'Attached' | 'Detached';
@@ -26,6 +26,7 @@ export type NumberOfPoolUsers = '1-2' | '3-5' | '6-10' | '10+';
 export type SaltSystemStatus = 'working' | 'not_working';
 export type ManualChlorineStatus = 'yes' | 'no';
 export type SpaSanitizer = 'chlorine' | 'saltwater' | 'bromine' | 'unknown';
+export type PoolBodyType = 'pool' | 'hot_tub';
 export type OccupancyPattern = 'year_round' | 'seasonal';
 export type RentalActivity = 'year_round' | 'seasonal';
 
@@ -82,10 +83,12 @@ export type Pool = {
     owner_user_id: string
     pool_name: string
     pool_type: PoolType
-    pool_screen: ScreenedType
+    pool_screen?: PoolEnvironment | null
     pool_use_type: UseType
     usage_frequency?: UsageFrequency | null
     number_of_users?: NumberOfPoolUsers | null
+    parent_pool_id?: string | null
+    body_type?: PoolBodyType
     hot_tub_type?: HotTubType
     spa_attachment?: SpaAttachmentType | null
     salt_system_status?: SaltSystemStatus | null

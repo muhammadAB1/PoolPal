@@ -68,7 +68,7 @@ const QUICK_ACTIONS: QuickAction[] = [
 export default function DashboardScreen() {
   const { t } = useTranslation();
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, name } = useAuth();
   const { pools, refreshPoolsIfStale } = usePool();
   const { latestReading } = useTestStrips();
 
@@ -78,9 +78,9 @@ export default function DashboardScreen() {
     }, [refreshPoolsIfStale]),
   );
 
-  const displayName = getFirstName(user) ?? t('dashboard_greeting_fallback_name');
+  const displayName = getFirstName(name) ?? t('dashboard_greeting_fallback_name');
   const avatarUrl = getAvatarUrl(user);
-  const initials = getInitials(user);
+  const initials = getInitials(name, user?.email);
   const completionScore = pools?.profile_completion_score ?? 0;
 
   const [checklistCompleted, setChecklistCompleted] = useState(0);

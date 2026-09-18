@@ -20,7 +20,7 @@ export default function ProfileScreen() {
   const { logout } = useSupabase();
 
   const avatarUrl = getAvatarUrl(user);
-  const initials = getInitials(user);
+  const initials = getInitials(name, user?.email);
   const fullName = name ?? t('dashboard_greeting_fallback_name');
 
   const detailRows = [

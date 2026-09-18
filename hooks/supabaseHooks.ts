@@ -1,7 +1,8 @@
 import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
 
+import { isHotTubPool, spaSanitizerToPoolType } from "@/lib/pool"
 import { supabase } from "@/lib/Supabase"
-import { HotTubType, ManualChlorineStatus, NumberOfPoolUsers, OccupancyPattern, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, RentalActivity, SaltSystemStatus, ScreenedType, SpaAttachmentType, SpaSanitizer, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
+import { HotTubType, ManualChlorineStatus, NumberOfPoolUsers, OccupancyPattern, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolEnvironment, PoolType, RentalActivity, SaltSystemStatus, SpaAttachmentType, SpaSanitizer, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
 import { usePool } from "@/providers/PoolProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -18,6 +19,55 @@ type OAuthResult = {
 
     error: Error | null
 
+}
+
+async function upsertDetachedSpaPool({
+    ownerUserId,
+    parentId,
+    detachedSpaName,
+    previousDetachedSpaName,
+    spaSanitizer,
+}: {
+    ownerUserId?: string
+    parentId: string
+    detachedSpaName: string
+    previousDetachedSpaName?: string
+    spaSanitizer?: SpaSanitizer
+}) {
+    const spaFields = {
+        pool_type: spaSanitizerToPoolType(spaSanitizer),
+        body_type: 'hot_tub' as const,
+        parent_pool_id: parentId,
+    }
+
+    const { data: existing, error: existingError } = await supabase
+        .from('pools')
+        .select('id, pool_name')
+        .eq('parent_pool_id', parentId)
+        .maybeSingle()
+    if (existingError) return existingError
+
+    if (existing) {
+        const keepCustomName =
+            existing.pool_name !== previousDetachedSpaName && existing.pool_name !== detachedSpaName
+        const { error: updateError } = await supabase
+            .from('pools')
+            .update({
+                ...spaFields,
+                ...(keepCustomName ? {} : { pool_name: detachedSpaName }),
+            })
+            .eq('id', existing.id)
+        return updateError
+    }
+
+    const { error: insertError } = await supabase
+        .from('pools')
+        .insert({
+            owner_user_id: ownerUserId,
+            pool_name: detachedSpaName,
+            ...spaFields,
+        })
+    return insertError
 }
 
 export function useSupabase() {
@@ -185,12 +235,14 @@ export function useSupabase() {
         unusedMonths,
         rentalActivity,
         activeMonths,
+        detachedSpaName,
+        previousDetachedSpaName,
         markStale = true,
         forceCreate = false,
     }: {
         poolName: string
         poolType?: PoolType
-        screened?: ScreenedType
+        screened?: PoolEnvironment | 'Unscreened'
         useType?: UseType
         hasHotTub?: HotTubType
         spaAttachment?: SpaAttachmentType
@@ -203,6 +255,8 @@ export function useSupabase() {
         unusedMonths?: string[]
         rentalActivity?: RentalActivity
         activeMonths?: string[]
+        detachedSpaName?: string
+        previousDetachedSpaName?: string
         markStale?: boolean
         forceCreate?: boolean
     }) {
@@ -232,6 +286,9 @@ export function useSupabase() {
                 useType === 'ShortTermRental' && rentalActivity === 'seasonal' ? activeMonths ?? [] : [],
         };
 
+        const shouldCreateDetachedSpa =
+            hasHotTub === 'Yes' && spaAttachment === 'Detached' && Boolean(detachedSpaName);
+
         if (id) {
             const { data, error } = await supabase
                 .from('pools')
@@ -239,20 +296,53 @@ export function useSupabase() {
                 .eq('id', id)
                 .select()
                 .single()
-            if (!error && markStale) markPoolsStale();
+            if (error) return { data, error }
+
+            if (shouldCreateDetachedSpa && data && !isHotTubPool(data) && detachedSpaName) {
+                const spaError = await upsertDetachedSpaPool({
+                    ownerUserId: user?.id,
+                    parentId: data.id,
+                    detachedSpaName,
+                    previousDetachedSpaName,
+                    spaSanitizer,
+                })
+                if (spaError) {
+                    if (markStale) markPoolsStale();
+                    return { data, error: spaError }
+                }
+            }
+
+            if (markStale) markPoolsStale();
             return { data, error }
         }
 
         else {
             const { data, error } = await supabase
                 .from('pools')
-                .insert({ owner_user_id: user?.id, ...poolBasics })
+                .insert({ owner_user_id: user?.id, body_type: 'pool', ...poolBasics })
                 .select()
                 .single();
+            if (error) return { data, error }
+
             if (data) {
                 await AsyncStorage.setItem('activePoolId', data.id);
             }
-            if (!error && markStale) markPoolsStale();
+
+            if (shouldCreateDetachedSpa && data && detachedSpaName) {
+                const spaError = await upsertDetachedSpaPool({
+                    ownerUserId: user?.id,
+                    parentId: data.id,
+                    detachedSpaName,
+                    previousDetachedSpaName,
+                    spaSanitizer,
+                })
+                if (spaError) {
+                    if (markStale) markPoolsStale();
+                    return { data, error: spaError }
+                }
+            }
+
+            if (markStale) markPoolsStale();
             return { data, error }
         }
     }

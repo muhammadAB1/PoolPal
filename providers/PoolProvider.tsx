@@ -1,3 +1,4 @@
+import { sortPoolsWithSpasBesideParents } from '@/lib/pool';
 import { supabase } from '@/lib/Supabase';
 import type { Pool } from '@/lib/types';
 import { useAuth } from '@/providers/AuthProvider';
@@ -83,7 +84,7 @@ export function PoolProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const poolsList = list ?? [];
+    const poolsList = sortPoolsWithSpasBesideParents(list ?? []);
     allPoolsRef.current = poolsList;
     setAllPools(poolsList);
 

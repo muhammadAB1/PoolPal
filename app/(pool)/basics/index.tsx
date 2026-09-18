@@ -2,6 +2,7 @@ import PoolBasicsForm from '@/app/(onboarding)/pool-basics';
 import PoolReviewHeader from '@/components/PoolReviewHeader';
 import { poolTabImages } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
+import { toPoolEnvironment } from '@/lib/pool';
 import { usePool } from '@/providers/PoolProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Href, useRouter } from 'expo-router';
@@ -29,7 +30,11 @@ export default function PoolBasicsScreen() {
   const [isEditing, setIsEditing] = useState(false);
 
   const updatedPoolBasics = POOL_BASICS.details.map((detail) => {
-    const selected = pools?.[detail.database_column_name];
+    const rawSelected = pools?.[detail.database_column_name];
+    const selected =
+      detail.database_column_name === 'pool_screen'
+        ? toPoolEnvironment(typeof rawSelected === 'string' ? rawSelected : null)
+        : rawSelected;
     const option = selected
       ? (detail.value as Record<string, { name: string; description: string }>)[selected]
       : undefined;
@@ -42,6 +47,8 @@ export default function PoolBasicsScreen() {
       },
     };
   });
+
+  const environmentLabel = updatedPoolBasics.find((row) => row.database_column_name === 'pool_screen')?.value.name;
 
   const sectionCompleted = pools?.missing_details?.includes('pool-basics') ? false : true;
 
@@ -119,7 +126,7 @@ export default function PoolBasicsScreen() {
                       : pools?.pool_type === 'Other'
                         ? t('pool_basics_type_other')
                         : t('pool_basics_type_saltwater'),
-                  pools?.pool_screen === 'Screened' ? t('pool_basics_screened_yes') : t('pool_basics_screened_no'),
+                  environmentLabel ? t(environmentLabel) : '',
                   pools?.hot_tub_type === 'Yes' && pools?.spa_attachment
                     ? `${t(pools.spa_attachment === 'Attached' ? 'pool_basics_spa_attached' : 'pool_basics_spa_detached')} ${t('pool_basics_review_hot_tub_tag')}`
                     : '',
