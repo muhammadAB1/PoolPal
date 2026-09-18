@@ -393,7 +393,14 @@ export function useSupabase() {
         }
     }
 
-    async function poolEquipmentInsert({ props }: { props: poolEquipmentInsertProps }) {
+    async function poolEquipmentInsert({
+        props,
+        markStale = true,
+    }: {
+        props: poolEquipmentInsertProps
+        /** Set false when the caller will refresh the provider itself (Pool tab Edit). */
+        markStale?: boolean
+    }) {
         try {
             const id = await AsyncStorage.getItem('activePoolId');
             if (id) {
@@ -401,7 +408,7 @@ export function useSupabase() {
                     .from('pools')
                     .update({ filter_type: props.filterType, pump_type: props.pumpType, heater: props.heaterOption })
                     .eq('id', id)
-                if (!error) markPoolsStale();
+                if (!error && markStale) markPoolsStale();
                 return { error }
             }
             return { error: new Error('Pool ID not found') }

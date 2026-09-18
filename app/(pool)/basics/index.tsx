@@ -14,10 +14,17 @@ import { POOL_BASICS } from './_data';
 
 const DETAIL_ICONS = {
   pool_type: 'help-circle-outline',
+  salt_system_status: 'cog-outline',
+  manual_chlorine_during_salt_failure: 'flask-outline',
   pool_screen: 'shield-outline',
   hot_tub_type: 'waves',
   spa_attachment: 'waves',
+  standalone_spa_sanitizer: 'hot-tub',
   pool_use_type: 'account-multiple-outline',
+  occupancy_pattern: 'calendar-clock',
+  seasonal_unused_months: 'calendar-month-outline',
+  rental_activity: 'home-city-outline',
+  rental_active_months: 'calendar-check-outline',
   usage_frequency: 'calendar-week',
   number_of_users: 'account-group-outline',
 } as const;
@@ -35,9 +42,16 @@ export default function PoolBasicsScreen() {
       detail.database_column_name === 'pool_screen'
         ? toPoolEnvironment(typeof rawSelected === 'string' ? rawSelected : null)
         : rawSelected;
-    const option = selected
-      ? (detail.value as Record<string, { name: string; description: string }>)[selected]
-      : undefined;
+    const option = Array.isArray(selected)
+      ? selected.length
+        ? {
+            name: selected.join(', '),
+            description: Object.values(detail.value)[0]?.description ?? '',
+          }
+        : undefined
+      : selected
+        ? (detail.value as Record<string, { name: string; description: string }>)[String(selected)]
+        : undefined;
 
     return {
       ...detail,
@@ -175,7 +189,14 @@ export default function PoolBasicsScreen() {
           <View className="card overflow-hidden" style={shadow.card}>
             {updatedPoolBasics.map((row, index) => {
               if (pools?.pool_use_type !== 'Family' && (row.database_column_name === 'usage_frequency' || row.database_column_name === 'number_of_users')) return null;
-              if (row.database_column_name === 'hot_tub_type' || (pools?.hot_tub_type !== 'Yes' && row.database_column_name === 'spa_attachment')) return null;
+              if (row.database_column_name === 'hot_tub_type' || (pools?.hot_tub_type !== 'Yes' && (row.database_column_name === 'spa_attachment' || row.database_column_name === 'standalone_spa_sanitizer'))) return null;
+              if (pools?.spa_attachment !== 'Detached' && row.database_column_name === 'standalone_spa_sanitizer') return null;
+              if (pools?.pool_type !== 'Saltwater' && (row.database_column_name === 'salt_system_status' || row.database_column_name === 'manual_chlorine_during_salt_failure')) return null;
+              if (pools?.salt_system_status !== 'not_working' && row.database_column_name === 'manual_chlorine_during_salt_failure') return null;
+              if (pools?.pool_use_type !== 'VacationHome' && (row.database_column_name === 'occupancy_pattern' || row.database_column_name === 'seasonal_unused_months')) return null;
+              if (pools?.occupancy_pattern !== 'seasonal' && row.database_column_name === 'seasonal_unused_months') return null;
+              if (pools?.pool_use_type !== 'ShortTermRental' && (row.database_column_name === 'rental_activity' || row.database_column_name === 'rental_active_months')) return null;
+              if (pools?.rental_activity !== 'seasonal' && row.database_column_name === 'rental_active_months') return null;
 
               const isLast = index === updatedPoolBasics.length - 1;
               const icon = DETAIL_ICONS[row.database_column_name];

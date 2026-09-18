@@ -74,21 +74,49 @@ function EquipmentChoiceCard({
     );
 }
 
-export default function EquipmentBasicsScreen() {
+type EquipmentBasicsScreenProps = {
+    /** Preselects the current pool filter when editing from the Pool tab. */
+    initialFilterType?: FilterType | null;
+    /** Preselects the current pool pump when editing from the Pool tab. */
+    initialPumpType?: PumpType | null;
+    /** Preselects the current heater choice when editing from the Pool tab. */
+    initialHeater?: HeaterOption | null;
+    /** Hides "Skip for now". Defaults to true (onboarding keeps the skip option). */
+    showSkip?: boolean;
+    /**
+     * When provided, this screen is being embedded (e.g. from the Equipment review "Edit" action)
+     * instead of rendered as an onboarding route. On success this is called instead of the
+     * normal onboarding navigation, and the outer SafeAreaView is skipped so the parent screen
+     * stays in control of the safe area and header.
+     */
+    onSuccess?: () => void;
+    /** Defaults to true for onboarding. Pool tab Edit passes false because it refreshes the provider itself. */
+    markStale?: boolean;
+};
+
+export default function EquipmentBasicsScreen({
+    initialFilterType,
+    initialPumpType,
+    initialHeater,
+    showSkip = true,
+    onSuccess,
+    markStale = true,
+}: EquipmentBasicsScreenProps = {}) {
     const router = useRouter();
     const { t } = useTranslation();
     const { poolEquipmentInsert } = useSupabase();
     const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
     const isResuming = resume === '1';
     const remainingSteps = parseRemainingSteps(remaining);
+    const isEmbedded = Boolean(onSuccess);
 
-    const [filterType, setFilterType] = useState<FilterType>('Sand');
+    const [filterType, setFilterType] = useState<FilterType>(initialFilterType ?? 'Sand');
     const [filterExamplesVisible, setFilterExamplesVisible] = useState(false);
 
-    const [pumpType, setPumpType] = useState<PumpType>('Variable');
+    const [pumpType, setPumpType] = useState<PumpType>(initialPumpType ?? 'Variable');
     const [pumpExamplesVisible, setPumpExamplesVisible] = useState(false);
 
-    const [heater, setHeater] = useState<HeaterOption>('Yes');
+    const [heater, setHeater] = useState<HeaterOption>(initialHeater ?? 'Yes');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -133,9 +161,14 @@ export default function EquipmentBasicsScreen() {
                     pumpType,
                     heaterOption: heater,
                 },
+                markStale,
             });
             if (error) {
                 setErrorMessage(error.message);
+                return;
+            }
+            if (onSuccess) {
+                onSuccess();
                 return;
             }
             router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/surface-type' as Href));
@@ -150,8 +183,8 @@ export default function EquipmentBasicsScreen() {
         router.push(isResuming ? resumeOnboardingHref(remainingSteps) : ('/surface-type' as Href));
     }
 
-    return (
-        <SafeAreaView className="flex-1 bg-surface-white" style={{ flex: 1 }}>
+    const content = (
+        <>
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1, paddingBottom: 24 }}
                 showsVerticalScrollIndicator={false}
@@ -308,15 +341,17 @@ export default function EquipmentBasicsScreen() {
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                    className="items-center justify-center mt-3.5 py-1"
-                    onPress={handleSkipForNow}
-                    activeOpacity={0.7}
-                >
-                    <Text className="text-body font-jakarta-bold text-brand-blue">
-                        {t('equipment_basics_skip_for_now')}
-                    </Text>
-                </TouchableOpacity>
+                {showSkip ? (
+                    <TouchableOpacity
+                        className="items-center justify-center mt-3.5 py-1"
+                        onPress={handleSkipForNow}
+                        activeOpacity={0.7}
+                    >
+                        <Text className="text-body font-jakarta-bold text-brand-blue">
+                            {t('equipment_basics_skip_for_now')}
+                        </Text>
+                    </TouchableOpacity>
+                ) : null}
             </View>
 
             <EquipmentExamplesModal
@@ -334,6 +369,16 @@ export default function EquipmentBasicsScreen() {
                 subtitle={t('equipment_examples_pump_subtitle')}
                 items={pumpExampleItems}
             />
+        </>
+    );
+
+    if (isEmbedded) {
+        return <View className="flex-1">{content}</View>;
+    }
+
+    return (
+        <SafeAreaView className="flex-1 bg-surface-white" style={{ flex: 1 }}>
+            {content}
         </SafeAreaView>
     );
 }
