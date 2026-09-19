@@ -1,14 +1,12 @@
-import HaveTestResultsPanel from '@/components/HaveTestResultsPanel';
 import { chooseTestMethodImages, icons } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import {
   CHOOSE_TEST_METHOD_OPTIONS,
   type ChooseTestMethodOptionId,
 } from '@/data/chooseTestMethod';
-import type { PanelHandle } from '@/lib/types';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Image,
@@ -22,14 +20,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function ChooseTestMethodScreen() {
   const router = useRouter();
   const { t } = useTranslation();
-  const haveResultsRef = useRef<PanelHandle>(null);
   const [selectedId, setSelectedId] = useState<ChooseTestMethodOptionId | null>(
     null,
   );
-
-  const scrollViewRef = useRef<ScrollView>(null);
-
-  console.log('ChooseTestMethodScreen render');
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.white }}>
@@ -73,7 +66,6 @@ export default function ChooseTestMethodScreen() {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
-        ref={scrollViewRef}
       >
         <View className="flex-1 px-5">
           {/* Title + hero */}
@@ -111,17 +103,11 @@ export default function ChooseTestMethodScreen() {
                   activeOpacity={0.8}
                   onPress={() => {
                     setSelectedId(option.id);
-                    if (option.id === 'have_results') {
-                      haveResultsRef.current?.show();
-                      setTimeout(() => {
-                        scrollViewRef.current?.scrollToEnd({ animated: true });
-                    }, 100);
-                    } else {
-                      haveResultsRef.current?.hide();
-                    }
 
                     if (option.id === 'manual_strip') {
                       router.push('/(readings)/choose-strip-brand');
+                    } else if (option.id === 'have_results') {
+                      router.push('/(readings)/enter-test-results');
                     }
                   }}
                 >
@@ -172,7 +158,6 @@ export default function ChooseTestMethodScreen() {
               </Text>
             </View>
           </View>
-          <HaveTestResultsPanel ref={haveResultsRef} />
         </View>
       </ScrollView>
     </SafeAreaView>

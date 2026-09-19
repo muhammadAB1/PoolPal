@@ -2,7 +2,7 @@ import PoolBasicsForm from '@/app/(onboarding)/pool-basics';
 import PoolReviewHeader from '@/components/PoolReviewHeader';
 import { poolTabImages } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
-import { toPoolEnvironment } from '@/lib/pool';
+import { isHotTubPool, toPoolEnvironment } from '@/lib/pool';
 import { usePool } from '@/providers/PoolProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Href, useRouter } from 'expo-router';
@@ -141,10 +141,16 @@ export default function PoolBasicsScreen() {
                         ? t('pool_basics_type_other')
                         : t('pool_basics_type_saltwater'),
                   environmentLabel ? t(environmentLabel) : '',
-                  pools?.hot_tub_type === 'Yes' && pools?.spa_attachment
+                  pools?.hot_tub_type === 'Yes' && pools?.spa_attachment && !isHotTubPool(pools)
                     ? `${t(pools.spa_attachment === 'Attached' ? 'pool_basics_spa_attached' : 'pool_basics_spa_detached')} ${t('pool_basics_review_hot_tub_tag')}`
                     : '',
-                  pools?.pool_use_type === 'Family' ? t('pool_basics_use_family') : pools?.pool_use_type === 'VacationHome' ? t('pool_basics_use_vacation') : t('pool_basics_use_rental'),
+                  pools?.pool_use_type
+                    ? pools.pool_use_type === 'Family'
+                      ? t('pool_basics_use_family')
+                      : pools.pool_use_type === 'VacationHome'
+                        ? t('pool_basics_use_vacation')
+                        : t('pool_basics_use_rental')
+                    : '',
                 ]
                   .filter(Boolean)
                   .join(' • ')}
@@ -189,7 +195,11 @@ export default function PoolBasicsScreen() {
           <View className="card overflow-hidden" style={shadow.card}>
             {updatedPoolBasics.map((row, index) => {
               if (pools?.pool_use_type !== 'Family' && (row.database_column_name === 'usage_frequency' || row.database_column_name === 'number_of_users')) return null;
-              if (row.database_column_name === 'hot_tub_type' || (pools?.hot_tub_type !== 'Yes' && (row.database_column_name === 'spa_attachment' || row.database_column_name === 'standalone_spa_sanitizer'))) return null;
+              if (row.database_column_name === 'hot_tub_type') return null;
+              if (
+                (row.database_column_name === 'spa_attachment' || row.database_column_name === 'standalone_spa_sanitizer')
+                && (isHotTubPool(pools) || pools?.hot_tub_type !== 'Yes')
+              ) return null;
               if (pools?.spa_attachment !== 'Detached' && row.database_column_name === 'standalone_spa_sanitizer') return null;
               if (pools?.pool_type !== 'Saltwater' && (row.database_column_name === 'salt_system_status' || row.database_column_name === 'manual_chlorine_during_salt_failure')) return null;
               if (pools?.salt_system_status !== 'not_working' && row.database_column_name === 'manual_chlorine_during_salt_failure') return null;

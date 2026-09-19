@@ -22,12 +22,12 @@ export const CHOOSE_TEST_METHOD_OPTIONS: readonly ChooseTestMethodOption[] = [
     titleKey: 'choose_test_method_strip_title',
     descriptionKey: 'choose_test_method_strip_desc',
   },
-  {
-    id: 'liquid_test',
-    icon: chooseTestMethodImages.flask,
-    titleKey: 'choose_test_method_liquid_title',
-    descriptionKey: 'choose_test_method_liquid_desc',
-  },
+  // {
+  //   id: 'liquid_test',
+  //   icon: chooseTestMethodImages.flask,
+  //   titleKey: 'choose_test_method_liquid_title',
+  //   descriptionKey: 'choose_test_method_liquid_desc',
+  // },
   {
     id: 'have_results',
     icon: chooseTestMethodImages.results,

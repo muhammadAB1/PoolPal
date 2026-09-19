@@ -1,6 +1,7 @@
 import { icons, poolBasicsImages } from '@/constants/images';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
+import { isHotTubPool } from '@/lib/pool';
 import type {
     HotTubType,
     ManualChlorineStatus,
@@ -109,7 +110,8 @@ export default function PoolBasicsScreen({
     const [saving, setSaving] = useState(false);
 
     const { poolBasicInsert } = useSupabase();
-    const { refreshPools } = usePool();
+    const { pools, refreshPools } = usePool();
+    const hideHotTubQuestion = !isNewPool && isHotTubPool(pools);
 
     const pageHorizontalPadding = 20;
     const gridGap = 10;
@@ -126,10 +128,12 @@ export default function PoolBasicsScreen({
             keys.push(t('pool_basics_missing_manual_chlorine'));
         }
         if (!environment) keys.push(t('pool_basics_missing_environment'));
-        if (!hasHotTub) keys.push(t('pool_basics_missing_spa'));
-        if (hasHotTub === 'Yes' && !spaAttachment) keys.push(t('pool_basics_missing_spa_type'));
-        if (hasHotTub === 'Yes' && spaAttachment === 'Detached' && !spaSanitizer) {
-            keys.push(t('pool_basics_missing_spa_sanitizer'));
+        if (!hideHotTubQuestion) {
+            if (!hasHotTub) keys.push(t('pool_basics_missing_spa'));
+            if (hasHotTub === 'Yes' && !spaAttachment) keys.push(t('pool_basics_missing_spa_type'));
+            if (hasHotTub === 'Yes' && spaAttachment === 'Detached' && !spaSanitizer) {
+                keys.push(t('pool_basics_missing_spa_sanitizer'));
+            }
         }
         if (!useType) keys.push(t('pool_basics_missing_property'));
         if (useType === 'VacationHome' && !occupancyPattern) keys.push(t('pool_basics_missing_seasonality'));
@@ -149,6 +153,7 @@ export default function PoolBasicsScreen({
         saltSystemStatus,
         manualChlorine,
         environment,
+        hideHotTubQuestion,
         hasHotTub,
         spaAttachment,
         spaSanitizer,
@@ -228,14 +233,14 @@ export default function PoolBasicsScreen({
             poolName,
             poolType,
             screened: environment === 'screened' ? 'Screened' : environment ? 'Unscreened' : undefined,
-            hasHotTub,
-            spaAttachment,
+            hasHotTub: hideHotTubQuestion ? 'No' : hasHotTub,
+            spaAttachment: hideHotTubQuestion ? undefined : spaAttachment,
             useType,
             usageFrequency,
             numberOfUsers: batherLoad,
             saltSystemStatus,
             manualChlorine,
-            spaSanitizer,
+            spaSanitizer: hideHotTubQuestion ? undefined : spaSanitizer,
             occupancyPattern,
             unusedMonths,
             rentalActivity,
@@ -427,62 +432,64 @@ export default function PoolBasicsScreen({
                         </View>
                     </Section>
 
-                    <Section title={t('pool_basics_hot_tub_label')} subtitle={t('pool_basics_hot_tub_subtitle')}>
-                        <View style={styles.inlineChoices}>
-                            <InlineChoice
-                                label={t('common_yes')}
-                                selected={hasHotTub === 'Yes'}
-                                onPress={() => chooseHasHotTub('Yes')}
-                            />
-                            <InlineChoice
-                                label={t('common_no')}
-                                selected={hasHotTub === 'No'}
-                                onPress={() => chooseHasHotTub('No')}
-                            />
-                        </View>
-
-                        {hasHotTub === 'Yes' ? (
-                            <View style={styles.nestedBlock}>
-                                <Text style={styles.sectionTitle}>{t('pool_basics_spa_type_title')}</Text>
-                                <View style={styles.followUpOptions}>
-                                    <View style={styles.grid}>
-                                        <SelectionCard
-                                            value="Attached"
-                                            label={t('pool_basics_spa_attached')}
-                                            description={t('pool_basics_spa_attached_desc')}
-                                            image={poolBasicsImages.hotTub.Attached}
-                                            width={cardWidth}
-                                            selected={spaAttachment === 'Attached'}
-                                            onPress={() => chooseSpaAttachment('Attached')}
-                                        />
-                                        <SelectionCard
-                                            value="Detached"
-                                            label={t('pool_basics_spa_standalone')}
-                                            description={t('pool_basics_spa_standalone_desc')}
-                                            image={poolBasicsImages.hotTub.Detached}
-                                            width={cardWidth}
-                                            selected={spaAttachment === 'Detached'}
-                                            onPress={() => chooseSpaAttachment('Detached')}
-                                        />
-                                    </View>
-                                </View>
-
-                                {spaAttachment === 'Detached' ? (
-                                    <View style={styles.nestedBlock}>
-                                        <Text style={styles.sectionTitle}>{t('pool_basics_spa_sanitizer_title')}</Text>
-                                        <ChoiceGrid
-                                            options={spaSanitizerOptions}
-                                            selected={spaSanitizer}
-                                            onSelect={(value) => {
-                                                setSpaSanitizer(value as SpaSanitizer);
-                                                clearSaveError();
-                                            }}
-                                        />
-                                    </View>
-                                ) : null}
+                    {hideHotTubQuestion ? null : (
+                        <Section title={t('pool_basics_hot_tub_label')} subtitle={t('pool_basics_hot_tub_subtitle')}>
+                            <View style={styles.inlineChoices}>
+                                <InlineChoice
+                                    label={t('common_yes')}
+                                    selected={hasHotTub === 'Yes'}
+                                    onPress={() => chooseHasHotTub('Yes')}
+                                />
+                                <InlineChoice
+                                    label={t('common_no')}
+                                    selected={hasHotTub === 'No'}
+                                    onPress={() => chooseHasHotTub('No')}
+                                />
                             </View>
-                        ) : null}
-                    </Section>
+
+                            {hasHotTub === 'Yes' ? (
+                                <View style={styles.nestedBlock}>
+                                    <Text style={styles.sectionTitle}>{t('pool_basics_spa_type_title')}</Text>
+                                    <View style={styles.followUpOptions}>
+                                        <View style={styles.grid}>
+                                            <SelectionCard
+                                                value="Attached"
+                                                label={t('pool_basics_spa_attached')}
+                                                description={t('pool_basics_spa_attached_desc')}
+                                                image={poolBasicsImages.hotTub.Attached}
+                                                width={cardWidth}
+                                                selected={spaAttachment === 'Attached'}
+                                                onPress={() => chooseSpaAttachment('Attached')}
+                                            />
+                                            <SelectionCard
+                                                value="Detached"
+                                                label={t('pool_basics_spa_standalone')}
+                                                description={t('pool_basics_spa_standalone_desc')}
+                                                image={poolBasicsImages.hotTub.Detached}
+                                                width={cardWidth}
+                                                selected={spaAttachment === 'Detached'}
+                                                onPress={() => chooseSpaAttachment('Detached')}
+                                            />
+                                        </View>
+                                    </View>
+
+                                    {spaAttachment === 'Detached' ? (
+                                        <View style={styles.nestedBlock}>
+                                            <Text style={styles.sectionTitle}>{t('pool_basics_spa_sanitizer_title')}</Text>
+                                            <ChoiceGrid
+                                                options={spaSanitizerOptions}
+                                                selected={spaSanitizer}
+                                                onSelect={(value) => {
+                                                    setSpaSanitizer(value as SpaSanitizer);
+                                                    clearSaveError();
+                                                }}
+                                            />
+                                        </View>
+                                    ) : null}
+                                </View>
+                            ) : null}
+                        </Section>
+                    )}
 
                     <Section title={t('pool_basics_property_title')} subtitle={t('pool_basics_property_subtitle')}>
                         <View style={styles.stack}>
