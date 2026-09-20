@@ -204,9 +204,10 @@ export default function PoolSizeGallonsScreen({
         const mainVolume = shapeVolume(mainShape, numericLength, numericWidth, numericShallow, numericDeep, units);
         if (!isFreeform) return mainVolume;
 
-        const extraVolumes = sections.map((section) => sectionVolume(section, units));
-        if (extraVolumes.some((value) => value == null)) return null;
-        return extraVolumes.reduce<number>((sum, value) => sum + (value ?? 0), mainVolume);
+        return sections.reduce(
+            (sum, section) => sum + (sectionVolume(section, units) ?? 0),
+            mainVolume,
+        );
     }, [isFreeform, sections, units, length, width, shallowDepth, deepDepth, shape]);
     const volumes = nativeVolume == null ? null : toCanonicalVolumes(nativeVolume, units);
     const primaryVolume = nativeVolume == null ? null : Math.round(nativeVolume);
@@ -248,10 +249,11 @@ export default function PoolSizeGallonsScreen({
     }
 
     function buildFreeformSections(): FreeformSection[] {
-        return sections.map((section, index) => {
+        return sections.flatMap((section, index) => {
             const volume = sectionVolume(section, units);
-            const canonical = volume == null ? null : toCanonicalVolumes(volume, units);
-            return {
+            if (volume == null) return [];
+            const canonical = toCanonicalVolumes(volume, units);
+            return [{
                 id: section.id,
                 index: index + 2,
                 length: numeric(section.length),
@@ -259,9 +261,9 @@ export default function PoolSizeGallonsScreen({
                 shallowDepth: numeric(section.shallowDepth),
                 deepDepth: numeric(section.deepDepth),
                 measurementUnit: units,
-                volumeUsGallons: canonical?.gallons ?? null,
-                volumeLiters: canonical?.liters ?? null,
-            };
+                volumeUsGallons: canonical.gallons,
+                volumeLiters: canonical.liters,
+            }];
         });
     }
 

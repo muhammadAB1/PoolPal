@@ -48,11 +48,11 @@ type QuickAction = {
 };
 
 const QUICK_ACTIONS: QuickAction[] = [
-  {
-    icon: dashboardImages.uploadPhotoIcon,
-    titleKey: 'dashboard_upload_photo_title',
-    descKey: 'dashboard_upload_photo_desc',
-  },
+  // {
+  //   icon: dashboardImages.uploadPhotoIcon,
+  //   titleKey: 'dashboard_upload_photo_title',
+  //   descKey: 'dashboard_upload_photo_desc',
+  // },
   {
     icon: dashboardImages.askPoolwiseIcon,
     titleKey: 'dashboard_ask_poolwise_title',
@@ -244,7 +244,7 @@ export default function DashboardScreen() {
           </TouchableOpacity>
 
           {/* Latest Readings */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             className="card mt-4 p-4 flex-row items-start"
             activeOpacity={0.7}
             onPress={() => router.push('/(tabs)/readings')}
@@ -262,7 +262,7 @@ export default function DashboardScreen() {
               </Text>
             </View>
             <Image source={dashboardImages.chevronRight} className="w-4 h-4 mt-1 ml-2" resizeMode="contain" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           {/* Quick actions */}
           <View className="card mt-4 px-4">

@@ -1,3 +1,7 @@
+import { setLanguage as setAppLanguage } from '@/lib/i18n';
+import { supabase } from '@/lib/Supabase';
+import { Country, Language, Measurement, Profile } from '@/lib/types';
+import type { Session, User } from '@supabase/supabase-js';
 import {
   createContext,
   useContext,
@@ -5,10 +9,6 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import type { Session, User } from '@supabase/supabase-js';
-import { supabase } from '@/lib/Supabase';
-import { Country, Language, Measurement, Profile } from '@/lib/types';
-import { setLanguage as setAppLanguage } from '@/lib/i18n';
 
 type AuthContextValue = {
   user: User | null;

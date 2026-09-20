@@ -43,15 +43,15 @@ export type MeasurementUnit = 'us' | 'metric';
 export type VolumeSource = 'calculated' | 'manual';
 
 export type FreeformSection = {
-    id: string;
-    index: number;
-    length: number | null;
-    averageWidth: number | null;
-    shallowDepth: number | null;
-    deepDepth: number | null;
-    measurementUnit: MeasurementUnit;
-    volumeUsGallons: number | null;
-    volumeLiters: number | null;
+    id?: string;
+    index?: number;
+    length?: number | null;
+    averageWidth?: number | null;
+    shallowDepth?: number | null;
+    deepDepth?: number | null;
+    measurementUnit?: MeasurementUnit;
+    volumeUsGallons?: number | null;
+    volumeLiters?: number | null;
 };
 
 export type FilterType = 'Sand' | 'Cartridge' | 'DE';

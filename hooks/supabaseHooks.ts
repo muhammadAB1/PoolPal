@@ -2,7 +2,7 @@ import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
 
 import { isHotTubPool, spaSanitizerToPoolType } from "@/lib/pool"
 import { supabase } from "@/lib/Supabase"
-import { HotTubType, ManualChlorineStatus, NumberOfPoolUsers, OccupancyPattern, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolEnvironment, PoolType, RentalActivity, SaltSystemStatus, SpaAttachmentType, SpaSanitizer, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
+import { HotTubType, ManualChlorineStatus, NumberOfPoolUsers, OccupancyPattern, poolBasicUpdateProps, poolCleaningInsertProps, PoolEnvironment, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, RentalActivity, SaltSystemStatus, SpaAttachmentType, SpaSanitizer, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
 import { usePool } from "@/providers/PoolProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"

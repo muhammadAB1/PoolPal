@@ -56,16 +56,20 @@ function SavedEquipmentCard({
   description,
   image,
   heater,
+  onPress,
 }: {
   title: string;
   description: string;
   image?: ImageSourcePropType;
   heater?: HeaterChoice;
+  onPress?: () => void;
 }) {
   return (
-    <View
+    <TouchableOpacity
       className="rounded-2xl border border-surface-mint-border bg-surface-mint p-3 flex-row items-center mt-3"
       style={shadow.card}
+      activeOpacity={0.7}
+      onPress={onPress}
     >
       <View
         className={`w-16 h-16 rounded-xl overflow-hidden items-center justify-center ${
@@ -82,13 +86,14 @@ function SavedEquipmentCard({
         ) : null}
       </View>
 
-      <View className="flex-1 ml-3">
+      <View className="flex-1 ml-3 mr-2">
         <Text className="text-body-lg font-jakarta-bold text-charcoal">{title}</Text>
         <Text className="text-small font-jakarta text-sub mt-1 leading-relaxed">
           {description}
         </Text>
       </View>
-    </View>
+      <MaterialCommunityIcons name="chevron-right" size={22} color={colors.text.faint} />
+    </TouchableOpacity>
   );
 }
 
@@ -161,7 +166,12 @@ export default function PoolEquipmentScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
-      <PoolReviewHeader title={t('pool_tab_equipment')} onEditPress={() => setIsEditing(true)} />
+      <PoolReviewHeader
+        title={t('pool_tab_equipment')}
+        // Edit button commented out for now — equipment card arrows open the onboarding form instead.
+        // onEditPress={() => setIsEditing(true)}
+        showEdit={false}
+      />
 
       <ScrollView
         contentContainerStyle={{ paddingBottom: 32 }}
@@ -182,6 +192,7 @@ export default function PoolEquipmentScreen() {
                 title={t(filterOption.title)}
                 description={t(filterOption.description)}
                 image={equipmentChoiceImages.filter[filterType]}
+                onPress={() => setIsEditing(true)}
               />
             </View>
           ) : null}
@@ -196,6 +207,7 @@ export default function PoolEquipmentScreen() {
                 title={t(pumpOption.title)}
                 description={t(pumpOption.description)}
                 image={equipmentChoiceImages.pump[pumpType]}
+                onPress={() => setIsEditing(true)}
               />
             </View>
           ) : null}
@@ -207,16 +219,22 @@ export default function PoolEquipmentScreen() {
                 title={t(heaterOption.title)}
                 description={t(heaterOption.description)}
                 heater={heater}
+                onPress={() => setIsEditing(true)}
               />
             </View>
           ) : null}
 
           {!hasSavedEquipment ? (
-            <View className="rounded-2xl border border-border-default bg-surface-white p-5">
-              <Text className="text-body font-jakarta text-sub text-center">
+            <TouchableOpacity
+              className="rounded-2xl border border-border-default bg-surface-white p-5 flex-row items-center"
+              activeOpacity={0.7}
+              onPress={() => setIsEditing(true)}
+            >
+              <Text className="flex-1 text-body font-jakarta text-sub text-center">
                 {t('pool_tab_not_set')}
               </Text>
-            </View>
+              <MaterialCommunityIcons name="chevron-right" size={22} color={colors.text.faint} />
+            </TouchableOpacity>
           ) : null}
         </View>
       </ScrollView>

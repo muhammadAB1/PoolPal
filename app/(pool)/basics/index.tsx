@@ -106,7 +106,12 @@ export default function PoolBasicsScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
-      <PoolReviewHeader title={t('pool_tab_basics')} onEditPress={() => setIsEditing(true)} />
+      <PoolReviewHeader
+        title={t('pool_tab_basics')}
+        // Edit button commented out for now — detail row arrows open the onboarding form instead.
+        // onEditPress={() => setIsEditing(true)}
+        showEdit={false}
+      />
       <ScrollView
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
@@ -217,6 +222,7 @@ export default function PoolBasicsScreen() {
                   key={row.database_column_name}
                   className={`flex-row items-center px-4 py-3.5 ${isLast ? '' : 'border-b border-border-default'}`}
                   activeOpacity={0.7}
+                  onPress={() => setIsEditing(true)}
                 >
                   <View className="icon-circle">
                     <MaterialCommunityIcons
