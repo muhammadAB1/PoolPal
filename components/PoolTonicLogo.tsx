@@ -12,6 +12,7 @@ export default function PoolTonicLogo({
 }) {
   return (
     <Image
+    className=''
       source={brandAssets.logoFull}
       resizeMode="contain"
       accessibilityLabel="Pool Tonic"

@@ -1,5 +1,5 @@
 import NextStepCard from '@/components/NextStepCard';
-import PoolTonicLogo from '@/components/PoolTonicLogo';
+import { brandAssets } from '@/constants/images';
 import ProfileCompletionRing from '@/components/ProfileCompletionRing';
 import { dashboardImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
@@ -120,14 +120,14 @@ export default function DashboardScreen() {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-surface-bg" edges={['top', 'left', 'right']}>
+    <SafeAreaView className="flex-1 bg-[#F6FAFD]" edges={['top', 'left', 'right']}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
       >
         <View className="px-5 pt-2">
           <View className="min-h-13.5 flex-row items-center justify-between gap-2">
-            <PoolTonicLogo width={188} height={48} />
+            <Image source={brandAssets.logoFull} className="w-40 h-12 right-2" resizeMode="cover" />
             <View className="flex-row items-center gap-1 shrink-0">
               <TouchableOpacity
                 className="w-11.5 h-11.5 items-center justify-center"
@@ -145,7 +145,7 @@ export default function DashboardScreen() {
                       ? dashboardImages.notificationBellUnread
                       : dashboardImages.notificationBell
                   }
-                  className="w-[30px] h-[30px]"
+                  className="w-10 h-10"
                   resizeMode="contain"
                 />
               </TouchableOpacity>
