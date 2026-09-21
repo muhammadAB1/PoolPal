@@ -30,6 +30,39 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+function PhotoIdentifyCard({ title, description }: { title: string; description: string }) {
+    const { t } = useTranslation();
+
+    return (
+        <View className="rounded-2xl border border-dashed border-brand-aqua bg-surface-soft-aqua p-4 mt-5">
+            <View className="flex-row items-center justify-end gap-1">
+                <Ionicons name="sparkles" size={12} color={colors.brand.blue} />
+                <Text className="text-tiny font-jakarta-extrabold text-brand-blue">
+                    {t('equipment_premium_badge')}
+                </Text>
+            </View>
+
+            <View className="flex-row items-center gap-2 mt-1.5">
+                <Ionicons name="camera-outline" size={20} color={colors.brand.navy} />
+                <Text className="flex-1 text-body-lg font-jakarta-bold text-charcoal">{title}</Text>
+            </View>
+
+            <Text className="text-small font-jakarta text-sub mt-2 leading-relaxed">{description}</Text>
+
+            <TouchableOpacity
+                className="bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2 mt-3"
+                activeOpacity={0.85}
+                onPress={() => {}}
+            >
+                <Ionicons name="images-outline" size={18} color={colors.brand.blue} />
+                <Text className="text-body font-jakarta-bold text-brand-blue">
+                    {t('equipment_photo_id_button')}
+                </Text>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
 function EquipmentChoiceCard({
     selected,
     onPress,
@@ -225,6 +258,11 @@ export default function EquipmentBasicsScreen({
                                 );
                             })}
                         </View>
+
+                        <PhotoIdentifyCard
+                            title={t('equipment_identify_filter_title')}
+                            description={t('equipment_identify_filter_desc')}
+                        />
                     </View>
 
                     <View className="mt-8">
@@ -256,36 +294,10 @@ export default function EquipmentBasicsScreen({
                             })}
                         </View>
 
-                        <View className="rounded-2xl border border-dashed border-brand-aqua bg-surface-soft-aqua p-4 mt-5">
-                            <View className="flex-row items-center justify-end gap-1">
-                                <Ionicons name="sparkles" size={12} color={colors.brand.blue} />
-                                <Text className="text-tiny font-jakarta-extrabold text-brand-blue">
-                                    {t('equipment_premium_badge')}
-                                </Text>
-                            </View>
-
-                            <View className="flex-row items-center gap-2 mt-1.5">
-                                <Ionicons name="camera-outline" size={20} color={colors.brand.navy} />
-                                <Text className="flex-1 text-body-lg font-jakarta-bold text-charcoal">
-                                    {t('equipment_identify_pump_title')}
-                                </Text>
-                            </View>
-
-                            <Text className="text-small font-jakarta text-sub mt-2 leading-relaxed">
-                                {t('equipment_identify_pump_desc')}
-                            </Text>
-
-                            <TouchableOpacity
-                                className="bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2 mt-3"
-                                activeOpacity={0.85}
-                                onPress={() => {}}
-                            >
-                                <Ionicons name="images-outline" size={18} color={colors.brand.blue} />
-                                <Text className="text-body font-jakarta-bold text-brand-blue">
-                                    {t('equipment_photo_id_button')}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                        <PhotoIdentifyCard
+                            title={t('equipment_identify_pump_title')}
+                            description={t('equipment_identify_pump_desc')}
+                        />
                     </View>
 
                     <View className="mt-8">
