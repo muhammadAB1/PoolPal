@@ -1,3 +1,4 @@
+import { colors } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useMemo, useState } from 'react';
 import {
@@ -78,7 +79,7 @@ export default function SearchSelectionModal({
                             accessibilityRole="button"
                             accessibilityLabel={closeLabel}
                         >
-                            <Ionicons name="close" size={22} color="#0B2E4A" />
+                            <Ionicons name="close" size={22} color={colors.brand.navy} />
                         </TouchableOpacity>
                     </View>
 
@@ -122,7 +123,7 @@ export default function SearchSelectionModal({
                                     <Text className={`flex-1 text-body font-jakarta ${selected ? 'font-jakarta-bold text-brand-navy' : 'text-charcoal'}`}>
                                         {item.label}
                                     </Text>
-                                    {selected ? <Ionicons name="checkmark-circle" size={22} color="#0E97DC" /> : null}
+                                    {selected ? <Ionicons name="checkmark-circle" size={22} color={colors.brand.blue} /> : null}
                                 </TouchableOpacity>
                             );
                         }}

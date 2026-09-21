@@ -12,6 +12,7 @@
      --color-brand-*         → bg-brand-*  / text-brand-*  / border-brand-*
      --color-surface-*       → bg-surface-* / text-surface-*
      --color-border-*        → border-border-*
+     --color-selection-*     → bg-selection-bg
      --color-charcoal|sub|faint → text-charcoal / text-sub / text-faint
      --color-success|warning|error → bg-success / text-warning etc.
 
@@ -24,20 +25,23 @@
 
 @theme {
   /* ─── Brand ──────────────────────────────────────────────────────────── */
-  --color-brand-navy: #0B2E4A;
-  --color-brand-blue: #0E97DC;
-  --color-brand-blue-dark: #0B82C4;
+  --color-brand-navy: #073B5C;
+  --color-brand-blue: #0FB7BC;
+  --color-brand-blue-dark: #078B8F;
   --color-brand-aqua: #5ED6D1;
 
   /* ─── Surface ────────────────────────────────────────────────────────── */
   --color-surface-soft-aqua: #EAF8FF;
   --color-surface-mint: #E8FFF7;
   --color-surface-mint-border: #9FE7D8;
-  --color-surface-bg: #F5F7FA;
+  --color-surface-bg: #F6FAFD;
   --color-surface-white: #FFFFFF;
 
   /* ─── Border ─────────────────────────────────────────────────────────── */
   --color-border-default: #E5EAF0;
+
+  /* ─── Selected choice state ──────────────────────────────────────────── */
+  --color-selection-bg: #EAFBF9;
 
   /* ─── Text / Content ─────────────────────────────────────────────────── */
   /* Named without "text-" prefix to keep utilities clean: text-charcoal ✓ */
@@ -198,7 +202,7 @@
   /* ─── Section ────────────────────────────────────────────────────────── */
 
   .section__title {
-    @apply text-h3 font-jakarta-extrabold text-charcoal;
+    @apply text-h3 font-jakarta-extrabold text-brand-navy;
   }
 
   .section__subtitle {

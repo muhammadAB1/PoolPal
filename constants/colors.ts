@@ -13,6 +13,7 @@
  *   surface.bg      → bg-surface-bg
  *   surface.white   → bg-surface-white / text-surface-white
  *   border.default  → border-border-default
+ *   selection.background → bg-selection-bg
  *   text.charcoal   → text-charcoal   / bg-charcoal
  *   text.sub        → text-sub
  *   text.faint      → text-faint
@@ -25,20 +26,23 @@
 
 export const colors = {
   brand: {
-    navy: '#0B2E4A',
-    blue: '#0E97DC',
-    blueDark: '#0B82C4',
+    navy: '#073B5C',
+    blue: '#0FB7BC',
+    blueDark: '#078B8F',
     aqua: '#5ED6D1',
   },
   surface: {
     softAqua: '#EAF8FF',
     mint: '#E8FFF7',
     mintBorder: '#9FE7D8',
-    bg: '#F5F7FA',
+    bg: '#F6FAFD',
     white: '#FFFFFF',
   },
   border: {
     default: '#E5EAF0',
+  },
+  selection: {
+    background: '#EAFBF9',
   },
   text: {
     charcoal: '#1D2939',
