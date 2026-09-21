@@ -184,10 +184,14 @@ export function useSupabase() {
         country,
         language,
         measurement,
+        cityOrTown,
+        cityOrTownId,
     }: {
         country: string
         language: string
         measurement: string
+        cityOrTown?: string | null
+        cityOrTownId?: string | null
     }) {
         const { data, error } = await supabase
             .from('profiles')
@@ -195,6 +199,12 @@ export function useSupabase() {
                 country,
                 language,
                 measurement,
+                ...(cityOrTown !== undefined
+                    ? {
+                        city_or_town: cityOrTown?.trim() || null,
+                        city_or_town_id: cityOrTownId || null,
+                    }
+                    : {}),
             })
             .eq('id', user?.id)
 

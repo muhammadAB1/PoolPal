@@ -4,10 +4,38 @@ export const COUNTRY_CODES = ["AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "A
 
 export type SupportedCountryCode = (typeof COUNTRY_CODES)[number];
 
+export type CountryOption = {
+  id: string;
+  label: string;
+  leading: string;
+};
+
+type RegionDisplayNames = { of(code: string): string | undefined };
+
 const COUNTRY_FALLBACKS: Record<string, { en: string; es: string }> = {
   US: { en: 'United States', es: 'Estados Unidos' },
   ES: { en: 'Spain', es: 'España' },
 };
+
+const displayNamesByLanguage: Partial<Record<Language, RegionDisplayNames>> = {};
+const countryOptionsByLanguage: Partial<Record<Language, CountryOption[]>> = {};
+
+function getRegionDisplayNames(language: Language): RegionDisplayNames | null {
+  const cached = displayNamesByLanguage[language];
+  if (cached) return cached;
+
+  try {
+    const DisplayNames = (Intl as typeof Intl & {
+      DisplayNames?: new (locales?: string | string[], options?: { type: 'region' }) => RegionDisplayNames;
+    }).DisplayNames;
+    if (!DisplayNames) return null;
+    const created = new DisplayNames([language === 'es' ? 'es-ES' : 'en-US'], { type: 'region' });
+    displayNamesByLanguage[language] = created;
+    return created;
+  } catch {
+    return null;
+  }
+}
 
 export function normalizeCountryCode(value?: string | null): string {
   if (!value) return 'US';
@@ -18,23 +46,27 @@ export function getCountryName(code: string, language: Language): string {
   const normalized = normalizeCountryCode(code);
   const fallback = COUNTRY_FALLBACKS[normalized];
   if (fallback) return fallback[language];
-
-  try {
-    const DisplayNames = (Intl as typeof Intl & { DisplayNames?: new (locales?: string | string[], options?: { type: 'region' }) => { of(code: string): string | undefined } }).DisplayNames;
-    if (!DisplayNames) return normalized;
-    const displayNames = new DisplayNames([language === 'es' ? 'es-ES' : 'en-US'], {
-      type: 'region',
-    });
-    return displayNames.of(normalized) ?? normalized;
-  } catch {
-    return normalized;
-  }
+  return getRegionDisplayNames(language)?.of(normalized) ?? normalized;
 }
 
 export function getCountryFlag(code: string): string {
   const normalized = normalizeCountryCode(code);
   if (!/^[A-Z]{2}$/.test(normalized)) return '🌐';
   return String.fromCodePoint(...normalized.split('').map((char) => 127397 + char.charCodeAt(0)));
+}
+
+export function getCountryOptions(language: Language): CountryOption[] {
+  const cached = countryOptionsByLanguage[language];
+  if (cached) return cached;
+
+  const options = COUNTRY_CODES.map((code) => ({
+    id: code,
+    label: getCountryName(code, language),
+    leading: getCountryFlag(code),
+  })).sort((a, b) => a.label.localeCompare(b.label, language === 'es' ? 'es-ES' : 'en-US'));
+
+  countryOptionsByLanguage[language] = options;
+  return options;
 }
 
 export type LocalitySuggestion = {

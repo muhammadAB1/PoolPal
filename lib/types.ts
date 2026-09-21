@@ -12,6 +12,8 @@ export type Profile = {
     language: Language
     measurement: Measurement
     name: string
+    city_or_town?: string | null
+    city_or_town_id?: string | null
     created_at?: string
     updated_at?: string
 }

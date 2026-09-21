@@ -178,6 +178,12 @@ import dashboardReadingsIcon from '../assets/dashboard-images/latest_readings_fl
 import dashboardUploadPhotoIcon from '../assets/dashboard-images/upload_pool_photo_camera_icon_2.png';
 import dashboardAskPoolwiseIcon from '../assets/dashboard-images/ask_poolwise_chat_icon.png';
 import dashboardLearnIcon from '../assets/dashboard-images/learn_play_icon.png';
+import poolTonicNotificationBell from '../assets/pooltonic-ui/pooltonic-notification-bell.png';
+import poolTonicNotificationBellUnread from '../assets/pooltonic-ui/pooltonic-notification-bell-update.png';
+import poolTonicUserIcon from '../assets/pooltonic-ui/pooltonic-user-icon.png';
+import poolTonicSolveProblems from '../assets/dashboard-images/pooltonic_solve_problems.png';
+import poolTonicLearn from '../assets/dashboard-images/pooltonic_learn.png';
+import poolTonicAskPoolTonic from '../assets/dashboard-images/pooltonic_ask_pooltonic.png';
 import navHomeActive from '../assets/dashboard-images/nav_home_icon_active.png';
 import navHomeInactive from '../assets/dashboard-images/nav_home_icon_inactive.png';
 import navPoolActive from '../assets/dashboard-images/nav_pool_waves_icon_active.png';
@@ -444,20 +450,26 @@ export const onboardingCompleteImages = {
  */
 export const dashboardImages = {
     helloEmoji: dashboardHelloEmoji,
-    notificationBell: dashboardNotificationBell,
+    notificationBell: poolTonicNotificationBell,
+    notificationBellUnread: poolTonicNotificationBellUnread,
+    legacyNotificationBell: dashboardNotificationBell,
     poolIllustration: dashboardPoolIllustration,
     greenCheckIcon: dashboardGreenCheckIcon,
     smallInfoIcon: dashboardSmallInfoIcon,
     starBadge: dashboardStarBadge,
     testingKitGraphic: dashboardTestingKitGraphic,
     chevronRight: dashboardChevronRight,
-    profileIcon: dashboardProfileIcon,
+    profileIcon: poolTonicUserIcon,
+    legacyProfileIcon: dashboardProfileIcon,
     nextStepIcon: dashboardNextStepIcon,
     checklistIcon: dashboardChecklistIcon,
     readingsIcon: dashboardReadingsIcon,
     uploadPhotoIcon: dashboardUploadPhotoIcon,
     askPoolwiseIcon: dashboardAskPoolwiseIcon,
     learnIcon: dashboardLearnIcon,
+    solveProblems: poolTonicSolveProblems,
+    learn: poolTonicLearn,
+    askPoolTonic: poolTonicAskPoolTonic,
 } as const;
 
 /**

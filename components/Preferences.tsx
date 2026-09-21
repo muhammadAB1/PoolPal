@@ -1,11 +1,11 @@
 import SearchSelectionModal, { type SearchSelectionItem } from '@/components/SearchSelectionModal';
 import { icons } from '@/constants/images';
 import {
-    COUNTRY_CODES,
     getCountryFlag,
     getCountryName,
+    getCountryOptions,
     normalizeCountryCode,
-    // searchLocalities,
+    searchLocalities,
 } from '@/data/locations';
 import type { Country, Language, Measurement } from '@/lib/types';
 import { Ionicons } from '@expo/vector-icons';
@@ -30,6 +30,7 @@ type Props = {
     setMeasurement: (measurement: Measurement) => void;
     handleLanguageChange: (language: Language) => void;
     showIntro?: boolean;
+    showCity?: boolean;
 };
 
 const Preferences = ({
@@ -44,25 +45,24 @@ const Preferences = ({
     setMeasurement,
     handleLanguageChange,
     showIntro = true,
+    showCity = false,
 }: Props) => {
     const { t, i18n } = useTranslation();
     const activeLanguage: Language = i18n.language.startsWith('es') ? 'es' : 'en';
     const countryCode = normalizeCountryCode(country);
     const [countryOpen, setCountryOpen] = useState(false);
-    // const [cityOpen, setCityOpen] = useState(false);
-    // const [cityQuery, setCityQuery] = useState('');
+    const [cityOpen, setCityOpen] = useState(false);
+    const [cityQuery, setCityQuery] = useState('');
 
-    const countries = useMemo<SearchSelectionItem[]>(() =>
-        COUNTRY_CODES.map((code) => ({
-            id: code,
-            label: getCountryName(code, activeLanguage),
-            leading: getCountryFlag(code),
-        })).sort((a, b) => a.label.localeCompare(b.label, activeLanguage === 'es' ? 'es-ES' : 'en-US')),
-        [activeLanguage]);
+    const countries = useMemo<SearchSelectionItem[]>(
+        () => (countryOpen ? getCountryOptions(activeLanguage) : []),
+        [activeLanguage, countryOpen],
+    );
 
-    // const cities = useMemo<SearchSelectionItem[]>(() =>
-    //     searchLocalities(countryCode, cityQuery).map((item) => ({ id: item.id, label: item.name })),
-    //     [cityQuery, countryCode]);
+    const cities = useMemo<SearchSelectionItem[]>(
+        () => (cityOpen ? searchLocalities(countryCode, cityQuery).map((item) => ({ id: item.id, label: item.name })) : []),
+        [cityOpen, cityQuery, countryCode],
+    );
 
     function chooseCountry(item: SearchSelectionItem) {
         if (item.id !== countryCode) {
@@ -104,24 +104,26 @@ const Preferences = ({
                 </TouchableOpacity>
             </View>
 
-            {/* <View className="mt-6">
-                <Text className="text-label font-jakarta-bold text-charcoal">{t('signup_city_or_town')}</Text>
-                <Text className="text-body font-jakarta text-sub mt-1 leading-relaxed">
-                    {t('signup_city_note')}
-                </Text>
-                <TouchableOpacity
-                    className="mt-3 min-h-14 rounded-2xl border border-border-default bg-surface-white px-4 py-3 flex-row items-center"
-                    onPress={() => setCityOpen(true)}
-                    accessibilityRole="button"
-                    accessibilityLabel={t('signup_city_select_a11y')}
-                >
-                    <Ionicons name="location-outline" size={21} color="#667085" />
-                    <Text className={`flex-1 text-body font-jakarta ml-3 ${cityOrTown ? 'text-charcoal' : 'text-faint'}`} numberOfLines={2}>
-                        {cityOrTown || t('signup_city_search_placeholder')}
+            {showCity ? (
+                <View className="mt-6">
+                    <Text className="text-label font-jakarta-bold text-charcoal">{t('signup_city_or_town')}</Text>
+                    <Text className="text-body font-jakarta text-sub mt-1 leading-relaxed">
+                        {t('signup_city_note')}
                     </Text>
-                    <Ionicons name="chevron-down" size={20} color="#667085" />
-                </TouchableOpacity>
-            </View> */}
+                    <TouchableOpacity
+                        className="mt-3 min-h-14 rounded-2xl border border-border-default bg-surface-white px-4 py-3 flex-row items-center"
+                        onPress={() => setCityOpen(true)}
+                        accessibilityRole="button"
+                        accessibilityLabel={t('signup_city_select_a11y')}
+                    >
+                        <Ionicons name="location-outline" size={21} color="#667085" />
+                        <Text className={`flex-1 text-body font-jakarta ml-3 ${cityOrTown ? 'text-charcoal' : 'text-faint'}`} numberOfLines={2}>
+                            {cityOrTown || t('signup_city_search_placeholder')}
+                        </Text>
+                        <Ionicons name="chevron-down" size={20} color="#667085" />
+                    </TouchableOpacity>
+                </View>
+            ) : null}
 
             <View className="mt-8">
                 <Text className="text-label font-jakarta-bold text-charcoal">{t('signup_language')}</Text>
@@ -194,32 +196,36 @@ const Preferences = ({
                 </View>
             </View>
 
-            <SearchSelectionModal
-                visible={countryOpen}
-                title={t('signup_country_select_title')}
-                placeholder={t('signup_country_search_placeholder')}
-                items={countries}
-                selectedId={countryCode}
-                onClose={() => setCountryOpen(false)}
-                onSelect={chooseCountry}
-                closeLabel={t('common_close')}
-                emptyLabel={t('common_no_results')}
-            />
-            {/* <SearchSelectionModal
-                visible={cityOpen}
-                title={t('signup_city_select_title')}
-                placeholder={t('signup_city_search_placeholder')}
-                items={cities}
-                selectedId={cityOrTownId}
-                onClose={() => setCityOpen(false)}
-                onQueryChange={setCityQuery}
-                onSelect={(item) => {
-                    setCityOrTown(item.label);
-                    setCityOrTownId(item.id);
-                }}
-                closeLabel={t('common_close')}
-                emptyLabel={t('common_no_results')}
-            /> */}
+            {countryOpen ? (
+                <SearchSelectionModal
+                    visible
+                    title={t('signup_country_select_title')}
+                    placeholder={t('signup_country_search_placeholder')}
+                    items={countries}
+                    selectedId={countryCode}
+                    onClose={() => setCountryOpen(false)}
+                    onSelect={chooseCountry}
+                    closeLabel={t('common_close')}
+                    emptyLabel={t('common_no_results')}
+                />
+            ) : null}
+            {showCity && cityOpen ? (
+                <SearchSelectionModal
+                    visible
+                    title={t('signup_city_select_title')}
+                    placeholder={t('signup_city_search_placeholder')}
+                    items={cities}
+                    selectedId={cityOrTownId}
+                    onClose={() => setCityOpen(false)}
+                    onQueryChange={setCityQuery}
+                    onSelect={(item) => {
+                        setCityOrTown(item.label);
+                        setCityOrTownId(item.id);
+                    }}
+                    closeLabel={t('common_close')}
+                    emptyLabel={t('common_no_results')}
+                />
+            ) : null}
         </>
     );
 };

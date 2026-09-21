@@ -1,4 +1,5 @@
 import NextStepCard from '@/components/NextStepCard';
+import PoolTonicLogo from '@/components/PoolTonicLogo';
 import ProfileCompletionRing from '@/components/ProfileCompletionRing';
 import { dashboardImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
@@ -13,7 +14,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { Href, useFocusEffect, useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ImageSourcePropType, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  type ImageSourcePropType,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 /** Prominent status card used to surface the pool/swim status on the dashboard. */
@@ -41,29 +50,34 @@ function StatusPill({
   );
 }
 
-type QuickAction = {
-  icon: ImageSourcePropType;
-  titleKey: string;
-  descKey: string;
-};
-
-const QUICK_ACTIONS: QuickAction[] = [
-  // {
-  //   icon: dashboardImages.uploadPhotoIcon,
-  //   titleKey: 'dashboard_upload_photo_title',
-  //   descKey: 'dashboard_upload_photo_desc',
-  // },
-  {
-    icon: dashboardImages.askPoolwiseIcon,
-    titleKey: 'dashboard_ask_poolwise_title',
-    descKey: 'dashboard_ask_poolwise_desc',
-  },
-  {
-    icon: dashboardImages.learnIcon,
-    titleKey: 'dashboard_learn_title',
-    descKey: 'dashboard_learn_desc',
-  },
-];
+function DashboardToolRow({
+  image,
+  title,
+  description,
+  onPress,
+  last = false,
+}: {
+  image: ImageSourcePropType;
+  title: string;
+  description: string;
+  onPress: () => void;
+  last?: boolean;
+}) {
+  return (
+    <TouchableOpacity
+      className={`min-h-22 flex-row items-center gap-3 py-3 ${last ? '' : 'border-b border-border-default'}`}
+      activeOpacity={0.78}
+      onPress={onPress}
+    >
+      <Image source={image} className="w-14 h-14 shrink-0" resizeMode="contain" />
+      <View className="flex-1 min-w-0">
+        <Text className="text-body-lg font-jakarta-bold text-[#071C5A]">{title}</Text>
+        <Text className="text-[13px] leading-4.5 font-jakarta text-[#74809A] mt-0.5">{description}</Text>
+      </View>
+      <Ionicons name="chevron-forward" size={22} color="#74819A" />
+    </TouchableOpacity>
+  );
+}
 
 export default function DashboardScreen() {
   const { t } = useTranslation();
@@ -82,6 +96,10 @@ export default function DashboardScreen() {
   const avatarUrl = getAvatarUrl(user);
   const initials = getInitials(name, user?.email);
   const completionScore = pools?.profile_completion_score ?? 0;
+  const setupComplete = completionScore >= 100;
+  const unreadCountRaw = user?.user_metadata?.unread_notification_count;
+  const unreadCount = typeof unreadCountRaw === 'number' ? unreadCountRaw : Number(unreadCountRaw ?? 0) || 0;
+  const hasUnreadNotifications = unreadCount > 0;
 
   const [checklistCompleted, setChecklistCompleted] = useState(0);
   const [incompleteTasks, setIncompleteTasks] = useState<string[]>([]);
@@ -102,60 +120,80 @@ export default function DashboardScreen() {
   );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
+    <SafeAreaView className="flex-1 bg-surface-bg" edges={['top', 'left', 'right']}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
       >
         <View className="px-5 pt-2">
-          {/* Header */}
-          <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center gap-0">
-              <Text className="text-h1 font-jakarta-extrabold text-brand-navy -mr-4">
-                {t('dashboard_greeting', { name: displayName })}
-              </Text>
-              <Image source={dashboardImages.helloEmoji} className="w-16 h-16 -mb-2" />
+          <View className="min-h-13.5 flex-row items-center justify-between gap-2">
+            <PoolTonicLogo width={188} height={48} />
+            <View className="flex-row items-center gap-1 shrink-0">
+              <TouchableOpacity
+                className="w-11.5 h-11.5 items-center justify-center"
+                activeOpacity={0.75}
+                accessibilityRole="button"
+                accessibilityLabel={t(
+                  hasUnreadNotifications
+                    ? 'dashboard_notification_unread_a11y'
+                    : 'dashboard_notification_a11y',
+                )}
+              >
+                <Image
+                  source={
+                    hasUnreadNotifications
+                      ? dashboardImages.notificationBellUnread
+                      : dashboardImages.notificationBell
+                  }
+                  className="w-[30px] h-[30px]"
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => router.push('/(tabs)/profile')}
+              >
+                {avatarUrl ? (
+                  <Image source={{ uri: avatarUrl }} className="w-11 h-11 rounded-full" />
+                ) : (
+                  <View className="w-11 h-11 rounded-full bg-brand-blue items-center justify-center">
+                    <Text className="text-body-lg font-jakarta-extrabold text-surface-white">
+                      {initials}
+                    </Text>
+                  </View>
+                )}
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => router.push('/(tabs)/profile')}
-            >
-              {avatarUrl ? (
-                <Image source={{ uri: avatarUrl }} className="w-11 h-11 rounded-full" />
-              ) : (
-                <View className="w-11 h-11 rounded-full bg-brand-blue items-center justify-center">
-                  <Text className="text-body-lg font-jakarta-extrabold text-surface-white">
-                    {initials}
-                  </Text>
-                </View>
-              )}
-            </TouchableOpacity>
           </View>
 
-          {/* Pool summary card */}
-          <View className="card--info mt-4 p-4">
-            <View className="flex-row items-center">
+          <View className="flex-row items-center gap-0 mt-1.5">
+            <Text className="text-h1 font-jakarta-extrabold text-brand-navy -mr-4">
+              {t('dashboard_greeting', { name: displayName })}
+            </Text>
+            <Image source={dashboardImages.helloEmoji} className="w-16 h-16 -mb-2" />
+          </View>
+
+          <TouchableOpacity
+            className="mt-4 rounded-[18px] border border-[#C9E8F7] bg-[#F3FBFF] p-3"
+            activeOpacity={0.8}
+            onPress={() => router.push('/(tabs)/pool')}
+          >
+            <View className="min-h-19 flex-row items-center gap-2.5">
               <Image
                 source={dashboardImages.poolIllustration}
-                className="w-20 h-20 rounded-full -ml-2"
+                className="w-15.5 h-15.5 rounded-full"
+                resizeMode="cover"
               />
-              <View className="flex-1 ml-1">
-                <Text className="text-h3 font-jakarta-extrabold text-brand-navy">
-                  {pools?.pool_name ?? ''}
+              <View className="flex-1 min-w-0">
+                <Text className="text-h3 font-jakarta-extrabold text-[#071C5A]" numberOfLines={1}>
+                  {pools?.pool_name || t('dashboard_default_pool_name')}
                 </Text>
-                <View className="chip--success flex-row items-center self-start  gap-1 mt-1.5 rounded-full">
-                  <Image source={dashboardImages.greenCheckIcon} className="w-8 h-8 mt-1 -mr-2" />
-                  <Text className="text-small font-jakarta-bold text-success-text mr-2">
-                    {t('dashboard_plan_ready_badge')}
-                  </Text>
-                </View>
+                <Text className="text-small font-jakarta-semibold text-sub mt-1">
+                  {t(setupComplete ? 'dashboard_setup_complete' : 'dashboard_setup_in_progress')}
+                </Text>
               </View>
-              <ProfileCompletionRing
-                percentage={completionScore}
-                size={64}
-                strokeWidth={7}
-                progressColor={colors.brand.blue}
-              />
+              <ProfileCompletionRing percentage={completionScore} size={58} strokeWidth={6} />
+              <Ionicons name="chevron-forward" size={19} color="#74819A" />
             </View>
 
             {latestReading?.poolStatus && latestReading.swimmingStatus && (
@@ -174,9 +212,8 @@ export default function DashboardScreen() {
                 />
               </View>
             )}
-          </View>
+          </TouchableOpacity>
 
-          {/* Next Step */}
           <NextStepCard
             pool={pools}
             latestReading={latestReading}
@@ -185,14 +222,13 @@ export default function DashboardScreen() {
             incompleteTasks={incompleteTasks}
           />
 
-          {/* Weekly Care Checklist */}
           <TouchableOpacity
             className="card mt-4 p-4 flex-row items-center"
             activeOpacity={0.7}
             onPress={() =>
               router.push({
                 pathname: '/(tabs)/checklist',
-                params: { checklistCompleted }
+                params: { checklistCompleted },
               })
             }
           >
@@ -219,74 +255,29 @@ export default function DashboardScreen() {
             <Image source={dashboardImages.chevronRight} className="w-8 h-8 ml-2" />
           </TouchableOpacity>
 
-          {/* Solve Visible Problems */}
-          <TouchableOpacity
-            className="card mt-4 p-4 flex-row items-center"
-            activeOpacity={0.7}
-            onPress={() => router.push('/(problems)/questions' as Href)}
-          >
-            <View className="icon-circle icon-circle--success">
-              <Ionicons name="search-outline" size={20} color={colors.brand.navy} />
-            </View>
-            <View className="flex-1 ml-3 mr-2">
-              <Text className="text-body-lg font-jakarta-bold text-brand-navy">
-                {t('dashboard_solve_problems_title')}
-              </Text>
-              <Text className="text-small font-jakarta text-sub mt-0.5">
-                {t('dashboard_solve_problems_desc')}
-              </Text>
-            </View>
-            <Image
-              source={dashboardImages.chevronRight}
-              className="w-6 h-6"
-              resizeMode="contain"
+          <Text className="text-[20px] font-jakarta-extrabold text-[#071C5A] mt-6 mb-2.5">
+            {t('dashboard_more_tools')}
+          </Text>
+          <View className="card px-3.5 mb-1">
+            <DashboardToolRow
+              image={dashboardImages.solveProblems}
+              title={t('dashboard_solve_problems_title')}
+              description={t('dashboard_solve_problems_desc')}
+              onPress={() => router.push('/(problems)/questions' as Href)}
             />
-          </TouchableOpacity>
-
-          {/* Latest Readings */}
-          {/* <TouchableOpacity
-            className="card mt-4 p-4 flex-row items-start"
-            activeOpacity={0.7}
-            onPress={() => router.push('/(tabs)/readings')}
-          >
-            <Image source={dashboardImages.readingsIcon} className="w-13 h-13 self-center -ml-1" />
-            <View className="flex-1 ml-3">
-              <Text className="text-body-lg font-jakarta-bold text-brand-navy">
-                {t('dashboard_readings_title')}
-              </Text>
-              <Text className="text-small font-jakarta text-sub mt-1">
-                <Text className="font-jakarta-bold text-brand-blue">
-                  {t('dashboard_readings_cta')}
-                </Text>
-                {t('dashboard_readings_or_upload')}
-              </Text>
-            </View>
-            <Image source={dashboardImages.chevronRight} className="w-4 h-4 mt-1 ml-2" resizeMode="contain" />
-          </TouchableOpacity> */}
-
-          {/* Quick actions */}
-          <View className="card mt-4 px-4">
-            {QUICK_ACTIONS.map((action, index) => {
-              const isLast = index === QUICK_ACTIONS.length - 1;
-              return (
-                <TouchableOpacity
-                  key={action.titleKey}
-                  activeOpacity={0.7}
-                  className={`flex-row items-center py-3.5 ${isLast ? '' : 'border-b border-border-default'}`}
-                >
-                  <Image source={action.icon} className="w-14 h-14 rounded-full" />
-                  <View className="flex-1 ml-3 mr-2">
-                    <Text className="text-body font-jakarta-bold text-brand-navy">
-                      {t(action.titleKey)}
-                    </Text>
-                    <Text className="text-small font-jakarta text-sub mt-0.5">
-                      {t(action.descKey)}
-                    </Text>
-                  </View>
-                  <Image source={dashboardImages.chevronRight} className="w-6 h-6" resizeMode="contain" />
-                </TouchableOpacity>
-              );
-            })}
+            <DashboardToolRow
+              image={dashboardImages.learn}
+              title={t('dashboard_learn_title')}
+              description={t('dashboard_learn_desc')}
+              onPress={() => router.push('/(tabs)/learn')}
+            />
+            <DashboardToolRow
+              image={dashboardImages.askPoolTonic}
+              title={t('dashboard_ask_title')}
+              description={t('dashboard_ask_desc')}
+              last
+              onPress={() => Alert.alert(t('dashboard_ask_title'), t('dashboard_ask_desc'))}
+            />
           </View>
         </View>
       </ScrollView>
