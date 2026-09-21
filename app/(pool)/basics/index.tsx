@@ -234,7 +234,7 @@ export default function PoolBasicsScreen() {
 
                   <View className="flex-1 ml-3 mr-2">
                     <View className="flex-row items-center">
-                      <Text className="text-body-lg font-jakarta-bold text-brand-navy">{t(row.title)}</Text>
+                      <Text numberOfLines={2} className="text-body-lg font-jakarta-bold text-brand-navy">{t(row.title)}</Text>
                       {isMissing ? <View className="w-2 h-2 rounded-full bg-warning ml-1.5" /> : null}
                     </View>
                     <Text
@@ -245,7 +245,8 @@ export default function PoolBasicsScreen() {
                   </View>
 
                   <Text
-                    className={`text-body font-jakarta-bold mr-1 ${isMissing ? 'text-warning' : 'text-brand-navy'}`}
+                    numberOfLines={2}
+                    className={`max-w-[38%] text-body font-jakarta-bold text-right mr-1 ${isMissing ? 'text-warning' : 'text-brand-navy'}`}
                   >
                     {row.value.name ? t(row.value.name) : ''}
                   </Text>

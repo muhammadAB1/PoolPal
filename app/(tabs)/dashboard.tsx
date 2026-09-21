@@ -120,7 +120,7 @@ export default function DashboardScreen() {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F6FAFD]" edges={['top', 'left', 'right']}>
+    <SafeAreaView className="flex-1 bg-surface-bg" edges={['top', 'left', 'right']}>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
