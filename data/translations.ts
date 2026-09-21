@@ -1079,6 +1079,7 @@ export const en = {
   // bottom navigation
   nav_home: 'Home',
   nav_pool: 'Pool',
+  nav_shop: 'Shop',
   nav_readings: 'Readings',
   nav_checklist: 'Checklist',
   nav_learn: 'Learn',
@@ -2227,6 +2228,7 @@ export const es = {
   // bottom navigation
   nav_home: 'Inicio',
   nav_pool: 'Piscina',
+  nav_shop: 'Tienda',
   nav_readings: 'Valores',
   nav_checklist: 'Checklist',
   nav_learn: 'Aprender',

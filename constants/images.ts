@@ -184,13 +184,16 @@ import poolTonicUserIcon from '../assets/pooltonic-ui/pooltonic-user-icon.png';
 import poolTonicSolveProblems from '../assets/dashboard-images/pooltonic_solve_problems.png';
 import poolTonicLearn from '../assets/dashboard-images/pooltonic_learn.png';
 import poolTonicAskPoolTonic from '../assets/dashboard-images/pooltonic_ask_pooltonic.png';
-import navHomeActive from '../assets/dashboard-images/nav_home_icon_active.png';
-import navHomeInactive from '../assets/dashboard-images/nav_home_icon_inactive.png';
-import navPoolActive from '../assets/dashboard-images/nav_pool_waves_icon_active.png';
-import navPoolInactive from '../assets/dashboard-images/nav_pool_waves_icon_inactive.png';
-import navReadingsActive from '../assets/dashboard-images/nav_readings_drop_icon_active.png';
-import navReadingsInactive from '../assets/dashboard-images/nav_readings_drop_icon_inactive.png';
-import navChecklist from '../assets/dashboard-images/nav_checklist_icon.png';
+import poolTonicNavHomeSelected from '../assets/pooltonic-ui/pooltonic-home-selected.png';
+import poolTonicNavHome from '../assets/pooltonic-ui/pooltonic-home.png';
+import poolTonicNavPoolSelected from '../assets/pooltonic-ui/pooltonic-pool-selected.png';
+import poolTonicNavPool from '../assets/pooltonic-ui/pooltonic-pool.png';
+import poolTonicNavShopSelected from '../assets/pooltonic-ui/pooltonic-shop-selected.png';
+import poolTonicNavShop from '../assets/pooltonic-ui/pooltonic-shop.png';
+import poolTonicNavChecklistSelected from '../assets/pooltonic-ui/pooltonic-checklist-selected.png';
+import poolTonicNavChecklist from '../assets/pooltonic-ui/pooltonic-checklist.png';
+import poolTonicNavReadingsSelected from '../assets/pooltonic-ui/pooltonic-readings-selected.png';
+import poolTonicNavReadings from '../assets/pooltonic-ui/pooltonic-readings.png';
 import navLearnActive from '../assets/dashboard-images/nav_learn_book_icon_active.png';
 import navLearnInactive from '../assets/dashboard-images/nav_learn_book_icon_inactive.png';
 
@@ -474,13 +477,13 @@ export const dashboardImages = {
 
 /**
  * Bottom tab bar icons.
- * `checklist` has a single flat icon — tint it programmatically for the active state.
  */
 export const navImages = {
-    home: { active: navHomeActive, inactive: navHomeInactive },
-    pool: { active: navPoolActive, inactive: navPoolInactive },
-    readings: { active: navReadingsActive, inactive: navReadingsInactive },
-    checklist: { active: navChecklist, inactive: navChecklist },
+    home: { active: poolTonicNavHomeSelected, inactive: poolTonicNavHome },
+    pool: { active: poolTonicNavPoolSelected, inactive: poolTonicNavPool },
+    shop: { active: poolTonicNavShopSelected, inactive: poolTonicNavShop },
+    checklist: { active: poolTonicNavChecklistSelected, inactive: poolTonicNavChecklist },
+    readings: { active: poolTonicNavReadingsSelected, inactive: poolTonicNavReadings },
     learn: { active: navLearnActive, inactive: navLearnInactive },
 } as const;
 
