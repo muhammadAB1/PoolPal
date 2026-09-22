@@ -8,7 +8,13 @@
  * to the actual icon library.
  */
 
-import { getReadingStatus } from '@/data/readingBands';
+import {
+    getIdealStatusRange,
+    getReadingStatus,
+    type ReadingStatus,
+} from '@/data/readingBands';
+import { resolvePads } from '@/data/testStripBrands';
+import type { Pool } from '@/lib/types';
 import { LatestReading } from '@/providers/TestStripProvider';
 
 export type TreatmentIconKey =
@@ -260,11 +266,57 @@ function pickFirstCase(ids: Set<TreatmentCaseId>): TreatmentCaseId | null {
     return null;
 }
 
+function sameSelections(a: Record<string, string>, b: Record<string, string>) {
+    const keys = Object.keys(a);
+    if (keys.length !== Object.keys(b).length) return false;
+    return keys.every((key) => a[key] === b[key]);
+}
+
+/**
+ * Prefer the statuses water-results already stored on the provider.
+ * Those are an ordered list, so they are used only when they still line up
+ * with this saved reading. Otherwise score the saved values with the pool's
+ * ideal ranges — the Readings tab opens this screen with no session list.
+ */
+export function statusesForReading(
+    readings: LatestReading | null,
+    readingStatus: ReadingStatus[],
+    selectedBrand: string | null,
+    selections: Record<string, string>,
+    pool: Pool | null,
+): Record<string, ReadingStatus> {
+    const rows = resolvePads(selectedBrand, selections).filter(
+        (pad) => selections[pad.testName] != null,
+    );
+    const saved = readings?.selections;
+    if (
+        saved &&
+        rows.length > 0 &&
+        rows.length === readingStatus.length &&
+        sameSelections(selections, saved)
+    ) {
+        return Object.fromEntries(
+            rows.map((pad, index) => [pad.testName, readingStatus[index]]),
+        );
+    }
+
+    const source = saved ?? {};
+    const ranges = getIdealStatusRange(source, pool);
+    const statuses: Record<string, ReadingStatus> = {};
+    for (const [testName, value] of Object.entries(source)) {
+        statuses[testName] = getReadingStatus(testName, value, ranges[testName]);
+    }
+    return statuses;
+}
+
 /**
  * Independent case checks, then a ranker picks who is treated first.
  * Deferred cards share one message. Combination overrides live in pickFirstCase.
  */
-export function getReadingsThatNeedTreatment(readings: LatestReading | null): TreatmentAlert[] {
+export function getReadingsThatNeedTreatment(
+    readings: LatestReading | null,
+    statuses: Record<string, ReadingStatus> = {},
+): TreatmentAlert[] {
     const cases: TreatmentCase[] = [];
 
     const freeChlorine = readings?.selections['Free Chlorine'];
@@ -274,9 +326,11 @@ export function getReadingsThatNeedTreatment(readings: LatestReading | null): Tr
     const cya = readings?.selections['Cyanuric Acid'];
     const salt = readings?.selections['Salt'];
     const combinedChlorine = readings?.selections['Combined Chlorine'];
-    const alkStatus = alkalinity
-        ? getReadingStatus('Total Alkalinity', alkalinity)
-        : null;
+    const alkStatus = statuses['Total Alkalinity'] ?? null;
+    const inBand = (testName: string, bands: ReadingStatus[]) => {
+        const status = statuses?.[testName];
+        return status != null && bands.includes(status);
+    };
 
     if (freeChlorine && Number(freeChlorine) >= 10) {
         cases.push({
@@ -289,7 +343,7 @@ export function getReadingsThatNeedTreatment(readings: LatestReading | null): Tr
     }
     if (
         freeChlorine &&
-        ['low', 'very_low'].includes(getReadingStatus('Free Chlorine', freeChlorine))
+        inBand('Free Chlorine', ['low', 'very_low'])
     ) {
         cases.push({
             id: 'fc_low',
@@ -342,7 +396,7 @@ export function getReadingsThatNeedTreatment(readings: LatestReading | null): Tr
             treatMessage: 'Alkalinity is very high. Lower alkalinity to bring it back into range, then retest.',
         });
     }
-    if (bromine && ['low', 'very_low'].includes(getReadingStatus('Bromine', bromine))) {
+    if (bromine && inBand('Bromine', ['low', 'very_low'])) {
         cases.push({
             id: 'bromine_low',
             testName: 'Bromine',
@@ -350,7 +404,7 @@ export function getReadingsThatNeedTreatment(readings: LatestReading | null): Tr
             treatMessage: 'Bromine is low. Add bromine to bring it back into range, then retest.',
         });
     }
-    if (cya && ['low', 'very_low'].includes(getReadingStatus('Cyanuric Acid', cya))) {
+    if (cya && inBand('Cyanuric Acid', ['low', 'very_low'])) {
         cases.push({
             id: 'cya_low',
             testName: 'Cyanuric Acid',
@@ -376,7 +430,7 @@ export function getReadingsThatNeedTreatment(readings: LatestReading | null): Tr
                 'Cyanuric acid is too high. Remove cyanuric acid first — chlorine will not sanitize well until CYA is back in range.',
         });
     }
-    if (salt && ['low', 'very_low'].includes(getReadingStatus('Salt', salt))) {
+    if (salt && inBand('Salt', ['low', 'very_low'])) {
         cases.push({
             id: 'salt_low',
             testName: 'Salt',
@@ -403,7 +457,7 @@ export function getReadingsThatNeedTreatment(readings: LatestReading | null): Tr
     }
     if (
         combinedChlorine &&
-        ['high', 'very_high'].includes(getReadingStatus('Combined Chlorine', combinedChlorine))
+        inBand('Combined Chlorine', ['high', 'very_high'])
     ) {
         cases.push({
             id: 'cc_high',

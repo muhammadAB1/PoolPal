@@ -1,16 +1,19 @@
+import PoolTonicLogo from '@/components/PoolTonicLogo';
 import { graphics, icons } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
+import { usePool } from '@/providers/PoolProvider';
+import { useTestStrips } from '@/providers/TestStripProvider';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   getReadingsThatNeedTreatment,
+  statusesForReading,
   NO_TREATMENT_NEEDED,
   TREATMENT_PLAN,
   type TreatmentIconKey,
 } from './_data';
-import { useTestStrips } from '@/providers/TestStripProvider';
 
 /** Maps a content-only icon key to the actual icon library + glyph. */
 function TreatmentIcon({
@@ -53,13 +56,17 @@ export default function TreatmentPlanScreen() {
   const router = useRouter();
   const plan = TREATMENT_PLAN;
 
-  const { latestReading } = useTestStrips();
-  const alerts = getReadingsThatNeedTreatment(latestReading);
+  const { latestReading, readingStatus, selections, selectedBrand } = useTestStrips();
+  const { pools } = usePool();
+  const alerts = getReadingsThatNeedTreatment(
+    latestReading,
+    statusesForReading(latestReading, readingStatus, selectedBrand, selections, pools),
+  );
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
       {/* Header */}
-      <View className="flex-row items-center px-5 pt-2 pb-1">
+      <View className="flex-row items-center justify-between px-5 pt-2 pb-1">
         <TouchableOpacity
           className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
           onPress={() => router.back()}
@@ -68,10 +75,7 @@ export default function TreatmentPlanScreen() {
           <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
         </TouchableOpacity>
 
-        <View className="flex-1 flex-row items-center justify-center gap-1.5">
-          <Image source={icons.waterDrop} className="w-5 h-5" resizeMode="contain" />
-          <Text className="text-body-lg font-jakarta-bold text-brand-navy">{plan.brandLabel}</Text>
-        </View>
+        <PoolTonicLogo width={152} height={43} />
 
         <TouchableOpacity
           className="w-9 h-9 rounded-full bg-surface-white border border-border-default items-center justify-center"

@@ -1,4 +1,5 @@
 import OptionBar from '@/components/problems/OptionBar';
+import PoolTonicLogo from '@/components/PoolTonicLogo';
 import { icons } from '@/constants/images';
 import { useProblems } from '@/providers/ProblemsProvider';
 import { Href, useRouter } from 'expo-router';
@@ -65,23 +66,22 @@ export default function ProblemsQuestionsScreen() {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-            <View className="flex-row items-center justify-between px-5 pt-2">
-                <TouchableOpacity
-                    className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
-                    onPress={handleBack}
-                    activeOpacity={0.7}
-                >
-                    <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
-                </TouchableOpacity>
-
-                <View className="flex-1 flex-row items-center justify-center gap-1.5">
-                    <Image source={icons.waterDrop} className="w-5 h-5" resizeMode="contain" />
-                    <Text className="text-body-lg font-jakarta-bold text-brand-navy">
-                        {t('dashboard_solve_problems_title')}
-                    </Text>
+            <View className="flex-row items-center px-5 pt-2">
+                <View className="w-16">
+                    <TouchableOpacity
+                        className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
+                        onPress={handleBack}
+                        activeOpacity={0.7}
+                    >
+                        <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
+                    </TouchableOpacity>
                 </View>
 
-                <Text className="text-small font-jakarta text-sub">
+                <View className="flex-1 items-center">
+                    <PoolTonicLogo width={152} height={43} />
+                </View>
+
+                <Text className="w-16 text-right text-small font-jakarta text-sub">
                     {t('problems_step', { n: step })}
                 </Text>
             </View>
