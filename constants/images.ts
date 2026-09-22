@@ -30,6 +30,22 @@ import poolTonicStars from '../assets/welcome/pooltonic_stars.png';
 import poolTonicWave from '../assets/welcome/pooltonic_wave.png';
 import poolTonicLogoFullLight from '../assets/pooltonic-ui/pooltonic-logo-full-light.png';
 
+// ─── Chemistry icons ─────────────────────────────────────────────────────────
+import chemistryFreeChlorine from '../assets/chemistry-icons/free-chlorine.png';
+import chemistryTotalChlorine from '../assets/chemistry-icons/total-chlorine.png';
+import chemistryCombinedChlorine from '../assets/chemistry-icons/combined-chlorine.png';
+import chemistryBromine from '../assets/chemistry-icons/bromine.png';
+import chemistryPh from '../assets/chemistry-icons/ph.png';
+import chemistryTotalAlkalinity from '../assets/chemistry-icons/total-alkalinity.png';
+import chemistryCalciumHardness from '../assets/chemistry-icons/calcium-hardness.png';
+import chemistryCyanuricAcid from '../assets/chemistry-icons/cyanuric-acid.png';
+import chemistrySalt from '../assets/chemistry-icons/salt.png';
+import chemistryTotalHardness from '../assets/chemistry-icons/total-hardness.png';
+import chemistryPhosphates from '../assets/chemistry-icons/phosphates.png';
+import chemistryTds from '../assets/chemistry-icons/tds.png';
+import chemistryIron from '../assets/chemistry-icons/iron.png';
+import chemistryCopper from '../assets/chemistry-icons/copper.png';
+
 // ─── Icons (1x) ──────────────────────────────────────────────────────────────
 
 import iconAiChat from '../assets/icons_1x/ai_chat.png';
@@ -148,11 +164,12 @@ import poolTonicShapeOval from '../assets/pooltonic-ui/pooltonic-oval.png';
 import poolTonicShapeKidney from '../assets/pooltonic-ui/pooltonic-kidney.png';
 
 // ─── Choose Test Method ───────────────────────────────────────────────────────
-import chooseTestMethodStrip from '../assets/pool-reading-images-new/strip.webp';
 import chooseTestMethodFlask from '../assets/pool-reading-images-new/flask.webp';
-import chooseTestMethodResults from '../assets/pool-reading-images-new/results.webp';
-import chooseTestMethodMagnifyingGlass from '../assets/pool-reading-images-new/magnifying_glass.webp';
 import chooseTestMethodSettings from '../assets/pool-reading-images-new/settings.png';
+import poolTonicCheckStrip from '../assets/pooltonic-ui/pooltonic-test-strip.png';
+import poolTonicCheckResults from '../assets/pooltonic-ui/pooltonic-test-results.png';
+import poolTonicCheckVisibleProblem from '../assets/pooltonic-ui/pooltonic-solve-visible-pool-problems.png';
+import poolTonicCheckInfo from '../assets/pooltonic-ui/pooltonic-info-i-icon.png';
 
 // ─── Onboarding completion (pool profile) ────────────────────────────────────
 import poolProfileWaterDrop from '../assets/onboardin-screen-images/pool-profile-water-drop.png';
@@ -226,6 +243,23 @@ export const graphics = {
 
 export const brandAssets = {
     logoFull: poolTonicLogoFullLight,
+} as const;
+
+export const chemistryIcons = {
+    freeChlorine: chemistryFreeChlorine,
+    totalChlorine: chemistryTotalChlorine,
+    combinedChlorine: chemistryCombinedChlorine,
+    bromine: chemistryBromine,
+    ph: chemistryPh,
+    totalAlkalinity: chemistryTotalAlkalinity,
+    calciumHardness: chemistryCalciumHardness,
+    cyanuricAcid: chemistryCyanuricAcid,
+    salt: chemistrySalt,
+    totalHardness: chemistryTotalHardness,
+    phosphates: chemistryPhosphates,
+    tds: chemistryTds,
+    iron: chemistryIron,
+    copper: chemistryCopper,
 } as const;
 
 export const icons = {
@@ -400,11 +434,12 @@ export const testReadingsGraphics = {
  * Choose Test Method screen images.
  */
 export const chooseTestMethodImages = {
-    strip: chooseTestMethodStrip,
+    strip: poolTonicCheckStrip,
     flask: chooseTestMethodFlask,
-    results: chooseTestMethodResults,
-    magnifyingGlass: chooseTestMethodMagnifyingGlass,
+    results: poolTonicCheckResults,
+    magnifyingGlass: poolTonicCheckVisibleProblem,
     settings: chooseTestMethodSettings,
+    info: poolTonicCheckInfo,
     hero: dashboardPoolIllustration,
 } as const;
 

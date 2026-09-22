@@ -1,3 +1,4 @@
+import { chemistryIcons } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import { HAVE_RESULTS_FIELDS } from '@/data/chooseTestMethod';
 import {
@@ -18,7 +19,13 @@ import { useTestStrips } from '@/providers/TestStripProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const TEST_INTERVAL_DAYS = 7;
@@ -387,9 +394,32 @@ function StatusPillRow({
 }
 
 /** One row in the "Latest Test Results" card — tested or not-tested. */
+const CHEMISTRY_ICON_BY_ABBR = {
+  FC: chemistryIcons.freeChlorine,
+  TC: chemistryIcons.totalChlorine,
+  CC: chemistryIcons.combinedChlorine,
+  BR: chemistryIcons.bromine,
+  pH: chemistryIcons.ph,
+  TA: chemistryIcons.totalAlkalinity,
+  CH: chemistryIcons.calciumHardness,
+  CYA: chemistryIcons.cyanuricAcid,
+  S: chemistryIcons.salt,
+  Salt: chemistryIcons.salt,
+  TH: chemistryIcons.totalHardness,
+  H: chemistryIcons.calciumHardness,
+  PO4: chemistryIcons.phosphates,
+  TDS: chemistryIcons.tds,
+  FE: chemistryIcons.iron,
+  CU: chemistryIcons.copper,
+} as const;
+
 function TestResultRow({ row }: { row: TestedRow | UntestedRow }) {
   const { t } = useTranslation();
-  const { abbr } = testMeta(row.testName);
+  const abbr =
+    HAVE_RESULTS_FIELDS.find((field) => field.testName === row.testName)?.abbreviation ??
+    testMeta(row.testName).abbr;
+  const chemistryIcon =
+    CHEMISTRY_ICON_BY_ABBR[abbr as keyof typeof CHEMISTRY_ICON_BY_ABBR];
   const unitSuffix = row.unit ? ` ${row.unit}` : '';
   const isTested = 'value' in row;
   const badge = isTested
@@ -399,19 +429,30 @@ function TestResultRow({ row }: { row: TestedRow | UntestedRow }) {
 
   return (
     <View className="flex-row items-start justify-between gap-3">
-      <View className="flex-1">
-        <Text className="text-body font-jakarta-bold text-brand-navy">
-          {row.testName} ({abbr})
-        </Text>
-        {row.range ? (
-          <Text className="text-tiny font-jakarta text-sub mt-0.5">
-            {t('readings_recommended_range', {
-              min: row.range.min,
-              max: row.range.max,
-              unit: unitSuffix,
-            })}
-          </Text>
+      <View className="flex-1 flex-row items-center">
+        {chemistryIcon ? (
+          <Image
+            source={chemistryIcon}
+            className="w-12 h-12 mr-3"
+            style={{ width: 48, height: 48 }}
+            resizeMode="contain"
+          />
         ) : null}
+
+        <View className="flex-1">
+          <Text className="text-body font-jakarta-bold text-brand-navy">
+            {row.testName}
+          </Text>
+          {row.range ? (
+            <Text className="text-tiny font-jakarta text-sub mt-0.5">
+              {t('readings_recommended_range', {
+                min: row.range.min,
+                max: row.range.max,
+                unit: unitSuffix,
+              })}
+            </Text>
+          ) : null}
+        </View>
       </View>
       <View className="items-end">
         <Text

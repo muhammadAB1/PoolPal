@@ -175,6 +175,70 @@ export const HAVE_RESULTS_FIELD_COLUMNS: Record<
   salt: 'salt',
 };
 
+export type ResultSanitizer = 'chlorine' | 'saltwater' | 'bromine' | 'unknown';
+export type ResultWaterBody = 'pool' | 'standalone_spa';
+
+const HAVE_RESULTS_FIELD_BY_KEY = Object.fromEntries(
+  HAVE_RESULTS_FIELDS.map((field) => [field.key, field]),
+) as Record<HaveResultsFieldKey, HaveResultsField>;
+
+function fieldsByKey(keys: readonly HaveResultsFieldKey[]): HaveResultsField[] {
+  return keys.map((key) => HAVE_RESULTS_FIELD_BY_KEY[key]);
+}
+
+/** Chlorine, Saltwater, and Bromine map directly. Other and missing stay unknown. */
+export function poolTypeToResultSanitizer(poolType?: string | null): ResultSanitizer {
+  if (poolType === 'Chlorine') return 'chlorine';
+  if (poolType === 'Saltwater') return 'saltwater';
+  if (poolType === 'Bromine') return 'bromine';
+  return 'unknown';
+}
+
+/** Main rows for the enter-results screen. The full catalog above is unchanged. */
+export function mainFieldsFor(
+  sanitizer: ResultSanitizer,
+  waterBody: ResultWaterBody,
+): HaveResultsField[] {
+  if (sanitizer === 'saltwater') {
+    return waterBody === 'standalone_spa'
+      ? fieldsByKey(['freeChlorine', 'ph', 'totalAlkalinity', 'calciumHardness', 'salt'])
+      : fieldsByKey(['freeChlorine', 'ph', 'totalAlkalinity', 'calciumHardness', 'cyanuricAcid', 'salt']);
+  }
+  if (sanitizer === 'chlorine') {
+    return waterBody === 'standalone_spa'
+      ? fieldsByKey(['freeChlorine', 'ph', 'totalAlkalinity', 'calciumHardness'])
+      : fieldsByKey(['freeChlorine', 'ph', 'totalAlkalinity', 'calciumHardness', 'cyanuricAcid']);
+  }
+  if (sanitizer === 'bromine') {
+    return fieldsByKey(['bromine', 'ph', 'totalAlkalinity', 'calciumHardness']);
+  }
+  return fieldsByKey(['ph', 'totalAlkalinity', 'calciumHardness']);
+}
+
+/** Total Chlorine is only relevant for chlorine and saltwater. */
+export function additionalSanitizerFields(sanitizer: ResultSanitizer): HaveResultsField[] {
+  if (sanitizer === 'chlorine' || sanitizer === 'saltwater') {
+    return fieldsByKey(['totalChlorine']);
+  }
+  return [];
+}
+
+export function additionalWaterFields(): HaveResultsField[] {
+  return fieldsByKey(['totalHardness']);
+}
+
+/** Fields that can unlock Continue. Combined chlorine is calculated, not typed. */
+export function analyzableFieldKeys(
+  sanitizer: ResultSanitizer,
+  waterBody: ResultWaterBody,
+): HaveResultsFieldKey[] {
+  const extra: HaveResultsFieldKey[] =
+    sanitizer === 'chlorine' || sanitizer === 'saltwater'
+      ? ['totalChlorine', 'totalHardness']
+      : ['totalHardness'];
+  return [...mainFieldsFor(sanitizer, waterBody).map((field) => field.key), ...extra];
+}
+
 /** Skip null/empty columns so the Readings tab can show those fields as not tested. */
 export function testReadingRowToSelections(
   row: TestReadingRow,
