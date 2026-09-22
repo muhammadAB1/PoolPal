@@ -1,5 +1,5 @@
 import catalog from '@/assets/test-strips/test_strips_rows.json';
-import { testStripBrandIcons } from '@/constants/images';
+import { icons, testStripProductImages } from '@/constants/images';
 import { HAVE_RESULTS_FIELDS } from '@/data/chooseTestMethod';
 import type { ImageSourcePropType } from 'react-native';
 
@@ -35,6 +35,12 @@ export const CATALOG_ROWS: TestStripRow[] = catalog;
 /** Some catalog values carry stray newlines from the source export. */
 const clean = (value: string) => value.replace(/\s+/g, ' ').trim();
 
+/** Bottle photo for one catalog product. Custom strips keep the placeholder. */
+export function iconForProduct(brand: string, model: string): ImageSourcePropType {
+  const images: Record<string, ImageSourcePropType> = testStripProductImages;
+  return images[`${brand}|${model}`] ?? icons.testStrip;
+}
+
 /** Collapses pad-level rows into one entry per brand, in catalog order. */
 export function toBrands(rows: TestStripBrandRow[]): TestStripBrand[] {
   return rows.reduce<TestStripBrand[]>((brands, row) => {
@@ -46,7 +52,7 @@ export function toBrands(rows: TestStripBrandRow[]): TestStripBrand[] {
       brands.push({
         name,
         models: [model],
-        icon: testStripBrandIcons[brands.length % testStripBrandIcons.length],
+        icon: iconForProduct(name, model),
       });
     } else if (!brand.models.includes(model)) {
       brand.models.push(model);

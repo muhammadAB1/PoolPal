@@ -1,6 +1,7 @@
 import PoolTonicLogo from '@/components/PoolTonicLogo';
-import { icons } from '@/constants/images';
+import { icons, poolSurfaceImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
+import { iconForProduct } from '@/data/testStripBrands';
 import { useTestStrips } from '@/providers/TestStripProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -108,7 +109,7 @@ export default function ChooseStripBrandScreen() {
               brand.models.map((model) => (
                 <BrandRow
                   key={`${brand.name}-${model}`}
-                  icon={brand.icon}
+                  icon={iconForProduct(brand.name, model)}
                   title={`${brand.name} ${model}`}
                   description={t('strip_brand_supported')}
                   selected={selectedBrand === `${brand.name} ${model}`}
@@ -124,7 +125,7 @@ export default function ChooseStripBrandScreen() {
             ) : null}
 
             <BrandRow
-              icon={icons.testStrip}
+              icon={poolSurfaceImages.NotSure}
               title={t('strip_brand_other_title')}
               description={t('strip_brand_other_desc')}
               selected={selectedBrand === OTHER_BRAND}

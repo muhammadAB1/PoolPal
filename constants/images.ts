@@ -71,6 +71,15 @@ import iconRadioSelected from '../assets/icons_1x/radio_selected.png';
 import iconReadings from '../assets/icons_1x/readings.png';
 import iconSalt from '../assets/icons_1x/salt.png';
 import iconTestStrip from '../assets/icons_1x/test_strip.png';
+import aquachek7in1 from '../assets/test-strips/aquacheck/aquachek-7-in-1.jpg';
+import blissPoolStrips from '../assets/test-strips/Bliss Pool/BlissPool.jpeg';
+import cloroxPoolSpa from '../assets/test-strips/clorox/CloroxPoolSpa-Test_strips.jpg';
+import easyTest9in1 from '../assets/test-strips/EasyTest 9 in 1/easytest-9in1.jpg';
+import hth6Way from '../assets/test-strips/Hth/hth-6-way-strips.webp';
+import jnwPoolAndSpa from '../assets/test-strips/jnw/jnwPoolandSpa-7-in-1.jpg';
+import jnwHotTubSpa from '../assets/test-strips/JNW Hot Tub & Spa/jnw-hot-tub-spa-6-in-1.jpg';
+import kimbistStrips from '../assets/test-strips/kimbist/kimbist.jpeg';
+import runboStrips from '../assets/test-strips/Runbo/runbo.jpg';
 import iconUpload from '../assets/icons_1x/upload.png';
 import iconWarning from '../assets/icons_1x/warning.png';
 import iconWaterDrop from '../assets/icons_1x/water_drop.png';
@@ -444,20 +453,22 @@ export const chooseTestMethodImages = {
 } as const;
 
 /**
- * Test strip brand bottle icons, in catalog order.
- * Real brand artwork has not been supplied yet — every slot points at the
- * shared strip placeholder. Replace them one by one as the assets arrive.
+ * Bottle photos for catalog strips.
+ * Keys are `${product_brand}|${product_model}` after whitespace is collapsed,
+ * matching `toBrands` in data/testStripBrands.ts. Unknown / custom strips
+ * fall back to `icons.testStrip`.
  */
-export const testStripBrandIcons = [
-    iconTestStrip, // icon1 — AquaChek
-    iconTestStrip, // icon2 — HTH
-    iconTestStrip, // icon3 — Clorox
-    iconTestStrip, // icon4 — JNW
-    iconTestStrip, // icon5 — EasyTest
-    iconTestStrip, // icon6 — kimbist
-    iconTestStrip, // icon7 — Bliss Pool
-    iconTestStrip, // icon8 — Runbo
-] as const;
+export const testStripProductImages = {
+    'AquaChek|7-in-1': aquachek7in1,
+    'HTH|6-Way Test Strips': hth6Way,
+    'Clorox|A-E five-level reference chart': cloroxPoolSpa,
+    'JNW|Version 1.0 (11-2025) 7 in 1': jnwPoolAndSpa,
+    'JNW|Version 1.0 (11-2025) Hot Tub & Spa': jnwHotTubSpa,
+    'EasyTest|9 in 1': easyTest9in1,
+    'kimbist|Attached reference chart': kimbistStrips,
+    'Bliss Pool|150-strip reference chart; promotional badge omitted': blissPoolStrips,
+    'Runbo|Attached reference chart': runboStrips,
+} as const;
 
 export const poolSizeGraphics = {
     reminderShield,
