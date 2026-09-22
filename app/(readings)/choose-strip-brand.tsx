@@ -1,3 +1,4 @@
+import PoolTonicLogo from '@/components/PoolTonicLogo';
 import { icons } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import { useTestStrips } from '@/providers/TestStripProvider';
@@ -44,19 +45,8 @@ export default function ChooseStripBrandScreen() {
           />
         </TouchableOpacity>
 
-        <View className="absolute w-full flex-row items-center justify-center gap-2">
-          <View className="relative items-center justify-center">
-            <View className="w-9 h-9 rounded-2xl bg-brand-blue absolute" />
-            <Image
-              source={icons.waterDrop}
-              className="w-7 h-7 z-1"
-              resizeMode="contain"
-            />
-          </View>
-          <Text className="text-h3 font-jakarta-extrabold text-brand-navy">
-            {t('dashboard_brand_name')}
-          </Text>
-
+        <View className="absolute w-full items-center justify-center" pointerEvents="none">
+          <PoolTonicLogo width={152} height={43} />
         </View>
       </View>
 

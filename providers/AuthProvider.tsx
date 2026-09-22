@@ -1,3 +1,7 @@
+import { setLanguage as setAppLanguage } from '@/lib/i18n';
+import { supabase } from '@/lib/Supabase';
+import { Country, Language, Measurement, Profile } from '@/lib/types';
+import type { Session, User } from '@supabase/supabase-js';
 import {
   createContext,
   useContext,
@@ -5,10 +9,6 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import type { Session, User } from '@supabase/supabase-js';
-import { supabase } from '@/lib/Supabase';
-import { Country, Language, Measurement, Profile } from '@/lib/types';
-import { setLanguage as setAppLanguage } from '@/lib/i18n';
 
 type AuthContextValue = {
   user: User | null;
@@ -20,6 +20,8 @@ type AuthContextValue = {
   country: Country | null;
   language: Language | null;
   name: string | null;
+  cityOrTown: string | null;
+  cityOrTownId: string | null;
   /** Re-fetches the signed-in user's profile row (call after writing prefs). */
   refreshProfile: () => Promise<void>;
 };
@@ -35,6 +37,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [country, setCountry] = useState<Country | null>(null);
   const [language, setLanguage] = useState<Language | null>(null);
   const [name, setName] = useState<string | null>(null);
+  const [cityOrTown, setCityOrTown] = useState<string | null>(null);
+  const [cityOrTownId, setCityOrTownId] = useState<string | null>(null);
 
   async function loadProfile(userId: string) {
     const { data, error } = await supabase
@@ -49,6 +53,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLanguage(null);
       setMeasurement('us');
       setName(null);
+      setCityOrTown(null);
+      setCityOrTownId(null);
       return;
     }
 
@@ -58,6 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLanguage(profile.language ?? null);
     setMeasurement(profile.measurement ?? 'us');
     setName(profile.name ?? null);
+    setCityOrTown(profile.city_or_town ?? null);
+    setCityOrTownId(profile.city_or_town_id ?? null);
     if (profile.language === 'en' || profile.language === 'es') {
       setAppLanguage(profile.language);
     }
@@ -69,6 +77,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setLanguage(null);
     setMeasurement('us');
     setName(null);
+    setCityOrTown(null);
+    setCityOrTownId(null);
   }
 
   useEffect(() => {
@@ -104,7 +114,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, accessToken, plan, loading, setUser, measurement, country, language, name, refreshProfile }}
+      value={{ user, accessToken, plan, loading, setUser, measurement, country, language, name, cityOrTown, cityOrTownId, refreshProfile }}
     >
       {children}
     </AuthContext.Provider>

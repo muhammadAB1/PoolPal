@@ -2,6 +2,7 @@ import PoolBasicsForm from '@/app/(onboarding)/pool-basics';
 import PoolReviewHeader from '@/components/PoolReviewHeader';
 import { poolTabImages } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
+import { isHotTubPool, toPoolEnvironment } from '@/lib/pool';
 import { usePool } from '@/providers/PoolProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Href, useRouter } from 'expo-router';
@@ -13,10 +14,17 @@ import { POOL_BASICS } from './_data';
 
 const DETAIL_ICONS = {
   pool_type: 'help-circle-outline',
+  salt_system_status: 'cog-outline',
+  manual_chlorine_during_salt_failure: 'flask-outline',
   pool_screen: 'shield-outline',
   hot_tub_type: 'waves',
   spa_attachment: 'waves',
+  standalone_spa_sanitizer: 'hot-tub',
   pool_use_type: 'account-multiple-outline',
+  occupancy_pattern: 'calendar-clock',
+  seasonal_unused_months: 'calendar-month-outline',
+  rental_activity: 'home-city-outline',
+  rental_active_months: 'calendar-check-outline',
   usage_frequency: 'calendar-week',
   number_of_users: 'account-group-outline',
 } as const;
@@ -29,10 +37,21 @@ export default function PoolBasicsScreen() {
   const [isEditing, setIsEditing] = useState(false);
 
   const updatedPoolBasics = POOL_BASICS.details.map((detail) => {
-    const selected = pools?.[detail.database_column_name];
-    const option = selected
-      ? (detail.value as Record<string, { name: string; description: string }>)[selected]
-      : undefined;
+    const rawSelected = pools?.[detail.database_column_name];
+    const selected =
+      detail.database_column_name === 'pool_screen'
+        ? toPoolEnvironment(typeof rawSelected === 'string' ? rawSelected : null)
+        : rawSelected;
+    const option = Array.isArray(selected)
+      ? selected.length
+        ? {
+            name: selected.join(', '),
+            description: Object.values(detail.value)[0]?.description ?? '',
+          }
+        : undefined
+      : selected
+        ? (detail.value as Record<string, { name: string; description: string }>)[String(selected)]
+        : undefined;
 
     return {
       ...detail,
@@ -42,6 +61,8 @@ export default function PoolBasicsScreen() {
       },
     };
   });
+
+  const environmentLabel = updatedPoolBasics.find((row) => row.database_column_name === 'pool_screen')?.value.name;
 
   const sectionCompleted = pools?.missing_details?.includes('pool-basics') ? false : true;
 
@@ -63,6 +84,13 @@ export default function PoolBasicsScreen() {
             useType: pools?.pool_use_type ?? undefined,
             usageFrequency: pools?.usage_frequency ?? undefined,
             numberOfPoolUsers: pools?.number_of_users ?? undefined,
+            saltSystemStatus: pools?.salt_system_status ?? undefined,
+            manualChlorine: pools?.manual_chlorine_during_salt_failure ?? undefined,
+            spaSanitizer: pools?.standalone_spa_sanitizer ?? undefined,
+            occupancyPattern: pools?.occupancy_pattern ?? undefined,
+            unusedMonths: pools?.seasonal_unused_months ?? [],
+            rentalActivity: pools?.rental_activity ?? undefined,
+            activeMonths: pools?.rental_active_months ?? [],
           }}
           showSkip={false}
           markStale={false}
@@ -78,7 +106,12 @@ export default function PoolBasicsScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
-      <PoolReviewHeader title={t('pool_tab_basics')} onEditPress={() => setIsEditing(true)} />
+      <PoolReviewHeader
+        title={t('pool_tab_basics')}
+        // Edit button commented out for now — detail row arrows open the onboarding form instead.
+        // onEditPress={() => setIsEditing(true)}
+        showEdit={false}
+      />
       <ScrollView
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
@@ -105,12 +138,24 @@ export default function PoolBasicsScreen() {
               <Text className="text-small font-jakarta text-surface-white mt-0.5">
                 {/* List pool attributes in a readable way */}
                 {[
-                  pools?.pool_type === 'Chlorine' ? t('pool_basics_type_chlorine') : t('pool_basics_type_saltwater'),
-                  pools?.pool_screen === 'Screened' ? t('pool_basics_screened_yes') : t('pool_basics_screened_no'),
-                  pools?.hot_tub_type === 'Yes' && pools?.spa_attachment
+                  pools?.pool_type === 'Chlorine'
+                    ? t('pool_basics_type_chlorine')
+                    : pools?.pool_type === 'Bromine'
+                      ? t('pool_basics_type_bromine')
+                      : pools?.pool_type === 'Other'
+                        ? t('pool_basics_type_other')
+                        : t('pool_basics_type_saltwater'),
+                  environmentLabel ? t(environmentLabel) : '',
+                  pools?.hot_tub_type === 'Yes' && pools?.spa_attachment && !isHotTubPool(pools)
                     ? `${t(pools.spa_attachment === 'Attached' ? 'pool_basics_spa_attached' : 'pool_basics_spa_detached')} ${t('pool_basics_review_hot_tub_tag')}`
                     : '',
-                  pools?.pool_use_type === 'Family' ? t('pool_basics_use_family') : pools?.pool_use_type === 'VacationHome' ? t('pool_basics_use_vacation') : t('pool_basics_use_rental'),
+                  pools?.pool_use_type
+                    ? pools.pool_use_type === 'Family'
+                      ? t('pool_basics_use_family')
+                      : pools.pool_use_type === 'VacationHome'
+                        ? t('pool_basics_use_vacation')
+                        : t('pool_basics_use_rental')
+                    : '',
                 ]
                   .filter(Boolean)
                   .join(' • ')}
@@ -155,7 +200,18 @@ export default function PoolBasicsScreen() {
           <View className="card overflow-hidden" style={shadow.card}>
             {updatedPoolBasics.map((row, index) => {
               if (pools?.pool_use_type !== 'Family' && (row.database_column_name === 'usage_frequency' || row.database_column_name === 'number_of_users')) return null;
-              if (row.database_column_name === 'hot_tub_type' || (pools?.hot_tub_type !== 'Yes' && row.database_column_name === 'spa_attachment')) return null;
+              if (row.database_column_name === 'hot_tub_type') return null;
+              if (
+                (row.database_column_name === 'spa_attachment' || row.database_column_name === 'standalone_spa_sanitizer')
+                && (isHotTubPool(pools) || pools?.hot_tub_type !== 'Yes')
+              ) return null;
+              if (pools?.spa_attachment !== 'Detached' && row.database_column_name === 'standalone_spa_sanitizer') return null;
+              if (pools?.pool_type !== 'Saltwater' && (row.database_column_name === 'salt_system_status' || row.database_column_name === 'manual_chlorine_during_salt_failure')) return null;
+              if (pools?.salt_system_status !== 'not_working' && row.database_column_name === 'manual_chlorine_during_salt_failure') return null;
+              if (pools?.pool_use_type !== 'VacationHome' && (row.database_column_name === 'occupancy_pattern' || row.database_column_name === 'seasonal_unused_months')) return null;
+              if (pools?.occupancy_pattern !== 'seasonal' && row.database_column_name === 'seasonal_unused_months') return null;
+              if (pools?.pool_use_type !== 'ShortTermRental' && (row.database_column_name === 'rental_activity' || row.database_column_name === 'rental_active_months')) return null;
+              if (pools?.rental_activity !== 'seasonal' && row.database_column_name === 'rental_active_months') return null;
 
               const isLast = index === updatedPoolBasics.length - 1;
               const icon = DETAIL_ICONS[row.database_column_name];
@@ -166,6 +222,7 @@ export default function PoolBasicsScreen() {
                   key={row.database_column_name}
                   className={`flex-row items-center px-4 py-3.5 ${isLast ? '' : 'border-b border-border-default'}`}
                   activeOpacity={0.7}
+                  onPress={() => setIsEditing(true)}
                 >
                   <View className="icon-circle">
                     <MaterialCommunityIcons
@@ -177,7 +234,7 @@ export default function PoolBasicsScreen() {
 
                   <View className="flex-1 ml-3 mr-2">
                     <View className="flex-row items-center">
-                      <Text className="text-body-lg font-jakarta-bold text-brand-navy">{t(row.title)}</Text>
+                      <Text numberOfLines={2} className="text-body-lg font-jakarta-bold text-brand-navy">{t(row.title)}</Text>
                       {isMissing ? <View className="w-2 h-2 rounded-full bg-warning ml-1.5" /> : null}
                     </View>
                     <Text
@@ -188,7 +245,8 @@ export default function PoolBasicsScreen() {
                   </View>
 
                   <Text
-                    className={`text-body font-jakarta-bold mr-1 ${isMissing ? 'text-warning' : 'text-brand-navy'}`}
+                    numberOfLines={2}
+                    className={`max-w-[38%] text-body font-jakarta-bold text-right mr-1 ${isMissing ? 'text-warning' : 'text-brand-navy'}`}
                   >
                     {row.value.name ? t(row.value.name) : ''}
                   </Text>

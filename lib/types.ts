@@ -1,6 +1,6 @@
 import type { OverallStatus, SwimmingStatus } from '@/data/readingBands'
 
-export type Country = 'us' | 'es';
+export type Country = string;
 export type Language = 'en' | 'es';
 export type Measurement = 'us' | 'metric';
 
@@ -12,17 +12,25 @@ export type Profile = {
     language: Language
     measurement: Measurement
     name: string
+    city_or_town?: string | null
+    city_or_town_id?: string | null
     created_at?: string
     updated_at?: string
 }
 
-export type PoolType = 'Chlorine' | 'Saltwater' | 'Other';
-export type ScreenedType = 'Screened' | 'Unscreened';
+export type PoolType = 'Chlorine' | 'Saltwater' | 'Bromine' | 'Other';
+export type PoolEnvironment = 'Outdoor' | 'Screened' | 'Covered' | 'Indoor';
 export type UseType = 'Family' | 'VacationHome' | 'ShortTermRental';
 export type HotTubType = 'Yes' | 'No';
 export type SpaAttachmentType = 'Attached' | 'Detached';
 export type UsageFrequency = '0-1' | '2-3' | '4-5' | '6-7';
-export type NumberOfPoolUsers = '1-2' | '3-4' | '5+';
+export type NumberOfPoolUsers = '1-2' | '3-5' | '6-10' | '10+';
+export type SaltSystemStatus = 'working' | 'not_working';
+export type ManualChlorineStatus = 'yes' | 'no';
+export type SpaSanitizer = 'chlorine' | 'saltwater' | 'bromine' | 'unknown';
+export type PoolBodyType = 'pool' | 'hot_tub';
+export type OccupancyPattern = 'year_round' | 'seasonal';
+export type RentalActivity = 'year_round' | 'seasonal';
 
 export type PoolCondition =
     | 'CRYSTAL_CLEAR'
@@ -34,6 +42,19 @@ export type PoolShape = 'Rectangle' | 'Round' | 'Oval' | 'Freeform' | 'Kidney';
 export type PoolDepthProfile = 'Flat' | 'ShallowDeep' | 'NotSure';
 export type MeasurementMethod = 'Known' | 'Estimate';
 export type MeasurementUnit = 'us' | 'metric';
+export type VolumeSource = 'calculated' | 'manual';
+
+export type FreeformSection = {
+    id?: string;
+    index?: number;
+    length?: number | null;
+    averageWidth?: number | null;
+    shallowDepth?: number | null;
+    deepDepth?: number | null;
+    measurementUnit?: MeasurementUnit;
+    volumeUsGallons?: number | null;
+    volumeLiters?: number | null;
+};
 
 export type FilterType = 'Sand' | 'Cartridge' | 'DE';
 export type PumpType = 'Single' | 'Dual' | 'Variable';
@@ -64,21 +85,34 @@ export type Pool = {
     owner_user_id: string
     pool_name: string
     pool_type: PoolType
-    pool_screen: ScreenedType
+    pool_screen?: PoolEnvironment | null
     pool_use_type: UseType
     usage_frequency?: UsageFrequency | null
     number_of_users?: NumberOfPoolUsers | null
+    parent_pool_id?: string | null
+    body_type?: PoolBodyType
     hot_tub_type?: HotTubType
     spa_attachment?: SpaAttachmentType | null
+    salt_system_status?: SaltSystemStatus | null
+    manual_chlorine_during_salt_failure?: ManualChlorineStatus | null
+    standalone_spa_sanitizer?: SpaSanitizer | null
+    occupancy_pattern?: OccupancyPattern | null
+    seasonal_unused_months?: string[] | null
+    rental_activity?: RentalActivity | null
+    rental_active_months?: string[] | null
     pool_condition?: PoolCondition | null
 
-    length?: number
-    width?: number
-    shallow_depth?: number
-    deep_depth?: number
-    shape?: PoolShape
-    gallons?: number
-    measurement_unit?: Measurement
+    length?: number | null
+    width?: number | null
+    shallow_depth?: number | null
+    deep_depth?: number | null
+    shape?: PoolShape | null
+    gallons?: number | null
+    measurement_unit?: Measurement | null
+    volume_us_gallons?: number | null
+    volume_liters?: number | null
+    volume_source?: VolumeSource | null
+    freeform_sections?: FreeformSection[] | null
 
 
     pump_type?: PumpType
@@ -102,12 +136,16 @@ export type poolBasicUpdateProps = {
 }
 
 export type poolSizeInsertProps = {
-    length: number
-    width: number
-    shallowDepth: number
-    deepDepth: number
+    length?: number | null
+    width?: number | null
+    shallowDepth?: number | null
+    deepDepth?: number | null
     shape?: PoolShape
-    gallons?: number
+    gallons?: number | null
+    volumeUsGallons?: number | null
+    volumeLiters?: number | null
+    volumeSource?: VolumeSource
+    freeformSections?: FreeformSection[]
     measurementUnit?: Measurement
 }
 
@@ -126,11 +164,6 @@ export type poolCleaningInsertProps = {
 }
 
 export type TestReadingsMethod = 'Readings' | 'Photo' | 'None';
-
-export type PanelHandle = {
-    show: () => void
-    hide: () => void
-}
 
 export type testReadingsInsertProps = {
     bromine?: number

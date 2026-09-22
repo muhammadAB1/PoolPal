@@ -13,6 +13,19 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { POOL_SIZE } from './_data';
 
+function formatMeasure(value: number | null | undefined, suffix: string) {
+  return value == null ? `— ${suffix}` : `${value} ${suffix}`;
+}
+
+function MeasureCell({ label, value }: { label: string; value: string }) {
+  return (
+    <View className="flex-1 bg-surface-soft-aqua rounded-xl px-3 py-2.5">
+      <Text className="text-small font-jakarta text-sub">{label}</Text>
+      <Text className="text-body font-jakarta-bold text-brand-navy mt-0.5">{value}</Text>
+    </View>
+  );
+}
+
 export default function PoolSizeScreen() {
   const { estimatedVolume, estimationDetails, improveBanner, infoBanner } = POOL_SIZE;
 
@@ -22,12 +35,19 @@ export default function PoolSizeScreen() {
 
   const { t, i18n } = useTranslation();
   const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
+  const extraSections = pools?.freeform_sections ?? [];
+  const distanceSuffix =
+    pools?.measurement_unit === 'metric' ? t('pool_size_unit_suffix_m') : t('pool_size_unit_suffix_ft');
 
   const volumeUnit =
     pools?.measurement_unit === 'us'
       ? t('pool_size_review_unit_gallons')
       : t('pool_size_review_unit_liters');
-  const volumeValue = pools?.gallons ?? estimatedVolume.value;
+  const rawVolume =
+    pools?.measurement_unit === 'metric'
+      ? (pools?.volume_liters ?? pools?.gallons ?? estimatedVolume.value)
+      : (pools?.volume_us_gallons ?? pools?.gallons ?? estimatedVolume.value);
+  const volumeValue = typeof rawVolume === 'number' ? Math.round(rawVolume) : rawVolume;
   const volumeDisplay =
     volumeValue == null ? `— ${volumeUnit}`.trim() : `${volumeValue} ${volumeUnit}`.trim();
 
@@ -66,6 +86,7 @@ export default function PoolSizeScreen() {
             shallowDepth: pools?.shallow_depth ?? undefined,
             deepDepth: pools?.deep_depth ?? undefined,
             shape: pools?.shape ?? undefined,
+            freeformSections: pools?.freeform_sections ?? undefined,
           }}
           showSkip={false}
           markStale={false}
@@ -81,7 +102,12 @@ export default function PoolSizeScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
-      <PoolReviewHeader title={t(POOL_SIZE.title)} onEditPress={() => setIsEditing(true)} />
+      <PoolReviewHeader
+        title={t(POOL_SIZE.title)}
+        // Edit button commented out for now — detail row arrows open the onboarding form instead.
+        // onEditPress={() => setIsEditing(true)}
+        showEdit={false}
+      />
       <ScrollView
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
@@ -113,22 +139,69 @@ export default function PoolSizeScreen() {
               const isLast = index === updatedEstimationDetails.length - 1;
 
               return (
-                <View
+                <TouchableOpacity
                   key={row.label}
                   className={`flex-row items-center justify-between px-4 py-3.5 ${isLast ? '' : 'border-b border-border-default'}`}
+                  activeOpacity={0.7}
+                  onPress={() => setIsEditing(true)}
                 >
                   <Text className="text-body font-jakarta text-brand-navy flex-1 mr-3">
                     {row.database_column_name === 'width' && pools?.shape === 'Kidney'
                       ? `${t('pool_size_width_widest_hint')} ${t(row.label)}`
                       : t(row.label)}
                   </Text>
-                  <Text className="text-body font-jakarta-bold text-brand-navy text-right">
+                  <Text className="text-body font-jakarta-bold text-brand-navy text-right mr-1">
                     {row.value}
                   </Text>
-                </View>
+                  <MaterialCommunityIcons name="chevron-right" size={22} color={colors.text.faint} />
+                </TouchableOpacity>
               );
             })}
           </View>
+
+          {extraSections.length > 0 ? (
+            <>
+              <Text className="text-h3 font-jakarta-extrabold text-brand-navy mt-5 mb-2 ml-1">
+                {t(POOL_SIZE.sectionsTitle)}
+              </Text>
+              {extraSections.map((section, index) => (
+                <TouchableOpacity
+                  key={section.id || `section-${index + 2}`}
+                  className={`card p-4 ${index === 0 ? '' : 'mt-3'}`}
+                  style={shadow.card}
+                  activeOpacity={0.7}
+                  onPress={() => setIsEditing(true)}
+                >
+                  <View className="flex-row items-center justify-between mb-3">
+                    <Text className="text-body-lg font-jakarta-bold text-brand-navy flex-1 mr-2">
+                      {t('pool_size_section_label', { index: section.index ?? index + 2 })}
+                    </Text>
+                    <MaterialCommunityIcons name="chevron-right" size={22} color={colors.text.faint} />
+                  </View>
+                  <View className="flex-row gap-2">
+                    <MeasureCell
+                      label={t('pool_size_length_label')}
+                      value={formatMeasure(section.length, distanceSuffix)}
+                    />
+                    <MeasureCell
+                      label={t('pool_size_average_width_label')}
+                      value={formatMeasure(section.averageWidth, distanceSuffix)}
+                    />
+                  </View>
+                  <View className="flex-row gap-2 mt-2">
+                    <MeasureCell
+                      label={t('pool_size_shallow_depth_label')}
+                      value={formatMeasure(section.shallowDepth, distanceSuffix)}
+                    />
+                    <MeasureCell
+                      label={t('pool_size_deep_depth_label')}
+                      value={formatMeasure(section.deepDepth, distanceSuffix)}
+                    />
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </>
+          ) : null}
 
           <View className="card--success mt-4 p-4 flex-row items-start">
             <MaterialCommunityIcons name="target" size={28} color={colors.brand.blue} />
@@ -139,7 +212,11 @@ export default function PoolSizeScreen() {
               <Text className="text-small font-jakarta text-sub mt-0.5">
                 {t(improveBanner.body)}
               </Text>
-              <TouchableOpacity className="flex-row items-center mt-2" activeOpacity={0.7}>
+              <TouchableOpacity
+                className="flex-row items-center mt-2"
+                activeOpacity={0.7}
+                onPress={() => setIsEditing(true)}
+              >
                 <Text className="text-body font-jakarta-bold text-brand-blue">
                   {t(improveBanner.linkText)}
                 </Text>

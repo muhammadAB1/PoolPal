@@ -195,7 +195,7 @@ function CleaningOptionCard({
         >
             <Image
                 source={image}
-                className="w-12.5 h-12.5 rounded-xl"
+                className="w-15 h-15 rounded-xl"
                 resizeMode="cover"
             />
 

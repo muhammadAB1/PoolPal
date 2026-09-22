@@ -1,3 +1,4 @@
+import PoolTonicLogo from '@/components/PoolTonicLogo';
 import { dashboardImages, icons } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import {
@@ -117,17 +118,7 @@ export default function WaterResultsScreen() {
             />
           </TouchableOpacity>
 
-          <View className="flex-row items-center gap-2">
-            <Image
-              source={icons.waterDrop}
-              className="w-7 h-7 z-1"
-              resizeMode="contain"
-            />
-            <View className="w-9 h-9 rounded-2xl absolute -translate-x-0.75 bg-brand-blue items-center justify-center" />
-            <Text className="text-h3 font-jakarta-extrabold text-brand-navy">
-              {t('dashboard_brand_name')}
-            </Text>
-          </View>
+          <PoolTonicLogo width={152} height={43} />
 
           <TouchableOpacity
             className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"

@@ -25,13 +25,15 @@ export default function PoolReviewHeader({
   return (
     <View className="px-5 pt-2 pb-2 bg-surface-bg">
       <View className="flex-row items-center">
-        <TouchableOpacity
-          className="w-16 h-10 items-start justify-center -ml-1"
-          onPress={onBackPress ?? (() => router.back())}
-          activeOpacity={0.7}
-        >
-          <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
-        </TouchableOpacity>
+        <View className="w-16 items-start justify-center">
+          <TouchableOpacity
+            className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
+            onPress={onBackPress ?? (() => router.back())}
+            activeOpacity={0.7}
+          >
+            <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
+          </TouchableOpacity>
+        </View>
 
         <Text
           className="text-h3 font-jakarta-extrabold text-brand-navy text-center flex-1"

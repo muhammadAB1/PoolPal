@@ -9,6 +9,7 @@ export const POOL_SIZE = {
     footer: 'pool_size_review_footer',
   },
   detailsTitle: 'pool_size_review_details_title',
+  sectionsTitle: 'pool_size_review_sections_title',
   estimationDetails: [
     { label: 'pool_size_units_label', value: '', database_column_name: 'measurement_unit' as const },
     { label: 'pool_size_review_shape', value: '', database_column_name: 'shape' as const },

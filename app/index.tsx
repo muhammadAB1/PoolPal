@@ -1,44 +1,36 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Href, Redirect, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { graphics } from '@/constants/images';
+import PoolTonicLogo from '@/components/PoolTonicLogo';
 import { useAuth } from '@/providers/AuthProvider';
-import { usePool } from '@/providers/PoolProvider';
+import { useAuthScreenGuard } from '@/hooks/useAuthScreenGuard';
 
 export default function HomeScreen() {
   const router = useRouter();
   const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
-  const { poolId, loading: poolLoading } = usePool();
+  const authRedirect = useAuthScreenGuard();
 
   console.log('hello from index')
-  if (authLoading || poolLoading) {
+  if (authLoading) {
     return <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <View className="flex-1 items-center justify-center gap-6">
-        <Image
-          source={graphics.poolPalLogo}
-          className=" left-[18%]"
-          resizeMode="contain"
-        />
+        <PoolTonicLogo width={220} height={64} />
       </View>
     </SafeAreaView>
   }
 
-  if (user) {
-    return <Redirect href={poolId ? '/(tabs)/dashboard' as Href : '/(onboarding)/pool-basics' as Href} />;
+  if (user && authRedirect) {
+    return <Redirect href={authRedirect as Href} />;
   }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <View className="flex-1 items-center justify-center gap-6">
-        <Image
-          source={graphics.poolPalLogo}
-          className=" left-[18%]"
-          resizeMode="contain"
-        />
+        <PoolTonicLogo width={220} height={64} />
         <TouchableOpacity
-          className="bg-brand-blue rounded-full py-[14px] px-8 items-center"
+          className="bg-brand-blue rounded-full py-3.5 px-8 items-center"
           onPress={() => router.replace('/welcome')}
           activeOpacity={0.85}
         >

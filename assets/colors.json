@@ -1,20 +1,23 @@
 {
   "$description": "Pool Pal color tokens. Hex is source of truth.",
   "brand": {
-    "navy":        { "hex": "#0B2E4A", "rgb": "11,46,74",   "usage": "Headers, primary text, dark CTA backgrounds" },
-    "blue":        { "hex": "#0E97DC", "rgb": "14,151,220",  "usage": "Primary buttons, active tab, links, focus" },
-    "blueDark":    { "hex": "#0B82C4", "rgb": "11,130,196",  "usage": "Pressed state of primary blue" },
+    "navy":        { "hex": "#073B5C", "rgb": "7,59,92",     "usage": "Headers, primary text, dark CTA backgrounds" },
+    "blue":        { "hex": "#0FB7BC", "rgb": "15,183,188",  "usage": "Primary buttons, links, focus" },
+    "blueDark":    { "hex": "#078B8F", "rgb": "7,139,143",   "usage": "Pressed state of primary teal, teal icons and labels" },
     "aqua":        { "hex": "#5ED6D1", "rgb": "94,214,209",  "usage": "Progress rings/bars, highlights, accents" }
   },
   "surface": {
     "softAqua":    { "hex": "#EAF8FF", "rgb": "234,248,255", "usage": "Info cards, hero card backgrounds, chips" },
-    "mint":        { "hex": "#E8FFF7", "rgb": "232,255,247", "usage": "Selected option background" },
-    "mintBorder":  { "hex": "#9FE7D8", "rgb": "159,231,216", "usage": "Selected option border" },
-    "bg":          { "hex": "#F5F7FA", "rgb": "245,247,250", "usage": "App background, neutral fills" },
+    "mint":        { "hex": "#E8FFF7", "rgb": "232,255,247", "usage": "Success option background" },
+    "mintBorder":  { "hex": "#9FE7D8", "rgb": "159,231,216", "usage": "Success option border" },
+    "bg":          { "hex": "#F6FAFD", "rgb": "246,250,253", "usage": "App background, neutral fills" },
     "white":       { "hex": "#FFFFFF", "rgb": "255,255,255", "usage": "Cards, screens" }
   },
   "border": {
     "default":     { "hex": "#E5EAF0", "rgb": "229,234,240", "usage": "Card and input borders, dividers" }
+  },
+  "selection": {
+    "background":  { "hex": "#EAFBF9", "rgb": "234,251,249", "usage": "Selected choice fill" }
   },
   "text": {
     "charcoal":    { "hex": "#1D2939", "rgb": "29,41,57",    "usage": "Body text" },
@@ -29,6 +32,6 @@
     "error":       { "hex": "#E5484D", "rgb": "229,72,77",   "usage": "Serious warnings only (rare)" }
   },
   "accessibility": {
-    "note": "Body charcoal on white = 12.6:1 (AAA). Sub on white = 4.7:1 (AA). White on blue #0E97DC = 3.0:1 — use blue only for >=16px bold button text or large UI, never small body text. faint #98A2B3 is decorative only; never use for essential reading text."
+    "note": "Body charcoal on white = 12.6:1 (AAA). Sub on white = 4.7:1 (AA). White on teal #0FB7BC = use teal only for >=16px bold button text or large UI, never small body text. faint #98A2B3 is decorative only; never use for essential reading text."
   }
 }

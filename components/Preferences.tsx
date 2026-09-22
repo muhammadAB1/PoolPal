@@ -1,120 +1,155 @@
+import SearchSelectionModal, { type SearchSelectionItem } from '@/components/SearchSelectionModal';
 import { icons } from '@/constants/images';
-import { en, es } from '@/data/translations';
-import { Country, Language, Measurement } from '@/lib/types';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {
+    getCountryFlag,
+    getCountryName,
+    getCountryOptions,
+    normalizeCountryCode,
+    searchLocalities,
+} from '@/data/locations';
+import type { Country, Language, Measurement } from '@/lib/types';
+import { Ionicons } from '@expo/vector-icons';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-    View,
+    Image,
     Text,
     TouchableOpacity,
-    Image,
+    View,
 } from 'react-native';
 
+type Props = {
+    country: Country;
+    setCountry: (country: Country) => void;
+    cityOrTown: string;
+    cityOrTownId: string | null;
+    setCityOrTown: (value: string) => void;
+    setCityOrTownId: (value: string | null) => void;
+    language: Language;
+    measurement: Measurement;
+    setMeasurement: (measurement: Measurement) => void;
+    handleLanguageChange: (language: Language) => void;
+    showIntro?: boolean;
+    showCity?: boolean;
+};
 
-const Preferences = ({ country, setCountry, language, setLanguage, measurement, setMeasurement, handleLanguageChange }:
-    {
-        country: Country, setCountry: (country: Country) => void, language: Language, setLanguage: (language: Language) => void, measurement: Measurement, setMeasurement: (measurement: Measurement) => void, handleLanguageChange: (language: Language) => void
+const Preferences = ({
+    country,
+    setCountry,
+    cityOrTown,
+    cityOrTownId,
+    setCityOrTown,
+    setCityOrTownId,
+    language,
+    measurement,
+    setMeasurement,
+    handleLanguageChange,
+    showIntro = true,
+    showCity = false,
+}: Props) => {
+    const { t, i18n } = useTranslation();
+    const activeLanguage: Language = i18n.language.startsWith('es') ? 'es' : 'en';
+    const countryCode = normalizeCountryCode(country);
+    const [countryOpen, setCountryOpen] = useState(false);
+    const [cityOpen, setCityOpen] = useState(false);
+    const [cityQuery, setCityQuery] = useState('');
+
+    const countries = useMemo<SearchSelectionItem[]>(
+        () => (countryOpen ? getCountryOptions(activeLanguage) : []),
+        [activeLanguage, countryOpen],
+    );
+
+    const cities = useMemo<SearchSelectionItem[]>(
+        () => (cityOpen ? searchLocalities(countryCode, cityQuery).map((item) => ({ id: item.id, label: item.name })) : []),
+        [cityOpen, cityQuery, countryCode],
+    );
+
+    function chooseCountry(item: SearchSelectionItem) {
+        if (item.id !== countryCode) {
+            setCityOrTown('');
+            setCityOrTownId(null);
+        }
+        setCountry(item.id);
     }
-) => {
 
-    const { t } = useTranslation();
-
-    const COUNTRIES: { id: Country; flag: string; name: string; subtitle: string }[] = [
-        { id: 'us', flag: '🇺🇸', name: en.signup_country_us_name, subtitle: en.signup_country_us_subtitle },
-        { id: 'es', flag: '🇪🇸', name: es.signup_country_es_name, subtitle: es.signup_country_es_subtitle },
-    ];
-
-    const LANGUAGES: { id: Language; label: string }[] = [
-        { id: 'en', label: en.signup_language_en },
-        { id: 'es', label: es.signup_language_es },
-    ];
-
-    const MEASUREMENTS: { id: Measurement; label: string; units: string }[] = [
-        { id: 'us', label: en.signup_measurement_us, units: en.signup_measurement_us_units },
-        { id: 'metric', label: es.signup_measurement_metric, units: es.signup_measurement_metric_units },
-    ];
     return (
         <>
-            <View className="card--info flex-row items-start gap-3 px-4 py-3.5 mt-6">
-                <Image source={icons.info} className="w-5 h-5 mt-0.5" resizeMode="contain" />
-                <Text className="flex-1 text-body font-jakarta text-sub leading-relaxed">
-                    {t('signup_save_note')}
-                </Text>
-            </View>
+            {showIntro ? (
+                <>
+                    <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-10">
+                        {t('signup_preferences_title')}
+                    </Text>
+                    <Text className="text-body font-jakarta text-sub mt-2">
+                        {t('signup_preferences_subtitle')}
+                    </Text>
+                </>
+            ) : null}
 
-            <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-10">
-                {t('signup_preferences_title')}
-            </Text>
-            <Text className="text-body font-jakarta text-sub mt-2">
-                {t('signup_preferences_subtitle')}
-            </Text>
-
-            <View className="mt-8">
+            <View className={showIntro ? 'mt-8' : 'mt-2'}>
                 <Text className="text-label font-jakarta-bold text-charcoal">{t('signup_country')}</Text>
                 <Text className="text-body font-jakarta text-sub mt-1 leading-relaxed">
                     {t('signup_country_note')}
                 </Text>
-
-                <View className="flex-row gap-3 mt-4">
-                    {COUNTRIES.map((item) => {
-                        const selected = country === item.id;
-                        return (
-                            <TouchableOpacity
-                                key={item.id}
-                                className={`flex-1 rounded-2xl border p-3.5 ${selected
-                                    ? 'border-surface-mint-border bg-surface-mint'
-                                    : 'border-border-default bg-surface-white'
-                                    }`}
-                                onPress={() => setCountry(item.id)}
-                                activeOpacity={0.85}
-                            >
-                                <View className="flex-row items-start justify-between">
-                                    <View className="w-9 h-9 rounded-full bg-surface-bg items-center justify-center">
-                                        <Text className="text-[18px] leading-5">{item.flag}</Text>
-                                    </View>
-                                    {selected ? (
-                                        <Image
-                                            source={icons.selectedCheckBadge}
-                                            className="w-5 h-5"
-                                            resizeMode="contain"
-                                        />
-                                    ) : null}
-                                </View>
-                                <Text className="text-body font-jakarta-bold text-charcoal mt-3">
-                                    {item.name}
-                                </Text>
-                                <Text className="text-tiny font-jakarta text-sub mt-0.5">
-                                    {item.subtitle}
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
+                <TouchableOpacity
+                    className="mt-3 min-h-14 rounded-2xl border border-border-default bg-surface-white px-4 py-3 flex-row items-center"
+                    onPress={() => setCountryOpen(true)}
+                    accessibilityRole="button"
+                    accessibilityLabel={t('signup_country_select_a11y')}
+                >
+                    <Text className="text-[22px] mr-3">{getCountryFlag(countryCode)}</Text>
+                    <Text className="flex-1 text-body font-jakarta-bold text-charcoal">
+                        {getCountryName(countryCode, activeLanguage)}
+                    </Text>
+                    <Ionicons name="chevron-down" size={20} color="#667085" />
+                </TouchableOpacity>
             </View>
+
+            {showCity ? (
+                <View className="mt-6">
+                    <Text className="text-label font-jakarta-bold text-charcoal">{t('signup_city_or_town')}</Text>
+                    <Text className="text-body font-jakarta text-sub mt-1 leading-relaxed">
+                        {t('signup_city_note')}
+                    </Text>
+                    <TouchableOpacity
+                        className="mt-3 min-h-14 rounded-2xl border border-border-default bg-surface-white px-4 py-3 flex-row items-center"
+                        onPress={() => setCityOpen(true)}
+                        accessibilityRole="button"
+                        accessibilityLabel={t('signup_city_select_a11y')}
+                    >
+                        <Ionicons name="location-outline" size={21} color="#667085" />
+                        <Text className={`flex-1 text-body font-jakarta ml-3 ${cityOrTown ? 'text-charcoal' : 'text-faint'}`} numberOfLines={2}>
+                            {cityOrTown || t('signup_city_search_placeholder')}
+                        </Text>
+                        <Ionicons name="chevron-down" size={20} color="#667085" />
+                    </TouchableOpacity>
+                </View>
+            ) : null}
 
             <View className="mt-8">
                 <Text className="text-label font-jakarta-bold text-charcoal">{t('signup_language')}</Text>
                 <View className="flex-row gap-3 mt-3">
-                    {LANGUAGES.map((item) => {
-                        const selected = language === item.id;
+                    {(['en', 'es'] as const).map((id) => {
+                        const selected = language === id;
                         return (
                             <TouchableOpacity
-                                key={item.id}
-                                className={`flex-1 flex-row items-center gap-2 rounded-xl border px-3.5 py-3 ${selected
+                                key={id}
+                                className={`flex-1 rounded-xl border px-3.5 py-3 flex-row items-center justify-center gap-2 ${selected
                                     ? 'border-surface-mint-border bg-surface-mint'
                                     : 'border-border-default bg-surface-white'
                                     }`}
-                                onPress={() => handleLanguageChange(item.id)}
+                                onPress={() => handleLanguageChange(id)}
                                 activeOpacity={0.85}
                             >
-                                <Image
-                                    source={selected ? icons.radioSelected : icons.radioEmpty}
-                                    className="w-5 h-5"
-                                    resizeMode="contain"
-                                />
                                 <Text className="text-body font-jakarta-semibold text-charcoal">
-                                    {item.label}
+                                    {t(id === 'en' ? 'signup_language_en' : 'signup_language_es')}
                                 </Text>
+                                {selected ? (
+                                    <Image
+                                        source={icons.selectedCheckBadge}
+                                        className="w-5 h-5"
+                                        resizeMode="contain"
+                                    />
+                                ) : null}
                             </TouchableOpacity>
                         );
                     })}
@@ -126,45 +161,73 @@ const Preferences = ({ country, setCountry, language, setLanguage, measurement, 
                     {t('signup_measurement')}
                 </Text>
                 <View className="flex-row gap-3 mt-3">
-                    {MEASUREMENTS.map((item) => {
-                        const selected = measurement === item.id;
+                    {(['us', 'metric'] as const).map((id) => {
+                        const selected = measurement === id;
                         return (
                             <TouchableOpacity
-                                key={item.id}
+                                key={id}
                                 className={`flex-1 rounded-xl border px-3.5 py-3 ${selected
                                     ? 'border-surface-mint-border bg-surface-mint'
                                     : 'border-border-default bg-surface-white'
                                     }`}
-                                onPress={() => setMeasurement(item.id)}
+                                onPress={() => setMeasurement(id)}
                                 activeOpacity={0.85}
                             >
-                                <View className="flex-row items-center gap-2">
-                                    <Image
-                                        source={selected ? icons.radioSelected : icons.radioEmpty}
-                                        className="w-5 h-5"
-                                        resizeMode="contain"
-                                    />
-                                    <Text className="text-body font-jakarta-bold text-charcoal">
-                                        {item.label}
-                                    </Text>
+                                <View className="flex-row items-center justify-between gap-2">
+                                    <View className="flex-1">
+                                        <Text className="text-body font-jakarta-bold text-charcoal">
+                                            {t(id === 'us' ? 'signup_measurement_us' : 'signup_measurement_metric')}
+                                        </Text>
+                                        <Text className="text-tiny font-jakarta text-sub mt-0.5">
+                                            {t(id === 'us' ? 'signup_measurement_us_units' : 'signup_measurement_metric_units')}
+                                        </Text>
+                                    </View>
+                                    {selected ? (
+                                        <Image
+                                            source={icons.selectedCheckBadge}
+                                            className="w-5 h-5"
+                                            resizeMode="contain"
+                                        />
+                                    ) : null}
                                 </View>
-                                <Text className="text-tiny font-jakarta text-sub mt-1 ml-7">
-                                    {item.units}
-                                </Text>
                             </TouchableOpacity>
                         );
                     })}
                 </View>
             </View>
 
-            <View className="card--info flex-row items-start gap-3 px-4 py-3.5 mt-6">
-                <MaterialCommunityIcons name="ruler" size={20} color="#0E97DC" />
-                <Text className="flex-1 text-body font-jakarta text-sub leading-relaxed">
-                    {t('signup_measurement_note')}
-                </Text>
-            </View>
+            {countryOpen ? (
+                <SearchSelectionModal
+                    visible
+                    title={t('signup_country_select_title')}
+                    placeholder={t('signup_country_search_placeholder')}
+                    items={countries}
+                    selectedId={countryCode}
+                    onClose={() => setCountryOpen(false)}
+                    onSelect={chooseCountry}
+                    closeLabel={t('common_close')}
+                    emptyLabel={t('common_no_results')}
+                />
+            ) : null}
+            {showCity && cityOpen ? (
+                <SearchSelectionModal
+                    visible
+                    title={t('signup_city_select_title')}
+                    placeholder={t('signup_city_search_placeholder')}
+                    items={cities}
+                    selectedId={cityOrTownId}
+                    onClose={() => setCityOpen(false)}
+                    onQueryChange={setCityQuery}
+                    onSelect={(item) => {
+                        setCityOrTown(item.label);
+                        setCityOrTownId(item.id);
+                    }}
+                    closeLabel={t('common_close')}
+                    emptyLabel={t('common_no_results')}
+                />
+            ) : null}
         </>
-    )
-}
+    );
+};
 
-export default Preferences
+export default Preferences;

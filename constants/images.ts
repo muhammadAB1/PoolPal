@@ -17,6 +17,34 @@ import testKitCardGraphic from '../assets/graphics/test_kit_card_graphic.png';
 import checklistSuccess from '../assets/graphics/checklist_success.png';
 import completionRing from '../assets/graphics/completion_ring.png';
 import emptyStatePool from '../assets/graphics/empty_state_pool.png';
+import poolTonicWelcomeBackground from '../assets/welcome/pooltonic_home_image.png';
+import poolTonicGradient from '../assets/welcome/pooltonic_gradient.png';
+import poolTonicButtonGradient from '../assets/welcome/pooltonic_button_gradient.png';
+import poolTonicLogo from '../assets/welcome/pooltonic_logo.png';
+import poolTonicFeatureTest from '../assets/welcome/pooltonic_feature_test.png';
+import poolTonicFeatureFix from '../assets/welcome/pooltonic_feature_fix.png';
+import poolTonicFeatureEnjoy from '../assets/welcome/pooltonic_feature_enjoy.png';
+import poolTonicRemedy from '../assets/welcome/pooltonic_pool_remedy.png';
+import poolTonicTrustShield from '../assets/welcome/pooltonic_trust_shield.png';
+import poolTonicStars from '../assets/welcome/pooltonic_stars.png';
+import poolTonicWave from '../assets/welcome/pooltonic_wave.png';
+import poolTonicLogoFullLight from '../assets/pooltonic-ui/pooltonic-logo-full-light.png';
+
+// ─── Chemistry icons ─────────────────────────────────────────────────────────
+import chemistryFreeChlorine from '../assets/chemistry-icons/free-chlorine.png';
+import chemistryTotalChlorine from '../assets/chemistry-icons/total-chlorine.png';
+import chemistryCombinedChlorine from '../assets/chemistry-icons/combined-chlorine.png';
+import chemistryBromine from '../assets/chemistry-icons/bromine.png';
+import chemistryPh from '../assets/chemistry-icons/ph.png';
+import chemistryTotalAlkalinity from '../assets/chemistry-icons/total-alkalinity.png';
+import chemistryCalciumHardness from '../assets/chemistry-icons/calcium-hardness.png';
+import chemistryCyanuricAcid from '../assets/chemistry-icons/cyanuric-acid.png';
+import chemistrySalt from '../assets/chemistry-icons/salt.png';
+import chemistryTotalHardness from '../assets/chemistry-icons/total-hardness.png';
+import chemistryPhosphates from '../assets/chemistry-icons/phosphates.png';
+import chemistryTds from '../assets/chemistry-icons/tds.png';
+import chemistryIron from '../assets/chemistry-icons/iron.png';
+import chemistryCopper from '../assets/chemistry-icons/copper.png';
 
 // ─── Icons (1x) ──────────────────────────────────────────────────────────────
 
@@ -52,7 +80,12 @@ import unselectedRadioIndicator from '../assets/poolbasicsimages/poolwise_remain
 // ─── Pool Basics — Pool Type (keyed to DB enum values) ───────────────────────
 import poolTypeChlorine from '../assets/poolbasicsimages/poolbasics/Chlorine.png';
 import poolTypeSaltwater from '../assets/poolbasicsimages/poolbasics/Saltwater.png';
-import poolTypeOther from '../assets/poolbasicsimages/poolbasics/Other.png';
+import poolTypeBromine from '../assets/poolbasicsimages/poolbasics/Bromine.png';
+import poolEnvOutdoor from '../assets/pool-basics-v2/pooltonic-outdoor.png';
+import poolEnvScreened from '../assets/pool-basics-v2/pooltonic-screened-pool.png';
+import poolEnvCovered from '../assets/pool-basics-v2/pooltonic-covered-pool.png';
+import poolEnvIndoor from '../assets/pool-basics-v2/pooltonic-indoor-pool.png';
+import poolTypeUnknown from '../assets/pool-basics-v2/pooltonic-idontknow.png';
 
 // ─── Pool Basics — Screened ───────────────────────────────────────────────────
 import poolScreenedYes from '../assets/poolbasicsimages/poolbasics/Screened.png';
@@ -83,6 +116,12 @@ import filterDe from '../assets/equipment-basic-images/filter_de.png';
 import pumpSingleSpeed from '../assets/equipment-basic-images/pump_single_speed.png';
 import pumpDualSpeed from '../assets/equipment-basic-images/pump_dual_speed.png';
 import pumpVariableSpeed from '../assets/equipment-basic-images/pump_variable_speed.png';
+import equipmentChoiceSand from '../assets/equipment-basic-images/pooltonic-sand_filter.png';
+import equipmentChoiceCartridge from '../assets/equipment-basic-images/pooltonic-cartridge_filter.png';
+import equipmentChoiceDe from '../assets/equipment-basic-images/pooltonic-de_filter.png';
+import equipmentChoiceSingle from '../assets/equipment-basic-images/pooltonic-single_speed_pump.png';
+import equipmentChoiceDual from '../assets/equipment-basic-images/pooltonic-dual_speed_pump.png';
+import equipmentChoiceVariable from '../assets/equipment-basic-images/pooltonic-variable_speed_pump.png';
 
 // ─── Pool Surface Type (keyed to DB enum values) ─────────────────────────────
 import surfacePlaster from '../assets/pool-surface-images/plaster.png';
@@ -116,13 +155,21 @@ import testReadingsInfoIcon from '../assets/pool-reading-images/info_icon.png';
 import testReadingsStripPhoto from '../assets/pool-reading-images/test_strips.png';
 import testReadingsBackyardPhoto from '../assets/pool-reading-images/pool-backyard.png';
 import reminderShield from '../assets/pool-reading-images/reminder_shield.png';
+import poolTonicTipsIcon from '../assets/pooltonic-ui/pooltonic-tips-icon.png';
+import poolTonicMeasurementsKnown from '../assets/pooltonic-ui/pooltonic-measurements-known.png';
+import poolTonicHelp from '../assets/pooltonic-ui/pooltonic-help.png';
+import poolTonicShapeRectangle from '../assets/pooltonic-ui/pooltonic-rectangle.png';
+import poolTonicShapeCircle from '../assets/pooltonic-ui/pooltonic-circle.png';
+import poolTonicShapeOval from '../assets/pooltonic-ui/pooltonic-oval.png';
+import poolTonicShapeKidney from '../assets/pooltonic-ui/pooltonic-kidney.png';
 
 // ─── Choose Test Method ───────────────────────────────────────────────────────
-import chooseTestMethodStrip from '../assets/pool-reading-images-new/strip.webp';
 import chooseTestMethodFlask from '../assets/pool-reading-images-new/flask.webp';
-import chooseTestMethodResults from '../assets/pool-reading-images-new/results.webp';
-import chooseTestMethodMagnifyingGlass from '../assets/pool-reading-images-new/magnifying_glass.webp';
 import chooseTestMethodSettings from '../assets/pool-reading-images-new/settings.png';
+import poolTonicCheckStrip from '../assets/pooltonic-ui/pooltonic-test-strip.png';
+import poolTonicCheckResults from '../assets/pooltonic-ui/pooltonic-test-results.png';
+import poolTonicCheckVisibleProblem from '../assets/pooltonic-ui/pooltonic-solve-visible-pool-problems.png';
+import poolTonicCheckInfo from '../assets/pooltonic-ui/pooltonic-info-i-icon.png';
 
 // ─── Onboarding completion (pool profile) ────────────────────────────────────
 import poolProfileWaterDrop from '../assets/onboardin-screen-images/pool-profile-water-drop.png';
@@ -148,13 +195,22 @@ import dashboardReadingsIcon from '../assets/dashboard-images/latest_readings_fl
 import dashboardUploadPhotoIcon from '../assets/dashboard-images/upload_pool_photo_camera_icon_2.png';
 import dashboardAskPoolwiseIcon from '../assets/dashboard-images/ask_poolwise_chat_icon.png';
 import dashboardLearnIcon from '../assets/dashboard-images/learn_play_icon.png';
-import navHomeActive from '../assets/dashboard-images/nav_home_icon_active.png';
-import navHomeInactive from '../assets/dashboard-images/nav_home_icon_inactive.png';
-import navPoolActive from '../assets/dashboard-images/nav_pool_waves_icon_active.png';
-import navPoolInactive from '../assets/dashboard-images/nav_pool_waves_icon_inactive.png';
-import navReadingsActive from '../assets/dashboard-images/nav_readings_drop_icon_active.png';
-import navReadingsInactive from '../assets/dashboard-images/nav_readings_drop_icon_inactive.png';
-import navChecklist from '../assets/dashboard-images/nav_checklist_icon.png';
+import poolTonicNotificationBell from '../assets/pooltonic-ui/pooltonic-notification-bell.png';
+import poolTonicNotificationBellUnread from '../assets/pooltonic-ui/pooltonic-notification-bell-update.png';
+import poolTonicUserIcon from '../assets/pooltonic-ui/pooltonic-user-icon.png';
+import poolTonicSolveProblems from '../assets/dashboard-images/pooltonic_solve_problems.png';
+import poolTonicLearn from '../assets/dashboard-images/pooltonic_learn.png';
+import poolTonicAskPoolTonic from '../assets/dashboard-images/pooltonic_ask_pooltonic.png';
+import poolTonicNavHomeSelected from '../assets/pooltonic-ui/pooltonic-home-selected.png';
+import poolTonicNavHome from '../assets/pooltonic-ui/pooltonic-home.png';
+import poolTonicNavPoolSelected from '../assets/pooltonic-ui/pooltonic-pool-selected.png';
+import poolTonicNavPool from '../assets/pooltonic-ui/pooltonic-pool.png';
+import poolTonicNavShopSelected from '../assets/pooltonic-ui/pooltonic-shop-selected.png';
+import poolTonicNavShop from '../assets/pooltonic-ui/pooltonic-shop.png';
+import poolTonicNavChecklistSelected from '../assets/pooltonic-ui/pooltonic-checklist-selected.png';
+import poolTonicNavChecklist from '../assets/pooltonic-ui/pooltonic-checklist.png';
+import poolTonicNavReadingsSelected from '../assets/pooltonic-ui/pooltonic-readings-selected.png';
+import poolTonicNavReadings from '../assets/pooltonic-ui/pooltonic-readings.png';
 import navLearnActive from '../assets/dashboard-images/nav_learn_book_icon_active.png';
 import navLearnInactive from '../assets/dashboard-images/nav_learn_book_icon_inactive.png';
 
@@ -172,6 +228,38 @@ export const graphics = {
     checklistSuccess,
     completionRing,
     emptyStatePool,
+    poolTonicWelcomeBackground,
+    poolTonicGradient,
+    poolTonicButtonGradient,
+    poolTonicLogo,
+    poolTonicFeatureTest,
+    poolTonicFeatureFix,
+    poolTonicFeatureEnjoy,
+    poolTonicRemedy,
+    poolTonicTrustShield,
+    poolTonicStars,
+    poolTonicWave,
+} as const;
+
+export const brandAssets = {
+    logoFull: poolTonicLogoFullLight,
+} as const;
+
+export const chemistryIcons = {
+    freeChlorine: chemistryFreeChlorine,
+    totalChlorine: chemistryTotalChlorine,
+    combinedChlorine: chemistryCombinedChlorine,
+    bromine: chemistryBromine,
+    ph: chemistryPh,
+    totalAlkalinity: chemistryTotalAlkalinity,
+    calciumHardness: chemistryCalciumHardness,
+    cyanuricAcid: chemistryCyanuricAcid,
+    salt: chemistrySalt,
+    totalHardness: chemistryTotalHardness,
+    phosphates: chemistryPhosphates,
+    tds: chemistryTds,
+    iron: chemistryIron,
+    copper: chemistryCopper,
 } as const;
 
 export const icons = {
@@ -207,14 +295,22 @@ export const icons = {
 
 /**
  * Pool Basics screen images.
- * Keys for poolType match the Supabase DB enum values exactly:
- *   Chlorine | Saltwater | Other
+ * Keys for poolType and environment match the stored pool values:
+ *   Chlorine | Saltwater | Bromine | Other
+ *   Outdoor | Screened | Covered | Indoor
  */
 export const poolBasicsImages = {
     poolType: {
         Chlorine: poolTypeChlorine,
         Saltwater: poolTypeSaltwater,
-        Other: poolTypeOther,
+        Bromine: poolTypeBromine,
+        Other: poolTypeUnknown,
+    },
+    environment: {
+        Outdoor: poolEnvOutdoor,
+        Screened: poolEnvScreened,
+        Covered: poolEnvCovered,
+        Indoor: poolEnvIndoor,
     },
     screened: {
         Screened: poolScreenedYes,
@@ -262,6 +358,23 @@ export const equipmentImages = {
         Single: pumpSingleSpeed,
         Dual: pumpDualSpeed,
         Variable: pumpVariableSpeed,
+    },
+} as const;
+
+/**
+ * Selectable Equipment Basics cards use this PoolTonic artwork.
+ * See Examples uses `equipmentImages` above.
+ */
+export const equipmentChoiceImages = {
+    filter: {
+        Sand: equipmentChoiceSand,
+        Cartridge: equipmentChoiceCartridge,
+        DE: equipmentChoiceDe,
+    },
+    pump: {
+        Single: equipmentChoiceSingle,
+        Dual: equipmentChoiceDual,
+        Variable: equipmentChoiceVariable,
     },
 } as const;
 
@@ -321,11 +434,12 @@ export const testReadingsGraphics = {
  * Choose Test Method screen images.
  */
 export const chooseTestMethodImages = {
-    strip: chooseTestMethodStrip,
+    strip: poolTonicCheckStrip,
     flask: chooseTestMethodFlask,
-    results: chooseTestMethodResults,
-    magnifyingGlass: chooseTestMethodMagnifyingGlass,
+    results: poolTonicCheckResults,
+    magnifyingGlass: poolTonicCheckVisibleProblem,
     settings: chooseTestMethodSettings,
+    info: poolTonicCheckInfo,
     hero: dashboardPoolIllustration,
 } as const;
 
@@ -348,6 +462,13 @@ export const testStripBrandIcons = [
 export const poolSizeGraphics = {
     reminderShield,
     infoIcon: testReadingsInfoIcon,
+    tipsIcon: poolTonicTipsIcon,
+    measurementsKnown: poolTonicMeasurementsKnown,
+    helpEstimate: poolTonicHelp,
+    shapeRectangle: poolTonicShapeRectangle,
+    shapeRound: poolTonicShapeCircle,
+    shapeOval: poolTonicShapeOval,
+    shapeFreeform: poolTonicShapeKidney,
 } as const;
 
 /**
@@ -367,31 +488,37 @@ export const onboardingCompleteImages = {
  */
 export const dashboardImages = {
     helloEmoji: dashboardHelloEmoji,
-    notificationBell: dashboardNotificationBell,
+    notificationBell: poolTonicNotificationBell,
+    notificationBellUnread: poolTonicNotificationBellUnread,
+    legacyNotificationBell: dashboardNotificationBell,
     poolIllustration: dashboardPoolIllustration,
     greenCheckIcon: dashboardGreenCheckIcon,
     smallInfoIcon: dashboardSmallInfoIcon,
     starBadge: dashboardStarBadge,
     testingKitGraphic: dashboardTestingKitGraphic,
     chevronRight: dashboardChevronRight,
-    profileIcon: dashboardProfileIcon,
+    profileIcon: poolTonicUserIcon,
+    legacyProfileIcon: dashboardProfileIcon,
     nextStepIcon: dashboardNextStepIcon,
     checklistIcon: dashboardChecklistIcon,
     readingsIcon: dashboardReadingsIcon,
     uploadPhotoIcon: dashboardUploadPhotoIcon,
     askPoolwiseIcon: dashboardAskPoolwiseIcon,
     learnIcon: dashboardLearnIcon,
+    solveProblems: poolTonicSolveProblems,
+    learn: poolTonicLearn,
+    askPoolTonic: poolTonicAskPoolTonic,
 } as const;
 
 /**
  * Bottom tab bar icons.
- * `checklist` has a single flat icon — tint it programmatically for the active state.
  */
 export const navImages = {
-    home: { active: navHomeActive, inactive: navHomeInactive },
-    pool: { active: navPoolActive, inactive: navPoolInactive },
-    readings: { active: navReadingsActive, inactive: navReadingsInactive },
-    checklist: { active: navChecklist, inactive: navChecklist },
+    home: { active: poolTonicNavHomeSelected, inactive: poolTonicNavHome },
+    pool: { active: poolTonicNavPoolSelected, inactive: poolTonicNavPool },
+    shop: { active: poolTonicNavShopSelected, inactive: poolTonicNavShop },
+    checklist: { active: poolTonicNavChecklistSelected, inactive: poolTonicNavChecklist },
+    readings: { active: poolTonicNavReadingsSelected, inactive: poolTonicNavReadings },
     learn: { active: navLearnActive, inactive: navLearnInactive },
 } as const;
 

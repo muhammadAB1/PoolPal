@@ -1,5 +1,6 @@
 import { colors, shadow } from '@/constants/theme';
 import { POOL_PROFILE_ROWS } from '@/data/poolProfile';
+import { isHotTubPool } from '@/lib/pool';
 import { usePool } from '@/providers/PoolProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Href, useRouter } from 'expo-router';
@@ -27,9 +28,11 @@ export default function PoolScreen() {
         description = [
           pools?.pool_type ? pools.pool_type : '',
           pools?.pool_screen ? pools.pool_screen : '',
-          pools?.hot_tub_type === 'Yes' && pools?.spa_attachment
+          pools?.hot_tub_type === 'Yes' && pools?.spa_attachment && !isHotTubPool(pools)
             ? `${t(pools.spa_attachment === 'Attached' ? 'pool_basics_spa_attached' : 'pool_basics_spa_detached')} ${t('pool_basics_review_hot_tub_tag')}`
-            : '',
+            : isHotTubPool(pools)
+              ? t('pool_basics_review_hot_tub')
+              : '',
           pools?.pool_use_type ? pools.pool_use_type : '',
         ].filter(Boolean).join(' • ');
         break;
@@ -44,7 +47,7 @@ export default function PoolScreen() {
         ].filter(Boolean).join(' • ');
         break;
       case 'pool-size-gallons':
-        description = pools?.gallons;
+        description = pools?.gallons ?? undefined;
         break;
       case 'surface-type':
         description = pools?.surface_type ?? undefined;
@@ -96,6 +99,7 @@ export default function PoolScreen() {
               <View className="flex-row gap-2.5">
                 {allPools.map((pool) => {
                   const isActive = pool.id === poolId;
+                  const iconColor = isActive ? colors.surface.white : colors.brand.navy;
                   return (
                     <TouchableOpacity
                       key={pool.id}
@@ -112,6 +116,12 @@ export default function PoolScreen() {
                           style={{ marginRight: 6 }}
                         />
                       ) : null}
+                      <MaterialCommunityIcons
+                        name={isHotTubPool(pool) ? 'hot-tub' : 'pool'}
+                        size={16}
+                        color={iconColor}
+                        style={{ marginRight: 6 }}
+                      />
                       <Text className={`text-small font-jakarta-bold ${isActive ? 'text-surface-white' : 'text-brand-navy'}`}>
                         {pool.pool_name}
                       </Text>

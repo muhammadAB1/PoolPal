@@ -1,7 +1,8 @@
 import type { PostAuthRoute } from "@/hooks/useAuthScreenGuard"
 
+import { isHotTubPool, spaSanitizerToPoolType } from "@/lib/pool"
 import { supabase } from "@/lib/Supabase"
-import { HotTubType, NumberOfPoolUsers, poolBasicUpdateProps, poolCleaningInsertProps, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, ScreenedType, SpaAttachmentType, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
+import { HotTubType, ManualChlorineStatus, NumberOfPoolUsers, OccupancyPattern, poolBasicUpdateProps, poolCleaningInsertProps, PoolEnvironment, poolEquipmentInsertProps, poolReminderInsertProps, poolSizeInsertProps, poolSurfaceInsertProps, PoolType, RentalActivity, SaltSystemStatus, SpaAttachmentType, SpaSanitizer, testReadingsInsertProps, UsageFrequency, UseType } from "@/lib/types"
 import { useAuth } from "@/providers/AuthProvider"
 import { usePool } from "@/providers/PoolProvider"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -20,15 +21,63 @@ type OAuthResult = {
 
 }
 
+async function upsertDetachedSpaPool({
+    ownerUserId,
+    parentId,
+    detachedSpaName,
+    previousDetachedSpaName,
+    spaSanitizer,
+}: {
+    ownerUserId?: string
+    parentId: string
+    detachedSpaName: string
+    previousDetachedSpaName?: string
+    spaSanitizer?: SpaSanitizer
+}) {
+    const spaFields = {
+        pool_type: spaSanitizerToPoolType(spaSanitizer),
+        body_type: 'hot_tub' as const,
+        parent_pool_id: parentId,
+    }
+
+    const { data: existing, error: existingError } = await supabase
+        .from('pools')
+        .select('id, pool_name')
+        .eq('parent_pool_id', parentId)
+        .maybeSingle()
+    if (existingError) return existingError
+
+    if (existing) {
+        const keepCustomName =
+            existing.pool_name !== previousDetachedSpaName && existing.pool_name !== detachedSpaName
+        const { error: updateError } = await supabase
+            .from('pools')
+            .update({
+                ...spaFields,
+                ...(keepCustomName ? {} : { pool_name: detachedSpaName }),
+            })
+            .eq('id', existing.id)
+        return updateError
+    }
+
+    const { error: insertError } = await supabase
+        .from('pools')
+        .insert({
+            owner_user_id: ownerUserId,
+            pool_name: detachedSpaName,
+            ...spaFields,
+        })
+    return insertError
+}
+
 export function useSupabase() {
 
     const { user, setUser, refreshProfile } = useAuth();
     const { markPoolsStale } = usePool();
 
     async function signInWithOAuth(
-
-        { provider, country, language, measurement }:
-            { provider: "google" | "apple", country?: string, language?: string, measurement?: string }): Promise<OAuthResult> {
+        { provider }:
+            { provider: "google" | "apple" }): Promise<OAuthResult> {
 
         const redirectTo = Linking.createURL("/")
         const { data, error } = await supabase.auth.signInWithOAuth({
@@ -74,29 +123,103 @@ export function useSupabase() {
         if (sessionError || !sessionData.session) {
             return { data: null, redirectTo: null, error: sessionError }
         }
+
         const isNewUser = await AsyncStorage.getItem('activePoolId') ? false : true;
-
-        if (isNewUser && (country || language || measurement)) {
-            const { error: updateError } = await supabase
-                .from('profile')
-                .update({
-                    country,
-                    language,
-                    measurement,
-                })
-                .eq('id', sessionData.session.user.id)
-
-            if (updateError) {
-                return { data: sessionData, redirectTo: null, error: updateError }
-            }
-
-            await refreshProfile()
-        }
-
         const postAuthRoute = isNewUser ? '/(onboarding)/pool-basics' : '/(tabs)/dashboard'
-        console.log(postAuthRoute)
 
         return { data: sessionData, redirectTo: postAuthRoute, error: null }
+    }
+
+    async function signUpWithEmail(
+        firstName: string,
+        email: string,
+        password: string,
+    ): Promise<OAuthResult> {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    first_name: firstName,
+                },
+            },
+        })
+
+        await AsyncStorage.removeItem('activePoolId')
+        setUser(data.session?.user || null)
+
+        if (error || !data.session) {
+            return { data: null, redirectTo: null, error }
+        }
+
+        const isNewUser = await AsyncStorage.getItem('activePoolId') ? false : true;
+        const postAuthRoute = isNewUser ? '/(onboarding)/pool-basics' : '/(tabs)/dashboard'
+
+        return { data: { session: data.session }, redirectTo: postAuthRoute, error: null }
+    }
+
+    async function signInWithEmail(
+        email: string,
+        password: string,
+    ): Promise<OAuthResult> {
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        })
+
+        await AsyncStorage.removeItem('activePoolId')
+        setUser(data.session?.user || null)
+
+        if (error || !data.session) {
+            return { data: null, redirectTo: null, error }
+        }
+
+        const isNewUser = await AsyncStorage.getItem('activePoolId') ? false : true;
+        const postAuthRoute = isNewUser ? '/(onboarding)/pool-basics' : '/(tabs)/dashboard'
+
+        return { data: { session: data.session }, redirectTo: postAuthRoute, error: null }
+    }
+
+    async function saveAccountBasics({
+        country,
+        language,
+        measurement,
+        cityOrTown,
+        cityOrTownId,
+    }: {
+        country: string
+        language: string
+        measurement: string
+        cityOrTown?: string | null
+        cityOrTownId?: string | null
+    }) {
+        const { data, error } = await supabase
+            .from('profiles')
+            .update({
+                country,
+                language,
+                measurement,
+                ...(cityOrTown !== undefined
+                    ? {
+                        city_or_town: cityOrTown?.trim() || null,
+                        city_or_town_id: cityOrTownId || null,
+                    }
+                    : {}),
+            })
+            .eq('id', user?.id)
+
+        if (!error) await refreshProfile()
+        return { data, error }
+    }
+
+    async function updateMeasurementPreference(measurement: 'us' | 'metric') {
+        const { data, error } = await supabase
+            .from('profiles')
+            .update({ measurement })
+            .eq('id', user?.id)
+
+        if (!error) await refreshProfile()
+        return { data, error }
     }
 
     async function logout() {
@@ -106,20 +229,75 @@ export function useSupabase() {
 
     }
 
-    async function poolBasicInsert({ poolName, poolType, screened, useType, hasHotTub, spaAttachment, usageFrequency, numberOfUsers, markStale = true, forceCreate = false }:
-        { poolName: string, poolType?: PoolType, screened?: ScreenedType, useType?: UseType, hasHotTub?: HotTubType, spaAttachment?: SpaAttachmentType, usageFrequency?: UsageFrequency, numberOfUsers?: NumberOfPoolUsers, markStale?: boolean, forceCreate?: boolean }) {
+    async function poolBasicInsert({
+        poolName,
+        poolType,
+        screened,
+        useType,
+        hasHotTub,
+        spaAttachment,
+        usageFrequency,
+        numberOfUsers,
+        saltSystemStatus,
+        manualChlorine,
+        spaSanitizer,
+        occupancyPattern,
+        unusedMonths,
+        rentalActivity,
+        activeMonths,
+        detachedSpaName,
+        previousDetachedSpaName,
+        markStale = true,
+        forceCreate = false,
+    }: {
+        poolName: string
+        poolType?: PoolType
+        screened?: PoolEnvironment | 'Unscreened'
+        useType?: UseType
+        hasHotTub?: HotTubType
+        spaAttachment?: SpaAttachmentType
+        usageFrequency?: UsageFrequency
+        numberOfUsers?: NumberOfPoolUsers
+        saltSystemStatus?: SaltSystemStatus
+        manualChlorine?: ManualChlorineStatus
+        spaSanitizer?: SpaSanitizer
+        occupancyPattern?: OccupancyPattern
+        unusedMonths?: string[]
+        rentalActivity?: RentalActivity
+        activeMonths?: string[]
+        detachedSpaName?: string
+        previousDetachedSpaName?: string
+        markStale?: boolean
+        forceCreate?: boolean
+    }) {
 
         const id = forceCreate ? null : await AsyncStorage.getItem('activePoolId');
         const poolBasics = {
             pool_name: poolName,
-            pool_type: poolType ?? null,
+            pool_type: poolType === 'Other' ? 'Chlorine' : poolType ?? null,
             pool_screen: screened ?? null,
             hot_tub_type: hasHotTub ?? null,
             spa_attachment: hasHotTub === 'Yes' ? spaAttachment ?? null : null,
             pool_use_type: useType ?? null,
             usage_frequency: usageFrequency ?? null,
             number_of_users: numberOfUsers ?? null,
+            salt_system_status: poolType === 'Saltwater' ? saltSystemStatus ?? null : null,
+            manual_chlorine_during_salt_failure:
+                poolType === 'Saltwater' && saltSystemStatus === 'not_working' ? manualChlorine ?? null : null,
+            standalone_spa_sanitizer:
+                hasHotTub === 'Yes' && spaAttachment === 'Detached'
+                    ? spaSanitizer === 'unknown' ? 'chlorine' : spaSanitizer ?? null
+                    : null,
+            occupancy_pattern: useType === 'VacationHome' ? occupancyPattern ?? null : null,
+            seasonal_unused_months:
+                useType === 'VacationHome' && occupancyPattern === 'seasonal' ? unusedMonths ?? [] : [],
+            rental_activity: useType === 'ShortTermRental' ? rentalActivity ?? null : null,
+            rental_active_months:
+                useType === 'ShortTermRental' && rentalActivity === 'seasonal' ? activeMonths ?? [] : [],
         };
+
+        const shouldCreateDetachedSpa =
+            hasHotTub === 'Yes' && spaAttachment === 'Detached' && Boolean(detachedSpaName);
 
         if (id) {
             const { data, error } = await supabase
@@ -128,20 +306,53 @@ export function useSupabase() {
                 .eq('id', id)
                 .select()
                 .single()
-            if (!error && markStale) markPoolsStale();
+            if (error) return { data, error }
+
+            if (shouldCreateDetachedSpa && data && !isHotTubPool(data) && detachedSpaName) {
+                const spaError = await upsertDetachedSpaPool({
+                    ownerUserId: user?.id,
+                    parentId: data.id,
+                    detachedSpaName,
+                    previousDetachedSpaName,
+                    spaSanitizer,
+                })
+                if (spaError) {
+                    if (markStale) markPoolsStale();
+                    return { data, error: spaError }
+                }
+            }
+
+            if (markStale) markPoolsStale();
             return { data, error }
         }
 
         else {
             const { data, error } = await supabase
                 .from('pools')
-                .insert({ owner_user_id: user?.id, ...poolBasics })
+                .insert({ owner_user_id: user?.id, body_type: 'pool', ...poolBasics })
                 .select()
                 .single();
+            if (error) return { data, error }
+
             if (data) {
                 await AsyncStorage.setItem('activePoolId', data.id);
             }
-            if (!error && markStale) markPoolsStale();
+
+            if (shouldCreateDetachedSpa && data && detachedSpaName) {
+                const spaError = await upsertDetachedSpaPool({
+                    ownerUserId: user?.id,
+                    parentId: data.id,
+                    detachedSpaName,
+                    previousDetachedSpaName,
+                    spaSanitizer,
+                })
+                if (spaError) {
+                    if (markStale) markPoolsStale();
+                    return { data, error: spaError }
+                }
+            }
+
+            if (markStale) markPoolsStale();
             return { data, error }
         }
     }
@@ -164,10 +375,23 @@ export function useSupabase() {
     async function poolSizeInsert({ props, markStale = true }: { props: poolSizeInsertProps, markStale?: boolean }) {
         try {
             const id = await AsyncStorage.getItem('activePoolId');
+            console.log(props)
             if (id) {
                 const { error } = await supabase
                     .from('pools')
-                    .update({ length: props.length, width: props.width, shallow_depth: props.shallowDepth, deep_depth: props.deepDepth, shape: props.shape, gallons: props.gallons, measurement_unit: props.measurementUnit })
+                    .update({
+                        length: props.length ?? null,
+                        width: props.width ?? null,
+                        shallow_depth: props.shallowDepth ?? null,
+                        deep_depth: props.deepDepth ?? null,
+                        shape: props.shape === 'Kidney' ? 'Freeform' : props.shape,
+                        gallons: props.gallons ?? props.volumeUsGallons ?? null,
+                        measurement_unit: props.measurementUnit,
+                        volume_us_gallons: props.volumeUsGallons ?? null,
+                        volume_liters: props.volumeLiters ?? null,
+                        volume_source: props.volumeSource ?? 'calculated',
+                        freeform_sections: props.freeformSections ?? [],
+                    })
                     .eq('id', id)
                 if (!error && markStale) markPoolsStale();
                 return { error }
@@ -179,7 +403,14 @@ export function useSupabase() {
         }
     }
 
-    async function poolEquipmentInsert({ props }: { props: poolEquipmentInsertProps }) {
+    async function poolEquipmentInsert({
+        props,
+        markStale = true,
+    }: {
+        props: poolEquipmentInsertProps
+        /** Set false when the caller will refresh the provider itself (Pool tab Edit). */
+        markStale?: boolean
+    }) {
         try {
             const id = await AsyncStorage.getItem('activePoolId');
             if (id) {
@@ -187,7 +418,7 @@ export function useSupabase() {
                     .from('pools')
                     .update({ filter_type: props.filterType, pump_type: props.pumpType, heater: props.heaterOption })
                     .eq('id', id)
-                if (!error) markPoolsStale();
+                if (!error && markStale) markPoolsStale();
                 return { error }
             }
             return { error: new Error('Pool ID not found') }
@@ -306,7 +537,11 @@ export function useSupabase() {
         }
     }
     return {
-        signInWithGoogle: (country?: string, language?: string, measurement?: string) => signInWithOAuth({ provider: "google", country, language, measurement }),
+        signInWithGoogle: () => signInWithOAuth({ provider: "google" }),
+        signUpWithEmail,
+        signInWithEmail,
+        saveAccountBasics,
+        updateMeasurementPreference,
         logout,
         poolBasicInsert,
         poolBasicUpdate,
