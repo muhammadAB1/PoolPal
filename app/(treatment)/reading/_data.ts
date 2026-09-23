@@ -373,6 +373,12 @@ export const TREATMENT_STEPS: Record<TreatmentCaseId, TreatmentStep[]> = {
             icon: 'sparkle',
             title: 'Correct the identified equipment/operation problem.',
         },
+        {
+            id: 'retest-low-chlorine-again',
+            number: 6,
+            icon: 'measure',
+            title: 'Retest free chlorine.',
+        },
     ],
     bromine_low: [],
     cc_high: [
@@ -552,6 +558,12 @@ export const TREATMENT_STEPS: Record<TreatmentCaseId, TreatmentStep[]> = {
             icon: 'sparkle',
             title: 'Verify the salt generator operates normally.',
         },
+        {
+            id: 'retest-salt-after-generator',
+            number: 8,
+            icon: 'measure',
+            title: 'Retest salt.',
+        },
     ],
     salt_high: [
         {
@@ -578,6 +590,12 @@ export const TREATMENT_STEPS: Record<TreatmentCaseId, TreatmentStep[]> = {
                 'Refill and circulate.',
                 'Retest salt.',
             ],
+        },
+        {
+            id: 'retest-salt-high',
+            number: 3,
+            icon: 'measure',
+            title: 'Retest salt.',
         },
     ],
     salt_low: [
@@ -617,6 +635,12 @@ export const TREATMENT_STEPS: Record<TreatmentCaseId, TreatmentStep[]> = {
             icon: 'sparkle',
             title: 'Return salt cell to normal operation.',
         },
+        {
+            id: 'retest-salt-after-cell',
+            number: 7,
+            icon: 'measure',
+            title: 'Retest salt.',
+        },
     ],
 };
 
@@ -647,6 +671,13 @@ const PH_HIGH_WITH_HIGH_ALKALINITY: TreatmentStep[] = [
         number: 4,
         icon: 'clock',
         title: 'Repeat only if the new results justify another stage.',
+    },
+    {
+        id: 'retest-ph-alkalinity-final',
+        number: 5,
+        icon: 'measure',
+        title: 'Retest',
+        substeps: ['pH', 'Total alkalinity'],
     },
 ];
 
