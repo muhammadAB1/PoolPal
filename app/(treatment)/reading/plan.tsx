@@ -12,6 +12,7 @@ import {
   statusesForReading,
   NO_TREATMENT_NEEDED,
   TREATMENT_PLAN,
+  stepsForActiveCase,
   type TreatmentIconKey,
 } from './_data';
 
@@ -58,10 +59,15 @@ export default function TreatmentPlanScreen() {
 
   const { latestReading, readingStatus, selections, selectedBrand } = useTestStrips();
   const { pools } = usePool();
-  const alerts = getReadingsThatNeedTreatment(
+  const statuses = statusesForReading(
     latestReading,
-    statusesForReading(latestReading, readingStatus, selectedBrand, selections, pools),
+    readingStatus,
+    selectedBrand,
+    selections,
+    pools,
   );
+  const alerts = getReadingsThatNeedTreatment(latestReading, statuses);
+  const steps = stepsForActiveCase(alerts);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
@@ -138,39 +144,34 @@ export default function TreatmentPlanScreen() {
               ))}
             </View>
 
-            {/* What to do */}
+            {/* What to do — steps for the active treatment only */}
             <Text className="text-h3 font-jakarta-extrabold text-brand-navy mt-6">
               {plan.stepsSectionTitle}
             </Text>
             <View className="gap-3 mt-3">
-              {plan.steps.map((step) => (
+              {steps.map((step) => (
                 <View key={step.id} className="card flex-row items-start gap-3 p-4" style={shadow.card}>
-
                   <View className="w-9 h-9 rounded-full bg-surface-soft-aqua items-center justify-center">
                     <TreatmentIcon iconKey={step.icon} size={16} color={colors.brand.blue} />
                   </View>
                   <View className="flex-1">
                     <Text className="text-body font-jakarta-bold text-brand-navy">{step.title}</Text>
-                    <Text className="text-small font-jakarta text-sub mt-0.5 leading-relaxed">
-                      {step.body}
-                    </Text>
+                    {step.body ? (
+                      <Text className="text-small font-jakarta text-sub mt-0.5 leading-relaxed">
+                        {step.body}
+                      </Text>
+                    ) : null}
+                    {step.substeps?.map((item) => (
+                      <Text
+                        key={item}
+                        className="text-small font-jakarta text-sub mt-1 leading-relaxed"
+                      >
+                        • {item}
+                      </Text>
+                    ))}
                   </View>
                 </View>
               ))}
-
-              <View className="card--info flex-row items-start gap-3 p-4">
-                <View className="w-9 h-9 rounded-full bg-surface-white items-center justify-center">
-                  <TreatmentIcon iconKey={plan.alternative.icon} size={16} color={colors.brand.blue} />
-                </View>
-                <View className="flex-1">
-                  <Text className="text-body font-jakarta-bold text-brand-navy">
-                    {plan.alternative.title}
-                  </Text>
-                  <Text className="text-small font-jakarta text-sub mt-0.5 leading-relaxed">
-                    {plan.alternative.body}
-                  </Text>
-                </View>
-              </View>
             </View>
 
             {/* Recommended products */}
