@@ -9,42 +9,42 @@
  */
 
 // ─── Graphics ────────────────────────────────────────────────────────────────
-import poolPalLogo from '../assets/graphics/pool_pal_logo.png';
-import poolPalLogoDarkBg from '../assets/graphics/pool_pal_logo_dark_bg.png';
-import poolPalLogoLightBg from '../assets/graphics/pool_pal_logo_light_bg.png';
-import poolCardWave from '../assets/graphics/pool_card_wave.png';
-import testKitCardGraphic from '../assets/graphics/test_kit_card_graphic.png';
 import checklistSuccess from '../assets/graphics/checklist_success.png';
 import completionRing from '../assets/graphics/completion_ring.png';
 import emptyStatePool from '../assets/graphics/empty_state_pool.png';
-import poolTonicWelcomeBackground from '../assets/welcome/pooltonic_home_image.png';
-import poolTonicGradient from '../assets/welcome/pooltonic_gradient.png';
-import poolTonicButtonGradient from '../assets/welcome/pooltonic_button_gradient.png';
-import poolTonicLogo from '../assets/welcome/pooltonic_logo.png';
-import poolTonicFeatureTest from '../assets/welcome/pooltonic_feature_test.png';
-import poolTonicFeatureFix from '../assets/welcome/pooltonic_feature_fix.png';
-import poolTonicFeatureEnjoy from '../assets/welcome/pooltonic_feature_enjoy.png';
-import poolTonicRemedy from '../assets/welcome/pooltonic_pool_remedy.png';
-import poolTonicTrustShield from '../assets/welcome/pooltonic_trust_shield.png';
-import poolTonicStars from '../assets/welcome/pooltonic_stars.png';
-import poolTonicWave from '../assets/welcome/pooltonic_wave.png';
+import poolCardWave from '../assets/graphics/pool_card_wave.png';
+import poolPalLogo from '../assets/graphics/pool_pal_logo.png';
+import poolPalLogoDarkBg from '../assets/graphics/pool_pal_logo_dark_bg.png';
+import poolPalLogoLightBg from '../assets/graphics/pool_pal_logo_light_bg.png';
+import testKitCardGraphic from '../assets/graphics/test_kit_card_graphic.png';
 import poolTonicLogoFullLight from '../assets/pooltonic-ui/pooltonic-logo-full-light.png';
+import poolTonicButtonGradient from '../assets/welcome/pooltonic_button_gradient.png';
+import poolTonicFeatureEnjoy from '../assets/welcome/pooltonic_feature_enjoy.png';
+import poolTonicFeatureFix from '../assets/welcome/pooltonic_feature_fix.png';
+import poolTonicFeatureTest from '../assets/welcome/pooltonic_feature_test.png';
+import poolTonicGradient from '../assets/welcome/pooltonic_gradient.png';
+import poolTonicWelcomeBackground from '../assets/welcome/pooltonic_home_image.png';
+import poolTonicLogo from '../assets/welcome/pooltonic_logo.png';
+import poolTonicRemedy from '../assets/welcome/pooltonic_pool_remedy.png';
+import poolTonicStars from '../assets/welcome/pooltonic_stars.png';
+import poolTonicTrustShield from '../assets/welcome/pooltonic_trust_shield.png';
+import poolTonicWave from '../assets/welcome/pooltonic_wave.png';
 
 // ─── Chemistry icons ─────────────────────────────────────────────────────────
-import chemistryFreeChlorine from '../assets/chemistry-icons/free-chlorine.png';
-import chemistryTotalChlorine from '../assets/chemistry-icons/total-chlorine.png';
-import chemistryCombinedChlorine from '../assets/chemistry-icons/combined-chlorine.png';
 import chemistryBromine from '../assets/chemistry-icons/bromine.png';
-import chemistryPh from '../assets/chemistry-icons/ph.png';
-import chemistryTotalAlkalinity from '../assets/chemistry-icons/total-alkalinity.png';
 import chemistryCalciumHardness from '../assets/chemistry-icons/calcium-hardness.png';
-import chemistryCyanuricAcid from '../assets/chemistry-icons/cyanuric-acid.png';
-import chemistrySalt from '../assets/chemistry-icons/salt.png';
-import chemistryTotalHardness from '../assets/chemistry-icons/total-hardness.png';
-import chemistryPhosphates from '../assets/chemistry-icons/phosphates.png';
-import chemistryTds from '../assets/chemistry-icons/tds.png';
-import chemistryIron from '../assets/chemistry-icons/iron.png';
+import chemistryCombinedChlorine from '../assets/chemistry-icons/combined-chlorine.png';
 import chemistryCopper from '../assets/chemistry-icons/copper.png';
+import chemistryCyanuricAcid from '../assets/chemistry-icons/cyanuric-acid.png';
+import chemistryFreeChlorine from '../assets/chemistry-icons/free-chlorine.png';
+import chemistryIron from '../assets/chemistry-icons/iron.png';
+import chemistryPh from '../assets/chemistry-icons/ph.png';
+import chemistryPhosphates from '../assets/chemistry-icons/phosphates.png';
+import chemistrySalt from '../assets/chemistry-icons/salt.png';
+import chemistryTds from '../assets/chemistry-icons/tds.png';
+import chemistryTotalAlkalinity from '../assets/chemistry-icons/total-alkalinity.png';
+import chemistryTotalChlorine from '../assets/chemistry-icons/total-chlorine.png';
+import chemistryTotalHardness from '../assets/chemistry-icons/total-hardness.png';
 
 // ─── Icons (1x) ──────────────────────────────────────────────────────────────
 
@@ -71,30 +71,30 @@ import iconRadioSelected from '../assets/icons_1x/radio_selected.png';
 import iconReadings from '../assets/icons_1x/readings.png';
 import iconSalt from '../assets/icons_1x/salt.png';
 import iconTestStrip from '../assets/icons_1x/test_strip.png';
-import aquachek7in1 from '../assets/test-strips/aquacheck/aquachek-7-in-1.jpg';
-import blissPoolStrips from '../assets/test-strips/Bliss Pool/BlissPool.jpeg';
-import cloroxPoolSpa from '../assets/test-strips/clorox/CloroxPoolSpa-Test_strips.jpg';
-import easyTest9in1 from '../assets/test-strips/EasyTest 9 in 1/easytest-9in1.jpg';
-import hth6Way from '../assets/test-strips/Hth/hth-6-way-strips.webp';
-import jnwPoolAndSpa from '../assets/test-strips/jnw/jnwPoolandSpa-7-in-1.jpg';
-import jnwHotTubSpa from '../assets/test-strips/JNW Hot Tub & Spa/jnw-hot-tub-spa-6-in-1.jpg';
-import kimbistStrips from '../assets/test-strips/kimbist/kimbist.jpeg';
-import runboStrips from '../assets/test-strips/Runbo/runbo.jpg';
 import iconUpload from '../assets/icons_1x/upload.png';
 import iconWarning from '../assets/icons_1x/warning.png';
 import iconWaterDrop from '../assets/icons_1x/water_drop.png';
 import selectedCheckBadge from '../assets/poolbasicsimages/poolwise_remaining_ui_assets_pngs/selected_check_badge.png';
 import unselectedRadioIndicator from '../assets/poolbasicsimages/poolwise_remaining_ui_assets_pngs/unselected_radio_indicator.png';
+import aquachek7in1 from '../assets/test-strips/aquacheck/aquachek-7-in-1.jpg';
+import blissPoolStrips from '../assets/test-strips/Bliss Pool/BlissPool.jpeg';
+import cloroxPoolSpa from '../assets/test-strips/clorox/CloroxPoolSpa-Test_strips.jpg';
+import easyTest9in1 from '../assets/test-strips/EasyTest 9 in 1/easytest-9in1.jpg';
+import hth6Way from '../assets/test-strips/Hth/hth-6-way-strips.webp';
+import jnwHotTubSpa from '../assets/test-strips/JNW Hot Tub & Spa/jnw-hot-tub-spa-6-in-1.jpg';
+import jnwPoolAndSpa from '../assets/test-strips/jnw/jnwPoolandSpa-7-in-1.jpg';
+import kimbistStrips from '../assets/test-strips/kimbist/kimbist.jpeg';
+import runboStrips from '../assets/test-strips/Runbo/runbo.jpg';
 
 // ─── Pool Basics — Pool Type (keyed to DB enum values) ───────────────────────
-import poolTypeChlorine from '../assets/poolbasicsimages/poolbasics/Chlorine.png';
-import poolTypeSaltwater from '../assets/poolbasicsimages/poolbasics/Saltwater.png';
-import poolTypeBromine from '../assets/poolbasicsimages/poolbasics/Bromine.png';
+import poolEnvCovered from '../assets/pool-basics-v2/pooltonic-covered-pool.png';
+import poolTypeUnknown from '../assets/pool-basics-v2/pooltonic-idontknow.png';
+import poolEnvIndoor from '../assets/pool-basics-v2/pooltonic-indoor-pool.png';
 import poolEnvOutdoor from '../assets/pool-basics-v2/pooltonic-outdoor.png';
 import poolEnvScreened from '../assets/pool-basics-v2/pooltonic-screened-pool.png';
-import poolEnvCovered from '../assets/pool-basics-v2/pooltonic-covered-pool.png';
-import poolEnvIndoor from '../assets/pool-basics-v2/pooltonic-indoor-pool.png';
-import poolTypeUnknown from '../assets/pool-basics-v2/pooltonic-idontknow.png';
+import poolTypeBromine from '../assets/poolbasicsimages/poolbasics/Bromine.png';
+import poolTypeChlorine from '../assets/poolbasicsimages/poolbasics/Chlorine.png';
+import poolTypeSaltwater from '../assets/poolbasicsimages/poolbasics/Saltwater.png';
 
 // ─── Pool Basics — Screened ───────────────────────────────────────────────────
 import poolScreenedYes from '../assets/poolbasicsimages/poolbasics/Screened.png';
@@ -102,14 +102,14 @@ import poolScreenedNo from '../assets/poolbasicsimages/poolbasics/Unscreened.png
 
 // ─── Pool Basics — Use ────────────────────────────────────────────────────────
 import poolUseFamily from '../assets/poolbasicsimages/poolbasics/Family.png';
-import poolUseVacationHome from '../assets/poolbasicsimages/poolbasics/VacationHome.png';
 import poolUseShortTermRental from '../assets/poolbasicsimages/poolbasics/ShortTermRental.png';
+import poolUseVacationHome from '../assets/poolbasicsimages/poolbasics/VacationHome.png';
 
 // ─── Pool Basics — Hot Tub / Spa ──────────────────────────────────────────────
-import poolHotTubYes from '../assets/poolbasicsimages/poolbasics/hottub.png';
-import poolHotTubNo from '../assets/poolbasicsimages/poolbasics/no.png';
 import poolSpaAttached from '../assets/poolbasicsimages/poolbasics/attached_spa.webp';
 import poolSpaDetached from '../assets/poolbasicsimages/poolbasics/detatched_spa.webp';
+import poolHotTubYes from '../assets/poolbasicsimages/poolbasics/hottub.png';
+import poolHotTubNo from '../assets/poolbasicsimages/poolbasics/no.png';
 
 // ─── Pool Condition (keyed to DB enum values) ──────────────────────────────────
 import poolConditionCrystalClear from '../assets/pool-condition-images/aa.png';
@@ -119,109 +119,109 @@ import poolConditionVeryGreenOrDark from '../assets/pool-condition-images/dd.png
 import poolConditionNotSure from '../assets/pool-condition-images/ee.png';
 
 // ─── Equipment Basics — Filter & Pump examples (keyed to DB enum values) ─────
-import filterSand from '../assets/equipment-basic-images/filter_sand.png';
 import filterCartridge from '../assets/equipment-basic-images/filter_cartridge.png';
 import filterDe from '../assets/equipment-basic-images/filter_de.png';
-import pumpSingleSpeed from '../assets/equipment-basic-images/pump_single_speed.png';
-import pumpDualSpeed from '../assets/equipment-basic-images/pump_dual_speed.png';
-import pumpVariableSpeed from '../assets/equipment-basic-images/pump_variable_speed.png';
-import equipmentChoiceSand from '../assets/equipment-basic-images/pooltonic-sand_filter.png';
+import filterSand from '../assets/equipment-basic-images/filter_sand.png';
 import equipmentChoiceCartridge from '../assets/equipment-basic-images/pooltonic-cartridge_filter.png';
 import equipmentChoiceDe from '../assets/equipment-basic-images/pooltonic-de_filter.png';
-import equipmentChoiceSingle from '../assets/equipment-basic-images/pooltonic-single_speed_pump.png';
 import equipmentChoiceDual from '../assets/equipment-basic-images/pooltonic-dual_speed_pump.png';
+import equipmentChoiceSand from '../assets/equipment-basic-images/pooltonic-sand_filter.png';
+import equipmentChoiceSingle from '../assets/equipment-basic-images/pooltonic-single_speed_pump.png';
 import equipmentChoiceVariable from '../assets/equipment-basic-images/pooltonic-variable_speed_pump.png';
+import pumpDualSpeed from '../assets/equipment-basic-images/pump_dual_speed.png';
+import pumpSingleSpeed from '../assets/equipment-basic-images/pump_single_speed.png';
+import pumpVariableSpeed from '../assets/equipment-basic-images/pump_variable_speed.png';
 
 // ─── Pool Surface Type (keyed to DB enum values) ─────────────────────────────
-import surfacePlaster from '../assets/pool-surface-images/plaster.png';
-import surfacePebble from '../assets/pool-surface-images/pebble.png';
-import surfaceVinyl from '../assets/pool-surface-images/vinyl.png';
-import surfaceFiberglass from '../assets/pool-surface-images/fiberglass.png';
-import surfaceTile from '../assets/pool-surface-images/tile.png';
-import surfaceQuartz from '../assets/pool-surface-images/Additional_Pool_Surfaces/quartz.png';
-import surfacePaintedConcrete from '../assets/pool-surface-images/Additional_Pool_Surfaces/painted_concrete.png';
-import surfaceSmoothStoneGlassBead from '../assets/pool-surface-images/Additional_Pool_Surfaces/smooth_stone_glass_bead.png';
-import surfaceReinforcedPvcMembrane from '../assets/pool-surface-images/Additional_Pool_Surfaces/reinforced_pvc_membrane.png';
-import surfaceStainlessSteel from '../assets/pool-surface-images/Additional_Pool_Surfaces/stainless_steel.png';
 import surfaceCopper from '../assets/pool-surface-images/Additional_Pool_Surfaces/copper.png';
-import surfaceVinylLiner from '../assets/pool-surface-images/Additional_Pool_Surfaces/vinyl_liner.png';
 import surfaceOtherCustom from '../assets/pool-surface-images/Additional_Pool_Surfaces/other_custom_surface.png';
+import surfacePaintedConcrete from '../assets/pool-surface-images/Additional_Pool_Surfaces/painted_concrete.png';
+import surfaceQuartz from '../assets/pool-surface-images/Additional_Pool_Surfaces/quartz.png';
+import surfaceReinforcedPvcMembrane from '../assets/pool-surface-images/Additional_Pool_Surfaces/reinforced_pvc_membrane.png';
+import surfaceSmoothStoneGlassBead from '../assets/pool-surface-images/Additional_Pool_Surfaces/smooth_stone_glass_bead.png';
+import surfaceStainlessSteel from '../assets/pool-surface-images/Additional_Pool_Surfaces/stainless_steel.png';
+import surfaceVinylLiner from '../assets/pool-surface-images/Additional_Pool_Surfaces/vinyl_liner.png';
+import surfaceFiberglass from '../assets/pool-surface-images/fiberglass.png';
+import surfacePebble from '../assets/pool-surface-images/pebble.png';
+import surfacePlaster from '../assets/pool-surface-images/plaster.png';
 import surfaceNotSure from '../assets/pool-surface-images/pool_surface_not_sure_icon.png';
+import surfaceTile from '../assets/pool-surface-images/tile.png';
+import surfaceVinyl from '../assets/pool-surface-images/vinyl.png';
 
 // ─── Cleaning Setup (keyed to CleaningType values) ────────────────────────────
-import cleaningRobotic from '../assets/cleaning-setup-images/robotic-cleaner1.png';
-import cleaningSuctionSide from '../assets/cleaning-setup-images/suction-side-cleaner1.jpg';
-import cleaningPressureSide from '../assets/cleaning-setup-images/pressure-side-cleaner1.jpg';
 import cleaningManualVacuum from '../assets/cleaning-setup-images/manual-vaccum1.jpg';
 import cleaningNoVacuum from '../assets/cleaning-setup-images/no-vaccum1.jpg';
 import cleaningNotSure from '../assets/cleaning-setup-images/pool_surface_not_sure_icon.png';
+import cleaningPressureSide from '../assets/cleaning-setup-images/pressure-side-cleaner1.jpg';
+import cleaningRobotic from '../assets/cleaning-setup-images/robotic-cleaner1.jpg';
+import cleaningSuctionSide from '../assets/cleaning-setup-images/suction-side-cleaner1.jpg';
 
 // ─── Test Readings (keyed to TestReadingsMethod values) ───────────────────────
-import testReadingsResultsIcon from '../assets/pool-reading-images/test_results_flask.png';
-import testReadingsPhotoIcon from '../assets/pool-reading-images/test_strip_photo_camera.png';
-import testReadingsNoneIcon from '../assets/pool-reading-images/no_results_calendar.png';
 import testReadingsInfoIcon from '../assets/pool-reading-images/info_icon.png';
-import testReadingsStripPhoto from '../assets/pool-reading-images/test_strips.png';
+import testReadingsNoneIcon from '../assets/pool-reading-images/no_results_calendar.png';
 import testReadingsBackyardPhoto from '../assets/pool-reading-images/pool-backyard.png';
 import reminderShield from '../assets/pool-reading-images/reminder_shield.png';
-import poolTonicTipsIcon from '../assets/pooltonic-ui/pooltonic-tips-icon.png';
-import poolTonicMeasurementsKnown from '../assets/pooltonic-ui/pooltonic-measurements-known.png';
-import poolTonicHelp from '../assets/pooltonic-ui/pooltonic-help.png';
-import poolTonicShapeRectangle from '../assets/pooltonic-ui/pooltonic-rectangle.png';
+import testReadingsResultsIcon from '../assets/pool-reading-images/test_results_flask.png';
+import testReadingsPhotoIcon from '../assets/pool-reading-images/test_strip_photo_camera.png';
+import testReadingsStripPhoto from '../assets/pool-reading-images/test_strips.png';
 import poolTonicShapeCircle from '../assets/pooltonic-ui/pooltonic-circle.png';
-import poolTonicShapeOval from '../assets/pooltonic-ui/pooltonic-oval.png';
+import poolTonicHelp from '../assets/pooltonic-ui/pooltonic-help.png';
 import poolTonicShapeKidney from '../assets/pooltonic-ui/pooltonic-kidney.png';
+import poolTonicMeasurementsKnown from '../assets/pooltonic-ui/pooltonic-measurements-known.png';
+import poolTonicShapeOval from '../assets/pooltonic-ui/pooltonic-oval.png';
+import poolTonicShapeRectangle from '../assets/pooltonic-ui/pooltonic-rectangle.png';
+import poolTonicTipsIcon from '../assets/pooltonic-ui/pooltonic-tips-icon.png';
 
 // ─── Choose Test Method ───────────────────────────────────────────────────────
 import chooseTestMethodFlask from '../assets/pool-reading-images-new/flask.webp';
 import chooseTestMethodSettings from '../assets/pool-reading-images-new/settings.png';
-import poolTonicCheckStrip from '../assets/pooltonic-ui/pooltonic-test-strip.png';
-import poolTonicCheckResults from '../assets/pooltonic-ui/pooltonic-test-results.png';
-import poolTonicCheckVisibleProblem from '../assets/pooltonic-ui/pooltonic-solve-visible-pool-problems.png';
 import poolTonicCheckInfo from '../assets/pooltonic-ui/pooltonic-info-i-icon.png';
+import poolTonicCheckVisibleProblem from '../assets/pooltonic-ui/pooltonic-solve-visible-pool-problems.png';
+import poolTonicCheckResults from '../assets/pooltonic-ui/pooltonic-test-results.png';
+import poolTonicCheckStrip from '../assets/pooltonic-ui/pooltonic-test-strip.png';
 
 // ─── Onboarding completion (pool profile) ────────────────────────────────────
-import poolProfileWaterDrop from '../assets/onboardin-screen-images/pool-profile-water-drop.png';
-import poolProfileTestTube from '../assets/onboardin-screen-images/pool-profile-test-tube.png';
-import poolProfilePhoto from '../assets/onboardin-screen-images/pool-profile-photo.png';
 import poolProfileCalculator from '../assets/onboardin-screen-images/pool-profile-calculator.png';
 import poolProfileInfo from '../assets/onboardin-screen-images/pool-profile-info.png';
+import poolProfilePhoto from '../assets/onboardin-screen-images/pool-profile-photo.png';
 import poolProfileStar from '../assets/onboardin-screen-images/pool-profile-star.png';
+import poolProfileTestTube from '../assets/onboardin-screen-images/pool-profile-test-tube.png';
+import poolProfileWaterDrop from '../assets/onboardin-screen-images/pool-profile-water-drop.png';
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
-import dashboardHelloEmoji from '../assets/dashboard-images/hello_emoji.png';
-import dashboardNotificationBell from '../assets/dashboard-images/notification_bell_with_dot.png';
-import dashboardPoolIllustration from '../assets/dashboard-images/pool_summary_illustration.png';
-import dashboardGreenCheckIcon from '../assets/dashboard-images/green_check_icon.png';
-import dashboardSmallInfoIcon from '../assets/dashboard-images/small_info_icon.png';
-import dashboardStarBadge from '../assets/dashboard-images/recommended_star_badge.png';
-import dashboardTestingKitGraphic from '../assets/dashboard-images/testing_kit_recommendation_graphic.png';
-import dashboardChevronRight from '../assets/dashboard-images/chevron_right.png';
-import dashboardProfileIcon from '../assets/dashboard-images/profile_person_icon.png';
-import dashboardNextStepIcon from '../assets/dashboard-images/next_step_flag_icon.png';
-import dashboardChecklistIcon from '../assets/dashboard-images/checklist_clipboard_icon_active.png';
-import dashboardReadingsIcon from '../assets/dashboard-images/latest_readings_flask_icon.png';
-import dashboardUploadPhotoIcon from '../assets/dashboard-images/upload_pool_photo_camera_icon_2.png';
 import dashboardAskPoolwiseIcon from '../assets/dashboard-images/ask_poolwise_chat_icon.png';
+import dashboardChecklistIcon from '../assets/dashboard-images/checklist_clipboard_icon_active.png';
+import dashboardChevronRight from '../assets/dashboard-images/chevron_right.png';
+import dashboardGreenCheckIcon from '../assets/dashboard-images/green_check_icon.png';
+import dashboardHelloEmoji from '../assets/dashboard-images/hello_emoji.png';
+import dashboardReadingsIcon from '../assets/dashboard-images/latest_readings_flask_icon.png';
 import dashboardLearnIcon from '../assets/dashboard-images/learn_play_icon.png';
-import poolTonicNotificationBell from '../assets/pooltonic-ui/pooltonic-notification-bell.png';
-import poolTonicNotificationBellUnread from '../assets/pooltonic-ui/pooltonic-notification-bell-update.png';
-import poolTonicUserIcon from '../assets/pooltonic-ui/pooltonic-user-icon.png';
-import poolTonicSolveProblems from '../assets/dashboard-images/pooltonic_solve_problems.png';
-import poolTonicLearn from '../assets/dashboard-images/pooltonic_learn.png';
-import poolTonicAskPoolTonic from '../assets/dashboard-images/pooltonic_ask_pooltonic.png';
-import poolTonicNavHomeSelected from '../assets/pooltonic-ui/pooltonic-home-selected.png';
-import poolTonicNavHome from '../assets/pooltonic-ui/pooltonic-home.png';
-import poolTonicNavPoolSelected from '../assets/pooltonic-ui/pooltonic-pool-selected.png';
-import poolTonicNavPool from '../assets/pooltonic-ui/pooltonic-pool.png';
-import poolTonicNavShopSelected from '../assets/pooltonic-ui/pooltonic-shop-selected.png';
-import poolTonicNavShop from '../assets/pooltonic-ui/pooltonic-shop.png';
-import poolTonicNavChecklistSelected from '../assets/pooltonic-ui/pooltonic-checklist-selected.png';
-import poolTonicNavChecklist from '../assets/pooltonic-ui/pooltonic-checklist.png';
-import poolTonicNavReadingsSelected from '../assets/pooltonic-ui/pooltonic-readings-selected.png';
-import poolTonicNavReadings from '../assets/pooltonic-ui/pooltonic-readings.png';
 import navLearnActive from '../assets/dashboard-images/nav_learn_book_icon_active.png';
 import navLearnInactive from '../assets/dashboard-images/nav_learn_book_icon_inactive.png';
+import dashboardNextStepIcon from '../assets/dashboard-images/next_step_flag_icon.png';
+import dashboardNotificationBell from '../assets/dashboard-images/notification_bell_with_dot.png';
+import dashboardPoolIllustration from '../assets/dashboard-images/pool_summary_illustration.png';
+import poolTonicAskPoolTonic from '../assets/dashboard-images/pooltonic_ask_pooltonic.png';
+import poolTonicLearn from '../assets/dashboard-images/pooltonic_learn.png';
+import poolTonicSolveProblems from '../assets/dashboard-images/pooltonic_solve_problems.png';
+import dashboardProfileIcon from '../assets/dashboard-images/profile_person_icon.png';
+import dashboardStarBadge from '../assets/dashboard-images/recommended_star_badge.png';
+import dashboardSmallInfoIcon from '../assets/dashboard-images/small_info_icon.png';
+import dashboardTestingKitGraphic from '../assets/dashboard-images/testing_kit_recommendation_graphic.png';
+import dashboardUploadPhotoIcon from '../assets/dashboard-images/upload_pool_photo_camera_icon_2.png';
+import poolTonicNavChecklistSelected from '../assets/pooltonic-ui/pooltonic-checklist-selected.png';
+import poolTonicNavChecklist from '../assets/pooltonic-ui/pooltonic-checklist.png';
+import poolTonicNavHomeSelected from '../assets/pooltonic-ui/pooltonic-home-selected.png';
+import poolTonicNavHome from '../assets/pooltonic-ui/pooltonic-home.png';
+import poolTonicNotificationBellUnread from '../assets/pooltonic-ui/pooltonic-notification-bell-update.png';
+import poolTonicNotificationBell from '../assets/pooltonic-ui/pooltonic-notification-bell.png';
+import poolTonicNavPoolSelected from '../assets/pooltonic-ui/pooltonic-pool-selected.png';
+import poolTonicNavPool from '../assets/pooltonic-ui/pooltonic-pool.png';
+import poolTonicNavReadingsSelected from '../assets/pooltonic-ui/pooltonic-readings-selected.png';
+import poolTonicNavReadings from '../assets/pooltonic-ui/pooltonic-readings.png';
+import poolTonicNavShopSelected from '../assets/pooltonic-ui/pooltonic-shop-selected.png';
+import poolTonicNavShop from '../assets/pooltonic-ui/pooltonic-shop.png';
+import poolTonicUserIcon from '../assets/pooltonic-ui/pooltonic-user-icon.png';
 
 // ─── Pool tab review screens ─────────────────────────────────────────────────
 import poolBasicsHero from '../assets/pool-tab/pool-tab-pool-basic-screen-bg.jpg';
