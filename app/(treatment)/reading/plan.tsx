@@ -134,7 +134,8 @@ export default function TreatmentPlanScreen() {
                   </View>
                   <View className="flex-1">
                     <Text className="text-body-lg font-jakarta-bold text-brand-navy">
-                      {alert.testName} — {alert.value}{alert.testName !== 'pH' ? 'ppm' : ''}
+                      {alert.testName} — {alert.value}
+                      {alert.testName !== 'pH' && !Number.isNaN(Number(alert.value)) ? 'ppm' : ''}
                     </Text>
                     <Text className="text-small font-jakarta text-sub mt-1 leading-relaxed">
                       {alert.message}

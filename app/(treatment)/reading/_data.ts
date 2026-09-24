@@ -216,7 +216,15 @@ export type TreatmentCaseId =
     | 'cya_low'
     | 'salt_very_high'
     | 'salt_high'
-    | 'salt_low';
+    | 'salt_low'
+    | 'copper'
+    | 'iron'
+    | 'calcium_low'
+    | 'calcium_high'
+    | 'ph_mild_low'
+    | 'ph_mild_high'
+    | 'phosphate'
+    | 'water_replacement';
 
 type TreatmentCase = {
     id: TreatmentCaseId;
@@ -642,6 +650,14 @@ export const TREATMENT_STEPS: Record<TreatmentCaseId, TreatmentStep[]> = {
             title: 'Retest salt.',
         },
     ],
+    copper: [],
+    iron: [],
+    calcium_low: [],
+    calcium_high: [],
+    ph_mild_low: [],
+    ph_mild_high: [],
+    phosphate: [],
+    water_replacement: [],
 };
 
 /** High pH above 8 with high alkalinity. One acid treatment lowers both. */
@@ -711,10 +727,19 @@ const CASE_DISPLAY_ORDER: TreatmentCaseId[] = [
     'salt_very_high',
     'salt_high',
     'salt_low',
+    'copper',
+    'iron',
+    'calcium_low',
+    'calcium_high',
+    'ph_mild_low',
+    'ph_mild_high',
+    'phosphate',
+    'water_replacement',
 ];
 
 function pickFirstCase(ids: Set<TreatmentCaseId>): TreatmentCaseId | null {
     if (ids.has('fc_very_high')) return 'fc_very_high';
+    if (ids.has('water_replacement')) return 'water_replacement';
 
     if (ids.has('ph_low') && ids.has('alk_low')) return 'alk_low';
     if (ids.has('ph_low')) return 'ph_low';
@@ -738,6 +763,17 @@ function pickFirstCase(ids: Set<TreatmentCaseId>): TreatmentCaseId | null {
     if (ids.has('salt_very_high')) return 'salt_very_high';
     if (ids.has('salt_high')) return 'salt_high';
     if (ids.has('salt_low')) return 'salt_low';
+
+    if (ids.has('copper')) return 'copper';
+    if (ids.has('iron')) return 'iron';
+
+    if (ids.has('calcium_low')) return 'calcium_low';
+    if (ids.has('calcium_high')) return 'calcium_high';
+
+    if (ids.has('ph_mild_low')) return 'ph_mild_low';
+    if (ids.has('ph_mild_high')) return 'ph_mild_high';
+
+    if (ids.has('phosphate')) return 'phosphate';
 
     return null;
 }
@@ -802,6 +838,10 @@ export function getReadingsThatNeedTreatment(
     const cya = readings?.selections['Cyanuric Acid'];
     const salt = readings?.selections['Salt'];
     const combinedChlorine = readings?.selections['Combined Chlorine'];
+    const copper = readings?.selections['Copper'];
+    const iron = readings?.selections['Iron'];
+    const calcium = readings?.selections['Calcium Hardness'];
+    const phosphate = readings?.selections['Phosphate'];
     const alkStatus = statuses['Total Alkalinity'] ?? null;
     const inBand = (testName: string, bands: ReadingStatus[]) => {
         const status = statuses?.[testName];
@@ -817,10 +857,7 @@ export function getReadingsThatNeedTreatment(
                 'Free chlorine is very high. Stop adding chlorine and avoid swimming until it drops back into range.',
         });
     }
-    if (
-        freeChlorine &&
-        inBand('Free Chlorine', ['low', 'very_low'])
-    ) {
+    if (freeChlorine && inBand('Free Chlorine', ['low', 'very_low'])) {
         cases.push({
             id: 'fc_low',
             testName: 'Free Chlorine',
@@ -846,6 +883,22 @@ export function getReadingsThatNeedTreatment(
             value: ph,
             treatMessage:
                 'pH is too low. Raise pH first — chlorine will not sanitize well until pH is back in range.',
+        });
+    }
+    if (ph && Number(ph) >= 7 && Number(ph) < 7.2) {
+        cases.push({
+            id: 'ph_mild_low',
+            testName: 'pH',
+            value: ph,
+            treatMessage: 'pH is slightly low. Bring it back into range, then retest.',
+        });
+    }
+    if (ph && Number(ph) > 7.8 && Number(ph) <= 8) {
+        cases.push({
+            id: 'ph_mild_high',
+            testName: 'pH',
+            value: ph,
+            treatMessage: 'pH is slightly high. Bring it back into range, then retest.',
         });
     }
     if (alkalinity && Number(alkalinity) < 80) {
@@ -931,15 +984,68 @@ export function getReadingsThatNeedTreatment(
                 'Salt is too high. Remove salt first — chlorine will not sanitize well until salt is back in range.',
         });
     }
-    if (
-        combinedChlorine &&
-        inBand('Combined Chlorine', ['high', 'very_high'])
-    ) {
+    if (combinedChlorine && inBand('Combined Chlorine', ['high', 'very_high'])) {
         cases.push({
             id: 'cc_high',
             testName: 'Combined Chlorine',
             value: combinedChlorine,
             treatMessage: 'Combined chlorine is high. Bring it back into range, then retest.',
+        });
+    }
+    if (copper && inBand('Copper', ['high', 'very_high'])) {
+        cases.push({
+            id: 'copper',
+            testName: 'Copper',
+            value: copper,
+            treatMessage: 'Copper is present. Confirm the copper result before a large treatment.',
+        });
+    }
+    if (iron && inBand('Iron', ['high', 'very_high'])) {
+        cases.push({
+            id: 'iron',
+            testName: 'Iron',
+            value: iron,
+            treatMessage: 'Iron is present. Confirm the iron result before a large treatment.',
+        });
+    }
+    if (calcium && inBand('Calcium Hardness', ['low', 'very_low'])) {
+        cases.push({
+            id: 'calcium_low',
+            testName: 'Calcium Hardness',
+            value: calcium,
+            treatMessage: 'Calcium hardness is low. Bring it back into range, then retest.',
+        });
+    }
+    if (calcium && inBand('Calcium Hardness', ['high', 'very_high'])) {
+        cases.push({
+            id: 'calcium_high',
+            testName: 'Calcium Hardness',
+            value: calcium,
+            treatMessage: 'Calcium hardness is high. Bring it back into range, then retest.',
+        });
+    }
+    if (phosphate && inBand('Phosphate', ['high', 'very_high'])) {
+        cases.push({
+            id: 'phosphate',
+            testName: 'Phosphate',
+            value: phosphate,
+            treatMessage: 'Phosphate is high. Bring it back into range, then retest.',
+        });
+    }
+
+    const dilutionReadings = [
+        cya && Number(cya) >= 150 ? `CYA ${cya}` : null,
+        salt && Number(salt) >= 4501 ? `salt ${salt}` : null,
+        calcium && inBand('Calcium Hardness', ['very_high']) ? `calcium ${calcium}` : null,
+    ].filter((item) => item != null);
+
+    if (dilutionReadings.length >= 2) {
+        cases.push({
+            id: 'water_replacement',
+            testName: 'Water replacement',
+            value: dilutionReadings.join(', '),
+            treatMessage:
+                'More than one reading is extremely high. Replace some water before balancing pH, alkalinity, salt, cyanuric acid, or calcium.',
         });
     }
 
