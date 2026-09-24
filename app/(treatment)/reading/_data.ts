@@ -713,37 +713,41 @@ export function stepsForActiveCase(alerts: TreatmentAlert[]): TreatmentStep[] {
 
 const CASE_DISPLAY_ORDER: TreatmentCaseId[] = [
     'fc_very_high',
-    'alk_low',
+    'copper',
+    'iron',
     'ph_low',
     'ph_high',
     'fc_low',
     'bromine_low',
     'cc_high',
+    'alk_low',
     'alk_very_high',
     'alk_high',
+    'ph_mild_low',
+    'ph_mild_high',
+    'calcium_low',
+    'calcium_high',
     'cya_very_high',
     'cya_mid',
     'cya_low',
     'salt_very_high',
     'salt_high',
     'salt_low',
-    'copper',
-    'iron',
-    'calcium_low',
-    'calcium_high',
-    'ph_mild_low',
-    'ph_mild_high',
     'phosphate',
     'water_replacement',
 ];
 
 function pickFirstCase(ids: Set<TreatmentCaseId>): TreatmentCaseId | null {
     if (ids.has('fc_very_high')) return 'fc_very_high';
-    if (ids.has('water_replacement')) return 'water_replacement';
+
+    if (ids.has('copper')) return 'copper';
+    if (ids.has('iron')) return 'iron';
 
     if (ids.has('ph_low') && ids.has('alk_low')) return 'alk_low';
     if (ids.has('ph_low')) return 'ph_low';
     if (ids.has('ph_high')) return 'ph_high';
+
+    if (ids.has('water_replacement')) return 'water_replacement';
 
     if (ids.has('fc_low') && ids.has('salt_very_high')) return 'salt_very_high';
 
@@ -756,6 +760,12 @@ function pickFirstCase(ids: Set<TreatmentCaseId>): TreatmentCaseId | null {
     if (ids.has('alk_very_high')) return 'alk_very_high';
     if (ids.has('alk_high')) return 'alk_high';
 
+    if (ids.has('ph_mild_low')) return 'ph_mild_low';
+    if (ids.has('ph_mild_high')) return 'ph_mild_high';
+
+    if (ids.has('calcium_low')) return 'calcium_low';
+    if (ids.has('calcium_high')) return 'calcium_high';
+
     if (ids.has('cya_very_high')) return 'cya_very_high';
     if (ids.has('cya_mid')) return 'cya_mid';
     if (ids.has('cya_low')) return 'cya_low';
@@ -763,15 +773,6 @@ function pickFirstCase(ids: Set<TreatmentCaseId>): TreatmentCaseId | null {
     if (ids.has('salt_very_high')) return 'salt_very_high';
     if (ids.has('salt_high')) return 'salt_high';
     if (ids.has('salt_low')) return 'salt_low';
-
-    if (ids.has('copper')) return 'copper';
-    if (ids.has('iron')) return 'iron';
-
-    if (ids.has('calcium_low')) return 'calcium_low';
-    if (ids.has('calcium_high')) return 'calcium_high';
-
-    if (ids.has('ph_mild_low')) return 'ph_mild_low';
-    if (ids.has('ph_mild_high')) return 'ph_mild_high';
 
     if (ids.has('phosphate')) return 'phosphate';
 
@@ -862,7 +863,10 @@ export function getReadingsThatNeedTreatment(
             id: 'fc_low',
             testName: 'Free Chlorine',
             value: freeChlorine,
-            treatMessage: 'Sanitizer is low. Add chlorine to bring it back into range, then retest.',
+            treatMessage:
+                salt && Number(salt) >= 6000
+                    ? 'Salt is 6,000 ppm or higher and chlorine is low. Replace water before restoring chlorine.'
+                    : 'Sanitizer is low. Add chlorine to bring it back into range, then retest.',
         });
     }
     if (ph && Number(ph) > 8.0) {
@@ -882,7 +886,9 @@ export function getReadingsThatNeedTreatment(
             testName: 'pH',
             value: ph,
             treatMessage:
-                'pH is too low. Raise pH first — chlorine will not sanitize well until pH is back in range.',
+                alkalinity && Number(alkalinity) < 80
+                    ? 'pH is too low and alkalinity is below 80 ppm. Raise alkalinity first, then retest pH.'
+                    : 'pH is too low. Raise pH first — chlorine will not sanitize well until pH is back in range.',
         });
     }
     if (ph && Number(ph) >= 7 && Number(ph) < 7.2) {
@@ -1061,18 +1067,13 @@ export function getReadingsThatNeedTreatment(
             (a, b) => CASE_DISPLAY_ORDER.indexOf(a.id) - CASE_DISPLAY_ORDER.indexOf(b.id),
         );
 
-    const veryHighSalt =
-        first.id === 'salt_very_high' && cases.some((item) => item.id === 'fc_low');
-
     return [
         {
             caseId: first.id,
             testName: first.testName,
             value: first.value,
             actionable: true,
-            message: veryHighSalt
-                ? 'Salt is 6,000 ppm or higher and chlorine is low. Replace water before restoring chlorine.'
-                : first.treatMessage,
+            message: first.treatMessage,
         },
         ...rest.map((item) => ({
             caseId: item.id,
