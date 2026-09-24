@@ -864,9 +864,11 @@ export function getReadingsThatNeedTreatment(
             testName: 'Free Chlorine',
             value: freeChlorine,
             treatMessage:
-                salt && Number(salt) >= 6000
-                    ? 'Salt is 6,000 ppm or higher and chlorine is low. Replace water before restoring chlorine.'
-                    : 'Sanitizer is low. Add chlorine to bring it back into range, then retest.',
+                cya && Number(cya) >= 150
+                    ? 'Cyanuric acid is 150 ppm or higher and chlorine is low. Replace water before restoring chlorine.'
+                    : salt && Number(salt) >= 6000
+                      ? 'Salt is 6,000 ppm or higher and chlorine is low. Replace water before restoring chlorine.'
+                      : 'Sanitizer is low. Add chlorine to bring it back into range, then retest.',
         });
     }
     if (ph && Number(ph) > 8.0) {
