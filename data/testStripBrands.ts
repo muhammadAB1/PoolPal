@@ -1,6 +1,6 @@
 import catalog from '@/assets/test-strips/test_strips_rows.json';
 import { icons, testStripProductImages } from '@/constants/images';
-import { HAVE_RESULTS_FIELDS } from '@/data/chooseTestMethod';
+import { HAVE_RESULTS_FIELDS, readingUnit } from '@/data/chooseTestMethod';
 import type { ImageSourcePropType } from 'react-native';
 
 /** One pad-level row from the catalog: a single test on a single strip. */
@@ -94,7 +94,7 @@ export function resolvePads(
     (field) => selections[field.testName] != null,
   ).map((field) => ({
     testName: field.testName,
-    unit: field.unitKey === 'choose_test_method_unit_none' ? '' : 'ppm',
+    unit: readingUnit(field.unitKey),
     colors: [],
   }));
 }

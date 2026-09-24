@@ -42,7 +42,10 @@ export type ParamKey =
   | 'cyanuric_acid'
   | 'ph'
   | 'calcium_hardness'
-  | 'salt';
+  | 'salt'
+  | 'phosphate'
+  | 'copper'
+  | 'iron';
 
 type CanonicalSelections = {
   values: Partial<Record<ParamKey, number>>;
@@ -66,6 +69,9 @@ const PARAM_ALIASES: { key: ParamKey; match: RegExp }[] = [
   { key: 'ph', match: /^ph$/i },
   { key: 'calcium_hardness', match: /calcium\s*hardness/i },
   { key: 'salt', match: /salt/i },
+  { key: 'phosphate', match: /phosphate|\bpo4\b/i },
+  { key: 'copper', match: /copper/i },
+  { key: 'iron', match: /iron/i },
 ];
 
 /** Every ParamKey that this catalog label maps to (0–n). */
@@ -97,6 +103,9 @@ export const READING_RANGE: Partial<Record<ParamKey, IdealRange>> = {
   total_hardness: { min: 0, max: 1000 },
   calcium_hardness: { min: 0, max: 1000 },
   salt: { min: 400, max: 7000 },
+  phosphate: { min: 0, max: 10000 },
+  copper: { min: 0, max: 5 },
+  iron: { min: 0, max: 5 },
 };
 
 /** Map brand-specific selection keys into stable ParamKey values + original labels. */
@@ -159,6 +168,9 @@ export function toTestReadingsProps(
   if (values.total_hardness != null) props.total_hardness = Number(values.total_hardness);
   if (values.calcium_hardness != null) props.calcium_hardness = Number(values.calcium_hardness);
   if (values.salt != null) props.salt = Number(values.salt);
+  if (values.phosphate != null) props.phosphate = Number(values.phosphate);
+  if (values.copper != null) props.copper = Number(values.copper);
+  if (values.iron != null) props.iron = Number(values.iron);
   // If total_chlorine is not present, but combined_chlorine and free_chlorine are, calculate total_chlorine as their sum
   if (values.total_chlorine != null) {
     props.total_chlorine = Number(values.total_chlorine);
@@ -371,6 +383,39 @@ export function getReadingStatus(
     return 'very_high'; // 4,000–4,499 high + ≥4,500
   }
 
+  if (originalKey.phosphate != undefined) {
+    const idealMin = range?.min ?? 0;
+    const idealMax = range?.max ?? 125;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+    // 126–500 slightly high + 501–999 high
+    if (reading <= 999) return 'high';
+    // 1,000–1,999 very high + ≥2,000 very high + severe
+    return 'very_high';
+  }
+
+  if (originalKey.copper != undefined) {
+    const idealMin = range?.min ?? 0;
+    const idealMax = range?.max ?? 0;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+    // >0 to <0.20 slightly high + 0.20–0.49 high
+    if (reading < 0.5) return 'high';
+    // 0.50–0.99 very high + 1.00–1.29 severe + ≥1.30 safety override
+    return 'very_high';
+  }
+
+  if (originalKey.iron != undefined) {
+    const idealMin = range?.min ?? 0;
+    const idealMax = range?.max ?? 0;
+
+    if (reading >= idealMin && reading <= idealMax) return 'ideal';
+    // >0 to <0.20 slightly high + 0.20–0.30 high
+    if (reading <= 0.3) return 'high';
+    // >0.30 elevated + 1.0–<3.0 severe + ≥3.0 critical
+    return 'very_high';
+  }
+
   return 'ideal';
 }
 
@@ -481,6 +526,18 @@ export function getIdealStatusRange(
     out[originalKey.salt] = { min: 3000, max: 3400 };
   }
 
+  if (originalKey.phosphate != undefined) {
+    out[originalKey.phosphate] = { min: 0, max: 125 };
+  }
+
+  if (originalKey.copper != undefined) {
+    out[originalKey.copper] = { min: 0, max: 0 };
+  }
+
+  if (originalKey.iron != undefined) {
+    out[originalKey.iron] = { min: 0, max: 0 };
+  }
+
   return out;
 }
 
@@ -587,6 +644,45 @@ const PARAM_POOL_STATUS: Partial<Record<ParamKey, Record<ReadingStatus, OverallS
     high: 'mostly_balanced',
     very_high: 'action_needed',
   },
+  // "Slightly high" (126–500 ppb) + "High" (501–999 ppb) collapse into `high`
+  // — both Mostly Balanced. "Very high" (1,000–1,999) + "Very high + Severe"
+  // (≥2,000) collapse into `very_high` — both Needs Balancing.
+  // `very_low` / `low` never occur (ideal starts at 0).
+  phosphate: {
+    very_low: 'looking_great',
+    low: 'looking_great',
+    ideal: 'looking_great',
+    high: 'mostly_balanced',
+    very_high: 'needs_balancing',
+  },
+  // "Slightly high" (>0 to <0.20) + "High" (0.20–0.49) collapse into `high`
+  // — Needs Balancing. Trace copper (>0 to <0.20) is Mostly Balanced in
+  // poolHardOverrides. "Very high" (0.50–0.99) + "Very high + severe"
+  // (1.00–1.29) collapse into `very_high` — Needs Balancing.
+  // ≥1.00 is Action Needed in poolHardOverrides.
+  // `very_low` / `low` never occur (ideal is 0 ppm).
+  copper: {
+    very_low: 'looking_great',
+    low: 'looking_great',
+    ideal: 'looking_great',
+    high: 'needs_balancing',
+    very_high: 'needs_balancing',
+  },
+  // "Slightly high" (>0 to <0.20) + "High" (0.20–0.30) collapse into `high`.
+  // Slightly high is Mostly Balanced; High is Needs Balancing — using
+  // needs_balancing so 0.20–0.30 stays Needs Balancing.
+  // "Very high / elevated" (>0.30 to <1.0) + "Very high + severe" (1.0–<3.0)
+  // + "Very high + critical" (≥3.0) collapse into `very_high` — Action Needed
+  // so ≥1.0 stays Action Needed. Elevated iron (>0.30 to <1.0) is Needs
+  // Balancing in poolHardOverrides. Trace iron is Mostly Balanced there too.
+  // `very_low` / `low` never occur (ideal is 0 ppm).
+  iron: {
+    very_low: 'looking_great',
+    low: 'looking_great',
+    ideal: 'looking_great',
+    high: 'needs_balancing',
+    very_high: 'action_needed',
+  },
 };
 
 /**
@@ -678,6 +774,32 @@ const PARAM_SWIM_STATUS: Partial<Record<ParamKey, Record<ReadingStatus, Exclude<
     high: 'safe',
     very_high: 'safe',
   },
+  // Every phosphate row is marked Safe — phosphate alone never restricts swimming.
+  phosphate: {
+    very_low: 'safe',
+    low: 'safe',
+    ideal: 'safe',
+    high: 'safe',
+    very_high: 'safe',
+  },
+  // Slightly high and high are both Safe. Very high (0.50–0.99) is Use caution.
+  // 1.00–1.29 is Wait before swimming and ≥1.30 is Do not swim, both in
+  // swimHardOverrides.
+  copper: {
+    very_low: 'safe',
+    low: 'safe',
+    ideal: 'safe',
+    high: 'safe',
+    very_high: 'use_caution',
+  },
+  // Every iron row is Safe. Severe and critical stay Safe when the water remains clear.
+  iron: {
+    very_low: 'safe',
+    low: 'safe',
+    ideal: 'safe',
+    high: 'safe',
+    very_high: 'safe',
+  },
 };
 
 /** Best (0) to worst — used to pick the most severe result across every param. */
@@ -743,6 +865,10 @@ function swimHardOverrides(readings: ParamReading[]): SwimOverride[] {
     }
     if (keys.includes('total_chlorine')) {
       totalChlorine = value;
+    }
+    if (keys.includes('copper')) {
+      if (value >= 1.3) overrides.push({ status: 'do_not_swim' });
+      else if (value >= 1) overrides.push({ status: 'wait_before_swimming' });
     }
   }
 
@@ -838,6 +964,24 @@ function poolHardOverrides(
           status: 'mostly_balanced',
           replaceTestName: testName,
         });
+      }
+    }
+    if (keys.includes('copper')) {
+      // Trace copper is Mostly Balanced; the `high` band is Needs Balancing.
+      if (value > 0 && value < 0.2) {
+        overrides.push({ status: 'mostly_balanced', replaceTestName: testName });
+      }
+      // ≥1.00 severe, including the ≥1.30 safety row.
+      if (value >= 1) overrides.push({ status: 'action_needed' });
+    }
+    if (keys.includes('iron')) {
+      // Trace iron is Mostly Balanced; the `high` band is Needs Balancing.
+      if (value > 0 && value < 0.2) {
+        overrides.push({ status: 'mostly_balanced', replaceTestName: testName });
+      }
+      // Elevated iron is Needs Balancing; `very_high` is Action Needed.
+      if (value > 0.3 && value < 1) {
+        overrides.push({ status: 'needs_balancing', replaceTestName: testName });
       }
     }
     if (keys.includes('calcium_hardness')) {

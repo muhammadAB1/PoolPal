@@ -11,7 +11,7 @@ import {
   type HaveResultsField,
   type HaveResultsFieldKey,
 } from '@/data/chooseTestMethod';
-import { parseReadingValue } from '@/data/readingBands';
+import { parseReadingValue, READING_RANGE, toParamKey } from '@/data/readingBands';
 import { isHotTubPool } from '@/lib/pool';
 import { usePool } from '@/providers/PoolProvider';
 import { useTestStrips } from '@/providers/TestStripProvider';
@@ -38,6 +38,9 @@ const INFO_KEYS: Partial<Record<HaveResultsFieldKey, string>> = {
   calciumHardness: 'test_readings_info_ch_desc',
   cyanuricAcid: 'test_readings_info_cya_desc',
   salt: 'test_results_info_salt',
+  phosphate: 'test_results_info_phosphate',
+  copper: 'test_results_info_copper',
+  iron: 'test_results_info_iron',
   totalChlorine: 'test_results_info_total_chlorine',
   totalHardness: 'test_results_info_total_hardness',
 };
@@ -78,12 +81,25 @@ export default function EnterTestResultsScreen() {
 
   const fieldErrors = useMemo(() => {
     const result: Partial<Record<HaveResultsFieldKey, string>> = {};
-    for (const [key, raw] of Object.entries(readings) as [HaveResultsFieldKey, string][]) {
+    for (const field of HAVE_RESULTS_FIELDS) {
+      const raw = readings[field.key];
       if (!raw?.trim()) continue;
       const n = Number(raw);
-      if (!Number.isFinite(n)) result[key] = t('test_results_invalid_number');
-      else if (n < 0) result[key] = t('test_results_negative_error');
-      else if (key === 'ph' && n > 14) result[key] = t('test_results_ph_error');
+      if (!Number.isFinite(n)) {
+        result[field.key] = t('test_results_invalid_number');
+        continue;
+      }
+      const param = toParamKey(field.testName);
+      const range = param ? READING_RANGE[param] : undefined;
+      if (range && (n < range.min || n > range.max)) {
+        result[field.key] = t('choose_test_method_range_error', {
+          label: t(field.labelKey),
+          min: range.min,
+          max: range.max,
+        });
+        continue;
+      }
+      if (n < 0) result[field.key] = t('test_results_negative_error');
     }
     if (invalidChlorineRelationship) result.totalChlorine = t('test_results_tc_less_than_fc');
     return result;
@@ -271,7 +287,9 @@ export default function EnterTestResultsScreen() {
                     error={fieldErrors[field.key]}
                     onChange={(value) => updateReading(field.key, value)}
                     onInfo={() => showInfo(field)}
-                    supportingKey="test_results_total_hardness_support"
+                    supportingKey={
+                      field.key === 'totalHardness' ? 'test_results_total_hardness_support' : undefined
+                    }
                     last={index === waterFields.length - 1}
                   />
                 ))}
@@ -346,6 +364,9 @@ function ReadingInputRow({
 }) {
   const { t } = useTranslation();
   const unit = field.unitKey === 'choose_test_method_unit_none' ? '' : t(field.unitKey);
+  const param = toParamKey(field.testName);
+  const range = param ? READING_RANGE[param] : undefined;
+  const placeholder = range ? `${range.min}–${range.max}` : '';
 
   return (
     <View className={`min-h-19 flex-row items-center px-3.5 py-2.5 gap-2.5 ${last ? '' : 'border-b border-[#E6ECF1]'}`}>
@@ -381,14 +402,19 @@ function ReadingInputRow({
         value={value}
         onChangeText={onChange}
         keyboardType="decimal-pad"
-        placeholder=""
+        placeholder={placeholder}
         placeholderTextColor="#A0A9B7"
         style={{ textAlign: 'center' }}
         className={`w-19.25 h-11.25 rounded-xl border bg-surface-white text-[16px] font-jakarta text-[#5B6982] px-1.5 ${
           error ? 'border-error' : 'border-[#D4DEE8]'
         }`}
       />
-      <Text className="w-8 text-[13px] font-jakarta-bold text-brand-navy">{unit}</Text>
+      <Text
+        numberOfLines={1}
+        className="w-11 shrink-0 text-[13px] font-jakarta-bold text-brand-navy"
+      >
+        {unit}
+      </Text>
     </View>
   );
 }
@@ -424,7 +450,12 @@ function ReadOnlyCombined({ value, invalid }: { value: number | null; invalid: b
           {value == null ? '—' : String(value)}
         </Text>
       </View>
-      <Text className="w-8 text-[13px] font-jakarta-bold text-brand-navy">ppm</Text>
+      <Text
+        numberOfLines={1}
+        className="w-11 shrink-0 text-[13px] font-jakarta-bold text-brand-navy"
+      >
+        ppm
+      </Text>
     </View>
   );
 }

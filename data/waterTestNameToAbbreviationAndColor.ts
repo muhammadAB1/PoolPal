@@ -13,6 +13,9 @@ const TEST_META: { match: RegExp; abbr: string; color: string }[] = [
   { match: /bromine/i, abbr: 'BR', color: '#6B8CAE' },
   { match: /^ph$/i, abbr: 'pH', color: '#E5484D' },
   { match: /salt/i, abbr: 'S', color: '#C4A484' },
+  { match: /phosphate|\bpo4\b/i, abbr: 'PO4', color: '#2A9D8F' },
+  { match: /copper/i, abbr: 'CU', color: '#B87333' },
+  { match: /iron/i, abbr: 'FE', color: '#C4622D' },
 ];
 
 export function testMeta(testName: string): TestMeta {

@@ -175,6 +175,9 @@ export type testReadingsInsertProps = {
     total_hardness?: number
     calcium_hardness?: number
     salt?: number
+    phosphate?: number
+    copper?: number
+    iron?: number
     total_chlorine?: number
     combined_chlorine?: number
     pool_status?: OverallStatus
@@ -194,6 +197,9 @@ export type TestReadingRow = {
     cyanuric_acid?: string | number | null
     calcium_hardness?: number | null
     salt?: number | null
+    phosphate?: number | null
+    copper?: number | null
+    iron?: number | null
     combined_chlorine?: number | null
     total_hardness?: number | null
     pool_status?: OverallStatus | null

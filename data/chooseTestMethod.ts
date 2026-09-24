@@ -52,7 +52,10 @@ export type HaveResultsFieldKey =
   | 'cyanuricAcid'
   | 'calciumHardness'
   | 'totalHardness'
-  | 'salt';
+  | 'salt'
+  | 'phosphate'
+  | 'copper'
+  | 'iron';
 
 export type HaveResultsField = {
   key: HaveResultsFieldKey;
@@ -62,8 +65,17 @@ export type HaveResultsField = {
   badgeColor: string;
   labelKey: string;
   placeholder: string;
-  unitKey: 'choose_test_method_unit_ppm' | 'choose_test_method_unit_none';
+  unitKey:
+    | 'choose_test_method_unit_ppm'
+    | 'choose_test_method_unit_ppb'
+    | 'choose_test_method_unit_none';
 };
+
+export function readingUnit(unitKey: HaveResultsField['unitKey']): '' | 'ppm' | 'ppb' {
+  if (unitKey === 'choose_test_method_unit_ppb') return 'ppb';
+  if (unitKey === 'choose_test_method_unit_none') return '';
+  return 'ppm';
+}
 
 export const HAVE_RESULTS_FIELDS: readonly HaveResultsField[] = [
   {
@@ -156,6 +168,33 @@ export const HAVE_RESULTS_FIELDS: readonly HaveResultsField[] = [
     placeholder: '3200',
     unitKey: 'choose_test_method_unit_ppm',
   },
+  {
+    key: 'phosphate',
+    testName: 'Phosphate',
+    abbreviation: 'PO4',
+    badgeColor: '#2A9D8F',
+    labelKey: 'choose_test_method_phosphate_label',
+    placeholder: '100',
+    unitKey: 'choose_test_method_unit_ppb',
+  },
+  {
+    key: 'copper',
+    testName: 'Copper',
+    abbreviation: 'CU',
+    badgeColor: '#B87333',
+    labelKey: 'choose_test_method_copper_label',
+    placeholder: '0.2',
+    unitKey: 'choose_test_method_unit_ppm',
+  },
+  {
+    key: 'iron',
+    testName: 'Iron',
+    abbreviation: 'FE',
+    badgeColor: '#C4622D',
+    labelKey: 'choose_test_method_iron_label',
+    placeholder: '0.2',
+    unitKey: 'choose_test_method_unit_ppm',
+  },
 ] as const;
 
 /** test_reading column for each have-results field. */
@@ -173,6 +212,9 @@ export const HAVE_RESULTS_FIELD_COLUMNS: Record<
   calciumHardness: 'calcium_hardness',
   totalHardness: 'total_hardness',
   salt: 'salt',
+  phosphate: 'phosphate',
+  copper: 'copper',
+  iron: 'iron',
 };
 
 export type ResultSanitizer = 'chlorine' | 'saltwater' | 'bromine' | 'unknown';
@@ -224,7 +266,7 @@ export function additionalSanitizerFields(sanitizer: ResultSanitizer): HaveResul
 }
 
 export function additionalWaterFields(): HaveResultsField[] {
-  return fieldsByKey(['totalHardness']);
+  return fieldsByKey(['totalHardness', 'phosphate', 'copper', 'iron']);
 }
 
 /** Fields that can unlock Continue. Combined chlorine is calculated, not typed. */
@@ -234,8 +276,8 @@ export function analyzableFieldKeys(
 ): HaveResultsFieldKey[] {
   const extra: HaveResultsFieldKey[] =
     sanitizer === 'chlorine' || sanitizer === 'saltwater'
-      ? ['totalChlorine', 'totalHardness']
-      : ['totalHardness'];
+      ? ['totalChlorine', 'totalHardness', 'phosphate', 'copper', 'iron']
+      : ['totalHardness', 'phosphate', 'copper', 'iron'];
   return [...mainFieldsFor(sanitizer, waterBody).map((field) => field.key), ...extra];
 }
 

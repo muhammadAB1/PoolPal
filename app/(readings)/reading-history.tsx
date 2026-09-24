@@ -3,6 +3,7 @@ import { colors } from '@/constants/theme';
 import {
   HAVE_RESULTS_FIELD_COLUMNS,
   HAVE_RESULTS_FIELDS,
+  readingUnit,
   testReadingRowToSelections,
   type HaveResultsFieldKey,
 } from '@/data/chooseTestMethod';
@@ -131,8 +132,8 @@ export default function ReadingHistoryScreen() {
                         (field) => getFieldValue(row, field.key) != null,
                       ).map((field) => {
                         const value = getFieldValue(row, field.key)!;
-                        const unit =
-                          field.unitKey === 'choose_test_method_unit_none' ? '' : ' ppm';
+                        const label = readingUnit(field.unitKey);
+                        const unit = label ? ` ${label}` : '';
                         const range = idealRanges[field.testName] ?? null;
                         const status = getReadingStatus(field.testName, value, range);
 

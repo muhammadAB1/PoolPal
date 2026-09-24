@@ -1,6 +1,6 @@
 import { chemistryIcons } from '@/constants/images';
 import { colors } from '@/constants/theme';
-import { HAVE_RESULTS_FIELDS } from '@/data/chooseTestMethod';
+import { HAVE_RESULTS_FIELDS, readingUnit } from '@/data/chooseTestMethod';
 import {
   getIdealStatusRange,
   getReadingStatus,
@@ -73,7 +73,7 @@ export default function ReadingsScreen() {
   const untestedRows: UntestedRow[] = [];
 
   for (const field of HAVE_RESULTS_FIELDS) {
-    const unit = field.unitKey === 'choose_test_method_unit_none' ? '' : 'ppm';
+    const unit = readingUnit(field.unitKey);
     const range = idealRanges[field.testName] ?? null;
     const value = selections[field.testName];
     if (value == null) {
