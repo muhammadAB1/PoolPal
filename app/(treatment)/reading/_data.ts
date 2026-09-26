@@ -342,53 +342,90 @@ export const TREATMENT_STEPS: Record<TreatmentCaseId, TreatmentStep[]> = {
     ],
     fc_low: [
         {
-            id: 'restore-liquid-chlorine',
+            id: 'review-interacting-chemistry',
             number: 1,
+            icon: 'measure',
+            title: 'Review interacting chemistry',
+            body: 'Check:',
+            substeps: [
+                'Cyanuric acid',
+                'Combined chlorine',
+                'Salt, if applicable',
+                'Calcium hardness',
+                'Copper',
+                'Iron',
+            ],
+        },
+        {
+            id: 'choose-chlorine-source',
+            number: 2,
             icon: 'pill',
-            title: 'Restore chlorine with liquid chlorine.',
+            title: 'Choose the appropriate chlorine source',
+            body: 'Default to unstabilized liquid chlorine. Avoid:',
+            substeps: [
+                'Trichlor or dichlor if cyanuric acid is high',
+                'Calcium-adding chlorine when calcium is high',
+                'Copper-containing products when metals are a concern',
+            ],
+        },
+        {
+            id: 'add-calculated-chlorine',
+            number: 3,
+            icon: 'dropper',
+            title: 'Add the calculated amount.',
         },
         {
             id: 'circulate-low-chlorine',
-            number: 2,
+            number: 4,
             icon: 'wave',
             title: 'Circulate.',
         },
         {
             id: 'retest-low-chlorine',
-            number: 3,
+            number: 5,
             icon: 'measure',
-            title: 'Retest FC.',
+            title: 'Retest',
+            substeps: ['Free chlorine'],
+        },
+    ],
+    bromine_low: [
+        {
+            id: 'verify-bromine-vessel',
+            number: 1,
+            icon: 'measure',
+            title: 'Verify the vessel actually uses bromine.',
         },
         {
-            id: 'diagnose-salt-system',
-            number: 4,
-            icon: 'measure',
-            title: 'Diagnose the salt system',
-            body: 'Check:',
+            id: 'choose-bromine-product',
+            number: 2,
+            icon: 'pill',
+            title: 'Choose a bromine product approved for that vessel.',
+            body: 'Do not use chlorine-pool tablets, cyanuric acid, or mix bromine with chlorine products.',
+        },
+        {
+            id: 'apply-bromine',
+            number: 3,
+            icon: 'dropper',
+            title: 'Apply using the label-approved method',
             substeps: [
-                'Salt-cell output percentage',
-                'Pump runtime',
-                'Flow',
-                'Water temperature',
-                'Cell scale',
-                'Warning/error codes',
-                'Cell age/condition',
+                'Compatible feeder tablets',
+                'Approved brominating granules when faster correction is appropriate',
             ],
         },
         {
-            id: 'correct-salt-equipment',
-            number: 5,
-            icon: 'sparkle',
-            title: 'Correct the identified equipment/operation problem.',
+            id: 'circulate-bromine',
+            number: 4,
+            icon: 'wave',
+            title: 'Circulate.',
         },
         {
-            id: 'retest-low-chlorine-again',
-            number: 6,
+            id: 'retest-bromine',
+            number: 5,
             icon: 'measure',
-            title: 'Retest free chlorine.',
+            title: 'Retest',
+            substeps: ['Bromine'],
         },
     ],
-    bromine_low: [],
     cc_high: [
         {
             id: 'confirm-fc-cc-fas-dpd',
@@ -650,14 +687,255 @@ export const TREATMENT_STEPS: Record<TreatmentCaseId, TreatmentStep[]> = {
             title: 'Retest salt.',
         },
     ],
-    copper: [],
-    iron: [],
-    calcium_low: [],
-    calcium_high: [],
+    copper: [
+        {
+            id: 'confirm-copper',
+            number: 1,
+            icon: 'measure',
+            title: 'Confirm the metal result.',
+        },
+        {
+            id: 'identify-copper-source',
+            number: 2,
+            icon: 'measure',
+            title: 'Identify the likely source',
+            substeps: [
+                'Fill water',
+                'Heater corrosion',
+                'Copper ionizer',
+                'Metal-containing product',
+            ],
+        },
+        {
+            id: 'add-copper-sequestrant',
+            number: 3,
+            icon: 'dropper',
+            title: 'If confirmed and indicated, add a compatible sequestrant or chelating treatment.',
+        },
+        {
+            id: 'wait-copper-interval',
+            number: 4,
+            icon: 'clock',
+            title: 'Wait the product-label separation interval.',
+        },
+        {
+            id: 'retest-copper',
+            number: 5,
+            icon: 'measure',
+            title: 'Inspect for discoloration or staining and retest if required.',
+            substeps: ['Copper'],
+        },
+    ],
+    iron: [
+        {
+            id: 'confirm-iron',
+            number: 1,
+            icon: 'measure',
+            title: 'Confirm the metal result.',
+        },
+        {
+            id: 'identify-iron-source',
+            number: 2,
+            icon: 'measure',
+            title: 'Identify the likely source',
+            substeps: [
+                'Fill water',
+                'Heater corrosion',
+                'Copper ionizer',
+                'Metal-containing product',
+            ],
+        },
+        {
+            id: 'add-iron-sequestrant',
+            number: 3,
+            icon: 'dropper',
+            title: 'If confirmed and indicated, add a compatible sequestrant or chelating treatment.',
+        },
+        {
+            id: 'wait-iron-interval',
+            number: 4,
+            icon: 'clock',
+            title: 'Wait the product-label separation interval.',
+        },
+        {
+            id: 'retest-iron',
+            number: 5,
+            icon: 'measure',
+            title: 'Inspect for discoloration or staining and retest if required.',
+            substeps: ['Iron'],
+        },
+    ],
+    calcium_low: [
+        {
+            id: 'confirm-calcium',
+            number: 1,
+            icon: 'measure',
+            title: 'Confirm calcium hardness.',
+        },
+        {
+            id: 'calcium-target',
+            number: 2,
+            icon: 'calculator',
+            title: 'Apply the correct surface or manufacturer calcium target.',
+        },
+        {
+            id: 'add-calcium-increaser',
+            number: 3,
+            icon: 'dropper',
+            title: 'Add calcium increaser last if still necessary.',
+        },
+        {
+            id: 'retest-calcium',
+            number: 4,
+            icon: 'measure',
+            title: 'Retest',
+            substeps: ['Calcium hardness'],
+        },
+    ],
+    calcium_high: [
+        {
+            id: 'confirm-high-calcium',
+            number: 1,
+            icon: 'measure',
+            title: 'Confirm calcium hardness with an appropriate test.',
+        },
+        {
+            id: 'evaluate-lsi',
+            number: 2,
+            icon: 'calculator',
+            title: 'Evaluate LSI.',
+        },
+        {
+            id: 'reduce-high-calcium',
+            number: 3,
+            icon: 'waterDrop',
+            title: 'If calcium is still high enough that reduction is needed',
+            substeps: ['Test replacement water.', 'Plan partial dilution or RO.'],
+        },
+        {
+            id: 'scale-control',
+            number: 4,
+            icon: 'pill',
+            title: 'Use a scale-control product only as temporary management when appropriate.',
+        },
+        {
+            id: 'retest-high-calcium',
+            number: 5,
+            icon: 'measure',
+            title: 'Retest',
+            substeps: ['Calcium hardness'],
+        },
+    ],
     ph_mild_low: [],
     ph_mild_high: [],
-    phosphate: [],
-    water_replacement: [],
+    phosphate: [
+        {
+            id: 'confirm-phosphate',
+            number: 1,
+            icon: 'measure',
+            title: 'Confirm phosphate if the test was coarse or open-ended.',
+        },
+        {
+            id: 'check-sanitizer-ph',
+            number: 2,
+            icon: 'measure',
+            title: 'Check that sanitizer and pH are still correct.',
+        },
+        {
+            id: 'check-filter',
+            number: 3,
+            icon: 'wave',
+            title: 'Check filter readiness.',
+            body: 'Clean or backwash first if required.',
+        },
+        {
+            id: 'apply-phosphate-remover',
+            number: 4,
+            icon: 'dropper',
+            title: 'Apply phosphate remover according to its product label.',
+        },
+        {
+            id: 'run-filtration',
+            number: 5,
+            icon: 'wave',
+            title: 'Run filtration for the specified period.',
+        },
+        {
+            id: 'monitor-clarity',
+            number: 6,
+            icon: 'measure',
+            title: 'Monitor water clarity and filter pressure.',
+        },
+        {
+            id: 'backwash-if-pressure-rises',
+            number: 7,
+            icon: 'wave',
+            title: 'Clean or backwash if filter pressure rises.',
+        },
+        {
+            id: 'retest-phosphate',
+            number: 8,
+            icon: 'measure',
+            title: 'Retest',
+            substeps: ['Phosphate'],
+        },
+    ],
+    water_replacement: [
+        {
+            id: 'confirm-extreme-readings',
+            number: 1,
+            icon: 'measure',
+            title: 'Confirm every extreme reading.',
+        },
+        {
+            id: 'cancel-nonessential-doses',
+            number: 2,
+            icon: 'pill',
+            title: 'Cancel pending nonessential chemical doses.',
+        },
+        {
+            id: 'controlling-dilution',
+            number: 3,
+            icon: 'calculator',
+            title: 'Determine the controlling dilution requirement.',
+        },
+        {
+            id: 'test-replacement-water',
+            number: 4,
+            icon: 'waterDrop',
+            title: 'Test replacement water when relevant.',
+        },
+        {
+            id: 'calculate-staged-replacement',
+            number: 5,
+            icon: 'calculator',
+            title: 'Calculate a safe staged water-replacement plan.',
+        },
+        {
+            id: 'professional-draining',
+            number: 6,
+            icon: 'clock',
+            title: 'Use professional help for substantial draining.',
+        },
+        {
+            id: 'refill-circulate-replacement',
+            number: 7,
+            icon: 'wave',
+            title: 'Refill and circulate.',
+        },
+        {
+            id: 'retest-chemistry-panel',
+            number: 8,
+            icon: 'measure',
+            title: 'Retest the entire chemistry panel.',
+        },
+        {
+            id: 'new-treatment-plan',
+            number: 9,
+            icon: 'sparkle',
+            title: 'Generate a completely new treatment plan.',
+        },
+    ],
 };
 
 /** High pH above 8 with high alkalinity. One acid treatment lowers both. */
@@ -697,6 +975,88 @@ const PH_HIGH_WITH_HIGH_ALKALINITY: TreatmentStep[] = [
     },
 ];
 
+/** Low chlorine when cyanuric acid is also low. Stabilizer stays on the CYA plan. */
+const FC_LOW_WITH_LOW_CYA: TreatmentStep[] = [
+    {
+        id: 'restore-unstabilized-chlorine',
+        number: 1,
+        icon: 'pill',
+        title: 'Restore chlorine using unstabilized chlorine.',
+    },
+    {
+        id: 'circulate-unstabilized-chlorine',
+        number: 2,
+        icon: 'wave',
+        title: 'Circulate.',
+    },
+    {
+        id: 'retest-unstabilized-chlorine',
+        number: 3,
+        icon: 'measure',
+        title: 'Retest free chlorine.',
+    },
+];
+
+/** Low chlorine when cyanuric acid is 51–149. The CYA plan stays separate. */
+const FC_LOW_WITH_MID_CYA: TreatmentStep[] = [
+    {
+        id: 'add-unstabilized-chlorine',
+        number: 1,
+        icon: 'pill',
+        title: 'Add unstabilized chlorine.',
+    },
+    {
+        id: 'circulate-mid-cya-chlorine',
+        number: 2,
+        icon: 'wave',
+        title: 'Circulate.',
+    },
+    {
+        id: 'retest-mid-cya-chlorine',
+        number: 3,
+        icon: 'measure',
+        title: 'Retest free chlorine.',
+    },
+];
+
+/** Low chlorine when salt is also low. The salt plan stays separate. */
+const FC_LOW_WITH_LOW_SALT: TreatmentStep[] = [
+    {
+        id: 'restore-liquid-chlorine-low-salt',
+        number: 1,
+        icon: 'pill',
+        title: 'Restore chlorine with liquid chlorine.',
+    },
+    {
+        id: 'circulate-low-salt-chlorine',
+        number: 2,
+        icon: 'wave',
+        title: 'Circulate.',
+    },
+    {
+        id: 'retest-low-salt-chlorine',
+        number: 3,
+        icon: 'measure',
+        title: 'Retest free chlorine.',
+    },
+];
+
+/** Low chlorine when salt is 4,501–5,999. Dilution stays on the salt plan. */
+const FC_LOW_WITH_HIGH_SALT: TreatmentStep[] = [
+    {
+        id: 'temporary-unstabilized-chlorine',
+        number: 1,
+        icon: 'pill',
+        title: 'Restore sanitizer temporarily with unstabilized chlorine.',
+    },
+    {
+        id: 'circulate-retest-high-salt-chlorine',
+        number: 2,
+        icon: 'wave',
+        title: 'Circulate and retest.',
+    },
+];
+
 /** Steps for the winning case. Some cases change when another reading is also off. */
 export function stepsForActiveCase(alerts: TreatmentAlert[]): TreatmentStep[] {
     const active = alerts.find((alert) => alert.actionable);
@@ -706,6 +1066,22 @@ export function stepsForActiveCase(alerts: TreatmentAlert[]): TreatmentStep[] {
 
     if (active.caseId === 'ph_high' && (has('alk_high') || has('alk_very_high'))) {
         return PH_HIGH_WITH_HIGH_ALKALINITY;
+    }
+
+    if (active.caseId === 'fc_low' && has('cya_low')) {
+        return FC_LOW_WITH_LOW_CYA;
+    }
+
+    if (active.caseId === 'fc_low' && has('cya_mid')) {
+        return FC_LOW_WITH_MID_CYA;
+    }
+
+    if (active.caseId === 'fc_low' && has('salt_low')) {
+        return FC_LOW_WITH_LOW_SALT;
+    }
+
+    if (active.caseId === 'fc_low' && has('salt_high')) {
+        return FC_LOW_WITH_HIGH_SALT;
     }
 
     return TREATMENT_STEPS[active.caseId];
@@ -749,12 +1125,17 @@ function pickFirstCase(ids: Set<TreatmentCaseId>): TreatmentCaseId | null {
 
     if (ids.has('water_replacement')) return 'water_replacement';
 
+    if (ids.has('fc_low') && ids.has('cya_very_high')) return 'cya_very_high';
     if (ids.has('fc_low') && ids.has('salt_very_high')) return 'salt_very_high';
 
     if (ids.has('fc_low')) return 'fc_low';
     if (ids.has('bromine_low')) return 'bromine_low';
 
     if (ids.has('cc_high')) return 'cc_high';
+
+    if (ids.has('cya_very_high') && (ids.has('alk_high') || ids.has('alk_very_high'))) {
+        return 'cya_very_high';
+    }
 
     if (ids.has('alk_low')) return 'alk_low';
     if (ids.has('alk_very_high')) return 'alk_very_high';
