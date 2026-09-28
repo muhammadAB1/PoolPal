@@ -530,6 +530,10 @@ export const en = {
   equipment_identify_pump_desc:
     'Take a clear photo of your pump and PoolTonic can help identify its type, brand, and model.',
   equipment_photo_id_button: 'Use Photo Identification',
+  equipment_photo_id_loading: 'Analyzing photo…',
+  equipment_photo_id_error: 'Could not identify that photo. Try again or pick a type below.',
+  equipment_photo_id_permission_denied: 'Photo library access is needed to identify equipment.',
+  equipment_photo_id_unsure: 'Not sure from that photo. Pick the closest match below.',
   equipment_premium_badge: 'PREMIUM',
   equipment_premium_feature: 'PoolTonic Premium feature',
   equipment_heater_yes_title: 'Yes, I have a heater',
@@ -1713,6 +1717,10 @@ export const es = {
   equipment_identify_pump_desc:
     'Haz una foto clara de tu bomba y PoolTonic puede ayudar a identificar su tipo, marca y modelo.',
   equipment_photo_id_button: 'Usar identificación por foto',
+  equipment_photo_id_loading: 'Analizando la foto…',
+  equipment_photo_id_error: 'No se pudo identificar esa foto. Inténtalo de nuevo o elige un tipo abajo.',
+  equipment_photo_id_permission_denied: 'Se necesita acceso a la galería para identificar el equipo.',
+  equipment_photo_id_unsure: 'No está claro con esa foto. Elige la opción más cercana abajo.',
   equipment_premium_badge: 'PREMIUM',
   equipment_premium_feature: 'Función de PoolTonic Premium',
   equipment_heater_yes_title: 'Sí, tengo un calentador',

@@ -30,6 +30,12 @@
     "plugins": [
       "expo-router",
       [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow PoolPal to use a photo so we can identify your pool equipment."
+        }
+      ],
+      [
         "expo-navigation-bar",
         {
           "visibility": "hidden",

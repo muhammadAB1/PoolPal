@@ -13,10 +13,11 @@ import {
     pumpExampleTranslationKeys,
     pumpTypeTranslationKeys,
 } from '@/data/poolEquipment';
-import { useSupabase } from '@/hooks/supabaseHooks';
+import { identifyEquipmentFromPhoto, useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { FilterType, HeaterOption, PumpType } from '@/lib/types';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,7 +31,17 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-function PhotoIdentifyCard({ title, description }: { title: string; description: string }) {
+function PhotoIdentifyCard({
+    title,
+    description,
+    busy,
+    onPress,
+}: {
+    title: string;
+    description: string;
+    busy: boolean;
+    onPress: () => void;
+}) {
     const { t } = useTranslation();
 
     return (
@@ -50,13 +61,14 @@ function PhotoIdentifyCard({ title, description }: { title: string; description:
             <Text className="text-small font-jakarta text-sub mt-2 leading-relaxed">{description}</Text>
 
             <TouchableOpacity
-                className="bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2 mt-3"
+                className={`bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2 mt-3 ${busy ? 'opacity-50' : ''}`}
                 activeOpacity={0.85}
-                onPress={() => {}}
+                disabled={busy}
+                onPress={onPress}
             >
                 <Ionicons name="images-outline" size={18} color={colors.brand.blue} />
                 <Text className="text-body font-jakarta-bold text-brand-blue">
-                    {t('equipment_photo_id_button')}
+                    {t(busy ? 'equipment_photo_id_loading' : 'equipment_photo_id_button')}
                 </Text>
             </TouchableOpacity>
         </View>
@@ -152,6 +164,38 @@ export default function EquipmentBasicsScreen({
     const [heater, setHeater] = useState<HeaterOption>(initialHeater ?? 'Yes');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [identifying, setIdentifying] = useState<'filter' | 'pump' | null>(null);
+
+    async function identifyFromPhoto(target: 'filter' | 'pump') {
+        const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (!perm.granted) {
+            setErrorMessage(t('equipment_photo_id_permission_denied'));
+            return;
+        }
+        const picked = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'],
+            quality: 0.5,
+            base64: true,
+        });
+        const imageBase64 = picked.assets?.[0]?.base64;
+        if (picked.canceled || !imageBase64) return;
+        setErrorMessage(null);
+        setIdentifying(target);
+        try {
+            const { value } = await identifyEquipmentFromPhoto(target, imageBase64);
+            if (target === 'filter' && value && FILTER_TYPES.includes(value as FilterType)) {
+                setFilterType(value as FilterType);
+            } else if (target === 'pump' && value && PUMP_TYPES.includes(value as PumpType)) {
+                setPumpType(value as PumpType);
+            } else {
+                setErrorMessage(t('equipment_photo_id_unsure'));
+            }
+        } catch {
+            setErrorMessage(t('equipment_photo_id_error'));
+        } finally {
+            setIdentifying(null);
+        }
+    }
 
     const filterExampleItems: EquipmentExampleItem[] = FILTER_TYPES.map((item) => {
         const keys = filterExampleTranslationKeys[item];
@@ -262,6 +306,8 @@ export default function EquipmentBasicsScreen({
                         <PhotoIdentifyCard
                             title={t('equipment_identify_filter_title')}
                             description={t('equipment_identify_filter_desc')}
+                            busy={identifying === 'filter'}
+                            onPress={() => identifyFromPhoto('filter')}
                         />
                     </View>
 
@@ -297,6 +343,8 @@ export default function EquipmentBasicsScreen({
                         <PhotoIdentifyCard
                             title={t('equipment_identify_pump_title')}
                             description={t('equipment_identify_pump_desc')}
+                            busy={identifying === 'pump'}
+                            onPress={() => identifyFromPhoto('pump')}
                         />
                     </View>
 

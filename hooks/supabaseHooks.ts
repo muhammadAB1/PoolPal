@@ -70,6 +70,12 @@ async function upsertDetachedSpaPool({
     return insertError
 }
 
+export async function identifyEquipmentFromPhoto(target: 'filter' | 'pump', imageBase64: string) {
+    const { data, error } = await supabase.functions.invoke('identify-equipment', { body: { target, imageBase64 } })
+    if (error) throw error
+    return data as { target: 'filter' | 'pump'; value: string | null; reason: string }
+}
+
 export function useSupabase() {
 
     const { user, setUser, refreshProfile } = useAuth();
