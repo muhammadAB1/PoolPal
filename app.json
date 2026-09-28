@@ -32,7 +32,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow PoolPal to use a photo so we can identify your pool equipment."
+          "photosPermission": "Allow PoolPal to use a photo so we can identify your pool equipment.",
+          "cameraPermission": "Allow PoolPal to use the camera so we can identify your pool equipment."
         }
       ],
       [

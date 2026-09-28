@@ -34,13 +34,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 function PhotoIdentifyCard({
     title,
     description,
-    busy,
-    onPress,
+    loading,
+    onCamera,
+    onUpload,
 }: {
     title: string;
     description: string;
-    busy: boolean;
-    onPress: () => void;
+    loading: boolean;
+    onCamera: () => void;
+    onUpload: () => void;
 }) {
     const { t } = useTranslation();
 
@@ -60,17 +62,34 @@ function PhotoIdentifyCard({
 
             <Text className="text-small font-jakarta text-sub mt-2 leading-relaxed">{description}</Text>
 
-            <TouchableOpacity
-                className={`bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2 mt-3 ${busy ? 'opacity-50' : ''}`}
-                activeOpacity={0.85}
-                disabled={busy}
-                onPress={onPress}
-            >
-                <Ionicons name="images-outline" size={18} color={colors.brand.blue} />
-                <Text className="text-body font-jakarta-bold text-brand-blue">
-                    {t(busy ? 'equipment_photo_id_loading' : 'equipment_photo_id_button')}
+            {loading ? (
+                <Text className="text-body font-jakarta-bold text-brand-blue text-center mt-3">
+                    {t('equipment_photo_id_loading')}
                 </Text>
-            </TouchableOpacity>
+            ) : (
+                <View className="flex-row gap-2 mt-3">
+                    <TouchableOpacity
+                        className="flex-1 bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2"
+                        activeOpacity={0.85}
+                        onPress={onCamera}
+                    >
+                        <Ionicons name="camera-outline" size={18} color={colors.brand.blue} />
+                        <Text className="text-small font-jakarta-bold text-brand-blue">
+                            {t('equipment_photo_id_camera')}
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        className="flex-1 bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2"
+                        activeOpacity={0.85}
+                        onPress={onUpload}
+                    >
+                        <Ionicons name="images-outline" size={18} color={colors.brand.blue} />
+                        <Text className="text-small font-jakarta-bold text-brand-blue">
+                            {t('equipment_photo_id_upload')}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            )}
         </View>
     );
 }
@@ -166,17 +185,22 @@ export default function EquipmentBasicsScreen({
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [identifying, setIdentifying] = useState<'filter' | 'pump' | null>(null);
 
-    async function identifyFromPhoto(target: 'filter' | 'pump') {
-        const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    async function identifyFromPhoto(target: 'filter' | 'pump', source: 'camera' | 'library') {
+        const perm =
+            source === 'camera'
+                ? await ImagePicker.requestCameraPermissionsAsync()
+                : await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (!perm.granted) {
-            setErrorMessage(t('equipment_photo_id_permission_denied'));
+            setErrorMessage(
+                t(source === 'camera' ? 'equipment_photo_id_camera_denied' : 'equipment_photo_id_permission_denied'),
+            );
             return;
         }
-        const picked = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ['images'],
-            quality: 0.5,
-            base64: true,
-        });
+        const opts = { quality: 0.5, base64: true } as const;
+        const picked =
+            source === 'camera'
+                ? await ImagePicker.launchCameraAsync(opts)
+                : await ImagePicker.launchImageLibraryAsync({ ...opts, mediaTypes: ['images'] });
         const imageBase64 = picked.assets?.[0]?.base64;
         if (picked.canceled || !imageBase64) return;
         setErrorMessage(null);
@@ -306,8 +330,9 @@ export default function EquipmentBasicsScreen({
                         <PhotoIdentifyCard
                             title={t('equipment_identify_filter_title')}
                             description={t('equipment_identify_filter_desc')}
-                            busy={identifying === 'filter'}
-                            onPress={() => identifyFromPhoto('filter')}
+                            loading={identifying === 'filter'}
+                            onCamera={() => identifyFromPhoto('filter', 'camera')}
+                            onUpload={() => identifyFromPhoto('filter', 'library')}
                         />
                     </View>
 
@@ -343,8 +368,9 @@ export default function EquipmentBasicsScreen({
                         <PhotoIdentifyCard
                             title={t('equipment_identify_pump_title')}
                             description={t('equipment_identify_pump_desc')}
-                            busy={identifying === 'pump'}
-                            onPress={() => identifyFromPhoto('pump')}
+                            loading={identifying === 'pump'}
+                            onCamera={() => identifyFromPhoto('pump', 'camera')}
+                            onUpload={() => identifyFromPhoto('pump', 'library')}
                         />
                     </View>
 
