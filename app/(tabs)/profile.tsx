@@ -164,7 +164,7 @@ export default function ProfileScreen() {
           </View>
 
           <TouchableOpacity
-            className="mt-6 min-h-[54px] rounded-full flex-row items-center justify-center gap-2"
+            className="mt-6 min-h-13.5 rounded-full flex-row items-center justify-center gap-2"
             style={{ borderWidth: 1.5, borderColor: '#F2B8BA', backgroundColor: '#FFF7F7' }}
             onPress={handleLogout}
             activeOpacity={0.8}

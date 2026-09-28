@@ -19,6 +19,22 @@ const COUNTRY_FALLBACKS: Record<string, { en: string; es: string }> = {
 
 const displayNamesByLanguage: Partial<Record<Language, RegionDisplayNames>> = {};
 const countryOptionsByLanguage: Partial<Record<Language, CountryOption[]>> = {};
+const labelCompareByLanguage: Partial<Record<Language, (a: string, b: string) => number>> = {};
+
+function compareLabels(language: Language, left: string, right: string): number {
+  let compare = labelCompareByLanguage[language];
+  if (!compare) {
+    const locale = language === 'es' ? 'es-ES' : 'en-US';
+    try {
+      const collator = new Intl.Collator(locale, { sensitivity: 'base' });
+      compare = (a, b) => collator.compare(a, b);
+    } catch {
+      compare = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+    }
+    labelCompareByLanguage[language] = compare;
+  }
+  return compare(left, right);
+}
 
 function getRegionDisplayNames(language: Language): RegionDisplayNames | null {
   const cached = displayNamesByLanguage[language];
@@ -63,7 +79,7 @@ export function getCountryOptions(language: Language): CountryOption[] {
     id: code,
     label: getCountryName(code, language),
     leading: getCountryFlag(code),
-  })).sort((a, b) => a.label.localeCompare(b.label, language === 'es' ? 'es-ES' : 'en-US'));
+  })).sort((a, b) => compareLabels(language, a.label, b.label));
 
   countryOptionsByLanguage[language] = options;
   return options;

@@ -99,7 +99,11 @@ export default function SearchSelectionModal({
                     </View>
 
                     <FlatList
+                        style={{ flex: 1 }}
                         data={filtered}
+                        initialNumToRender={12}
+                        maxToRenderPerBatch={12}
+                        windowSize={5}
                         ListEmptyComponent={emptyLabel ? (
                             <Text className="text-body font-jakarta text-sub text-center py-8">{emptyLabel}</Text>
                         ) : null}
