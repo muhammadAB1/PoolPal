@@ -5,14 +5,15 @@ import { dashboardImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import { REQUIRED_TASK_IDS } from '@/data/checklist';
 import { OVERALL_STATUS, SWIM_STATUS } from '@/data/readingPoolAndSwimStatusUiLabelsColorsAndIcons';
-import { expireStaleChecklistTasks } from '@/lib/checklistStorage';
+import { checklistProgress } from '@/lib/checklistStorage';
 import { getAvatarUrl, getFirstName, getInitials } from '@/lib/user';
 import { useAuth } from '@/providers/AuthProvider';
+import { useChecklist } from '@/providers/ChecklistProvider';
 import { usePool } from '@/providers/PoolProvider';
 import { useTestStrips } from '@/providers/TestStripProvider';
 import { Ionicons } from '@expo/vector-icons';
 import { Href, useFocusEffect, useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Alert,
@@ -85,6 +86,9 @@ export default function DashboardScreen() {
   const { user, name } = useAuth();
   const { pools, refreshPoolsIfStale } = usePool();
   const { latestReading } = useTestStrips();
+  const { checklist } = useChecklist();
+  const { completed: checklistCompleted, incompleteIds: incompleteTasks } = checklistProgress(checklist);
+  const checklistTotal = REQUIRED_TASK_IDS.length;
 
   useFocusEffect(
     useCallback(() => {
@@ -100,24 +104,6 @@ export default function DashboardScreen() {
   const unreadCountRaw = user?.user_metadata?.unread_notification_count;
   const unreadCount = typeof unreadCountRaw === 'number' ? unreadCountRaw : Number(unreadCountRaw ?? 0) || 0;
   const hasUnreadNotifications = unreadCount > 0;
-
-  const [checklistCompleted, setChecklistCompleted] = useState(0);
-  const [incompleteTasks, setIncompleteTasks] = useState<string[]>([]);
-  const checklistTotal = REQUIRED_TASK_IDS.length;
-  const checklistProgress = checklistTotal > 0 ? checklistCompleted / checklistTotal : 0;
-
-  // Recount from storage each time the dashboard is focused.
-  // Tasks completed before this Monday are cleared so a new week shows 0, not stale 14/14.
-  useFocusEffect(
-    useCallback(() => {
-      async function countCompletedTasks() {
-        const { completed, incompleteIds } = await expireStaleChecklistTasks();
-        setChecklistCompleted(completed);
-        setIncompleteTasks(incompleteIds);
-      }
-      void countCompletedTasks();
-    }, []),
-  );
 
   return (
     <SafeAreaView className="flex-1 bg-surface-bg" edges={['top', 'left', 'right']}>
@@ -225,12 +211,7 @@ export default function DashboardScreen() {
           <TouchableOpacity
             className="card mt-4 p-4 flex-row items-center"
             activeOpacity={0.7}
-            onPress={() =>
-              router.push({
-                pathname: '/(tabs)/checklist',
-                params: { checklistCompleted },
-              })
-            }
+            onPress={() => router.push('/(tabs)/checklist')}
           >
             <View className="icon-circle">
               <Image source={dashboardImages.checklistIcon} className="w-14 h-14" />
@@ -248,7 +229,7 @@ export default function DashboardScreen() {
               <View className="progress-bar mt-2">
                 <View
                   className="progress-bar__fill"
-                  style={{ width: `${checklistProgress * 100}%` }}
+                  style={{ width: `${checklistTotal > 0 ? (checklistCompleted / checklistTotal) * 100 : 0}%` }}
                 />
               </View>
             </View>

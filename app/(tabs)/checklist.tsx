@@ -8,11 +8,11 @@ import {
   getNextMondayLabel,
   getWeekLabel,
 } from '@/data/checklist';
-import { expireStaleChecklistTasks } from '@/lib/checklistStorage';
+import { checklistProgress } from '@/lib/checklistStorage';
+import { useChecklist } from '@/providers/ChecklistProvider';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,13 +20,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const TEAL = '#2EC4B6';
 
 export default function ChecklistScreen() {
-  const { checklistCompleted } = useLocalSearchParams();
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
-
-  // Parent only tracks the count for progress / footer
-  const [completed, setCompleted] = useState(Number(checklistCompleted) || 0);
+  const { checklist } = useChecklist();
+  const { completed } = checklistProgress(checklist);
   const [weekDone, setWeekDone] = useState(false);
 
   const total = REQUIRED_TASK_IDS.length;
@@ -34,20 +32,6 @@ export default function ChecklistScreen() {
   const allDone = completed === total;
   const nextReset = getNextMondayLabel(locale);
 
-  const handleTaskChange = useCallback((done: boolean, optional?: boolean) => {
-    if (optional) return;
-    setCompleted((n) => {
-      const next = Math.max(0, done ? n + 1 : n - 1);
-      void AsyncStorage.setItem('checklist.completedCount', String(next));
-      return next;
-    });
-  }, []);
-
-  useEffect(() => {
-    void expireStaleChecklistTasks().then(({ completed }) => setCompleted(completed));
-  }, []);
-
-  // When the week rolls over and every task expires, unlock the list for the new week.
   useEffect(() => {
     if (completed === 0) setWeekDone(false);
   }, [completed]);
@@ -127,11 +111,7 @@ export default function ChecklistScreen() {
               {section.tasks.map((task, index) => (
                 <View key={task.id}>
                   {index > 0 ? <View className="divider mx-4" /> : null}
-                  <TaskComponent
-                    task={task}
-                    disabled={weekDone}
-                    onChange={handleTaskChange}
-                  />
+                  <TaskComponent task={task} disabled={weekDone} />
                 </View>
               ))}
             </View>

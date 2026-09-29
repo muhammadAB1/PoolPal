@@ -1,4 +1,4 @@
-import type { OverallStatus, SwimmingStatus } from '@/data/readingBands'
+import type { OverallStatus, SwimmingStatus } from '@/data/readingBands';
 
 export type Country = string;
 export type Language = 'en' | 'es';
