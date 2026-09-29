@@ -93,6 +93,8 @@ export default function WaterResultsScreen() {
     props.pool_status = poolStatus;
     props.swimming_status = swimmingStatus;
     const { data, error } = await testReadingsInsert({ props, id: savedReadingId ?? undefined });
+    console.log('data', data);
+    console.log('error', error);
     if (error) {
       setSaving(false);
       return;

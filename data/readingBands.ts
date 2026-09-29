@@ -64,10 +64,10 @@ const PARAM_ALIASES: { key: ParamKey; match: RegExp }[] = [
   { key: 'total_chlorine', match: /total\s*chlorine/i },
   { key: 'cyanuric_acid', match: /cyanuric|stabilizer/i },
   { key: 'total_alkalinity', match: /alkalinity/i },
-  { key: 'total_hardness', match: /hardness/i },
+  { key: 'calcium_hardness', match: /calcium\s*hardness/i },
+  { key: 'total_hardness', match: /total\s*hardness/i },
   { key: 'bromine', match: /bromine/i },
   { key: 'ph', match: /^ph$/i },
-  { key: 'calcium_hardness', match: /calcium\s*hardness/i },
   { key: 'salt', match: /salt/i },
   { key: 'phosphate', match: /phosphate|\bpo4\b/i },
   { key: 'copper', match: /copper/i },
@@ -293,6 +293,11 @@ export function getReadingStatus(
       if (reading <= 600) return 'high'; // 301–600 slightly high + high
       return 'very_high'; // 601+
     }
+
+    if (reading < 150) return 'very_low';
+    if (reading < idealMin) return 'low';
+    if (reading <= 999) return 'high';
+    return 'very_high';
   }
 
   if (originalKey.total_hardness != undefined) {

@@ -4,6 +4,8 @@ import { colors } from '@/constants/theme';
 export type TestMeta = { abbr: string; color: string };
 
 const TEST_META: { match: RegExp; abbr: string; color: string }[] = [
+  { match: /calcium\s*hardness/i, abbr: 'CH', color: '#E87BA0' },
+  { match: /total\s*hardness/i, abbr: 'TH', color: '#6E9C4D' },
   { match: /hardness/i, abbr: 'H', color: '#6E9C4D' },
   { match: /alkalinity/i, abbr: 'TA', color: '#8B9A3C' },
   { match: /cyanuric|stabilizer/i, abbr: 'CYA', color: '#F0983D' },

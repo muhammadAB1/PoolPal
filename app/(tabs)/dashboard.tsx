@@ -43,8 +43,8 @@ function StatusPill({
         {caption.toUpperCase()}
       </Text>
       <View className="flex-row items-center gap-1.5 mt-1">
-        <Ionicons name={icon} size={18} color={colors.surface.white} />
-        <Text className="text-body font-jakarta-extrabold text-surface-white">{label}</Text>
+        <Ionicons name={icon} size={18} color={colors.surface.white} style={{ marginLeft: icon === 'alert' ? -7 : 0 }} />
+        <Text className="text-body font-jakarta-extrabold text-surface-white" style={{ marginLeft: icon === 'alert' ? -7 : 0 }}>{label}</Text>
       </View>
     </View>
   );

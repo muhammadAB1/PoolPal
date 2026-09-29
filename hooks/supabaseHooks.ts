@@ -497,6 +497,7 @@ export function useSupabase() {
                 if (!error) markPoolsStale();
                 return { data, error }
             }
+
             const { data, error } = await supabase
                 .from('test_reading')
                 .insert(readingRow)
