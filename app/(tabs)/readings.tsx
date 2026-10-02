@@ -1,4 +1,4 @@
-import { chemistryIcons } from '@/constants/images';
+import { chemistryIcons, icons } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import { HAVE_RESULTS_FIELDS, readingUnit } from '@/data/chooseTestMethod';
 import {
@@ -111,12 +111,9 @@ export default function ReadingsScreen() {
             <Text className="text-h1 font-jakarta-extrabold text-brand-navy">
               {t('readings_title')}
             </Text>
-            <TouchableOpacity
-              className="w-9 h-9 rounded-full border border-border-default items-center justify-center"
-              activeOpacity={0.7}
-            >
-              <Ionicons name="information-circle-outline" size={20} color={colors.brand.navy} />
-            </TouchableOpacity>
+            
+              <Image source={icons.info} className="w-7 h-7" resizeMode="contain" />
+            
           </View>
           <Text className="text-body font-jakarta text-sub mt-1">
             {t('readings_subtitle')}

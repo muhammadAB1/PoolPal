@@ -1,11 +1,14 @@
+import WeeklyReminderScreen from '@/app/(onboarding)/weekly-reminder';
 import PoolReviewHeader from '@/components/PoolReviewHeader';
+import { icons } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
 import { WEEKDAYS, weekdayTranslationKeys } from '@/data/poolWeeklyReminder';
 import { usePool } from '@/providers/PoolProvider';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { POOL_REMINDER } from './_data';
 
@@ -22,8 +25,10 @@ function NotSetIndicator() {
 
 export default function PoolReminderScreen() {
   const { t, i18n } = useTranslation();
-  const { pools } = usePool();
+  const { pools, refreshPools } = usePool();
+  const router = useRouter();
   const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
+  const [isEditing, setIsEditing] = useState(false);
 
   const updatedPoolReminder = {
     ...POOL_REMINDER,
@@ -53,9 +58,32 @@ export default function PoolReminderScreen() {
     });
   }
 
+  if (isEditing) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
+        <PoolReviewHeader
+          title={t(updatedPoolReminder.title)}
+          onBackPress={() => setIsEditing(false)}
+          showEdit={false}
+        />
+        <WeeklyReminderScreen
+          initialReminderDay={pools?.reminder_day ?? null}
+          initialReminderTime={pools?.reminder_time ?? null}
+          showSkip={false}
+          markStale={false}
+          onSuccess={async () => {
+            await refreshPools({ silent: true });
+            setIsEditing(false);
+            router.replace('/(tabs)/pool');
+          }}
+        />
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface.bg }} edges={['top', 'left', 'right']}>
-      <PoolReviewHeader title={t(updatedPoolReminder.title)} />
+      <PoolReviewHeader title={t(updatedPoolReminder.title)} onEditPress={() => setIsEditing(true)} />
 
       <ScrollView
         contentContainerStyle={{ paddingBottom: 32 }}
@@ -169,7 +197,7 @@ export default function PoolReminderScreen() {
 
           <View className="card--info mt-4 p-4 flex-row items-start">
             <View className="icon-circle">
-              <MaterialCommunityIcons name="information-outline" size={20} color={colors.brand.blue} />
+              <Image source={icons.info} className="w-10 h-10" resizeMode="contain" />
             </View>
             <View className="flex-1 ml-3">
               <Text className="text-body-lg font-jakarta-bold text-brand-navy">

@@ -1,5 +1,5 @@
 import PoolTonicLogo from '@/components/PoolTonicLogo';
-import { chooseTestMethodImages, icons } from '@/constants/images';
+import { chemistryIcons, chooseTestMethodImages, icons } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import {
   additionalSanitizerFields,
@@ -46,6 +46,29 @@ const INFO_KEYS: Partial<Record<HaveResultsFieldKey, string>> = {
 };
 
 const COMBINED_CHLORINE = HAVE_RESULTS_FIELDS.find((field) => field.key === 'combinedChlorine')!;
+
+const CHEMISTRY_ICON_BY_ABBR = {
+  FC: chemistryIcons.freeChlorine,
+  TC: chemistryIcons.totalChlorine,
+  CC: chemistryIcons.combinedChlorine,
+  BR: chemistryIcons.bromine,
+  pH: chemistryIcons.ph,
+  TA: chemistryIcons.totalAlkalinity,
+  CH: chemistryIcons.calciumHardness,
+  CYA: chemistryIcons.cyanuricAcid,
+  S: chemistryIcons.salt,
+  Salt: chemistryIcons.salt,
+  TH: chemistryIcons.totalHardness,
+  H: chemistryIcons.calciumHardness,
+  PO4: chemistryIcons.phosphates,
+  TDS: chemistryIcons.tds,
+  FE: chemistryIcons.iron,
+  CU: chemistryIcons.copper,
+} as const;
+
+function chemistryIconFor(abbreviation: string) {
+  return CHEMISTRY_ICON_BY_ABBR[abbreviation as keyof typeof CHEMISTRY_ICON_BY_ABBR];
+}
 
 export default function EnterTestResultsScreen() {
   const router = useRouter();
@@ -368,16 +391,18 @@ function ReadingInputRow({
   const range = param ? READING_RANGE[param] : undefined;
   const placeholder = range ? `${range.min}–${range.max}` : '';
 
+  const chemistryIcon = chemistryIconFor(field.abbreviation);
+
   return (
     <View className={`min-h-19 flex-row items-center px-3.5 py-2.5 gap-2.5 ${last ? '' : 'border-b border-[#E6ECF1]'}`}>
-      <View
-        className="w-11 h-11 rounded-full items-center justify-center shrink-0"
-        style={{ backgroundColor: field.badgeColor }}
-      >
-        <Text className="text-body font-jakarta-bold text-surface-white">
-          {field.abbreviation === 'Salt' ? 'S' : field.abbreviation}
-        </Text>
-      </View>
+      {chemistryIcon ? (
+        <Image
+          source={chemistryIcon}
+          className="w-12 h-12 shrink-0"
+          style={{ width: 48, height: 48 }}
+          resizeMode="contain"
+        />
+      ) : null}
       <View className="flex-1 min-w-0">
         <View className="flex-row items-center gap-1.5 flex-wrap">
           <Text className="text-body leading-4.75 font-jakarta-bold text-brand-navy shrink">
@@ -421,17 +446,18 @@ function ReadingInputRow({
 
 function ReadOnlyCombined({ value, invalid }: { value: number | null; invalid: boolean }) {
   const { t } = useTranslation();
+  const chemistryIcon = chemistryIconFor(COMBINED_CHLORINE.abbreviation);
 
   return (
     <View className="min-h-19 flex-row items-center px-3.5 py-2.5 gap-2.5">
-      <View
-        className="w-11 h-11 rounded-full items-center justify-center shrink-0"
-        style={{ backgroundColor: COMBINED_CHLORINE.badgeColor }}
-      >
-        <Text className="text-body font-jakarta-bold text-surface-white">
-          {COMBINED_CHLORINE.abbreviation}
-        </Text>
-      </View>
+      {chemistryIcon ? (
+        <Image
+          source={chemistryIcon}
+          className="w-12 h-12 shrink-0"
+          style={{ width: 48, height: 48 }}
+          resizeMode="contain"
+        />
+      ) : null}
       <View className="flex-1 min-w-0">
         <Text className="text-body leading-4.75 font-jakarta-bold text-brand-navy">
           {t(COMBINED_CHLORINE.labelKey)}

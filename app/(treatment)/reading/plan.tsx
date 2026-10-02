@@ -4,14 +4,15 @@ import { colors, shadow } from '@/constants/theme';
 import { usePool } from '@/providers/PoolProvider';
 import { useTestStrips } from '@/providers/TestStripProvider';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
-  getReadingsThatNeedTreatment,
-  statusesForReading,
   NO_TREATMENT_NEEDED,
   TREATMENT_PLAN,
+  getReadingsThatNeedTreatment,
+  statusesForReading,
   stepsForActiveCase,
   type TreatmentIconKey,
 } from './_data';
@@ -55,6 +56,9 @@ function TreatmentIcon({
 /** Treatment Plan screen — currently hardcodes the low pH scenario from `_data.ts`. */
 export default function TreatmentPlanScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
+  const { 'after-reading': afterReading } = useLocalSearchParams<{ 'after-reading'?: string }>();
+  const fromReading = afterReading === '1';
   const plan = TREATMENT_PLAN;
 
   const { latestReading, readingStatus, selections, selectedBrand } = useTestStrips();
@@ -257,11 +261,13 @@ export default function TreatmentPlanScreen() {
 
       {/* Sticky footer */}
       <View className="absolute bottom-0 left-0 right-0 bg-surface-white px-5 pt-3 pb-7 border-t border-border-default">
-        <TouchableOpacity className="rounded-full bg-brand-blue py-4 items-center"
+        <TouchableOpacity
+          className="rounded-full bg-brand-blue py-4 items-center"
           activeOpacity={0.85}
-          onPress={() => router.push('/(tabs)/readings')}>
+          onPress={() => router.push(fromReading ? '/(tabs)/dashboard' : '/(tabs)/readings')}
+        >
           <Text className="text-button font-jakarta-bold text-surface-white">
-            {alerts.length === 0 ? NO_TREATMENT_NEEDED.footer.primaryLabel : plan.footer.primaryLabel}
+            {fromReading ? t('go_to_dashboard') : t('complete_treatment')}
           </Text>
         </TouchableOpacity>
         {/* <TouchableOpacity className="items-center mt-3" activeOpacity={0.7}>

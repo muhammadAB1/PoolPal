@@ -1,4 +1,4 @@
-import { icons } from '@/constants/images';
+import { graphics, icons } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import {
     formatReminderTime,
@@ -25,17 +25,36 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function WeeklyReminderScreen() {
+type WeeklyReminderScreenProps = {
+    initialReminderDay?: Weekday | null;
+    initialReminderTime?: string | null;
+    showSkip?: boolean;
+    onSuccess?: () => void;
+    markStale?: boolean;
+};
+
+export default function WeeklyReminderScreen({
+    initialReminderDay,
+    initialReminderTime,
+    showSkip = true,
+    onSuccess,
+    markStale = true,
+}: WeeklyReminderScreenProps = {}) {
     const router = useRouter();
     const { t } = useTranslation();
     const { weeklyReminderInsert } = useSupabase();
     const { resume, remaining } = useLocalSearchParams<{ resume?: string; remaining?: string }>();
     const isResuming = resume === '1';
     const remainingSteps = parseRemainingSteps(remaining);
+    const isEmbedded = Boolean(onSuccess);
 
-    const [day, setDay] = useState<Weekday>('Saturday');
-    const [hour, setHour] = useState<ReminderHour>(9);
-    const [period, setPeriod] = useState<ReminderPeriod>('AM');
+    const [day, setDay] = useState<Weekday>(initialReminderDay ?? 'Saturday');
+    const [hour, setHour] = useState<ReminderHour>(
+        (Number(initialReminderTime?.split(':')[0]) || 9) as ReminderHour,
+    );
+    const [period, setPeriod] = useState<ReminderPeriod>(
+        (initialReminderTime?.slice(-2) as ReminderPeriod) || 'AM',
+    );
     const [dayMenuOpen, setDayMenuOpen] = useState(false);
     const [timeMenuOpen, setTimeMenuOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -57,10 +76,16 @@ export default function WeeklyReminderScreen() {
                     reminderDay: day,
                     reminderTime: `${hour}:00 ${period}`,
                 },
+                markStale,
             });
 
             if (error) {
                 setErrorMessage(error.message);
+                return;
+            }
+
+            if (onSuccess) {
+                onSuccess();
                 return;
             }
 
@@ -90,8 +115,8 @@ export default function WeeklyReminderScreen() {
         );
     }
 
-    return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+    const content = (
+        <>
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
                 showsVerticalScrollIndicator={false}
@@ -107,14 +132,11 @@ export default function WeeklyReminderScreen() {
 
                     <View className="card--info mt-5 px-4 py-4">
                         <View className="flex-row items-center gap-3">
-                            <View className="w-10 h-10 rounded-full bg-brand-aqua items-center justify-center">
-                                <Image
-                                    source={icons.bell}
-                                    className="w-5 h-5"
-                                    resizeMode="contain"
-                                    style={{ tintColor: '#FFFFFF' }}
-                                />
-                            </View>
+                            <Image
+                                source={graphics.weeklyReminderIcon}
+                                className="w-11 h-11"
+                                resizeMode="contain"
+                            />
                             <View className="flex-1">
                                 <Text className="text-body-lg font-jakarta-bold text-charcoal">
                                     {t('weekly_reminder_card_title')}
@@ -286,10 +308,10 @@ export default function WeeklyReminderScreen() {
 
                         <View className="flex-row items-center gap-2 mt-4">
                             <Image
-                                source={icons.info}
-                                className="w-4 h-4"
+                                source={icons.bell}
+                                className="w-4.5 h-4.5"
                                 resizeMode="contain"
-                                style={{ transform: [{ rotate: '180deg' }] }}
+                                style={{ tintColor: colors.brand.navy }}
                             />
                             <Text className="flex-1 text-small font-jakarta text-sub">
                                 {t('weekly_reminder_required_note')}
@@ -300,7 +322,7 @@ export default function WeeklyReminderScreen() {
                     <View className="flex-row items-center gap-2 mt-4 px-0.5">
                         <Image
                             source={icons.info}
-                            className="w-4 h-4"
+                            className="w-6 h-6"
                             resizeMode="contain"
                         />
                         <Text className="flex-1 text-small font-jakarta text-sub">
@@ -326,16 +348,28 @@ export default function WeeklyReminderScreen() {
                         {t('weekly_reminder_complete')}
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    className="items-center justify-center mt-3.5 py-1"
-                    onPress={handleSkipForNow}
-                    activeOpacity={0.7}
-                >
-                    <Text className="text-body font-jakarta-bold text-brand-blue">
-                        {t('weekly_reminder_skip_for_now')}
-                    </Text>
-                </TouchableOpacity>
+                {showSkip ? (
+                    <TouchableOpacity
+                        className="items-center justify-center mt-3.5 py-1"
+                        onPress={handleSkipForNow}
+                        activeOpacity={0.7}
+                    >
+                        <Text className="text-body font-jakarta-bold text-brand-blue">
+                            {t('weekly_reminder_skip_for_now')}
+                        </Text>
+                    </TouchableOpacity>
+                ) : null}
             </View>
+        </>
+    );
+
+    if (isEmbedded) {
+        return <View className="flex-1">{content}</View>;
+    }
+
+    return (
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+            {content}
         </SafeAreaView>
     );
 }

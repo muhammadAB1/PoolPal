@@ -2,15 +2,15 @@ import PoolTonicLogo from '@/components/PoolTonicLogo';
 import { dashboardImages, icons } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import {
-  getIdealStatusRange,
-  getOverallPoolStatus,
-  getOverallSwimmingStatus,
-  getReadingStatus,
-  parseReadingValue,
-  READING_RANGE,
-  toParamKey,
-  toTestReadingsProps,
-  type ReadingStatus,
+    getIdealStatusRange,
+    getOverallPoolStatus,
+    getOverallSwimmingStatus,
+    getReadingStatus,
+    parseReadingValue,
+    READING_RANGE,
+    toParamKey,
+    toTestReadingsProps,
+    type ReadingStatus,
 } from '@/data/readingBands';
 import { OVERALL_STATUS, STATUS_BADGE, STATUS_LABEL, SWIM_STATUS } from '@/data/readingPoolAndSwimStatusUiLabelsColorsAndIcons';
 import { resolvePads, type TestStripPad } from '@/data/testStripBrands';
@@ -101,7 +101,8 @@ export default function WaterResultsScreen() {
     }
     if (data?.id) setSavedReadingId(data.id);
     bumpSaveCount();
-    router.push('/(treatment)/reading/plan');
+    setSaving(false);
+    router.push({ pathname: '/(treatment)/reading/plan', params: { 'after-reading': '1' } });
   }
 
   return (
@@ -214,11 +215,7 @@ export default function WaterResultsScreen() {
           )}
 
           <View className="card--info flex-row items-start gap-2.5 px-3.5 py-3 mt-5">
-            <Ionicons
-              name="information-circle-outline"
-              size={18}
-              color={colors.text.sub}
-            />
+            <Image source={icons.info} className="w-8 h-8" resizeMode="contain" />
             <Text className="flex-1 text-small font-jakarta text-charcoal leading-5">
               {t('water_results_info')}
             </Text>

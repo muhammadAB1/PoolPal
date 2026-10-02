@@ -87,13 +87,12 @@ export default function ChecklistScreen() {
             </View>
           </View>
           <View className="flex-row items-center self-start mt-3 rounded-full bg-surface-white px-2.5 py-1 border border-border-default">
-            <Text className="text-tiny font-jakarta-semibold text-sub">{t('checklist.resetsMonday')}</Text>
             <Image
               source={icons.info}
-              className="w-3.5 h-3.5 ml-1"
+              className="w-3.5 h-3.5 mr-1 -translate-x-1"
               resizeMode="contain"
-              style={{ tintColor: colors.text.faint }}
             />
+            <Text className="text-tiny font-jakarta-semibold text-sub">{t('checklist.resetsMonday')}</Text>
           </View>
         </View>
 
@@ -135,7 +134,7 @@ export default function ChecklistScreen() {
       {/* Footer button */}
       <View className="px-4 pt-3 pb-3 bg-surface-bg border-t border-border-default">
         <TouchableOpacity
-          className="rounded-2xl py-4 items-center"
+          className="rounded-2xl py-4 items-center btn--primary"
           style={{ backgroundColor: allDone && !weekDone ? TEAL : '#E8ECF0' }}
           disabled={!allDone || weekDone}
           onPress={() => setWeekDone(true)}

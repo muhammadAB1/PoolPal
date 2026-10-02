@@ -72,11 +72,7 @@ export default function SelectStripResultsScreen() {
 
           {/* Info callout */}
           <View className="card--info flex-row items-start gap-2.5 px-3.5 py-3 mt-4">
-            <Ionicons
-              name="information-circle-outline"
-              size={18}
-              color={colors.text.sub}
-            />
+            <Image source={icons.info} className="w-6 h-6" resizeMode="contain" />
             <Text className="flex-1 text-small font-jakarta text-charcoal leading-5">
               {t('strip_results_info')}
             </Text>

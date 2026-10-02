@@ -100,9 +100,9 @@ export default function PoolSurfaceScreen() {
           </View>
 
           <View className="card mt-4 p-3.5 flex-row items-start" style={shadow.card}>
-            <View className="icon-circle icon-circle--muted">
-              <MaterialCommunityIcons name="information-outline" size={20} color={colors.brand.navy} />
-            </View>
+
+              <Image source={icons.info} className="w-8 h-8" resizeMode="contain" />
+
             <View className="flex-1 ml-3">
               <Text className="text-body-lg font-jakarta-bold text-brand-navy">
                 {t('pool_surface_review_why_title')}

@@ -98,7 +98,11 @@ export const en = {
   pool_basics_type_other_desc: 'We’ll help you figure this out later.',
   pool_basics_sanitizer_unknown: "I don’t know",
   pool_basics_sanitizer_unknown_desc: 'We’ll help you figure this out later.',
-  pool_basics_salt_status_title: 'Is your salt system producing chlorine right now?',
+  pool_basics_salt_status_title: 'Is your salt system currently working?',
+  pool_basics_salt_info_sentence_1:
+    'A salt system uses the salt in your pool water to automatically make chlorine, which keeps the water clean and sanitized.',
+  pool_basics_salt_info_sentence_2:
+    'It does this by passing the salty water through a special cell that uses a small electrical charge to convert the salt into chlorine.',
   pool_basics_salt_status_working: 'Yes, it’s working',
   pool_basics_salt_status_not_working: 'No, it isn’t working',
   pool_basics_manual_chlorine_title: 'Are you adding chlorine manually right now?',
@@ -258,7 +262,7 @@ export const en = {
   pool_basics_review_details_heading: 'Pool details',
   pool_basics_review_why_title: 'Why these details matter',
   pool_basics_review_why_desc:
-    'PoolWise uses these answers to personalize your testing ranges, reminders, and maintenance recommendations.',
+    'PoolTonic uses these answers to personalize your testing ranges, reminders, and maintenance recommendations.',
   pool_basics_review_add_pool: 'Add another pool',
   pool_basics_review_add_pool_desc: 'Separate profile, readings, reminders, and care plan.',
   pool_basics_review_add_pool_price: '$4.99/month',
@@ -445,7 +449,7 @@ export const en = {
     'Empty and rinse the filter basket, inspect the cable and brushes, and store the cleaner out of direct sunlight when not in use.',
   pool_cleaning_review_why_title: 'Why cleaning setup matters',
   pool_cleaning_review_why_desc:
-    'Your cleaning setup helps PoolWise build the right checklist, recommend equipment care, and troubleshoot cleaning or circulation problems.',
+    'Your cleaning setup helps PoolTonic build the right checklist, recommend equipment care, and troubleshoot cleaning or circulation problems.',
 
   // equipment basics
   equipment_basics_title: 'Equipment Basics',
@@ -543,7 +547,7 @@ export const en = {
     'Add them now if you have them.\nYou can also add results later.',
   test_readings_info_title: 'Not sure about a number?',
   test_readings_info_desc:
-    "Leave it blank or upload a photo.\nPoolWise can still create your plan.",
+    "Leave it blank or upload a photo.\nPoolTonic can still create your plan.",
   test_readings_option_results_title: 'I have test results',
   test_readings_option_results_desc: 'Enter numbers from a test kit or pool store.',
   test_readings_option_photo_title: 'I have a test strip photo',
@@ -596,11 +600,11 @@ export const en = {
   test_readings_skip_for_now: 'Skip for now',
 
   // weekly reminder
-  weekly_reminder_title: 'Weekly Reminder Setup',
+  weekly_reminder_title: 'Set your weekly reminder',
   weekly_reminder_subtitle:
-    'Choose when you want PoolWise to remind you to clean your pool.',
+    'Choose a day and time for Pool Tonic to remind you about your weekly pool care.',
   weekly_reminder_card_title: 'Weekly reminder',
-  weekly_reminder_card_subtitle: 'Select your preferred day and time.',
+  weekly_reminder_card_subtitle: 'Pick the day and time that works best for you.',
   weekly_reminder_day_sunday: 'Sunday',
   weekly_reminder_day_monday: 'Monday',
   weekly_reminder_day_tuesday: 'Tuesday',
@@ -608,24 +612,25 @@ export const en = {
   weekly_reminder_day_thursday: 'Thursday',
   weekly_reminder_day_friday: 'Friday',
   weekly_reminder_day_saturday: 'Saturday',
-  weekly_reminder_required_note: 'Required: choose both a day and a time.',
-  weekly_reminder_dashboard_note: 'You can change this later from your dashboard.',
-  weekly_reminder_complete: 'Complete',
+  weekly_reminder_required_note: 'Pool Tonic will remind you at this time each week.',
+  weekly_reminder_dashboard_note:
+    'Stay on top of water testing, maintenance, and your next recommended steps. You can change or turn off your reminder anytime.',
+  weekly_reminder_complete: 'Set Reminder',
   weekly_reminder_skip_for_now: 'Skip for now',
 
   // onboarding complete
   onboarding_complete_profile_label: 'profile complete',
   onboarding_complete_title: 'Your Pool Care Plan Is Ready',
   onboarding_complete_badge: 'Weekly plan ready',
-  onboarding_complete_info_bold: 'You can start using PoolWise now.',
+  onboarding_complete_info_bold: 'You can start using PoolTonic now.',
   onboarding_complete_info_rest:
     'Add more details later to improve your recommendations.',
   onboarding_complete_improve_title: 'Improve your setup',
   onboarding_complete_improve_subtitle:
-    'These steps are optional, but they help PoolWise personalize your care plan.',
+    'These steps are optional, but they help PoolTonic personalize your care plan.',
   onboarding_complete_water_title: 'Add first water readings',
   onboarding_complete_water_desc:
-    'Helps PoolWise understand your current water balance.',
+    'Helps PoolTonic understand your current water balance.',
   onboarding_complete_kit_title: 'Choose a testing kit',
   onboarding_complete_kit_desc:
     'Get better weekly guidance with the right test kit.',
@@ -646,6 +651,7 @@ export const en = {
   signup_or: 'or',
   common_yes: 'Yes',
   common_no: 'No',
+  common_ok: 'OK',
   common_close: 'Close',
   common_no_results: 'No results found',
   common_saving: 'Saving…',
@@ -659,7 +665,7 @@ export const en = {
 
   // dashboard
   dashboard_welcome_back: 'Welcome back!',
-  dashboard_brand_name: 'PoolWise',
+  dashboard_brand_name: 'PoolTonic',
   dashboard_greeting: 'Hi, {{name}}',
   dashboard_greeting_fallback_name: 'Pool Owner',
   dashboard_tagline: "Let's keep your pool in great shape.",
@@ -671,7 +677,7 @@ export const en = {
   dashboard_recommended_badge: 'Recommended first step',
   dashboard_testing_kit_title: 'Choose how you test your pool',
   dashboard_testing_kit_desc:
-    'Tell us whether you use strips, a liquid test kit, a digital reader, or pool-store results so PoolWise can guide you correctly.',
+    'Tell us whether you use strips, a liquid test kit, a digital reader, or pool-store results so PoolTonic can guide you correctly.',
   dashboard_choose_kit_cta: 'Choose Test Method',
   dashboard_profile_label: 'Profile',
   dashboard_profile_percent_label: '{{percent}}% complete',
@@ -888,7 +894,7 @@ export const en = {
   problems_warning_keep_swimmers_out_desc: 'Cloudy or dark water can make it hard to see someone who needs help.',
   dashboard_shop_title: 'Shop Recommended Products',
   dashboard_shop_desc: 'Browse products matched to your pool needs',
-  dashboard_ask_poolwise_title: 'Ask PoolWise',
+  dashboard_ask_poolwise_title: 'Ask PoolTonic',
   dashboard_ask_poolwise_desc: 'Get help anytime',
   dashboard_learn_title: 'Learn',
   dashboard_learn_desc: 'Tips, guides, and pool care basics.',
@@ -903,19 +909,21 @@ export const en = {
   // choose test method
   choose_test_method_title: 'How would you like to check your pool?',
   choose_test_method_subtitle:
-    'Choose the option that best matches what you have available.',
+    'Choose what you have available right now. Pool Tonic will guide you from there.',
   choose_test_method_strip_title: 'Test Strip',
-  choose_test_method_strip_desc: 'Use a test strip to check your pool water.',
+  choose_test_method_strip_desc:
+    'Test your water with a pool test strip and enter the results.',
   choose_test_method_liquid_title: 'Liquid Test',
   choose_test_method_liquid_desc: 'Use a test kit to test your pool water.',
   choose_test_method_results_title: 'I Have Test Results',
   choose_test_method_results_desc:
-    'Enter results you already have from a pool store, digital reader, or previous test.',
-  choose_test_method_problems_title: 'Solve Visible Problems',
+    'Enter recent results from a pool store, digital tester, or previous water test.',
+  choose_test_method_problems_title: 'Check a Visible Problem',
   choose_test_method_problems_desc:
-    'Troubleshoot common pool problems like cloudy, green, foamy, or stained water.',
-  choose_test_method_info_title: 'Not sure which option to choose?',
-  choose_test_method_info_desc: 'You can always update or retest later.',
+    'Tell us what you see, such as cloudy, green, foamy, or stained water.',
+  choose_test_method_info_title: 'Not sure which to choose?',
+  choose_test_method_info_desc:
+    'Use what you have right now. Recent water test results give Pool Tonic the most accurate guidance, and you can add more information anytime.',
   choose_test_method_enter_title: 'Enter your test results',
   choose_test_method_enter_subtitle: 'These are enough to start your weekly plan.',
   choose_test_method_tc_label: 'Total Chlorine',
@@ -975,7 +983,7 @@ export const en = {
     "Select the brand on your bottle to continue.\nIf you don't see it, choose Other.",
   strip_brand_search_placeholder: 'Search test strip brands',
   strip_brand_info:
-    'PoolWise only reads supported strip products and never guesses the brand silently.',
+    'PoolTonic only reads supported strip products and never guesses the brand silently.',
   strip_brand_section: 'Supported brands',
   strip_brand_supported: 'Supported test strips',
   strip_brand_other_title: "Other / My brand isn't listed",
@@ -1027,6 +1035,8 @@ export const en = {
   water_results_info:
     'These readings are a good starting point. Continue to view treatment guidance and next steps.',
   water_results_cta: 'View Treatment Plan',
+  go_to_dashboard: 'Go to Dashboard',
+  complete_treatment: 'Complete Treatment',
   water_results_empty: 'No readings to show yet. Go back and select your strip results.',
   water_results_pool_status_label: 'Pool Status',
   water_results_swim_status_label: 'Swim Status',
@@ -1078,7 +1088,7 @@ export const en = {
 
   // pool tab
   pool_tab_title: 'My Pool Profile',
-  pool_tab_subtitle: 'Everything PoolWise knows about your pool.',
+  pool_tab_subtitle: 'Everything PoolTonic knows about your pool.',
   pool_tab_your_pools: 'Your Pools',
   pool_tab_switch_pool_hint: 'Tap a pool to switch',
   pool_tab_basics: 'Pool Basics',
@@ -1281,7 +1291,11 @@ export const es = {
   pool_basics_type_other_desc: 'Te ayudaremos a averiguarlo más adelante.',
   pool_basics_sanitizer_unknown: 'No lo sé',
   pool_basics_sanitizer_unknown_desc: 'Te ayudaremos a averiguarlo más adelante.',
-  pool_basics_salt_status_title: '¿Tu clorador salino está produciendo cloro ahora mismo?',
+  pool_basics_salt_status_title: '¿Tu clorador salino está funcionando actualmente?',
+  pool_basics_salt_info_sentence_1:
+    'Un clorador salino usa la sal del agua de tu piscina para producir cloro automáticamente, lo que mantiene el agua limpia y desinfectada.',
+  pool_basics_salt_info_sentence_2:
+    'Lo hace pasando el agua salada por una célula especial que usa una pequeña carga eléctrica para convertir la sal en cloro.',
   pool_basics_salt_status_working: 'Sí, funciona',
   pool_basics_salt_status_not_working: 'No, no funciona',
   pool_basics_manual_chlorine_title: '¿Estás añadiendo cloro manualmente ahora mismo?',
@@ -1441,7 +1455,7 @@ export const es = {
   pool_basics_review_details_heading: 'Datos de la piscina',
   pool_basics_review_why_title: 'Por qué importan estos datos',
   pool_basics_review_why_desc:
-    'PoolWise usa estas respuestas para personalizar tus rangos de prueba, recordatorios y recomendaciones de mantenimiento.',
+    'PoolTonic usa estas respuestas para personalizar tus rangos de prueba, recordatorios y recomendaciones de mantenimiento.',
   pool_basics_review_add_pool: 'Añadir otra piscina',
   pool_basics_review_add_pool_desc: 'Perfil, valores, recordatorios y plan de cuidado separados.',
   pool_basics_review_add_pool_price: '$4.99/mes',
@@ -1628,7 +1642,7 @@ export const es = {
     'Vacía y enjuaga la cesta del filtro, inspecciona el cable y los cepillos, y guarda el limpiafondos fuera de la luz solar directa cuando no lo uses.',
   pool_cleaning_review_why_title: 'Por qué importa la configuración de limpieza',
   pool_cleaning_review_why_desc:
-    'Tu configuración de limpieza ayuda a PoolWise a armar el checklist correcto, recomendar el cuidado del equipo y resolver problemas de limpieza o circulación.',
+    'Tu configuración de limpieza ayuda a PoolTonic a armar el checklist correcto, recomendar el cuidado del equipo y resolver problemas de limpieza o circulación.',
 
   // equipment basics
   equipment_basics_title: 'Datos básicos del equipo',
@@ -1726,7 +1740,7 @@ export const es = {
     'Añádelos ahora si los tienes.\nTambién puedes añadirlos más adelante.',
   test_readings_info_title: '¿No estás seguro de algún valor?',
   test_readings_info_desc:
-    'Déjalo en blanco o sube una foto.\nPoolWise puede crear tu plan igualmente.',
+    'Déjalo en blanco o sube una foto.\nPoolTonic puede crear tu plan igualmente.',
   test_readings_option_results_title: 'Tengo resultados del test',
   test_readings_option_results_desc:
     'Introduce los valores de un kit de prueba o de una tienda de piscinas.',
@@ -1784,11 +1798,11 @@ export const es = {
   test_readings_skip_for_now: 'Saltar por ahora',
 
   // weekly reminder
-  weekly_reminder_title: 'Configuración del recordatorio semanal',
+  weekly_reminder_title: 'Configura tu recordatorio semanal',
   weekly_reminder_subtitle:
-    'Elige cuándo quieres que PoolWise te recuerde limpiar tu piscina.',
+    'Elige un día y una hora para que Pool Tonic te recuerde el cuidado semanal de tu piscina.',
   weekly_reminder_card_title: 'Recordatorio semanal',
-  weekly_reminder_card_subtitle: 'Selecciona el día y la hora que prefieras.',
+  weekly_reminder_card_subtitle: 'Elige el día y la hora que mejor te funcionen.',
   weekly_reminder_day_sunday: 'Domingo',
   weekly_reminder_day_monday: 'Lunes',
   weekly_reminder_day_tuesday: 'Martes',
@@ -1796,24 +1810,25 @@ export const es = {
   weekly_reminder_day_thursday: 'Jueves',
   weekly_reminder_day_friday: 'Viernes',
   weekly_reminder_day_saturday: 'Sábado',
-  weekly_reminder_required_note: 'Obligatorio: elige un día y una hora.',
-  weekly_reminder_dashboard_note: 'Puedes cambiarlo más adelante desde tu panel.',
-  weekly_reminder_complete: 'Completar',
+  weekly_reminder_required_note: 'Pool Tonic te recordará a esta hora cada semana.',
+  weekly_reminder_dashboard_note:
+    'Mantente al día con las pruebas de agua, el mantenimiento y tus próximos pasos recomendados. Puedes cambiar o desactivar tu recordatorio en cualquier momento.',
+  weekly_reminder_complete: 'Configurar recordatorio',
   weekly_reminder_skip_for_now: 'Saltar por ahora',
 
   // onboarding complete
   onboarding_complete_profile_label: 'perfil completo',
   onboarding_complete_title: 'Tu plan de cuidado de piscina está listo',
   onboarding_complete_badge: 'Plan semanal listo',
-  onboarding_complete_info_bold: 'Ya puedes empezar a usar PoolWise.',
+  onboarding_complete_info_bold: 'Ya puedes empezar a usar PoolTonic.',
   onboarding_complete_info_rest:
     'Añade más detalles más adelante para mejorar tus recomendaciones.',
   onboarding_complete_improve_title: 'Mejora tu configuración',
   onboarding_complete_improve_subtitle:
-    'Estos pasos son opcionales, pero ayudan a PoolWise a personalizar tu plan de cuidado.',
+    'Estos pasos son opcionales, pero ayudan a PoolTonic a personalizar tu plan de cuidado.',
   onboarding_complete_water_title: 'Añade los primeros valores del agua',
   onboarding_complete_water_desc:
-    'Ayuda a PoolWise a entender el equilibrio actual del agua.',
+    'Ayuda a PoolTonic a entender el equilibrio actual del agua.',
   onboarding_complete_kit_title: 'Elige un kit de análisis',
   onboarding_complete_kit_desc:
     'Recibe mejores recomendaciones semanales con el kit adecuado.',
@@ -1834,6 +1849,7 @@ export const es = {
   signup_or: 'o',
   common_yes: 'Sí',
   common_no: 'No',
+  common_ok: 'OK',
   common_close: 'Cerrar',
   common_no_results: 'No se han encontrado resultados',
   common_saving: 'Guardando…',
@@ -1847,7 +1863,7 @@ export const es = {
 
   // dashboard
   dashboard_welcome_back: '¡Bienvenido de nuevo!',
-  dashboard_brand_name: 'PoolWise',
+  dashboard_brand_name: 'PoolTonic',
   dashboard_greeting: 'Hola, {{name}}',
   dashboard_greeting_fallback_name: 'Dueño de piscina',
   dashboard_tagline: 'Mantengamos tu piscina en excelente forma.',
@@ -1859,7 +1875,7 @@ export const es = {
   dashboard_recommended_badge: 'Primer paso recomendado',
   dashboard_testing_kit_title: 'Elige cómo analizas tu piscina',
   dashboard_testing_kit_desc:
-    'Dinos si usas tiras, un kit líquido, un lector digital o resultados de la tienda para que PoolWise te guíe correctamente.',
+    'Dinos si usas tiras, un kit líquido, un lector digital o resultados de la tienda para que PoolTonic te guíe correctamente.',
   dashboard_choose_kit_cta: 'Elegir método de análisis',
   dashboard_profile_label: 'Perfil',
   dashboard_profile_percent_label: '{{percent}}% completado',
@@ -2077,7 +2093,7 @@ export const es = {
   problems_warning_keep_swimmers_out_desc: 'El agua turbia u oscura puede dificultar ver a alguien que necesite ayuda.',
   dashboard_shop_title: 'Comprar productos recomendados',
   dashboard_shop_desc: 'Explora productos adaptados a las necesidades de tu piscina',
-  dashboard_ask_poolwise_title: 'Preguntar a PoolWise',
+  dashboard_ask_poolwise_title: 'Preguntar a PoolTonic',
   dashboard_ask_poolwise_desc: 'Recibe ayuda cuando quieras',
   dashboard_learn_title: 'Aprende',
   dashboard_learn_desc: 'Consejos, guías y conceptos básicos para cuidar tu piscina.',
@@ -2090,21 +2106,23 @@ export const es = {
   dashboard_profile_a11y: 'Abrir perfil de usuario',
 
   // choose test method
-  choose_test_method_title: '¿Cómo quieres revisar tu piscina?',
+  choose_test_method_title: '¿Cómo te gustaría analizar el agua de tu piscina?',
   choose_test_method_subtitle:
-    'Elige la opción que mejor coincida con lo que tienes disponible.',
+    'Elige lo que tengas a mano ahora mismo. Pool Tonic te guiará a partir de ahí.',
   choose_test_method_strip_title: 'Tira reactiva',
-  choose_test_method_strip_desc: 'Usa una tira reactiva para comprobar el agua de tu piscina.',
+  choose_test_method_strip_desc:
+    'Analiza el agua con una tira reactiva para piscinas e introduce los resultados.',
   choose_test_method_liquid_title: 'Prueba líquida',
   choose_test_method_liquid_desc: 'Usa un kit de prueba para analizar el agua de tu piscina.',
-  choose_test_method_results_title: 'Ya tengo resultados',
+  choose_test_method_results_title: 'Tengo los resultados de un análisis',
   choose_test_method_results_desc:
-    'Introduce resultados que ya tengas de una tienda, lector digital o una prueba anterior.',
-  choose_test_method_problems_title: 'Resolver problemas visibles',
+    'Introduce los resultados recientes de una tienda especializada en piscinas, un medidor digital o un análisis previo del agua.',
+  choose_test_method_problems_title: 'Comprobar un problema visible',
   choose_test_method_problems_desc:
-    'Soluciona problemas comunes como agua turbia, verde, espumosa o manchada.',
-  choose_test_method_info_title: '¿No estás seguro de qué opción elegir?',
-  choose_test_method_info_desc: 'Siempre puedes actualizar o volver a analizar más tarde.',
+    'Dinos lo que ves, por ejemplo, si el agua está turbia, verde, con espuma o con manchas.',
+  choose_test_method_info_title: '¿No estás seguro de cuál elegir?',
+  choose_test_method_info_desc:
+    'Usa lo que tengas ahora mismo. Los resultados recientes de un análisis de agua le dan a Pool Tonic la guía más precisa, y puedes añadir más información en cualquier momento.',
   choose_test_method_enter_title: 'Introduce tus resultados',
   choose_test_method_enter_subtitle: 'Son suficientes para empezar tu plan semanal.',
   choose_test_method_tc_label: 'Cloro total',
@@ -2164,7 +2182,7 @@ export const es = {
     'Selecciona la marca de tu envase para continuar.\nSi no la ves, elige Otra.',
   strip_brand_search_placeholder: 'Buscar marcas de tiras de prueba',
   strip_brand_info:
-    'PoolWise solo lee productos de tiras compatibles y nunca adivina la marca en silencio.',
+    'PoolTonic solo lee productos de tiras compatibles y nunca adivina la marca en silencio.',
   strip_brand_section: 'Marcas compatibles',
   strip_brand_supported: 'Tiras de prueba compatibles',
   strip_brand_other_title: 'Otra / Mi marca no aparece',
@@ -2217,6 +2235,8 @@ export const es = {
   water_results_info:
     'Estas lecturas son un buen punto de partida. Continúa para ver la guía de tratamiento y los siguientes pasos.',
   water_results_cta: 'Ver plan de tratamiento',
+  go_to_dashboard: 'Ir al panel',
+  complete_treatment: 'Completar tratamiento',
   water_results_empty:
     'Aún no hay lecturas. Vuelve atrás y selecciona los resultados de tu tira.',
   water_results_pool_status_label: 'Estado de la piscina',
@@ -2269,7 +2289,7 @@ export const es = {
 
   // pool tab
   pool_tab_title: 'Mi perfil de piscina',
-  pool_tab_subtitle: 'Todo lo que PoolWise sabe de tu piscina.',
+  pool_tab_subtitle: 'Todo lo que PoolTonic sabe de tu piscina.',
   pool_tab_your_pools: 'Tus piscinas',
   pool_tab_switch_pool_hint: 'Toca una piscina para cambiar',
   pool_tab_basics: 'Datos de la piscina',

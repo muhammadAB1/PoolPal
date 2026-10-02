@@ -1,3 +1,4 @@
+import InfoModal from '@/components/InfoModal';
 import { icons, poolBasicsImages } from '@/constants/images';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
@@ -108,6 +109,7 @@ export default function PoolBasicsScreen({
     const [activeMonths, setActiveMonths] = useState<string[]>(initialPoolBasics?.activeMonths ?? []);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [saving, setSaving] = useState(false);
+    const [saltInfoVisible, setSaltInfoVisible] = useState(false);
 
     const { poolBasicInsert } = useSupabase();
     const { pools, refreshPools } = usePool();
@@ -186,6 +188,10 @@ export default function PoolBasicsScreen({
         setSaltSystemStatus(value);
         if (value === 'working') setManualChlorine(undefined);
         clearSaveError();
+    }
+
+    function showSaltSystemInfo() {
+        setSaltInfoVisible(true);
     }
 
     function chooseHasHotTub(value: HotTubType) {
@@ -369,7 +375,10 @@ export default function PoolBasicsScreen({
                     </Section>
 
                     {poolType === 'Saltwater' ? (
-                        <Conditional title={t('pool_basics_salt_status_title')}>
+                        <Conditional
+                            title={t('pool_basics_salt_status_title')}
+                            onInfoPress={showSaltSystemInfo}
+                        >
                             <ChoiceGrid
                                 options={[
                                     { value: 'working', label: t('pool_basics_salt_status_working') },
@@ -628,6 +637,13 @@ export default function PoolBasicsScreen({
                     </TouchableOpacity>
                 ) : null}
             </View>
+
+            <InfoModal
+                visible={saltInfoVisible}
+                title={t('pool_basics_salt_status_title')}
+                message={`${t('pool_basics_salt_info_sentence_1')}\n\n${t('pool_basics_salt_info_sentence_2')}`}
+                onClose={() => setSaltInfoVisible(false)}
+            />
         </>
     );
 
@@ -652,10 +668,29 @@ function Section({ title, subtitle, children }: { title: string; subtitle?: stri
     );
 }
 
-function Conditional({ title, children }: { title: string; children: ReactNode }) {
+function Conditional({
+    title,
+    children,
+    onInfoPress,
+}: {
+    title: string;
+    children: ReactNode;
+    onInfoPress?: () => void;
+}) {
     return (
         <View style={styles.conditional}>
-            <Text style={styles.sectionTitle}>{title}</Text>
+            <View style={styles.conditionalHeader}>
+                <Text style={[styles.sectionTitle, styles.conditionalTitle]}>{title}</Text>
+                {onInfoPress ? (
+                    <TouchableOpacity
+                        onPress={onInfoPress}
+                        activeOpacity={0.7}
+                        className='-translate-y-3 translate-x-1'
+                    >
+                        <Image source={icons.info} style={styles.conditionalInfoIcon} resizeMode="contain" />
+                    </TouchableOpacity>
+                ) : null}
+            </View>
             <View style={styles.sectionBody}>{children}</View>
         </View>
     );
@@ -817,6 +852,14 @@ const styles = StyleSheet.create({
         marginTop: 3,
     },
     sectionBody: { marginTop: 12 },
+    conditionalHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 8,
+    },
+    conditionalTitle: { flex: 1 },
+    conditionalInfoIcon: { width: 20, height: 20 },
     input: {
         borderWidth: 1,
         borderColor: '#D9E2EA',

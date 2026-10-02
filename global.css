@@ -149,7 +149,7 @@
 
   /* Button modifiers */
   .btn--primary {
-    @apply bg-brand-blue;
+    @apply bg-linear-to-r from-[#2EC8EE] to-[#0A8B94];
   }
 
   .btn--secondary {

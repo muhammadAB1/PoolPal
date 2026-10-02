@@ -1,6 +1,6 @@
 import PoolBasicsForm from '@/app/(onboarding)/pool-basics';
 import PoolReviewHeader from '@/components/PoolReviewHeader';
-import { poolTabImages } from '@/constants/images';
+import { icons, poolTabImages } from '@/constants/images';
 import { colors, shadow } from '@/constants/theme';
 import { isHotTubPool, toPoolEnvironment } from '@/lib/pool';
 import { usePool } from '@/providers/PoolProvider';
@@ -257,9 +257,7 @@ export default function PoolBasicsScreen() {
           </View>
 
           <View className="card--info mt-4 p-3.5 flex-row items-start">
-            <View className="w-10 h-10 rounded-full bg-brand-blue items-center justify-center">
-              <MaterialCommunityIcons name="information-variant" size={20} color={colors.surface.white} />
-            </View>
+            <Image source={icons.info} className="w-8 h-8" resizeMode="contain" />
             <View className="flex-1 ml-3">
               <Text className="text-body-lg font-jakarta-bold text-brand-blue">
                 {t('pool_basics_review_why_title')}

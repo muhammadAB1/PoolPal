@@ -125,6 +125,8 @@ type EquipmentBasicsScreenProps = {
     onSuccess?: () => void;
     /** Defaults to true for onboarding. Pool tab Edit passes false because it refreshes the provider itself. */
     markStale?: boolean;
+    /** Shows the AI photo-identification option. Only enabled when opened from the Pool tab. */
+    fromPoolTab?: boolean;
 };
 
 export default function EquipmentBasicsScreen({
@@ -134,6 +136,7 @@ export default function EquipmentBasicsScreen({
     showSkip = true,
     onSuccess,
     markStale = true,
+    fromPoolTab = false,
 }: EquipmentBasicsScreenProps = {}) {
     const router = useRouter();
     const { t } = useTranslation();
@@ -259,10 +262,12 @@ export default function EquipmentBasicsScreen({
                             })}
                         </View>
 
-                        <PhotoIdentifyCard
-                            title={t('equipment_identify_filter_title')}
-                            description={t('equipment_identify_filter_desc')}
-                        />
+                        {fromPoolTab ? (
+                            <PhotoIdentifyCard
+                                title={t('equipment_identify_filter_title')}
+                                description={t('equipment_identify_filter_desc')}
+                            />
+                        ) : null}
                     </View>
 
                     <View className="mt-8">
@@ -294,10 +299,12 @@ export default function EquipmentBasicsScreen({
                             })}
                         </View>
 
-                        <PhotoIdentifyCard
-                            title={t('equipment_identify_pump_title')}
-                            description={t('equipment_identify_pump_desc')}
-                        />
+                        {fromPoolTab ? (
+                            <PhotoIdentifyCard
+                                title={t('equipment_identify_pump_title')}
+                                description={t('equipment_identify_pump_desc')}
+                            />
+                        ) : null}
                     </View>
 
                     <View className="mt-8">

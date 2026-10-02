@@ -88,12 +88,8 @@ export default function ChooseStripBrandScreen() {
 
           {/* Info callout */}
           <View className="card--info flex-row items-start gap-2.5 px-3.5 py-3 mt-3">
-            <Ionicons
-              name="information-circle-outline"
-              size={18}
-              color={colors.text.sub}
-            />
-            <Text className="flex-1 text-small font-jakarta text-charcoal leading-5">
+            <Image source={icons.info} className="w-6 h-6 -translate-x-1" resizeMode="contain" />
+            <Text className="flex-1 text-small font-jakarta text-charcoal leading-5 -translate-x-1">
               {t('strip_brand_info')}
             </Text>
           </View>

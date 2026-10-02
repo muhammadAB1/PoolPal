@@ -510,7 +510,13 @@ export function useSupabase() {
         }
     }
 
-    async function weeklyReminderInsert({ props }: { props?: poolReminderInsertProps }) {
+    async function weeklyReminderInsert({
+        props,
+        markStale = true,
+    }: {
+        props?: poolReminderInsertProps
+        markStale?: boolean
+    }) {
         try {
             const id = await AsyncStorage.getItem('activePoolId');
             if (id) {
@@ -519,7 +525,7 @@ export function useSupabase() {
                         .from('pools')
                         .update({ reminder_day: props.reminderDay, reminder_time: props.reminderTime })
                         .eq('id', id).select('id, profile_completion_score').single()
-                    if (!error) markPoolsStale();
+                    if (!error && markStale) markPoolsStale();
                     return { data, error }
                 }
                 else {

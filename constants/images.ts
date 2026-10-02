@@ -17,6 +17,7 @@ import poolPalLogo from '../assets/graphics/pool_pal_logo.png';
 import poolPalLogoDarkBg from '../assets/graphics/pool_pal_logo_dark_bg.png';
 import poolPalLogoLightBg from '../assets/graphics/pool_pal_logo_light_bg.png';
 import testKitCardGraphic from '../assets/graphics/test_kit_card_graphic.png';
+import weeklyReminderIcon from '../assets/graphics/PoolTonic-Set-Reminder-removebg-preview.png';
 import poolTonicLogoFullLight from '../assets/pooltonic-ui/pooltonic-logo-full-light.png';
 import poolTonicButtonGradient from '../assets/welcome/pooltonic_button_gradient.png';
 import poolTonicFeatureEnjoy from '../assets/welcome/pooltonic_feature_enjoy.png';
@@ -60,7 +61,6 @@ import iconCheckmark from '../assets/icons_1x/checkmark.png';
 import iconCircleCheck from '../assets/icons_1x/circle_check.png';
 import iconDashboard from '../assets/icons_1x/dashboard.png';
 import iconFilter from '../assets/icons_1x/filter.png';
-import iconInfo from '../assets/icons_1x/info.png';
 import iconLearn from '../assets/icons_1x/learn.png';
 import iconLock from '../assets/icons_1x/lock.png';
 import iconPool from '../assets/icons_1x/pool.png';
@@ -157,7 +157,6 @@ import cleaningRobotic from '../assets/cleaning-setup-images/robotic-cleaner1.jp
 import cleaningSuctionSide from '../assets/cleaning-setup-images/suction-side-cleaner1.jpg';
 
 // ─── Test Readings (keyed to TestReadingsMethod values) ───────────────────────
-import testReadingsInfoIcon from '../assets/pool-reading-images/info_icon.png';
 import testReadingsNoneIcon from '../assets/pool-reading-images/no_results_calendar.png';
 import testReadingsBackyardPhoto from '../assets/pool-reading-images/pool-backyard.png';
 import reminderShield from '../assets/pool-reading-images/reminder_shield.png';
@@ -182,7 +181,6 @@ import poolTonicCheckStrip from '../assets/pooltonic-ui/pooltonic-test-strip.png
 
 // ─── Onboarding completion (pool profile) ────────────────────────────────────
 import poolProfileCalculator from '../assets/onboardin-screen-images/pool-profile-calculator.png';
-import poolProfileInfo from '../assets/onboardin-screen-images/pool-profile-info.png';
 import poolProfilePhoto from '../assets/onboardin-screen-images/pool-profile-photo.png';
 import poolProfileStar from '../assets/onboardin-screen-images/pool-profile-star.png';
 import poolProfileTestTube from '../assets/onboardin-screen-images/pool-profile-test-tube.png';
@@ -237,6 +235,7 @@ export const graphics = {
     checklistSuccess,
     completionRing,
     emptyStatePool,
+    weeklyReminderIcon,
     poolTonicWelcomeBackground,
     poolTonicGradient,
     poolTonicButtonGradient,
@@ -284,7 +283,7 @@ export const icons = {
     circleCheck: iconCircleCheck,
     dashboard: iconDashboard,
     filter: iconFilter,
-    info: iconInfo,
+    info: poolTonicCheckInfo,
     learn: iconLearn,
     lock: iconLock,
     pool: iconPool,
@@ -434,7 +433,7 @@ export const testReadingsImages = {
 } as const;
 
 export const testReadingsGraphics = {
-    infoIcon: testReadingsInfoIcon,
+    infoIcon: poolTonicCheckInfo,
     stripPhoto: testReadingsStripPhoto,
     backyardPhoto: testReadingsBackyardPhoto,
 } as const;
@@ -472,7 +471,7 @@ export const testStripProductImages = {
 
 export const poolSizeGraphics = {
     reminderShield,
-    infoIcon: testReadingsInfoIcon,
+    infoIcon: poolTonicCheckInfo,
     tipsIcon: poolTonicTipsIcon,
     measurementsKnown: poolTonicMeasurementsKnown,
     helpEstimate: poolTonicHelp,
@@ -490,7 +489,7 @@ export const onboardingCompleteImages = {
     testTube: poolProfileTestTube,
     photo: poolProfilePhoto,
     calculator: poolProfileCalculator,
-    info: poolProfileInfo,
+    info: poolTonicCheckInfo,
     star: poolProfileStar,
 } as const;
 

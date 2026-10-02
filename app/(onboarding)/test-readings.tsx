@@ -7,6 +7,7 @@ import {
     TEST_READINGS_PHOTO_TIPS,
     testReadingsMethodTranslationKeys,
 } from '@/data/poolReadings';
+import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { TestReadingsMethod } from '@/lib/types';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +23,6 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSupabase } from '@/hooks/supabaseHooks';
 
 export default function TestReadingsScreen() {
     const router = useRouter();
