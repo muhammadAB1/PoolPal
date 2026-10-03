@@ -4,8 +4,10 @@ import { openai } from 'npm:@ai-sdk/openai@^2'
 import { z } from 'npm:zod@^3'
 
 export default {
-  fetch: withSupabase({ auth: 'user' }, async (req) => {
+  fetch: withSupabase({ auth: 'user' }, async (req, ctx) => {
     if (req.method !== 'POST') return Response.json({ error: 'Method not allowed' }, { status: 405 })
+    const { data: p } = await ctx.supabase.from('profiles').select('membership_tier').eq('id', ctx.userClaims?.id).maybeSingle()
+    if (p?.membership_tier !== 'premium') return Response.json({ error: 'Premium required' }, { status: 403 })
 
     const { target, imageBase64 } = await req.json()
     if (target !== 'filter' && target !== 'pump') return Response.json({ error: 'Bad target' }, { status: 400 })
