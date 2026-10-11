@@ -127,7 +127,7 @@ export default function SelectStripResultsScreen() {
         )}
 
         <TouchableOpacity
-          className={`btn btn--primary ${allSelected ? '' : 'opacity-50'}`}
+          className={`btn ${allSelected ? 'btn--primary' : 'btn--disabled'}`}
           activeOpacity={0.85}
           disabled={!allSelected}
           onPress={() => {
@@ -135,7 +135,7 @@ export default function SelectStripResultsScreen() {
             router.push('/(readings)/water-results');
           }}
         >
-          <Text className="text-button font-jakarta-bold text-surface-white">
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {t('strip_results_continue')}
           </Text>
         </TouchableOpacity>

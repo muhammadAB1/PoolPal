@@ -339,12 +339,12 @@ export default function WeeklyReminderScreen({
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
+                    className={`rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'btn--disabled' : 'btn--primary'}`}
                     onPress={handleComplete}
                     activeOpacity={0.85}
                     disabled={isSubmitting}
                 >
-                    <Text className="text-button font-jakarta-bold text-surface-white">
+                    <Text className="text-button font-jakarta-bold btn__label--primary">
                         {t('weekly_reminder_complete')}
                     </Text>
                 </TouchableOpacity>

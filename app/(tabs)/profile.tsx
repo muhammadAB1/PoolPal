@@ -149,13 +149,13 @@ export default function ProfileScreen() {
               showCity
             />
             <TouchableOpacity
-              className={`btn btn--primary mt-5 min-h-[50px] ${savingPreferences ? 'opacity-50' : ''}`}
+              className={`btn mt-5 min-h-[50px] ${savingPreferences ? 'btn--disabled' : 'btn--primary'}`}
               onPress={savePreferences}
               disabled={savingPreferences}
               activeOpacity={0.85}
             >
               <Text
-                className="font-jakarta-bold text-surface-white text-[16px]"
+                className="font-jakarta-bold btn__label--primary text-[16px]"
                 style={{ lineHeight: 22, includeFontPadding: true }}
               >
                 {savingPreferences ? t('common_saving') : t('profile_preferences_save')}

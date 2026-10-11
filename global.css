@@ -100,6 +100,7 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    BEM COMPONENT UTILITIES
    Reusable class patterns. Use as className="card", className="btn btn--primary"
+   Primary fill: .btn--primary. Inactive fill: .btn--disabled. Label color: .btn__label--primary.
    Follow BEM: .block, .block--modifier, .block__element
 ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -150,6 +151,12 @@
   /* Button modifiers */
   .btn--primary {
     @apply bg-linear-to-r from-[#2EC8EE] to-[#0A8B94];
+  }
+
+  /* Same gradient direction, dulled so the control reads as inactive.
+     Pair with .btn__label--primary so the label stays white. */
+  .btn--disabled {
+    @apply bg-linear-to-r from-[#4E7A84] to-[#345860];
   }
 
   .btn--secondary {

@@ -128,11 +128,11 @@ export default function PoolConditionScreen({
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className="bg-brand-blue rounded-full py-4.25 items-center justify-center"
+                    className="btn--primary rounded-full py-4.25 items-center justify-center"
                     onPress={handleContinue}
                     activeOpacity={0.85}
                 >
-                    <Text className="text-button font-jakarta-bold text-surface-white">
+                    <Text className="text-button font-jakarta-bold btn__label--primary">
                         {t('pool_condition_continue')}
                     </Text>
                 </TouchableOpacity>

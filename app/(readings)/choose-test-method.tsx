@@ -143,12 +143,12 @@ export default function ChooseTestMethodScreen() {
 
       <View className="px-5 pt-2 pb-3">
         <TouchableOpacity
-          className={`btn btn--primary ${selectedId ? '' : 'opacity-50'}`}
+          className={`btn ${selectedId ? 'btn--primary' : 'btn--disabled'}`}
           activeOpacity={0.85}
           disabled={!selectedId}
           onPress={continueFlow}
         >
-          <Text className="text-button font-jakarta-bold text-surface-white">
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {t('choose_test_method_continue')}
           </Text>
         </TouchableOpacity>

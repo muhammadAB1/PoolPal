@@ -225,12 +225,12 @@ export default function WaterResultsScreen() {
 
       <View className="px-5 pt-2 pb-3">
         <TouchableOpacity
-          className={`btn btn--primary ${poolStatus !== 'unable_to_determine' && swimmingStatus !== 'unable_to_determine' && !saving ? '' : 'opacity-50'}`}
+          className={`btn ${poolStatus !== 'unable_to_determine' && swimmingStatus !== 'unable_to_determine' && !saving ? 'btn--primary' : 'btn--disabled'}`}
           activeOpacity={0.85}
           disabled={saving || poolStatus === 'unable_to_determine' || swimmingStatus === 'unable_to_determine'}
           onPress={handleContinue}
         >
-          <Text className="text-button font-jakarta-bold text-surface-white">
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {t('water_results_cta')}
           </Text>
         </TouchableOpacity>

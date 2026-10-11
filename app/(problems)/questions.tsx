@@ -134,10 +134,9 @@ export default function ProblemsQuestionsScreen() {
                     disabled={selected.length === 0}
                     onPress={handleContinue}
                     activeOpacity={0.85}
-                    className={`rounded-full py-4.25 items-center justify-center ${selected.length > 0 ? 'bg-brand-blue' : 'bg-border-default'
-                        }`}
+                    className={`rounded-full py-4.25 items-center justify-center ${selected.length > 0 ? 'btn--primary' : 'btn--disabled'}`}
                 >
-                    <Text className="text-button font-jakarta-bold text-surface-white">
+                    <Text className="text-button font-jakarta-bold btn__label--primary">
                         {t('problems_continue')}
                     </Text>
                 </TouchableOpacity>

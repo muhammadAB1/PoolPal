@@ -151,12 +151,12 @@ export default function ChooseStripBrandScreen() {
       {/* Fixed footer */}
       <View className="px-5 pt-2 pb-3">
         <TouchableOpacity
-          className={`btn btn--primary ${selectedBrand ? '' : 'opacity-50'}`}
+          className={`btn ${selectedBrand ? 'btn--primary' : 'btn--disabled'}`}
           activeOpacity={0.85}
           disabled={!selectedBrand}
           onPress={() => router.push('/(readings)/select-strip-results')}
         >
-          <Text className="text-button font-jakarta-bold text-surface-white">
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {t('strip_brand_continue')}
           </Text>
         </TouchableOpacity>

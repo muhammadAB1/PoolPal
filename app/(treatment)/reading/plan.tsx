@@ -262,11 +262,11 @@ export default function TreatmentPlanScreen() {
       {/* Sticky footer */}
       <View className="absolute bottom-0 left-0 right-0 bg-surface-white px-5 pt-3 pb-7 border-t border-border-default">
         <TouchableOpacity
-          className="rounded-full bg-brand-blue py-4 items-center"
+          className="btn--primary rounded-full py-4 items-center"
           activeOpacity={0.85}
           onPress={() => router.push(fromReading ? '/(tabs)/dashboard' : '/(tabs)/readings')}
         >
-          <Text className="text-button font-jakarta-bold text-surface-white">
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {fromReading ? t('go_to_dashboard') : t('complete_treatment')}
           </Text>
         </TouchableOpacity>

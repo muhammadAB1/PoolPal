@@ -616,12 +616,12 @@ export default function PoolBasicsScreen({
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${continueDisabled ? 'opacity-50' : ''}`}
+                    className={`rounded-full py-4.25 items-center justify-center ${continueDisabled ? 'btn--disabled' : 'btn--primary'}`}
                     onPress={handleContinue}
                     activeOpacity={0.85}
                     disabled={continueDisabled}
                 >
-                    <Text className="text-button font-jakarta-bold text-surface-white">
+                    <Text className="text-button font-jakarta-bold btn__label--primary">
                         {t('pool_basics_continue')}
                     </Text>
                 </TouchableOpacity>

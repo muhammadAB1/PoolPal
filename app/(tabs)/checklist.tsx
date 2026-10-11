@@ -134,15 +134,11 @@ export default function ChecklistScreen() {
       {/* Footer button */}
       <View className="px-4 pt-3 pb-3 bg-surface-bg border-t border-border-default">
         <TouchableOpacity
-          className="rounded-2xl py-4 items-center btn--primary"
-          style={{ backgroundColor: allDone && !weekDone ? TEAL : '#E8ECF0' }}
+          className={`rounded-2xl py-4 items-center ${allDone && !weekDone ? 'btn--primary' : 'btn--disabled'}`}
           disabled={!allDone || weekDone}
           onPress={() => setWeekDone(true)}
         >
-          <Text
-            className="text-button font-jakarta-bold"
-            style={{ color: allDone && !weekDone ? colors.surface.white : colors.text.sub }}
-          >
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {allDone && !weekDone ? t('checklist.completeWeek') : t('checklist.completeFirst')}
           </Text>
         </TouchableOpacity>

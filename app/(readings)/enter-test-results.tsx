@@ -333,12 +333,12 @@ export default function EnterTestResultsScreen() {
 
       <View className="px-5 pt-2 pb-3 border-t border-[#EFF3F6] bg-surface-white">
         <TouchableOpacity
-          className={`btn btn--primary ${canContinue ? '' : 'opacity-50'}`}
+          className={`btn ${canContinue ? 'btn--primary' : 'btn--disabled'}`}
           activeOpacity={0.85}
           disabled={!canContinue}
           onPress={handleContinue}
         >
-          <Text className="text-button font-jakarta-bold text-surface-white">
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {t('choose_test_method_continue')}
           </Text>
         </TouchableOpacity>

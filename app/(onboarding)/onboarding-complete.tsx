@@ -161,11 +161,11 @@ export default function OnboardingCompleteScreen() {
 
       <View className="absolute bottom-0 left-0 right-0 bg-surface-white px-5 pt-3 pb-7 border-t border-border-default">
         <TouchableOpacity
-          className="bg-brand-blue rounded-full py-4.25 items-center justify-center"
+          className="btn--primary rounded-full py-4.25 items-center justify-center"
           onPress={handleGoToDashboard}
           activeOpacity={0.85}
         >
-          <Text className="text-button font-jakarta-bold text-surface-white">
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {t('onboarding_complete_cta')}
           </Text>
         </TouchableOpacity>

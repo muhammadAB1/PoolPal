@@ -348,14 +348,14 @@ export default function EquipmentBasicsScreen({
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${
-                        isSubmitting ? 'opacity-50' : ''
+                    className={`rounded-full py-4.25 items-center justify-center ${
+                        isSubmitting ? 'btn--disabled' : 'btn--primary'
                     }`}
                     onPress={handleContinue}
                     disabled={isSubmitting}
                     activeOpacity={0.85}
                 >
-                    <Text className="text-button font-jakarta-bold text-surface-white">
+                    <Text className="text-button font-jakarta-bold btn__label--primary">
                         {t('equipment_basics_continue')}
                     </Text>
                 </TouchableOpacity>
