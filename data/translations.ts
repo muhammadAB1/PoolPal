@@ -620,29 +620,28 @@ export const en = {
 
   // onboarding complete
   onboarding_complete_profile_label: 'profile complete',
-  onboarding_complete_title: 'Your Pool Care Plan Is Ready',
-  onboarding_complete_badge: 'Weekly plan ready',
-  onboarding_complete_info_bold: 'You can start using PoolTonic now.',
-  onboarding_complete_info_rest:
-    'Add more details later to improve your recommendations.',
-  onboarding_complete_improve_title: 'Improve your setup',
-  onboarding_complete_improve_subtitle:
-    'These steps are optional, but they help PoolTonic personalize your care plan.',
-  onboarding_complete_water_title: 'Add first water readings',
+  onboarding_complete_badge: 'Setup complete',
+  onboarding_complete_title: 'Your pool care plan is ready',
+  onboarding_complete_subtitle:
+    'Pool Tonic will help you keep your pool clear, balanced, and easier to manage.',
+  onboarding_complete_know_title: 'Know exactly what to do next',
+  onboarding_complete_know_desc:
+    'Get simple, step-by-step guidance based on your pool.',
+  onboarding_complete_problems_title: 'Catch problems before they get expensive',
+  onboarding_complete_problems_desc:
+    'Spot water, equipment, and maintenance issues early.',
+  onboarding_complete_water_title: 'Keep your water safe and balanced',
   onboarding_complete_water_desc:
-    'Helps PoolTonic understand your current water balance.',
-  onboarding_complete_kit_title: 'Choose a testing kit',
-  onboarding_complete_kit_desc:
-    'Get better weekly guidance with the right test kit.',
-  onboarding_complete_photos_title: 'Upload equipment photos',
-  onboarding_complete_photos_desc:
-    'Helps identify your filter, pump, and equipment setup.',
-  onboarding_complete_gallons_title: 'Confirm pool gallons',
-  onboarding_complete_gallons_desc:
-    'Improves volume and product amount estimates.',
-  onboarding_complete_tip:
-    'The more details you add, the more accurate your water care, reminders, and product recommendations become.',
-  onboarding_complete_cta: 'Go to Dashboard',
+    'Understand your test results and what needs attention.',
+  onboarding_complete_products_title: 'Use the right products, in the right amounts',
+  onboarding_complete_products_desc:
+    'Avoid guessing, over-treating, and wasting money on chemicals.',
+  onboarding_complete_weekly_title: 'Stay on top of pool care every week',
+  onboarding_complete_weekly_desc:
+    'Pool Tonic keeps track of what needs to be checked, treated, and retested.',
+  onboarding_complete_info:
+    'You can update your pool details anytime from your dashboard.',
+  onboarding_complete_cta: 'Go to My Dashboard',
 
   // signup — actions
   signup_google: 'Sign up with Google',
@@ -1818,29 +1817,28 @@ export const es = {
 
   // onboarding complete
   onboarding_complete_profile_label: 'perfil completo',
-  onboarding_complete_title: 'Tu plan de cuidado de piscina está listo',
-  onboarding_complete_badge: 'Plan semanal listo',
-  onboarding_complete_info_bold: 'Ya puedes empezar a usar PoolTonic.',
-  onboarding_complete_info_rest:
-    'Añade más detalles más adelante para mejorar tus recomendaciones.',
-  onboarding_complete_improve_title: 'Mejora tu configuración',
-  onboarding_complete_improve_subtitle:
-    'Estos pasos son opcionales, pero ayudan a PoolTonic a personalizar tu plan de cuidado.',
-  onboarding_complete_water_title: 'Añade los primeros valores del agua',
+  onboarding_complete_badge: 'Configuración completada',
+  onboarding_complete_title: 'Tu plan de cuidado de la piscina está listo',
+  onboarding_complete_subtitle:
+    'Pool Tonic te ayudará a mantener tu piscina limpia, equilibrada y más fácil de cuidar.',
+  onboarding_complete_know_title: 'Sabe exactamente qué hacer a continuación',
+  onboarding_complete_know_desc:
+    'Recibe indicaciones sencillas, paso a paso, adaptadas a tu piscina.',
+  onboarding_complete_problems_title: 'Detecta los problemas antes de que salgan caros',
+  onboarding_complete_problems_desc:
+    'Identifica a tiempo problemas con el agua, el equipo y el mantenimiento.',
+  onboarding_complete_water_title: 'Mantén el agua segura y equilibrada',
   onboarding_complete_water_desc:
-    'Ayuda a PoolTonic a entender el equilibrio actual del agua.',
-  onboarding_complete_kit_title: 'Elige un kit de análisis',
-  onboarding_complete_kit_desc:
-    'Recibe mejores recomendaciones semanales con el kit adecuado.',
-  onboarding_complete_photos_title: 'Sube fotos del equipo',
-  onboarding_complete_photos_desc:
-    'Ayuda a identificar tu filtro, bomba y configuración del equipo.',
-  onboarding_complete_gallons_title: 'Confirma los galones de la piscina',
-  onboarding_complete_gallons_desc:
-    'Mejora las estimaciones de volumen y cantidades de producto.',
-  onboarding_complete_tip:
-    'Cuantos más detalles añadas, más precisas serán tus recomendaciones de cuidado del agua, recordatorios y productos.',
-  onboarding_complete_cta: 'Ir al panel',
+    'Entiende los resultados de tus análisis y qué necesita atención.',
+  onboarding_complete_products_title: 'Usa los productos adecuados, en las cantidades correctas',
+  onboarding_complete_products_desc:
+    'Evita adivinar, usar demasiado producto y gastar de más en productos químicos.',
+  onboarding_complete_weekly_title: 'Mantén al día el cuidado de tu piscina cada semana',
+  onboarding_complete_weekly_desc:
+    'Pool Tonic lleva un seguimiento de lo que hay que revisar, tratar y volver a analizar.',
+  onboarding_complete_info:
+    'Puedes actualizar los datos de tu piscina en cualquier momento desde tu panel.',
+  onboarding_complete_cta: 'Ir a mi panel',
 
   // signup — actions
   signup_google: 'Registrarse con Google',

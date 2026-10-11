@@ -1,6 +1,6 @@
 import ProfileCompletionRing from '@/components/ProfileCompletionRing';
-import { onboardingCompleteImages } from '@/constants/images';
-import { colors } from '@/constants/theme';
+import { icons, onboardingCompleteImages } from '@/constants/images';
+import { colors, shadow } from '@/constants/theme';
 import { useSupabase } from '@/hooks/supabaseHooks';
 import { Ionicons } from '@expo/vector-icons';
 import { Href, useLocalSearchParams, useRouter } from 'expo-router';
@@ -16,32 +16,37 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-type ImproveStep = {
+type PlanPoint = {
   icon: ImageSourcePropType;
   titleKey: string;
   descKey: string;
 };
 
-const IMPROVE_STEPS: ImproveStep[] = [
+const PLAN_POINTS: PlanPoint[] = [
   {
-    icon: onboardingCompleteImages.waterDrop,
+    icon: onboardingCompleteImages.knowWhatToDo,
+    titleKey: 'onboarding_complete_know_title',
+    descKey: 'onboarding_complete_know_desc',
+  },
+  {
+    icon: onboardingCompleteImages.catchProblems,
+    titleKey: 'onboarding_complete_problems_title',
+    descKey: 'onboarding_complete_problems_desc',
+  },
+  {
+    icon: onboardingCompleteImages.keepWaterSafe,
     titleKey: 'onboarding_complete_water_title',
     descKey: 'onboarding_complete_water_desc',
   },
   {
-    icon: onboardingCompleteImages.testTube,
-    titleKey: 'onboarding_complete_kit_title',
-    descKey: 'onboarding_complete_kit_desc',
+    icon: onboardingCompleteImages.rightProducts,
+    titleKey: 'onboarding_complete_products_title',
+    descKey: 'onboarding_complete_products_desc',
   },
   {
-    icon: onboardingCompleteImages.photo,
-    titleKey: 'onboarding_complete_photos_title',
-    descKey: 'onboarding_complete_photos_desc',
-  },
-  {
-    icon: onboardingCompleteImages.calculator,
-    titleKey: 'onboarding_complete_gallons_title',
-    descKey: 'onboarding_complete_gallons_desc',
+    icon: onboardingCompleteImages.weeklyCare,
+    titleKey: 'onboarding_complete_weekly_title',
+    descKey: 'onboarding_complete_weekly_desc',
   },
 ];
 
@@ -71,105 +76,96 @@ export default function OnboardingCompleteScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="flex-1 px-5 pt-2">
-          <View className="items-center mt-2">
-            <ProfileCompletionRing
-              percentage={safePercentage}
-              size={148}
-              strokeWidth={12}
-              label={t('onboarding_complete_profile_label')}
-            />
-          </View>
+    <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+      <Image
+        source={onboardingCompleteImages.background}
+        resizeMode="cover"
+        pointerEvents="none"
+        className="absolute top-0 left-0 w-full h-full"
+      />
 
-          <Text className="text-h1 font-jakarta-extrabold text-brand-navy text-center mt-5 px-2">
-            {t('onboarding_complete_title')}
-          </Text>
+      <SafeAreaView style={{ flex: 1, backgroundColor: 'transparent' }}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 16 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <View className="flex-1 px-5 pt-2">
+            <View className="items-center mt-1">
+              <ProfileCompletionRing
+                percentage={safePercentage}
+                size={148}
+                strokeWidth={12}
+                label={t('onboarding_complete_profile_label')}
+              />
+            </View>
 
-          <View className="items-center mt-3">
-            <View className="chip--success flex-row items-center gap-1.5 px-3 py-1.5 rounded-full">
-              <Ionicons name="checkmark-circle" size={16} color={colors.status.success} />
-              <Text className="text-small font-jakarta-bold text-success-text">
+            <View className="flex-row items-center gap-1.5 self-center bg-[#E5F8EF] px-3 py-1.5 rounded-full mt-5">
+              <Ionicons name="checkmark-circle" size={18} color={colors.status.success} />
+              <Text className="text-[13px] font-jakarta-bold text-success-text">
                 {t('onboarding_complete_badge')}
               </Text>
             </View>
-          </View>
 
-          <View className="card--info mt-5 px-4 py-3.5 flex-row items-start gap-3">
-            <Image
-              source={onboardingCompleteImages.info}
-              className="w-6 h-6 mt-0.5"
-              resizeMode="contain"
-            />
-            <Text className="flex-1 text-body font-jakarta text-charcoal">
-              <Text className="font-jakarta-bold">{t('onboarding_complete_info_bold')} </Text>
-              {t('onboarding_complete_info_rest')}
-            </Text>
-          </View>
-
-          <View className="card mt-5 px-4 pt-4 pb-1">
-            <Text className="text-h3 font-jakarta-extrabold text-brand-navy">
-              {t('onboarding_complete_improve_title')}
-            </Text>
-            <Text className="text-small font-jakarta text-sub mt-1 mb-2">
-              {t('onboarding_complete_improve_subtitle')}
+            <Text className="text-[26px] leading-8 font-jakarta-extrabold text-brand-navy text-center mt-4 px-2">
+              {t('onboarding_complete_title')}
             </Text>
 
-            {IMPROVE_STEPS.map((step, index) => {
-              const isLast = index === IMPROVE_STEPS.length - 1;
-              return (
-                <TouchableOpacity
-                  key={step.titleKey}
-                  activeOpacity={0.7}
-                  className={`flex-row items-center py-3.5 ${isLast ? '' : 'border-b border-border-default'}`}
-                >
-                  <Image
-                    source={step.icon}
-                    className="w-11 h-11"
-                    resizeMode="contain"
-                  />
-                  <View className="flex-1 ml-3 mr-2">
-                    <Text className="text-body font-jakarta-bold text-brand-navy">
-                      {t(step.titleKey)}
-                    </Text>
-                    <Text className="text-small font-jakarta text-sub mt-0.5">
-                      {t(step.descKey)}
-                    </Text>
+            <Text className="text-[15px] leading-6 font-jakarta text-sub text-center mt-2 px-3">
+              {t('onboarding_complete_subtitle')}
+            </Text>
+
+            <View
+              className="bg-surface-white rounded-3xl border border-border-default mt-5 px-3.5"
+              style={shadow.card}
+            >
+              {PLAN_POINTS.map((point, index) => {
+                const isLast = index === PLAN_POINTS.length - 1;
+                return (
+                  <View
+                    key={point.titleKey}
+                    className={`flex-row items-center py-3.5 ${isLast ? '' : 'border-b border-border-default'}`}
+                  >
+                    <Image
+                      source={point.icon}
+                      className="w-14 h-14"
+                      resizeMode="contain"
+                    />
+                    <View className="flex-1 ml-3">
+                      <Text className="text-[15px] leading-5 font-jakarta-bold text-brand-navy">
+                        {t(point.titleKey)}
+                      </Text>
+                      <Text className="text-[13px] leading-5 font-jakarta text-sub mt-0.5">
+                        {t(point.descKey)}
+                      </Text>
+                    </View>
                   </View>
-                  <Ionicons name="chevron-forward" size={18} color={colors.text.faint} />
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+                );
+              })}
+            </View>
 
-          <View className="card--success mt-5 px-4 py-3.5 flex-row items-start gap-3">
-            <Image
-              source={onboardingCompleteImages.star}
-              className="w-10 h-10"
-              resizeMode="contain"
-            />
-            <Text className="flex-1 text-small font-jakarta text-charcoal mt-1">
-              {t('onboarding_complete_tip')}
-            </Text>
-          </View>
-        </View>
-      </ScrollView>
+            <View className="mt-4 px-3.5 py-3.5 rounded-2xl flex-row items-center gap-2.5 bg-[#E7F6EF]">
+              <Image
+                source={icons.info}
+                className="w-6 h-6"
+                resizeMode="contain"
+              />
+              <Text className="flex-1 text-[13px] leading-5 font-jakarta text-charcoal">
+                {t('onboarding_complete_info')}
+              </Text>
+            </View>
 
-      <View className="absolute bottom-0 left-0 right-0 bg-surface-white px-5 pt-3 pb-7 border-t border-border-default">
-        <TouchableOpacity
-          className="btn--primary rounded-full py-4.25 items-center justify-center"
-          onPress={handleGoToDashboard}
-          activeOpacity={0.85}
-        >
-          <Text className="text-button font-jakarta-bold btn__label--primary">
-            {t('onboarding_complete_cta')}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+            <TouchableOpacity
+              className="btn--primary rounded-full py-4.25 items-center justify-center mt-4 mb-2"
+              onPress={handleGoToDashboard}
+              activeOpacity={0.85}
+            >
+              <Text className="text-button font-jakarta-bold btn__label--primary">
+                {t('onboarding_complete_cta')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 }

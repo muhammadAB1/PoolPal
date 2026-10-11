@@ -179,12 +179,18 @@ import poolTonicCheckVisibleProblem from '../assets/pooltonic-ui/pooltonic-solve
 import poolTonicCheckResults from '../assets/pooltonic-ui/pooltonic-test-results.png';
 import poolTonicCheckStrip from '../assets/pooltonic-ui/pooltonic-test-strip.png';
 
-// ─── Onboarding completion (pool profile) ────────────────────────────────────
-import poolProfileCalculator from '../assets/onboardin-screen-images/pool-profile-calculator.png';
-import poolProfilePhoto from '../assets/onboardin-screen-images/pool-profile-photo.png';
-import poolProfileStar from '../assets/onboardin-screen-images/pool-profile-star.png';
-import poolProfileTestTube from '../assets/onboardin-screen-images/pool-profile-test-tube.png';
-import poolProfileWaterDrop from '../assets/onboardin-screen-images/pool-profile-water-drop.png';
+// ─── Onboarding completion ───────────────────────────────────────────────────
+import onboardingCompleteBackground from '../assets/onboardin-screen-images/screen_07_equipment_basics.png';
+import onboardingCatchProblems from '../assets/onboardin-screen-images/Pooltonic-catch-problems.png';
+import onboardingKeepWaterSafe from '../assets/onboardin-screen-images/pooltonic-keep-water-safe.png';
+import onboardingKnowWhatToDo from '../assets/onboardin-screen-images/PoolTonic-know-what-to-do.png';
+import onboardingWeeklyCare from '../assets/onboardin-screen-images/pooltonic-pool-care-each-week.png';
+import onboardingRightProducts from '../assets/onboardin-screen-images/pooltonic-use-right-products.png';
+// import poolProfileCalculator from '../assets/onboardin-screen-images/pool-profile-calculator.png';
+// import poolProfilePhoto from '../assets/onboardin-screen-images/pool-profile-photo.png';
+// import poolProfileStar from '../assets/onboardin-screen-images/pool-profile-star.png';
+// import poolProfileTestTube from '../assets/onboardin-screen-images/pool-profile-test-tube.png';
+// import poolProfileWaterDrop from '../assets/onboardin-screen-images/pool-profile-water-drop.png';
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 import dashboardAskPoolwiseIcon from '../assets/dashboard-images/ask_poolwise_chat_icon.png';
@@ -485,12 +491,18 @@ export const poolSizeGraphics = {
  * Onboarding completion screen images.
  */
 export const onboardingCompleteImages = {
-    waterDrop: poolProfileWaterDrop,
-    testTube: poolProfileTestTube,
-    photo: poolProfilePhoto,
-    calculator: poolProfileCalculator,
+    background: onboardingCompleteBackground,
+    knowWhatToDo: onboardingKnowWhatToDo,
+    catchProblems: onboardingCatchProblems,
+    keepWaterSafe: onboardingKeepWaterSafe,
+    rightProducts: onboardingRightProducts,
+    weeklyCare: onboardingWeeklyCare,
     info: poolTonicCheckInfo,
-    star: poolProfileStar,
+    // waterDrop: poolProfileWaterDrop,
+    // testTube: poolProfileTestTube,
+    // photo: poolProfilePhoto,
+    // calculator: poolProfileCalculator,
+    // star: poolProfileStar,
 } as const;
 
 /**
