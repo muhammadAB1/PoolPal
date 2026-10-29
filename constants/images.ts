@@ -551,6 +551,42 @@ export const poolTabImages = {
     basicsHero: poolBasicsHero,
 } as const;
 
+/**
+ * Shop tab product and category images.
+ * Reuses existing pool-product artwork so the shop UI looks real before
+ * dedicated product photography exists.
+ */
+export const shopImages = {
+    // Test kits
+    aquachek: aquachek7in1,
+    hth: hth6Way,
+    jnw: jnwPoolAndSpa,
+    easyTest: easyTest9in1,
+    // Balancers
+    ph: chemistryPh,
+    alkalinity: chemistryTotalAlkalinity,
+    hardness: chemistryCalciumHardness,
+    phosphates: chemistryPhosphates,
+    // Sanitizers
+    chlorine: chemistryFreeChlorine,
+    salt: chemistrySalt,
+    stabilizer: chemistryCyanuricAcid,
+    bromine: chemistryBromine,
+    // Cleaners
+    robotic: cleaningRobotic,
+    pressureSide: cleaningPressureSide,
+    suctionSide: cleaningSuctionSide,
+    manualVacuum: cleaningManualVacuum,
+    // Pumps
+    variablePump: equipmentChoiceVariable,
+    dualPump: equipmentChoiceDual,
+    singlePump: equipmentChoiceSingle,
+    // Filters
+    cartridgeFilter: equipmentChoiceCartridge,
+    sandFilter: equipmentChoiceSand,
+    deFilter: equipmentChoiceDe,
+} as const;
+
 /** Convenience alias — use `graphics` or `icons` directly for clarity */
 export const images = {
     ...graphics,

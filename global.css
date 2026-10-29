@@ -322,4 +322,97 @@
     @apply bg-surface-mint;
   }
 
+  /* ─── Icon button (round, 44px touch target) ─────────────────────────── */
+
+  .icon-btn {
+    @apply w-11 h-11 rounded-full bg-surface-white border border-border-default items-center justify-center;
+  }
+
+  .icon-btn__count {
+    @apply absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-brand-navy items-center justify-center;
+  }
+
+  .icon-btn__count-label {
+    @apply text-tiny font-jakarta-extrabold text-surface-white;
+  }
+
+  /* ─── Shop: product card ─────────────────────────────────────────────── */
+  /* Outer view carries the shadow, body clips the image to the radius.    */
+
+  .product-card {
+    @apply bg-surface-white rounded-2xl;
+  }
+
+  .product-card__body {
+    @apply rounded-2xl overflow-hidden border border-border-default;
+  }
+
+  .product-card__stage {
+    @apply w-full aspect-5/4 bg-surface-white;
+  }
+
+  .product-card__badge {
+    @apply absolute top-2.5 left-2.5 flex-row items-center self-start rounded-full bg-surface-white border border-border-default px-2.5 py-1;
+  }
+
+  .product-card__badge-label {
+    @apply text-small font-jakarta-bold text-brand-navy ml-1;
+  }
+
+  .product-card__info {
+    @apply px-3.5 pt-3 pb-3.5;
+  }
+
+  .product-card__name {
+    @apply min-h-10 text-body leading-5 font-jakarta-bold text-brand-navy;
+  }
+
+  .product-card__price {
+    @apply text-body-lg font-jakarta-extrabold text-brand-navy;
+  }
+
+  /* ─── Shop: category tile ────────────────────────────────────────────── */
+
+  .category-tile {
+    @apply h-30 overflow-hidden rounded-2xl p-3.5;
+  }
+
+  .category-tile--aqua {
+    @apply bg-surface-soft-aqua;
+  }
+
+  .category-tile--mint {
+    @apply bg-surface-mint;
+  }
+
+  .category-tile__name {
+    @apply text-body-lg font-jakarta-extrabold text-brand-navy;
+  }
+
+  .category-tile__count {
+    @apply text-small font-jakarta text-brand-navy mt-0.5;
+  }
+
+  .category-tile__bubble {
+    @apply absolute -bottom-3 -right-3 w-22 h-22 rounded-full bg-surface-white overflow-hidden;
+  }
+
+  /* ─── Shop: filter chip ──────────────────────────────────────────────── */
+
+  .filter-chip {
+    @apply rounded-full px-4 py-2.5 bg-surface-white border border-border-default;
+  }
+
+  .filter-chip--active {
+    @apply bg-brand-navy border-brand-navy;
+  }
+
+  .filter-chip__label {
+    @apply text-small font-jakarta-bold text-brand-navy;
+  }
+
+  .filter-chip__label--active {
+    @apply text-surface-white;
+  }
+
 }
