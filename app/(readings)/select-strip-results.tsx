@@ -39,12 +39,7 @@ export default function SelectStripResultsScreen() {
 
           <PoolTonicLogo width={152} height={43} />
 
-          <TouchableOpacity
-            className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
-            activeOpacity={0.7}
-          >
-            <Text className="text-h3 font-jakarta-bold text-brand-navy">?</Text>
-          </TouchableOpacity>
+          <View className="w-10 h-10" />
         </View>
       </View>
 
@@ -127,7 +122,7 @@ export default function SelectStripResultsScreen() {
         )}
 
         <TouchableOpacity
-          className={`btn ${allSelected ? 'btn--primary' : 'btn--disabled'}`}
+          className={`w-full btn ${allSelected ? 'btn--primary' : 'btn--disabled'}`}
           activeOpacity={0.85}
           disabled={!allSelected}
           onPress={() => {

@@ -111,9 +111,6 @@ export default function ReadingsScreen() {
             <Text className="text-h1 font-jakarta-extrabold text-brand-navy">
               {t('readings_title')}
             </Text>
-            
-              <Image source={icons.info} className="w-7 h-7" resizeMode="contain" />
-            
           </View>
           <Text className="text-body font-jakarta text-sub mt-1">
             {t('readings_subtitle')}
