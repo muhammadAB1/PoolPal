@@ -36,6 +36,7 @@
           "behavior": "overlay-swipe"
         }
       ],
+      "expo-notifications",
       [
         "expo-splash-screen",
         {

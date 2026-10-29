@@ -3,6 +3,7 @@ import '../global.css';
 
 import { AuthProvider } from '@/providers/AuthProvider';
 import { PoolProvider } from '@/providers/PoolProvider';
+import { ShopListProvider } from '@/providers/ShopListProvider';
 import { TestStripProvider } from '@/providers/TestStripProvider';
 import {
   PlusJakartaSans_400Regular,
@@ -50,11 +51,13 @@ export default function RootLayout() {
     <AuthProvider>
       <PoolProvider>
         <TestStripProvider>
-          <Stack
-            screenOptions={{
-              headerShown: false,
-            }}
-          />
+          <ShopListProvider>
+            <Stack
+              screenOptions={{
+                headerShown: false,
+              }}
+            />
+          </ShopListProvider>
         </TestStripProvider>
       </PoolProvider>
     </AuthProvider>
