@@ -5,6 +5,7 @@ import { Platform } from 'react-native';
 
 const ID = 'weekly-reminder';
 const CHANNEL_ID = 'reminders';
+const CATEGORY_ID = 'weeklyreminder';
 
 let lastKey: string | null = null;
 let queue = Promise.resolve();
@@ -60,12 +61,21 @@ async function apply(day?: Weekday | null, time?: string | null) {
     });
   }
 
+  await Notifications.setNotificationCategoryAsync(CATEGORY_ID, [
+    {
+      identifier: 'startpoolcheck',
+      buttonTitle: i18n.t('weekly_reminder_notification_button'),
+      options: { opensAppToForeground: true },
+    },
+  ]);
+
   await Notifications.cancelScheduledNotificationAsync(ID);
   await Notifications.scheduleNotificationAsync({
     identifier: ID,
     content: {
       title: i18n.t('weekly_reminder_notification_title'),
       body: i18n.t('weekly_reminder_notification_body'),
+      categoryIdentifier: CATEGORY_ID,
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.WEEKLY,

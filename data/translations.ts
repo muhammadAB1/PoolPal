@@ -617,8 +617,10 @@ export const en = {
     'Stay on top of water testing, maintenance, and your next recommended steps. You can change or turn off your reminder anytime.',
   weekly_reminder_complete: 'Set Reminder',
   weekly_reminder_skip_for_now: 'Skip for now',
-  weekly_reminder_notification_title: 'Pool Tonic',
-  weekly_reminder_notification_body: 'Weekly pool reminder',
+  weekly_reminder_notification_title: 'Time for your weekly pool check',
+  weekly_reminder_notification_body:
+    "Test your pool water, log your results, and check off this week's care tasks.",
+  weekly_reminder_notification_button: 'Start pool check',
 
   // onboarding complete
   onboarding_complete_profile_label: 'profile complete',
@@ -1816,8 +1818,10 @@ export const es = {
     'Mantente al día con las pruebas de agua, el mantenimiento y tus próximos pasos recomendados. Puedes cambiar o desactivar tu recordatorio en cualquier momento.',
   weekly_reminder_complete: 'Configurar recordatorio',
   weekly_reminder_skip_for_now: 'Saltar por ahora',
-  weekly_reminder_notification_title: 'Pool Tonic',
-  weekly_reminder_notification_body: 'Recordatorio semanal de la piscina',
+  weekly_reminder_notification_title: 'Es hora de la revisión semanal de tu piscina',
+  weekly_reminder_notification_body:
+    'Analiza el agua de tu piscina, registra tus resultados y marca las tareas de cuidado de esta semana.',
+  weekly_reminder_notification_button: 'Empezar revisión',
 
   // onboarding complete
   onboarding_complete_profile_label: 'perfil completo',
