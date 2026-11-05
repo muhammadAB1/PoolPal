@@ -42,7 +42,8 @@ const INFO_KEYS: Partial<Record<HaveResultsFieldKey, string>> = {
   copper: 'test_results_info_copper',
   iron: 'test_results_info_iron',
   totalChlorine: 'test_results_info_total_chlorine',
-  totalHardness: 'test_results_info_total_hardness',
+  totalHardness: 'test_results_total_hardness_support',
+  combinedChlorine: 'test_results_cc_calculated',
 };
 
 const COMBINED_CHLORINE = HAVE_RESULTS_FIELDS.find((field) => field.key === 'combinedChlorine')!;
@@ -305,9 +306,6 @@ export default function EnterTestResultsScreen() {
                     error={fieldErrors[field.key]}
                     onChange={(value) => updateReading(field.key, value)}
                     onInfo={() => showInfo(field)}
-                    supportingKey={
-                      field.key === 'totalHardness' ? 'test_results_total_hardness_support' : undefined
-                    }
                     last={index === waterFields.length - 1}
                   />
                 ))}
@@ -369,7 +367,6 @@ function ReadingInputRow({
   error,
   onChange,
   onInfo,
-  supportingKey,
   last = false,
 }: {
   field: HaveResultsField;
@@ -377,7 +374,6 @@ function ReadingInputRow({
   error?: string;
   onChange: (value: string) => void;
   onInfo: () => void;
-  supportingKey?: string;
   last?: boolean;
 }) {
   const { t } = useTranslation();
@@ -407,11 +403,6 @@ function ReadingInputRow({
             <Ionicons name="information-circle-outline" size={18} color="#42668D" />
           </TouchableOpacity>
         </View>
-        {supportingKey ? (
-          <Text className="text-[10.5px] leading-3.5 font-jakarta text-[#78859C] mt-0.5">
-            {t(supportingKey)}
-          </Text>
-        ) : null}
         {error ? (
           <Text className="text-[10.5px] leading-3.5 font-jakarta text-error mt-0.5">
             {error}
@@ -454,12 +445,18 @@ function ReadOnlyCombined({ value, invalid }: { value: number | null; invalid: b
         />
       ) : null}
       <View className="flex-1 min-w-0">
-        <Text className="text-body leading-4.75 font-jakarta-bold text-brand-navy">
-          {t(COMBINED_CHLORINE.labelKey)}
-        </Text>
-        <Text className="text-[10.5px] leading-3.5 font-jakarta text-[#78859C] mt-0.5">
-          {t('test_results_cc_calculated')}
-        </Text>
+        <View className="flex-row items-center gap-1.5 flex-wrap">
+          <Text className="text-body leading-4.75 font-jakarta-bold text-brand-navy shrink">
+            {t(COMBINED_CHLORINE.labelKey)}
+          </Text>
+          <TouchableOpacity
+            onPress={() => Alert.alert(t(COMBINED_CHLORINE.labelKey), t('test_results_cc_calculated'))}
+            hitSlop={8}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="information-circle-outline" size={18} color="#42668D" />
+          </TouchableOpacity>
+        </View>
         {invalid ? (
           <Text className="text-[10.5px] leading-3.5 font-jakarta text-error mt-0.5">
             {t('test_results_tc_less_than_fc')}

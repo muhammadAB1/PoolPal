@@ -49,9 +49,7 @@ export default function ChecklistScreen() {
             <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
           </TouchableOpacity>
           <Text className="text-h3 font-jakarta-extrabold text-brand-navy">{t('checklist.title')}</Text>
-          <TouchableOpacity className="w-10 h-10 items-center justify-center">
-            <Ionicons name="ellipsis-vertical" size={20} color={colors.brand.navy} />
-          </TouchableOpacity>
+          <View className="w-10 h-10" />
         </View>
         <Text className="text-body font-jakarta text-sub text-center mt-1">{t('checklist.subtitle')}</Text>
       </View>

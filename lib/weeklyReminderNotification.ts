@@ -1,5 +1,6 @@
 import { WEEKDAYS, type Weekday } from '@/data/poolWeeklyReminder';
 import i18n from '@/lib/i18n';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
@@ -86,6 +87,18 @@ async function apply(day?: Weekday | null, time?: string | null) {
     },
   });
   lastKey = key;
+}
+
+function enabledKey(poolId: string) {
+  return `weeklyReminderOn:${poolId}`;
+}
+
+export async function isWeeklyReminderEnabled(poolId: string) {
+  return (await AsyncStorage.getItem(enabledKey(poolId))) !== '0';
+}
+
+export async function setWeeklyReminderEnabled(poolId: string, enabled: boolean) {
+  await AsyncStorage.setItem(enabledKey(poolId), enabled ? '1' : '0');
 }
 
 /** Schedules or cancels the one weekly local notification for the saved reminder. */
