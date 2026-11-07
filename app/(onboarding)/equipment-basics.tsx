@@ -206,13 +206,13 @@ export default function EquipmentBasicsScreen({
         setErrorMessage(null);
         setIdentifying(target);
         try {
-            const { value } = await identifyEquipmentFromPhoto(target, imageBase64);
+            const { value, reason } = await identifyEquipmentFromPhoto(target, imageBase64);
             if (target === 'filter' && value && FILTER_TYPES.includes(value as FilterType)) {
                 setFilterType(value as FilterType);
             } else if (target === 'pump' && value && PUMP_TYPES.includes(value as PumpType)) {
                 setPumpType(value as PumpType);
             } else {
-                setErrorMessage(t('equipment_photo_id_unsure'));
+                setErrorMessage(reason || t('equipment_photo_id_unsure'));
             }
         } catch {
             setErrorMessage(t('equipment_photo_id_error'));
