@@ -72,7 +72,18 @@ async function upsertDetachedSpaPool({
 
 export async function identifyEquipmentFromPhoto(target: 'filter' | 'pump', imageBase64: string) {
     const { data, error } = await supabase.functions.invoke('identify-equipment', { body: { target, imageBase64 } })
-    if (error) throw error
+    if (error) {
+        const response = (error as { context?: { status?: number; text?: () => Promise<string> } }).context
+        let body = ''
+        try {
+            if (response && typeof response.text === 'function') body = await response.text()
+        } catch (readError) {
+            body = readError instanceof Error ? readError.message : 'could not read the function response'
+        }
+        const detail = `[identify-equipment] ${response?.status ?? 'no status'} ${body || error.message}`
+        console.error(detail)
+        throw new Error(detail)
+    }
     return data as { target: 'filter' | 'pump'; value: string | null; reason: string }
 }
 

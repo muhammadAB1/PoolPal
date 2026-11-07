@@ -22,6 +22,7 @@ import { Href, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+    ActivityIndicator,
     Image,
     type ImageSourcePropType,
     ScrollView,
@@ -31,16 +32,51 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+function PhotoStep({
+    state,
+    label,
+}: {
+    state: 'waiting' | 'active' | 'done';
+    label: string;
+}) {
+    return (
+        <View className="flex-row items-center gap-2">
+            {state === 'active' ? (
+                <ActivityIndicator size="small" color={colors.brand.blue} style={{ width: 18, height: 18 }} />
+            ) : (
+                <Ionicons
+                    name={state === 'done' ? 'checkmark-circle' : 'ellipse-outline'}
+                    size={18}
+                    color={state === 'done' ? colors.brand.navy : colors.brand.blue}
+                />
+            )}
+            <Text
+                className={`flex-1 text-small font-jakarta-bold ${
+                    state === 'waiting' ? 'text-sub' : 'text-brand-navy'
+                }`}
+            >
+                {label}
+            </Text>
+        </View>
+    );
+}
+
 function PhotoIdentifyCard({
     title,
     description,
-    loading,
+    phase,
+    previewUri,
+    foundType,
+    disabled,
     onCamera,
     onUpload,
 }: {
     title: string;
     description: string;
-    loading: boolean;
+    phase: 'uploading' | 'analyzing' | null;
+    previewUri?: string;
+    foundType?: string;
+    disabled?: boolean;
     onCamera: () => void;
     onUpload: () => void;
 }) {
@@ -62,15 +98,46 @@ function PhotoIdentifyCard({
 
             <Text className="text-small font-jakarta text-sub mt-2 leading-relaxed">{description}</Text>
 
-            {loading ? (
-                <Text className="text-body font-jakarta-bold text-brand-blue text-center mt-3">
-                    {t('equipment_photo_id_loading')}
-                </Text>
-            ) : (
+            {phase ? (
+                <View className="flex-row items-center gap-3 mt-3">
+                    {previewUri ? (
+                        <Image
+                            source={{ uri: previewUri }}
+                            style={{ width: 72, height: 72, borderRadius: 12 }}
+                            resizeMode="cover"
+                        />
+                    ) : null}
+                    <View className="flex-1 gap-2.5">
+                        <PhotoStep
+                            state={phase === 'uploading' ? 'active' : 'done'}
+                            label={t(phase === 'uploading' ? 'equipment_photo_id_uploading' : 'equipment_photo_id_sent')}
+                        />
+                        <PhotoStep
+                            state={phase === 'analyzing' ? 'active' : 'waiting'}
+                            label={t('equipment_photo_id_analyzing')}
+                        />
+                    </View>
+                </View>
+            ) : foundType && previewUri ? (
+                <View className="mt-3 rounded-xl bg-surface-mint border border-surface-mint-border p-2.5 flex-row items-center gap-3">
+                    <Image
+                        source={{ uri: previewUri }}
+                        style={{ width: 64, height: 64, borderRadius: 12 }}
+                        resizeMode="cover"
+                    />
+                    <Text className="flex-1 text-small font-jakarta-bold text-brand-navy leading-relaxed">
+                        {t('equipment_photo_id_found', { type: foundType })}
+                    </Text>
+                    <Ionicons name="checkmark-circle" size={22} color={colors.brand.navy} />
+                </View>
+            ) : null}
+
+            {phase ? null : (
                 <View className="flex-row gap-2 mt-3">
                     <TouchableOpacity
-                        className="flex-1 bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2"
+                        className={`flex-1 bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2 ${disabled ? 'opacity-50' : ''}`}
                         activeOpacity={0.85}
+                        disabled={disabled}
                         onPress={onCamera}
                     >
                         <Ionicons name="camera-outline" size={18} color={colors.brand.blue} />
@@ -79,8 +146,9 @@ function PhotoIdentifyCard({
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        className="flex-1 bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2"
+                        className={`flex-1 bg-surface-white border border-border-default rounded-full py-3 flex-row items-center justify-center gap-2 ${disabled ? 'opacity-50' : ''}`}
                         activeOpacity={0.85}
+                        disabled={disabled}
                         onPress={onUpload}
                     >
                         <Ionicons name="images-outline" size={18} color={colors.brand.blue} />
@@ -186,7 +254,14 @@ export default function EquipmentBasicsScreen({
     const [heater, setHeater] = useState<HeaterOption>(initialHeater ?? 'Yes');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [identifying, setIdentifying] = useState<'filter' | 'pump' | null>(null);
+    const [photoJob, setPhotoJob] = useState<{
+        target: 'filter' | 'pump';
+        phase: 'uploading' | 'analyzing';
+        previewUri: string;
+    } | null>(null);
+    const [photoMatch, setPhotoMatch] = useState<
+        Partial<Record<'filter' | 'pump', { previewUri: string; typeName: string }>>
+    >({});
 
     async function identifyFromPhoto(target: 'filter' | 'pump', source: 'camera' | 'library') {
         const perm =
@@ -206,21 +281,43 @@ export default function EquipmentBasicsScreen({
                 : await ImagePicker.launchImageLibraryAsync({ ...opts, mediaTypes: ['images'] });
         const imageBase64 = picked.assets?.[0]?.base64;
         if (picked.canceled || !imageBase64) return;
+        const previewUri = `data:image/jpeg;base64,${imageBase64}`;
         setErrorMessage(null);
-        setIdentifying(target);
+        setPhotoMatch((current) => ({ ...current, [target]: undefined }));
+        setPhotoJob({ target, phase: 'uploading', previewUri });
         try {
+            setPhotoJob((job) => (job ? { ...job, phase: 'analyzing' } : job));
             const { value, reason } = await identifyEquipmentFromPhoto(target, imageBase64);
-            if (target === 'filter' && value && FILTER_TYPES.includes(value as FilterType)) {
-                setFilterType(value as FilterType);
-            } else if (target === 'pump' && value && PUMP_TYPES.includes(value as PumpType)) {
-                setPumpType(value as PumpType);
+            const named = value?.trim().toLowerCase();
+            if (target === 'filter') {
+                const match = FILTER_TYPES.find((item) => item.toLowerCase() === named);
+                if (!match) {
+                    setErrorMessage(reason || t('equipment_photo_id_unsure'));
+                } else {
+                    setFilterType(match);
+                    setPhotoMatch((current) => ({
+                        ...current,
+                        filter: { previewUri, typeName: t(filterTypeTranslationKeys[match]) },
+                    }));
+                }
             } else {
-                setErrorMessage(reason || t('equipment_photo_id_unsure'));
+                const match = PUMP_TYPES.find((item) => item.toLowerCase() === named);
+                if (!match) {
+                    setErrorMessage(reason || t('equipment_photo_id_unsure'));
+                } else {
+                    setPumpType(match);
+                    setPhotoMatch((current) => ({
+                        ...current,
+                        pump: { previewUri, typeName: t(pumpTypeTranslationKeys[match]) },
+                    }));
+                }
             }
-        } catch {
-            setErrorMessage(t('equipment_photo_id_error'));
+        } catch (error) {
+            const detail = error instanceof Error ? error.message : String(error)
+            console.error(detail)
+            setErrorMessage(detail)
         } finally {
-            setIdentifying(null);
+            setPhotoJob(null);
         }
     }
 
@@ -334,9 +431,12 @@ export default function EquipmentBasicsScreen({
                             <PhotoIdentifyCard
                                 title={t('equipment_identify_filter_title')}
                                 description={t('equipment_identify_filter_desc')}
-                            loading={identifying === 'filter'}
-                            onCamera={() => identifyFromPhoto('filter', 'camera')}
-                            onUpload={() => identifyFromPhoto('filter', 'library')}
+                                phase={photoJob?.target === 'filter' ? photoJob.phase : null}
+                                previewUri={photoJob?.target === 'filter' ? photoJob.previewUri : photoMatch.filter?.previewUri}
+                                foundType={photoMatch.filter?.typeName}
+                                disabled={photoJob !== null}
+                                onCamera={() => identifyFromPhoto('filter', 'camera')}
+                                onUpload={() => identifyFromPhoto('filter', 'library')}
                             />
                         ) : null}
                     </View>
@@ -374,9 +474,12 @@ export default function EquipmentBasicsScreen({
                             <PhotoIdentifyCard
                                 title={t('equipment_identify_pump_title')}
                                 description={t('equipment_identify_pump_desc')}
-                            loading={identifying === 'pump'}
-                            onCamera={() => identifyFromPhoto('pump', 'camera')}
-                            onUpload={() => identifyFromPhoto('pump', 'library')}
+                                phase={photoJob?.target === 'pump' ? photoJob.phase : null}
+                                previewUri={photoJob?.target === 'pump' ? photoJob.previewUri : photoMatch.pump?.previewUri}
+                                foundType={photoMatch.pump?.typeName}
+                                disabled={photoJob !== null}
+                                onCamera={() => identifyFromPhoto('pump', 'camera')}
+                                onUpload={() => identifyFromPhoto('pump', 'library')}
                             />
                         ) : null}
                     </View>
