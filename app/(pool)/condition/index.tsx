@@ -91,7 +91,7 @@ export default function PoolConditionScreen() {
 
           <View className="card mt-4 p-3.5 flex-row items-start" style={shadow.card}>
             <View className="icon-circle">
-              <MaterialCommunityIcons name="information-outline" size={20} color={colors.brand.blue} />
+              <Image source={icons.info} className="w-8 h-8" resizeMode="contain" />
             </View>
             <View className="flex-1 ml-3">
               <Text className="text-body-lg font-jakarta-bold text-brand-navy">

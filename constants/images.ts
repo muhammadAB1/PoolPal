@@ -17,6 +17,7 @@ import poolPalLogo from '../assets/graphics/pool_pal_logo.png';
 import poolPalLogoDarkBg from '../assets/graphics/pool_pal_logo_dark_bg.png';
 import poolPalLogoLightBg from '../assets/graphics/pool_pal_logo_light_bg.png';
 import testKitCardGraphic from '../assets/graphics/test_kit_card_graphic.png';
+import weeklyReminderIcon from '../assets/graphics/PoolTonic-Set-Reminder-removebg-preview.png';
 import poolTonicLogoFullLight from '../assets/pooltonic-ui/pooltonic-logo-full-light.png';
 import poolTonicButtonGradient from '../assets/welcome/pooltonic_button_gradient.png';
 import poolTonicFeatureEnjoy from '../assets/welcome/pooltonic_feature_enjoy.png';
@@ -60,7 +61,6 @@ import iconCheckmark from '../assets/icons_1x/checkmark.png';
 import iconCircleCheck from '../assets/icons_1x/circle_check.png';
 import iconDashboard from '../assets/icons_1x/dashboard.png';
 import iconFilter from '../assets/icons_1x/filter.png';
-import iconInfo from '../assets/icons_1x/info.png';
 import iconLearn from '../assets/icons_1x/learn.png';
 import iconLock from '../assets/icons_1x/lock.png';
 import iconPool from '../assets/icons_1x/pool.png';
@@ -157,7 +157,6 @@ import cleaningRobotic from '../assets/cleaning-setup-images/robotic-cleaner1.jp
 import cleaningSuctionSide from '../assets/cleaning-setup-images/suction-side-cleaner1.jpg';
 
 // ─── Test Readings (keyed to TestReadingsMethod values) ───────────────────────
-import testReadingsInfoIcon from '../assets/pool-reading-images/info_icon.png';
 import testReadingsNoneIcon from '../assets/pool-reading-images/no_results_calendar.png';
 import testReadingsBackyardPhoto from '../assets/pool-reading-images/pool-backyard.png';
 import reminderShield from '../assets/pool-reading-images/reminder_shield.png';
@@ -180,13 +179,18 @@ import poolTonicCheckVisibleProblem from '../assets/pooltonic-ui/pooltonic-solve
 import poolTonicCheckResults from '../assets/pooltonic-ui/pooltonic-test-results.png';
 import poolTonicCheckStrip from '../assets/pooltonic-ui/pooltonic-test-strip.png';
 
-// ─── Onboarding completion (pool profile) ────────────────────────────────────
-import poolProfileCalculator from '../assets/onboardin-screen-images/pool-profile-calculator.png';
-import poolProfileInfo from '../assets/onboardin-screen-images/pool-profile-info.png';
-import poolProfilePhoto from '../assets/onboardin-screen-images/pool-profile-photo.png';
-import poolProfileStar from '../assets/onboardin-screen-images/pool-profile-star.png';
-import poolProfileTestTube from '../assets/onboardin-screen-images/pool-profile-test-tube.png';
-import poolProfileWaterDrop from '../assets/onboardin-screen-images/pool-profile-water-drop.png';
+// ─── Onboarding completion ───────────────────────────────────────────────────
+import onboardingCompleteBackground from '../assets/onboardin-screen-images/screen_07_equipment_basics.png';
+import onboardingCatchProblems from '../assets/onboardin-screen-images/Pooltonic-catch-problems.png';
+import onboardingKeepWaterSafe from '../assets/onboardin-screen-images/pooltonic-keep-water-safe.png';
+import onboardingKnowWhatToDo from '../assets/onboardin-screen-images/PoolTonic-know-what-to-do.png';
+import onboardingWeeklyCare from '../assets/onboardin-screen-images/pooltonic-pool-care-each-week.png';
+import onboardingRightProducts from '../assets/onboardin-screen-images/pooltonic-use-right-products.png';
+// import poolProfileCalculator from '../assets/onboardin-screen-images/pool-profile-calculator.png';
+// import poolProfilePhoto from '../assets/onboardin-screen-images/pool-profile-photo.png';
+// import poolProfileStar from '../assets/onboardin-screen-images/pool-profile-star.png';
+// import poolProfileTestTube from '../assets/onboardin-screen-images/pool-profile-test-tube.png';
+// import poolProfileWaterDrop from '../assets/onboardin-screen-images/pool-profile-water-drop.png';
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 import dashboardAskPoolwiseIcon from '../assets/dashboard-images/ask_poolwise_chat_icon.png';
@@ -237,6 +241,7 @@ export const graphics = {
     checklistSuccess,
     completionRing,
     emptyStatePool,
+    weeklyReminderIcon,
     poolTonicWelcomeBackground,
     poolTonicGradient,
     poolTonicButtonGradient,
@@ -284,7 +289,7 @@ export const icons = {
     circleCheck: iconCircleCheck,
     dashboard: iconDashboard,
     filter: iconFilter,
-    info: iconInfo,
+    info: poolTonicCheckInfo,
     learn: iconLearn,
     lock: iconLock,
     pool: iconPool,
@@ -434,7 +439,7 @@ export const testReadingsImages = {
 } as const;
 
 export const testReadingsGraphics = {
-    infoIcon: testReadingsInfoIcon,
+    infoIcon: poolTonicCheckInfo,
     stripPhoto: testReadingsStripPhoto,
     backyardPhoto: testReadingsBackyardPhoto,
 } as const;
@@ -472,7 +477,7 @@ export const testStripProductImages = {
 
 export const poolSizeGraphics = {
     reminderShield,
-    infoIcon: testReadingsInfoIcon,
+    infoIcon: poolTonicCheckInfo,
     tipsIcon: poolTonicTipsIcon,
     measurementsKnown: poolTonicMeasurementsKnown,
     helpEstimate: poolTonicHelp,
@@ -486,12 +491,18 @@ export const poolSizeGraphics = {
  * Onboarding completion screen images.
  */
 export const onboardingCompleteImages = {
-    waterDrop: poolProfileWaterDrop,
-    testTube: poolProfileTestTube,
-    photo: poolProfilePhoto,
-    calculator: poolProfileCalculator,
-    info: poolProfileInfo,
-    star: poolProfileStar,
+    background: onboardingCompleteBackground,
+    knowWhatToDo: onboardingKnowWhatToDo,
+    catchProblems: onboardingCatchProblems,
+    keepWaterSafe: onboardingKeepWaterSafe,
+    rightProducts: onboardingRightProducts,
+    weeklyCare: onboardingWeeklyCare,
+    info: poolTonicCheckInfo,
+    // waterDrop: poolProfileWaterDrop,
+    // testTube: poolProfileTestTube,
+    // photo: poolProfilePhoto,
+    // calculator: poolProfileCalculator,
+    // star: poolProfileStar,
 } as const;
 
 /**
@@ -538,6 +549,42 @@ export const navImages = {
  */
 export const poolTabImages = {
     basicsHero: poolBasicsHero,
+} as const;
+
+/**
+ * Shop tab product and category images.
+ * Reuses existing pool-product artwork so the shop UI looks real before
+ * dedicated product photography exists.
+ */
+export const shopImages = {
+    // Test kits
+    aquachek: aquachek7in1,
+    hth: hth6Way,
+    jnw: jnwPoolAndSpa,
+    easyTest: easyTest9in1,
+    // Balancers
+    ph: chemistryPh,
+    alkalinity: chemistryTotalAlkalinity,
+    hardness: chemistryCalciumHardness,
+    phosphates: chemistryPhosphates,
+    // Sanitizers
+    chlorine: chemistryFreeChlorine,
+    salt: chemistrySalt,
+    stabilizer: chemistryCyanuricAcid,
+    bromine: chemistryBromine,
+    // Cleaners
+    robotic: cleaningRobotic,
+    pressureSide: cleaningPressureSide,
+    suctionSide: cleaningSuctionSide,
+    manualVacuum: cleaningManualVacuum,
+    // Pumps
+    variablePump: equipmentChoiceVariable,
+    dualPump: equipmentChoiceDual,
+    singlePump: equipmentChoiceSingle,
+    // Filters
+    cartridgeFilter: equipmentChoiceCartridge,
+    sandFilter: equipmentChoiceSand,
+    deFilter: equipmentChoiceDe,
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */

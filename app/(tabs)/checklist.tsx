@@ -8,11 +8,11 @@ import {
   getNextMondayLabel,
   getWeekLabel,
 } from '@/data/checklist';
-import { expireStaleChecklistTasks } from '@/lib/checklistStorage';
+import { checklistProgress } from '@/lib/checklistStorage';
+import { useChecklist } from '@/providers/ChecklistProvider';
 import { Ionicons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,13 +20,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const TEAL = '#2EC4B6';
 
 export default function ChecklistScreen() {
-  const { checklistCompleted } = useLocalSearchParams();
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
-
-  // Parent only tracks the count for progress / footer
-  const [completed, setCompleted] = useState(Number(checklistCompleted) || 0);
+  const { checklist } = useChecklist();
+  const { completed } = checklistProgress(checklist);
   const [weekDone, setWeekDone] = useState(false);
 
   const total = REQUIRED_TASK_IDS.length;
@@ -34,20 +32,6 @@ export default function ChecklistScreen() {
   const allDone = completed === total;
   const nextReset = getNextMondayLabel(locale);
 
-  const handleTaskChange = useCallback((done: boolean, optional?: boolean) => {
-    if (optional) return;
-    setCompleted((n) => {
-      const next = Math.max(0, done ? n + 1 : n - 1);
-      void AsyncStorage.setItem('checklist.completedCount', String(next));
-      return next;
-    });
-  }, []);
-
-  useEffect(() => {
-    void expireStaleChecklistTasks().then(({ completed }) => setCompleted(completed));
-  }, []);
-
-  // When the week rolls over and every task expires, unlock the list for the new week.
   useEffect(() => {
     if (completed === 0) setWeekDone(false);
   }, [completed]);
@@ -65,9 +49,7 @@ export default function ChecklistScreen() {
             <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
           </TouchableOpacity>
           <Text className="text-h3 font-jakarta-extrabold text-brand-navy">{t('checklist.title')}</Text>
-          <TouchableOpacity className="w-10 h-10 items-center justify-center">
-            <Ionicons name="ellipsis-vertical" size={20} color={colors.brand.navy} />
-          </TouchableOpacity>
+          <View className="w-10 h-10" />
         </View>
         <Text className="text-body font-jakarta text-sub text-center mt-1">{t('checklist.subtitle')}</Text>
       </View>
@@ -103,13 +85,12 @@ export default function ChecklistScreen() {
             </View>
           </View>
           <View className="flex-row items-center self-start mt-3 rounded-full bg-surface-white px-2.5 py-1 border border-border-default">
-            <Text className="text-tiny font-jakarta-semibold text-sub">{t('checklist.resetsMonday')}</Text>
             <Image
               source={icons.info}
-              className="w-3.5 h-3.5 ml-1"
+              className="w-3.5 h-3.5 mr-1 -translate-x-1"
               resizeMode="contain"
-              style={{ tintColor: colors.text.faint }}
             />
+            <Text className="text-tiny font-jakarta-semibold text-sub">{t('checklist.resetsMonday')}</Text>
           </View>
         </View>
 
@@ -127,11 +108,7 @@ export default function ChecklistScreen() {
               {section.tasks.map((task, index) => (
                 <View key={task.id}>
                   {index > 0 ? <View className="divider mx-4" /> : null}
-                  <TaskComponent
-                    task={task}
-                    disabled={weekDone}
-                    onChange={handleTaskChange}
-                  />
+                  <TaskComponent task={task} disabled={weekDone} />
                 </View>
               ))}
             </View>
@@ -155,15 +132,11 @@ export default function ChecklistScreen() {
       {/* Footer button */}
       <View className="px-4 pt-3 pb-3 bg-surface-bg border-t border-border-default">
         <TouchableOpacity
-          className="rounded-2xl py-4 items-center"
-          style={{ backgroundColor: allDone && !weekDone ? TEAL : '#E8ECF0' }}
+          className={`rounded-2xl py-4 items-center ${allDone && !weekDone ? 'btn--primary' : 'btn--disabled'}`}
           disabled={!allDone || weekDone}
           onPress={() => setWeekDone(true)}
         >
-          <Text
-            className="text-button font-jakarta-bold"
-            style={{ color: allDone && !weekDone ? colors.surface.white : colors.text.sub }}
-          >
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {allDone && !weekDone ? t('checklist.completeWeek') : t('checklist.completeFirst')}
           </Text>
         </TouchableOpacity>

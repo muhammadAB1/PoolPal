@@ -1,4 +1,4 @@
-import { chemistryIcons } from '@/constants/images';
+import { chemistryIcons, icons } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import { HAVE_RESULTS_FIELDS, readingUnit } from '@/data/chooseTestMethod';
 import {
@@ -111,12 +111,6 @@ export default function ReadingsScreen() {
             <Text className="text-h1 font-jakarta-extrabold text-brand-navy">
               {t('readings_title')}
             </Text>
-            <TouchableOpacity
-              className="w-9 h-9 rounded-full border border-border-default items-center justify-center"
-              activeOpacity={0.7}
-            >
-              <Ionicons name="information-circle-outline" size={20} color={colors.brand.navy} />
-            </TouchableOpacity>
           </View>
           <Text className="text-body font-jakarta text-sub mt-1">
             {t('readings_subtitle')}
@@ -205,7 +199,7 @@ export default function ReadingsScreen() {
 
             <View className="flex-row items-center gap-4 mt-3.5">
               <TouchableOpacity
-                className="flex-row items-center gap-1.5 rounded-full bg-success px-4 py-2.5"
+                className="flex-row flex-1 items-center justify-center gap-1.5 rounded-full bg-success px-4 py-2.5"
                 activeOpacity={0.85}
                 onPress={() => router.push('/(readings)/choose-test-method')}
               >
@@ -214,12 +208,12 @@ export default function ReadingsScreen() {
                   {t('readings_add_new')}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity className="flex-row items-center gap-1" activeOpacity={0.7}>
+              {/* <TouchableOpacity className="flex-row items-center gap-1" activeOpacity={0.7}>
                 <Ionicons name="create-outline" size={15} color={colors.brand.blue} />
                 <Text className="text-small font-jakarta-bold text-brand-blue">
                   {t('readings_edit_last')}
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
 

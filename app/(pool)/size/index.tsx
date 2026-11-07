@@ -226,7 +226,7 @@ export default function PoolSizeScreen() {
           </View>
 
           <View className="card--info mt-4 p-4 flex-row items-start">
-            <MaterialCommunityIcons name="information" size={28} color={colors.brand.blue} />
+            <Image source={icons.info} className="w-8 h-8" resizeMode="contain" />
             <View className="flex-1 ml-3">
               <Text className="text-body-lg font-jakarta-bold text-brand-navy">
                 {t(infoBanner.title)}

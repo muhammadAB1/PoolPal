@@ -156,6 +156,8 @@ type EquipmentBasicsScreenProps = {
     onSuccess?: () => void;
     /** Defaults to true for onboarding. Pool tab Edit passes false because it refreshes the provider itself. */
     markStale?: boolean;
+    /** Shows the AI photo-identification option. Only enabled when opened from the Pool tab. */
+    fromPoolTab?: boolean;
 };
 
 export default function EquipmentBasicsScreen({
@@ -165,6 +167,7 @@ export default function EquipmentBasicsScreen({
     showSkip = true,
     onSuccess,
     markStale = true,
+    fromPoolTab = false,
 }: EquipmentBasicsScreenProps = {}) {
     const router = useRouter();
     const { t } = useTranslation();
@@ -327,13 +330,15 @@ export default function EquipmentBasicsScreen({
                             })}
                         </View>
 
-                        <PhotoIdentifyCard
-                            title={t('equipment_identify_filter_title')}
-                            description={t('equipment_identify_filter_desc')}
+                        {fromPoolTab ? (
+                            <PhotoIdentifyCard
+                                title={t('equipment_identify_filter_title')}
+                                description={t('equipment_identify_filter_desc')}
                             loading={identifying === 'filter'}
                             onCamera={() => identifyFromPhoto('filter', 'camera')}
                             onUpload={() => identifyFromPhoto('filter', 'library')}
-                        />
+                            />
+                        ) : null}
                     </View>
 
                     <View className="mt-8">
@@ -365,13 +370,15 @@ export default function EquipmentBasicsScreen({
                             })}
                         </View>
 
-                        <PhotoIdentifyCard
-                            title={t('equipment_identify_pump_title')}
-                            description={t('equipment_identify_pump_desc')}
+                        {fromPoolTab ? (
+                            <PhotoIdentifyCard
+                                title={t('equipment_identify_pump_title')}
+                                description={t('equipment_identify_pump_desc')}
                             loading={identifying === 'pump'}
                             onCamera={() => identifyFromPhoto('pump', 'camera')}
                             onUpload={() => identifyFromPhoto('pump', 'library')}
-                        />
+                            />
+                        ) : null}
                     </View>
 
                     <View className="mt-8">
@@ -415,14 +422,14 @@ export default function EquipmentBasicsScreen({
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${
-                        isSubmitting ? 'opacity-50' : ''
+                    className={`rounded-full py-4.25 items-center justify-center ${
+                        isSubmitting ? 'btn--disabled' : 'btn--primary'
                     }`}
                     onPress={handleContinue}
                     disabled={isSubmitting}
                     activeOpacity={0.85}
                 >
-                    <Text className="text-button font-jakarta-bold text-surface-white">
+                    <Text className="text-button font-jakarta-bold btn__label--primary">
                         {t('equipment_basics_continue')}
                     </Text>
                 </TouchableOpacity>

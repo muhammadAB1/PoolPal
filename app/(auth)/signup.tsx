@@ -175,7 +175,7 @@ export default function SignupScreen() {
 
                         <View className="mt-6 gap-3">
                             <TouchableOpacity
-                                className="btn btn--primary"
+                                className={`btn ${submitting ? 'btn--disabled' : 'btn--primary'}`}
                                 onPress={handleEmailSignUp}
                                 disabled={submitting}
                                 activeOpacity={0.85}

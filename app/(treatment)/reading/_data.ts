@@ -103,7 +103,7 @@ export const NO_TREATMENT_NEEDED: NoTreatmentContent = {
 
 /** Low pH treatment plan — the only scenario built so far. */
 export const TREATMENT_PLAN: TreatmentPlanContent = {
-    brandLabel: 'PoolWise',
+    brandLabel: 'PoolTonic',
     title: 'Treatment Plan',
     subtitle: "Here's how to fix low pH safely.",
 

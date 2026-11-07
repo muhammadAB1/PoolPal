@@ -90,7 +90,7 @@ export default function EquipmentExamplesModal({
                                     <View className="card--info flex-row items-start gap-2.5 px-3.5 py-3 mt-3">
                                         <Image
                                             source={icons.info}
-                                            className="w-4 h-4 mt-0.5"
+                                            className="w-6 h-6 mt-0.5"
                                             resizeMode="contain"
                                         />
                                         <View className="flex-1">

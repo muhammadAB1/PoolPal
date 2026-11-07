@@ -1,5 +1,5 @@
 import PoolTonicLogo from '@/components/PoolTonicLogo';
-import { chooseTestMethodImages, icons } from '@/constants/images';
+import { chemistryIcons, chooseTestMethodImages, icons } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import {
   additionalSanitizerFields,
@@ -42,10 +42,34 @@ const INFO_KEYS: Partial<Record<HaveResultsFieldKey, string>> = {
   copper: 'test_results_info_copper',
   iron: 'test_results_info_iron',
   totalChlorine: 'test_results_info_total_chlorine',
-  totalHardness: 'test_results_info_total_hardness',
+  totalHardness: 'test_results_total_hardness_support',
+  combinedChlorine: 'test_results_cc_calculated',
 };
 
 const COMBINED_CHLORINE = HAVE_RESULTS_FIELDS.find((field) => field.key === 'combinedChlorine')!;
+
+const CHEMISTRY_ICON_BY_ABBR = {
+  FC: chemistryIcons.freeChlorine,
+  TC: chemistryIcons.totalChlorine,
+  CC: chemistryIcons.combinedChlorine,
+  BR: chemistryIcons.bromine,
+  pH: chemistryIcons.ph,
+  TA: chemistryIcons.totalAlkalinity,
+  CH: chemistryIcons.calciumHardness,
+  CYA: chemistryIcons.cyanuricAcid,
+  S: chemistryIcons.salt,
+  Salt: chemistryIcons.salt,
+  TH: chemistryIcons.totalHardness,
+  H: chemistryIcons.calciumHardness,
+  PO4: chemistryIcons.phosphates,
+  TDS: chemistryIcons.tds,
+  FE: chemistryIcons.iron,
+  CU: chemistryIcons.copper,
+} as const;
+
+function chemistryIconFor(abbreviation: string) {
+  return CHEMISTRY_ICON_BY_ABBR[abbreviation as keyof typeof CHEMISTRY_ICON_BY_ABBR];
+}
 
 export default function EnterTestResultsScreen() {
   const router = useRouter();
@@ -170,12 +194,7 @@ export default function EnterTestResultsScreen() {
 
           <PoolTonicLogo width={152} height={43} />
 
-          <TouchableOpacity
-            className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
-            activeOpacity={0.7}
-          >
-            <Text className="text-h3 font-jakarta-bold text-brand-navy">?</Text>
-          </TouchableOpacity>
+          <View className="w-10 h-10" />
         </View>
       </View>
 
@@ -287,9 +306,6 @@ export default function EnterTestResultsScreen() {
                     error={fieldErrors[field.key]}
                     onChange={(value) => updateReading(field.key, value)}
                     onInfo={() => showInfo(field)}
-                    supportingKey={
-                      field.key === 'totalHardness' ? 'test_results_total_hardness_support' : undefined
-                    }
                     last={index === waterFields.length - 1}
                   />
                 ))}
@@ -310,12 +326,12 @@ export default function EnterTestResultsScreen() {
 
       <View className="px-5 pt-2 pb-3 border-t border-[#EFF3F6] bg-surface-white">
         <TouchableOpacity
-          className={`btn btn--primary ${canContinue ? '' : 'opacity-50'}`}
+          className={`btn ${canContinue ? 'btn--primary' : 'btn--disabled'}`}
           activeOpacity={0.85}
           disabled={!canContinue}
           onPress={handleContinue}
         >
-          <Text className="text-button font-jakarta-bold text-surface-white">
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {t('choose_test_method_continue')}
           </Text>
         </TouchableOpacity>
@@ -351,7 +367,6 @@ function ReadingInputRow({
   error,
   onChange,
   onInfo,
-  supportingKey,
   last = false,
 }: {
   field: HaveResultsField;
@@ -359,7 +374,6 @@ function ReadingInputRow({
   error?: string;
   onChange: (value: string) => void;
   onInfo: () => void;
-  supportingKey?: string;
   last?: boolean;
 }) {
   const { t } = useTranslation();
@@ -368,16 +382,18 @@ function ReadingInputRow({
   const range = param ? READING_RANGE[param] : undefined;
   const placeholder = range ? `${range.min}–${range.max}` : '';
 
+  const chemistryIcon = chemistryIconFor(field.abbreviation);
+
   return (
     <View className={`min-h-19 flex-row items-center px-3.5 py-2.5 gap-2.5 ${last ? '' : 'border-b border-[#E6ECF1]'}`}>
-      <View
-        className="w-11 h-11 rounded-full items-center justify-center shrink-0"
-        style={{ backgroundColor: field.badgeColor }}
-      >
-        <Text className="text-body font-jakarta-bold text-surface-white">
-          {field.abbreviation === 'Salt' ? 'S' : field.abbreviation}
-        </Text>
-      </View>
+      {chemistryIcon ? (
+        <Image
+          source={chemistryIcon}
+          className="w-12 h-12 shrink-0"
+          style={{ width: 48, height: 48 }}
+          resizeMode="contain"
+        />
+      ) : null}
       <View className="flex-1 min-w-0">
         <View className="flex-row items-center gap-1.5 flex-wrap">
           <Text className="text-body leading-4.75 font-jakarta-bold text-brand-navy shrink">
@@ -387,11 +403,6 @@ function ReadingInputRow({
             <Ionicons name="information-circle-outline" size={18} color="#42668D" />
           </TouchableOpacity>
         </View>
-        {supportingKey ? (
-          <Text className="text-[10.5px] leading-3.5 font-jakarta text-[#78859C] mt-0.5">
-            {t(supportingKey)}
-          </Text>
-        ) : null}
         {error ? (
           <Text className="text-[10.5px] leading-3.5 font-jakarta text-error mt-0.5">
             {error}
@@ -421,24 +432,31 @@ function ReadingInputRow({
 
 function ReadOnlyCombined({ value, invalid }: { value: number | null; invalid: boolean }) {
   const { t } = useTranslation();
+  const chemistryIcon = chemistryIconFor(COMBINED_CHLORINE.abbreviation);
 
   return (
     <View className="min-h-19 flex-row items-center px-3.5 py-2.5 gap-2.5">
-      <View
-        className="w-11 h-11 rounded-full items-center justify-center shrink-0"
-        style={{ backgroundColor: COMBINED_CHLORINE.badgeColor }}
-      >
-        <Text className="text-body font-jakarta-bold text-surface-white">
-          {COMBINED_CHLORINE.abbreviation}
-        </Text>
-      </View>
+      {chemistryIcon ? (
+        <Image
+          source={chemistryIcon}
+          className="w-12 h-12 shrink-0"
+          style={{ width: 48, height: 48 }}
+          resizeMode="contain"
+        />
+      ) : null}
       <View className="flex-1 min-w-0">
-        <Text className="text-body leading-4.75 font-jakarta-bold text-brand-navy">
-          {t(COMBINED_CHLORINE.labelKey)}
-        </Text>
-        <Text className="text-[10.5px] leading-3.5 font-jakarta text-[#78859C] mt-0.5">
-          {t('test_results_cc_calculated')}
-        </Text>
+        <View className="flex-row items-center gap-1.5 flex-wrap">
+          <Text className="text-body leading-4.75 font-jakarta-bold text-brand-navy shrink">
+            {t(COMBINED_CHLORINE.labelKey)}
+          </Text>
+          <TouchableOpacity
+            onPress={() => Alert.alert(t(COMBINED_CHLORINE.labelKey), t('test_results_cc_calculated'))}
+            hitSlop={8}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="information-circle-outline" size={18} color="#42668D" />
+          </TouchableOpacity>
+        </View>
         {invalid ? (
           <Text className="text-[10.5px] leading-3.5 font-jakarta text-error mt-0.5">
             {t('test_results_tc_less_than_fc')}

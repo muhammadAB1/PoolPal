@@ -133,12 +133,12 @@ export default function CleaningSetupScreen({
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
+                    className={`rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'btn--disabled' : 'btn--primary'}`}
                     onPress={handleContinue}
                     activeOpacity={0.85}
                     disabled={isSubmitting}
                 >
-                    <Text className="text-button font-jakarta-bold text-surface-white">
+                    <Text className="text-button font-jakarta-bold btn__label--primary">
                         {t('cleaning_setup_continue')}
                     </Text>
                 </TouchableOpacity>

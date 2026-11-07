@@ -50,12 +50,7 @@ export default function ChooseTestMethodScreen() {
 
           <PoolTonicLogo width={152} height={43} />
 
-          <TouchableOpacity
-            className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
-            activeOpacity={0.7}
-          >
-            <Text className="text-h3 font-jakarta-bold text-brand-navy">?</Text>
-          </TouchableOpacity>
+          <View className="w-10 h-10" />
         </View>
       </View>
 
@@ -148,12 +143,12 @@ export default function ChooseTestMethodScreen() {
 
       <View className="px-5 pt-2 pb-3">
         <TouchableOpacity
-          className={`btn btn--primary ${selectedId ? '' : 'opacity-50'}`}
+          className={`btn ${selectedId ? 'btn--primary' : 'btn--disabled'}`}
           activeOpacity={0.85}
           disabled={!selectedId}
           onPress={continueFlow}
         >
-          <Text className="text-button font-jakarta-bold text-surface-white">
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {t('choose_test_method_continue')}
           </Text>
         </TouchableOpacity>

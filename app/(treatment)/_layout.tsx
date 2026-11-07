@@ -7,7 +7,7 @@ export default function TreatmentLayout() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="treatment/plan" />
+      <Stack.Screen name="reading/plan" />
     </Stack>
   );
 }

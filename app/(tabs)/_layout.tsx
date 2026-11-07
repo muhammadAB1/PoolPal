@@ -1,6 +1,7 @@
 import { navImages } from '@/constants/images';
 import { colors } from '@/constants/theme';
 import { useAuth } from '@/providers/AuthProvider';
+import { ChecklistProvider } from '@/providers/ChecklistProvider';
 import { usePool } from '@/providers/PoolProvider';
 import { Redirect, Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -60,6 +61,7 @@ export default function TabLayout() {
   if (!user) return <Redirect href="/" />;
 
   return (
+    <ChecklistProvider>
     <Tabs
       screenOptions={{
         headerShown: false,
@@ -160,5 +162,6 @@ export default function TabLayout() {
       <Tabs.Screen name="learn" options={{ href: null }} />
       <Tabs.Screen name="profile" options={{ href: null }} />
     </Tabs>
+    </ChecklistProvider>
   );
 }

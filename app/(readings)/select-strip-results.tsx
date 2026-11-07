@@ -39,12 +39,7 @@ export default function SelectStripResultsScreen() {
 
           <PoolTonicLogo width={152} height={43} />
 
-          <TouchableOpacity
-            className="w-10 h-10 rounded-full bg-surface-white border border-border-default items-center justify-center"
-            activeOpacity={0.7}
-          >
-            <Text className="text-h3 font-jakarta-bold text-brand-navy">?</Text>
-          </TouchableOpacity>
+          <View className="w-10 h-10" />
         </View>
       </View>
 
@@ -72,11 +67,7 @@ export default function SelectStripResultsScreen() {
 
           {/* Info callout */}
           <View className="card--info flex-row items-start gap-2.5 px-3.5 py-3 mt-4">
-            <Ionicons
-              name="information-circle-outline"
-              size={18}
-              color={colors.text.sub}
-            />
+            <Image source={icons.info} className="w-6 h-6" resizeMode="contain" />
             <Text className="flex-1 text-small font-jakarta text-charcoal leading-5">
               {t('strip_results_info')}
             </Text>
@@ -131,7 +122,7 @@ export default function SelectStripResultsScreen() {
         )}
 
         <TouchableOpacity
-          className={`btn btn--primary ${allSelected ? '' : 'opacity-50'}`}
+          className={`w-full btn ${allSelected ? 'btn--primary' : 'btn--disabled'}`}
           activeOpacity={0.85}
           disabled={!allSelected}
           onPress={() => {
@@ -139,7 +130,7 @@ export default function SelectStripResultsScreen() {
             router.push('/(readings)/water-results');
           }}
         >
-          <Text className="text-button font-jakarta-bold text-surface-white">
+          <Text className="text-button font-jakarta-bold btn__label--primary">
             {t('strip_results_continue')}
           </Text>
         </TouchableOpacity>

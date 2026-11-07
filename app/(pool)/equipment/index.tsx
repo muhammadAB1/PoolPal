@@ -154,6 +154,7 @@ export default function PoolEquipmentScreen() {
           initialHeater={heater ?? null}
           showSkip={false}
           markStale={false}
+          fromPoolTab
           onSuccess={async () => {
             await refreshPools({ silent: true });
             setIsEditing(false);

@@ -1,6 +1,7 @@
 import { sortPoolsWithSpasBesideParents } from '@/lib/pool';
 import { supabase } from '@/lib/Supabase';
 import type { Pool } from '@/lib/types';
+import { isWeeklyReminderEnabled, syncWeeklyReminder } from '@/lib/weeklyReminderNotification';
 import { useAuth } from '@/providers/AuthProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -123,6 +124,16 @@ export function PoolProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     refreshPools();
   }, [refreshPools]);
+
+  useEffect(() => {
+    if (!poolId) {
+      void syncWeeklyReminder(null, null);
+      return;
+    }
+    void isWeeklyReminderEnabled(poolId).then((on) => {
+      void syncWeeklyReminder(on ? pools?.reminder_day : null, on ? pools?.reminder_time : null);
+    });
+  }, [poolId, pools?.reminder_day, pools?.reminder_time]);
 
   return (
     <PoolContext.Provider

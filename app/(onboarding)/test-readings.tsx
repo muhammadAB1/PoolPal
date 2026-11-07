@@ -7,6 +7,7 @@ import {
     TEST_READINGS_PHOTO_TIPS,
     testReadingsMethodTranslationKeys,
 } from '@/data/poolReadings';
+import { useSupabase } from '@/hooks/supabaseHooks';
 import { parseRemainingSteps, resumeOnboardingHref } from '@/lib/onboardingFlow';
 import type { TestReadingsMethod } from '@/lib/types';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +23,6 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSupabase } from '@/hooks/supabaseHooks';
 
 export default function TestReadingsScreen() {
     const router = useRouter();
@@ -293,12 +293,12 @@ export default function TestReadingsScreen() {
                     </Text>
                 ) : null}
                 <TouchableOpacity
-                    className={`bg-brand-blue rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'opacity-60' : ''}`}
+                    className={`rounded-full py-4.25 items-center justify-center ${isSubmitting ? 'btn--disabled' : 'btn--primary'}`}
                     onPress={handleContinue}
                     activeOpacity={0.85}
                     disabled={isSubmitting}
                 >
-                    <Text className="text-button font-jakarta-bold text-surface-white">
+                    <Text className="text-button font-jakarta-bold btn__label--primary">
                         {t('test_readings_continue')}
                     </Text>
                 </TouchableOpacity>
