@@ -126,12 +126,9 @@ export function PoolProvider({ children }: { children: ReactNode }) {
   }, [refreshPools]);
 
   useEffect(() => {
-    if (!poolId) {
-      void syncWeeklyReminder(null, null);
-      return;
-    }
+    if (!poolId) return;
     void isWeeklyReminderEnabled(poolId).then((on) => {
-      void syncWeeklyReminder(on ? pools?.reminder_day : null, on ? pools?.reminder_time : null);
+      void syncWeeklyReminder(poolId, on ? pools?.reminder_day : null, on ? pools?.reminder_time : null);
     });
   }, [poolId, pools?.reminder_day, pools?.reminder_time]);
 

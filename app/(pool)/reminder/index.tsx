@@ -50,9 +50,15 @@ export default function PoolReminderScreen() {
   function handleToggle(next: boolean) {
     if (!poolId || (next && !hasReminder)) return;
     setEnabled(next);
-    void setWeeklyReminderEnabled(poolId, next).then(() =>
-      syncWeeklyReminder(next ? pools?.reminder_day : null, next ? pools?.reminder_time : null),
-    );
+    void setWeeklyReminderEnabled(poolId, next).then(async () => {
+      const scheduled = await syncWeeklyReminder(
+        poolId,
+        next ? pools?.reminder_day : null,
+        next ? pools?.reminder_time : null,
+        next,
+      );
+      if (!scheduled) setEnabled(false);
+    });
   }
 
   const dayLabel = updatedPoolReminder.reminder_day
