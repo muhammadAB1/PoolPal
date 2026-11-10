@@ -13,6 +13,7 @@ import {
 import { useShopList } from '@/providers/ShopListProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -22,6 +23,7 @@ const RELATED_CARD_GAP = 12;
 
 export default function ProductScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { productId } = useLocalSearchParams<{ productId: string }>();
   const { isSaved, toggleSaved } = useShopList();
@@ -36,10 +38,10 @@ export default function ProductScreen() {
         </View>
         <View className="flex-1 items-center justify-center px-8 pb-24">
           <Text className="text-h2 font-jakarta-extrabold text-brand-navy text-center">
-            Product not found
+            {t('shop.notFoundTitle')}
           </Text>
           <Text className="text-body-lg font-jakarta text-sub text-center mt-2">
-            This product is no longer available.
+            {t('shop.notFoundBody')}
           </Text>
         </View>
       </SafeAreaView>
@@ -47,6 +49,8 @@ export default function ProductScreen() {
   }
 
   const category = getCategory(product.categoryId);
+  const categoryName = category ? t(category.nameKey) : '';
+  const name = t(product.nameKey);
   const saved = isSaved(product.id);
   const related = getProductsByCategory(product.categoryId).filter((item) => item.id !== product.id);
 
@@ -74,20 +78,20 @@ export default function ProductScreen() {
                 activeOpacity={0.8}
                 onPress={() => router.push(`/(shop)/category/${product.categoryId}` as Href)}
                 accessibilityRole="button"
-                accessibilityLabel={`More in ${category?.name}`}
+                accessibilityLabel={t('shop.moreIn', { name: categoryName })}
               >
-                <Text className="text-small font-jakarta-bold text-brand-navy">{category?.name}</Text>
+                <Text className="text-small font-jakarta-bold text-brand-navy">{categoryName}</Text>
               </TouchableOpacity>
-              {product.forYou ? (
+              {product.forYouKey ? (
                 <View className="flex-row items-center rounded-full bg-surface-mint px-3 py-1.5">
                   <MaterialCommunityIcons name="star-four-points" size={12} color={colors.status.successText} />
-                  <Text className="text-small font-jakarta-bold text-success-text ml-1">{product.forYou}</Text>
+                  <Text className="text-small font-jakarta-bold text-success-text ml-1">{t(product.forYouKey)}</Text>
                 </View>
               ) : null}
             </View>
 
-            <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-3">{product.name}</Text>
-            <Text className="text-body font-jakarta text-sub mt-1">by {product.brand}</Text>
+            <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-3">{name}</Text>
+            <Text className="text-body font-jakarta text-sub mt-1">{t('shop.byBrand', { brand: product.brand })}</Text>
 
             <View className="mt-3">
               <Rating rating={product.rating} reviewCount={product.reviewCount} large />
@@ -99,7 +103,7 @@ export default function ProductScreen() {
               </Text>
               <View className="flex-row items-center ml-3">
                 <View className="w-2 h-2 rounded-full bg-success" />
-                <Text className="text-small font-jakarta-semibold text-success-text ml-1.5">In stock</Text>
+                <Text className="text-small font-jakarta-semibold text-success-text ml-1.5">{t('shop.inStock')}</Text>
               </View>
             </View>
 
@@ -108,25 +112,25 @@ export default function ProductScreen() {
                 <MaterialCommunityIcons name="pool" size={22} color={colors.brand.blueDark} />
               </View>
               <View className="flex-1 ml-3">
-                <Text className="text-body-lg font-jakarta-bold text-brand-navy">Why it fits your pool</Text>
-                <Text className="text-body font-jakarta text-charcoal mt-1">{product.fitNote}</Text>
+                <Text className="text-body-lg font-jakarta-bold text-brand-navy">{t('shop.fitTitle')}</Text>
+                <Text className="text-body font-jakarta text-charcoal mt-1">{t(product.fitNoteKey)}</Text>
               </View>
             </View>
 
-            <Text className="section__title mt-7">About this product</Text>
-            <Text className="text-body-lg font-jakarta-semibold text-brand-navy mt-2">{product.tagline}</Text>
-            <Text className="text-body-lg font-jakarta text-sub mt-1">{product.description}</Text>
+            <Text className="section__title mt-7">{t('shop.about')}</Text>
+            <Text className="text-body-lg font-jakarta-semibold text-brand-navy mt-2">{t(product.taglineKey)}</Text>
+            <Text className="text-body-lg font-jakarta text-sub mt-1">{t(product.descriptionKey)}</Text>
 
-            <Text className="section__title mt-7">Details</Text>
+            <Text className="section__title mt-7">{t('shop.details')}</Text>
             <View className="card px-4 mt-3" style={shadow.card}>
               {product.specs.map((spec, index) => (
                 <View
-                  key={spec.label}
+                  key={spec.labelKey}
                   className={`flex-row items-center justify-between py-3.5 ${index === product.specs.length - 1 ? '' : 'border-b border-border-default'}`}
                 >
-                  <Text className="text-body font-jakarta text-sub">{spec.label}</Text>
+                  <Text className="text-body font-jakarta text-sub">{t(spec.labelKey)}</Text>
                   <Text className="text-body font-jakarta-bold text-brand-navy ml-4 shrink text-right">
-                    {spec.value}
+                    {t(spec.valueKey)}
                   </Text>
                 </View>
               ))}
@@ -135,7 +139,7 @@ export default function ProductScreen() {
 
           {related.length > 0 ? (
             <>
-              <Text className="section__title mt-8 px-5">More in {category?.name}</Text>
+              <Text className="section__title mt-8 px-5">{t('shop.moreIn', { name: categoryName })}</Text>
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -187,7 +191,7 @@ export default function ProductScreen() {
               activeOpacity={0.7}
               onPress={() => toggleSaved(product.id)}
               accessibilityRole="button"
-              accessibilityLabel={`Remove ${product.name} from my list`}
+              accessibilityLabel={t('shop.listRemoveA11y', { name })}
             >
               <MaterialCommunityIcons name="trash-can-outline" size={22} color={colors.text.sub} />
             </TouchableOpacity>
@@ -197,7 +201,7 @@ export default function ProductScreen() {
               onPress={() => router.push('/(shop)/list' as Href)}
             >
               <MaterialCommunityIcons name="check" size={20} color={colors.surface.white} />
-              <Text className="btn__label btn__label--primary ml-2">Added · View my list</Text>
+              <Text className="btn__label btn__label--primary ml-2">{t('shop.added')}</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -207,7 +211,7 @@ export default function ProductScreen() {
             onPress={() => toggleSaved(product.id)}
           >
             <MaterialCommunityIcons name="plus" size={20} color={colors.surface.white} />
-            <Text className="btn__label btn__label--primary ml-2">Add to my list</Text>
+            <Text className="btn__label btn__label--primary ml-2">{t('shop.add')}</Text>
           </TouchableOpacity>
         )}
       </View>

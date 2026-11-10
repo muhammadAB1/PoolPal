@@ -1,6 +1,7 @@
 import { colors } from '@/constants/theme';
 import { formatReviewCount } from '@/data/shop';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
 type RatingProps = {
@@ -11,11 +12,13 @@ type RatingProps = {
 };
 
 export default function Rating({ rating, reviewCount, large = false }: RatingProps) {
+  const { t } = useTranslation();
+
   return (
     <View
       className="flex-row items-center"
       accessible
-      accessibilityLabel={`Rated ${rating} out of 5 from ${reviewCount} reviews`}
+      accessibilityLabel={t('shop.ratingA11y', { rating: rating.toFixed(1), count: reviewCount })}
     >
       <MaterialCommunityIcons name="star" size={large ? 18 : 15} color={colors.status.warning} />
       <Text

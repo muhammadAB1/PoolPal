@@ -1,6 +1,7 @@
 import { icons } from '@/constants/images';
 import { shadow } from '@/constants/theme';
 import { useRouter, type Href } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Image, TouchableOpacity } from 'react-native';
 
 /**
@@ -9,6 +10,7 @@ import { Image, TouchableOpacity } from 'react-native';
  */
 export default function BackButton() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const goBack = () => {
     if (router.canGoBack()) {
@@ -25,7 +27,7 @@ export default function BackButton() {
       activeOpacity={0.7}
       onPress={goBack}
       accessibilityRole="button"
-      accessibilityLabel="Go back"
+      accessibilityLabel={t('shop.backA11y')}
     >
       <Image source={icons.backArrow} className="w-5 h-5" resizeMode="contain" />
     </TouchableOpacity>

@@ -5,6 +5,7 @@ import { SHOP_CATEGORIES, getCategory, getProductsByCategory } from '@/data/shop
 import { useShopList } from '@/providers/ShopListProvider';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -13,6 +14,7 @@ const CHIP_SCROLL_STEP = 104;
 
 export default function CategoryScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { categoryId } = useLocalSearchParams<{ categoryId: string }>();
   const { isSaved, toggleSaved } = useShopList();
   const chipsRef = useRef<ScrollView>(null);
@@ -31,7 +33,11 @@ export default function CategoryScreen() {
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
       >
-        <ShopHeader title={category.name} subtitle={`${products.length} products`} showList />
+        <ShopHeader
+          title={t(category.nameKey)}
+          subtitle={t('shop.productCount', { count: products.length })}
+          showList
+        />
 
         <ScrollView
           ref={chipsRef}
@@ -51,7 +57,7 @@ export default function CategoryScreen() {
                 accessibilityState={{ selected: active }}
               >
                 <Text className={`filter-chip__label ${active ? 'filter-chip__label--active' : ''}`}>
-                  {item.name}
+                  {t(item.nameKey)}
                 </Text>
               </TouchableOpacity>
             );

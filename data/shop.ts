@@ -2,9 +2,8 @@ import { shopImages } from '@/constants/images';
 import type { ImageSourcePropType } from 'react-native';
 
 /**
- * Hardcoded shop catalog (UI-only version).
- * No API, no database, no translations yet. Copy lives here so the screens
- * stay thin and the catalog is easy to swap for real data later.
+ * Hardcoded shop catalog.
+ * Visible copy is a key into data/translations.ts. Screens call t(key).
  */
 
 export type ShopCategoryId =
@@ -20,43 +19,45 @@ export type ProductImageStyle = 'photo' | 'studio';
 
 export type ShopCategory = {
   id: ShopCategoryId;
-  name: string;
+  /** Key in data/translations.ts */
+  nameKey: string;
   image: ImageSourcePropType;
   imageStyle: ProductImageStyle;
   tone: 'aqua' | 'mint';
 };
 
 export type ProductSpec = {
-  label: string;
-  value: string;
+  labelKey: string;
+  valueKey: string;
 };
 
 export type Product = {
   id: string;
   categoryId: ShopCategoryId;
-  name: string;
+  /** Keys in data/translations.ts. Brand stays a proper name. */
+  nameKey: string;
   brand: string;
-  tagline: string;
-  description: string;
+  taglineKey: string;
+  descriptionKey: string;
   price: number;
   rating: number;
   reviewCount: number;
   image: ImageSourcePropType;
   imageStyle: ProductImageStyle;
   /** Short note explaining why this suits the homeowner's pool. */
-  fitNote: string;
+  fitNoteKey: string;
   /** When set, the product appears in "Customized for you" with this badge. */
-  forYou?: string;
+  forYouKey?: string;
   specs: ProductSpec[];
 };
 
 export const SHOP_CATEGORIES: ShopCategory[] = [
-  { id: 'test-kits', name: 'Test Kits', image: shopImages.aquachek, imageStyle: 'studio', tone: 'aqua' },
-  { id: 'balancers', name: 'Balancers', image: shopImages.ph, imageStyle: 'studio', tone: 'mint' },
-  { id: 'sanitizers', name: 'Sanitizers', image: shopImages.chlorine, imageStyle: 'studio', tone: 'mint' },
-  { id: 'cleaners', name: 'Cleaners', image: shopImages.robotic, imageStyle: 'photo', tone: 'aqua' },
-  { id: 'pumps', name: 'Pumps', image: shopImages.variablePump, imageStyle: 'studio', tone: 'aqua' },
-  { id: 'filters', name: 'Filters', image: shopImages.cartridgeFilter, imageStyle: 'studio', tone: 'mint' },
+  { id: 'test-kits', nameKey: 'shop.categories.testKits', image: shopImages.aquachek, imageStyle: 'studio', tone: 'aqua' },
+  { id: 'balancers', nameKey: 'shop.categories.balancers', image: shopImages.ph, imageStyle: 'studio', tone: 'mint' },
+  { id: 'sanitizers', nameKey: 'shop.categories.sanitizers', image: shopImages.chlorine, imageStyle: 'studio', tone: 'mint' },
+  { id: 'cleaners', nameKey: 'shop.categories.cleaners', image: shopImages.robotic, imageStyle: 'photo', tone: 'aqua' },
+  { id: 'pumps', nameKey: 'shop.categories.pumps', image: shopImages.variablePump, imageStyle: 'studio', tone: 'aqua' },
+  { id: 'filters', nameKey: 'shop.categories.filters', image: shopImages.cartridgeFilter, imageStyle: 'studio', tone: 'mint' },
 ];
 
 export const PRODUCTS: Product[] = [
@@ -64,82 +65,78 @@ export const PRODUCTS: Product[] = [
   {
     id: 'robotic-cleaner',
     categoryId: 'cleaners',
-    name: 'Robotic Pool Cleaner',
+    nameKey: 'shop.items.roboticCleaner.name',
     brand: 'PoolTonic',
-    tagline: 'Set it, forget it, swim.',
-    description:
-      'Scrubs the floor and walls on its own while your pump takes a break. Empty the easy-clean basket and you are done.',
+    taglineKey: 'shop.items.roboticCleaner.tagline',
+    descriptionKey: 'shop.items.roboticCleaner.description',
     price: 449,
     rating: 4.8,
     reviewCount: 2140,
     image: shopImages.robotic,
     imageStyle: 'photo',
-    fitNote: 'A great match if you want less weekly vacuuming and cleaner water between tests.',
-    forYou: 'Fits your cleaning setup',
+    fitNoteKey: 'shop.items.roboticCleaner.fit',
+    forYouKey: 'shop.items.roboticCleaner.forYou',
     specs: [
-      { label: 'Cycle time', value: '2 hours' },
-      { label: 'Cable length', value: '50 ft' },
-      { label: 'Best for', value: 'In-ground pools' },
+      { labelKey: 'shop.specs.cycleTime', valueKey: 'shop.values.twoHours' },
+      { labelKey: 'shop.specs.cableLength', valueKey: 'shop.values.fiftyFt' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.inGroundPools' },
     ],
   },
   {
     id: 'pressure-cleaner',
     categoryId: 'cleaners',
-    name: 'Pressure-Side Cleaner',
+    nameKey: 'shop.items.pressureCleaner.name',
     brand: 'PoolTonic',
-    tagline: 'Powered by your return line.',
-    description:
-      'Uses your pool\u2019s own water pressure to sweep debris into a fine mesh bag, so your filter stays cleaner for longer.',
+    taglineKey: 'shop.items.pressureCleaner.tagline',
+    descriptionKey: 'shop.items.pressureCleaner.description',
     price: 329,
     rating: 4.6,
     reviewCount: 860,
     image: shopImages.pressureSide,
     imageStyle: 'photo',
-    fitNote: 'Handles leaves and larger debris well, ideal for pools under trees.',
+    fitNoteKey: 'shop.items.pressureCleaner.fit',
     specs: [
-      { label: 'Debris bag', value: 'Fine mesh' },
-      { label: 'Hose length', value: '32 ft' },
-      { label: 'Best for', value: 'Leafy yards' },
+      { labelKey: 'shop.specs.debrisBag', valueKey: 'shop.values.fineMesh' },
+      { labelKey: 'shop.specs.hoseLength', valueKey: 'shop.values.thirtyTwoFt' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.leafyYards' },
     ],
   },
   {
     id: 'suction-cleaner',
     categoryId: 'cleaners',
-    name: 'Suction-Side Cleaner',
+    nameKey: 'shop.items.suctionCleaner.name',
     brand: 'PoolTonic',
-    tagline: 'Simple, affordable daily cleaning.',
-    description:
-      'Connects to your skimmer and glides across the pool floor, pulling dirt straight into your existing filter.',
+    taglineKey: 'shop.items.suctionCleaner.tagline',
+    descriptionKey: 'shop.items.suctionCleaner.description',
     price: 189,
     rating: 4.4,
     reviewCount: 1320,
     image: shopImages.suctionSide,
     imageStyle: 'photo',
-    fitNote: 'An easy upgrade if you vacuum by hand today and want to automate it.',
+    fitNoteKey: 'shop.items.suctionCleaner.fit',
     specs: [
-      { label: 'Connects to', value: 'Skimmer port' },
-      { label: 'Hose length', value: '40 ft' },
-      { label: 'Best for', value: 'Everyday dirt' },
+      { labelKey: 'shop.specs.connectsTo', valueKey: 'shop.values.skimmerPort' },
+      { labelKey: 'shop.specs.hoseLength', valueKey: 'shop.values.fortyFt' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.everydayDirt' },
     ],
   },
   {
     id: 'manual-vacuum',
     categoryId: 'cleaners',
-    name: 'Manual Vacuum Kit',
+    nameKey: 'shop.items.manualVacuum.name',
     brand: 'PoolTonic',
-    tagline: 'Full control for detail work.',
-    description:
-      'A head, pole and hose in one kit. Perfect for spot cleaning steps, corners and the spots automatic cleaners miss.',
+    taglineKey: 'shop.items.manualVacuum.tagline',
+    descriptionKey: 'shop.items.manualVacuum.description',
     price: 69.99,
     rating: 4.5,
     reviewCount: 640,
     image: shopImages.manualVacuum,
     imageStyle: 'photo',
-    fitNote: 'Keeps your weekly clean-up quick, whatever cleaner you already use.',
+    fitNoteKey: 'shop.items.manualVacuum.fit',
     specs: [
-      { label: 'Pole length', value: '4 ft telescoping' },
-      { label: 'Hose length', value: '30 ft' },
-      { label: 'Best for', value: 'Spot cleaning' },
+      { labelKey: 'shop.specs.poleLength', valueKey: 'shop.values.fourFtTelescoping' },
+      { labelKey: 'shop.specs.hoseLength', valueKey: 'shop.values.thirtyFt' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.spotCleaning' },
     ],
   },
 
@@ -147,82 +144,78 @@ export const PRODUCTS: Product[] = [
   {
     id: 'aquachek-7',
     categoryId: 'test-kits',
-    name: 'AquaChek 7-Way Test Strips',
+    nameKey: 'shop.items.aquachek.name',
     brand: 'Hach',
-    tagline: 'Seven readings in about 15 seconds.',
-    description:
-      'Dip, wait, and match the colors on the bottle. One strip checks the numbers that matter most for safe, clear water.',
+    taglineKey: 'shop.items.aquachek.tagline',
+    descriptionKey: 'shop.items.aquachek.description',
     price: 18.99,
     rating: 4.7,
     reviewCount: 3120,
     image: shopImages.aquachek,
     imageStyle: 'studio',
-    fitNote: 'Your weekly water check. Results from these strips go straight into your PoolPal readings.',
-    forYou: 'Your weekly water test',
+    fitNoteKey: 'shop.items.aquachek.fit',
+    forYouKey: 'shop.items.aquachek.forYou',
     specs: [
-      { label: 'Strips per bottle', value: '100' },
-      { label: 'Readings', value: '7 in 1' },
-      { label: 'Best for', value: 'Pools and spas' },
+      { labelKey: 'shop.specs.strips', valueKey: 'shop.values.strips100' },
+      { labelKey: 'shop.specs.readings', valueKey: 'shop.values.sevenInOne' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.poolsAndSpas' },
     ],
   },
   {
     id: 'hth-6',
     categoryId: 'test-kits',
-    name: 'HTH 6-Way Test Strips',
+    nameKey: 'shop.items.hth.name',
     brand: 'HTH',
-    tagline: 'Six key readings, no guesswork.',
-    description:
-      'A budget-friendly strip for quick weekly checks. Covers chlorine, pH, alkalinity, hardness and stabilizer.',
+    taglineKey: 'shop.items.hth.tagline',
+    descriptionKey: 'shop.items.hth.description',
     price: 14.49,
     rating: 4.5,
     reviewCount: 1890,
     image: shopImages.hth,
     imageStyle: 'studio',
-    fitNote: 'A simple, low-cost way to stay on top of your weekly checks.',
+    fitNoteKey: 'shop.items.hth.fit',
     specs: [
-      { label: 'Strips per bottle', value: '50' },
-      { label: 'Readings', value: '6 in 1' },
-      { label: 'Best for', value: 'Pools' },
+      { labelKey: 'shop.specs.strips', valueKey: 'shop.values.strips50' },
+      { labelKey: 'shop.specs.readings', valueKey: 'shop.values.sixInOne' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.pools' },
     ],
   },
   {
     id: 'jnw-7',
     categoryId: 'test-kits',
-    name: 'JNW 7-in-1 Pool & Spa Strips',
+    nameKey: 'shop.items.jnw.name',
     brand: 'JNW',
-    tagline: 'Big, clear color chart.',
-    description:
-      'Seven readings on every strip with a color chart that is easy to read in bright sun or in the shade.',
+    taglineKey: 'shop.items.jnw.tagline',
+    descriptionKey: 'shop.items.jnw.description',
     price: 12.99,
     rating: 4.6,
     reviewCount: 940,
     image: shopImages.jnw,
     imageStyle: 'studio',
-    fitNote: 'Works for both your pool and a spa, so one bottle covers everything.',
+    fitNoteKey: 'shop.items.jnw.fit',
     specs: [
-      { label: 'Strips per bottle', value: '100' },
-      { label: 'Readings', value: '7 in 1' },
-      { label: 'Best for', value: 'Pools and spas' },
+      { labelKey: 'shop.specs.strips', valueKey: 'shop.values.strips100' },
+      { labelKey: 'shop.specs.readings', valueKey: 'shop.values.sevenInOne' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.poolsAndSpas' },
     ],
   },
   {
     id: 'easytest-9',
     categoryId: 'test-kits',
-    name: 'EasyTest 9-in-1 Strips',
+    nameKey: 'shop.items.easytest.name',
     brand: 'EasyTest',
-    tagline: 'Nine readings, fuller picture.',
-    description:
-      'Goes beyond the basics with extra readings, so you can spot slow-building problems before they turn visible.',
+    taglineKey: 'shop.items.easytest.tagline',
+    descriptionKey: 'shop.items.easytest.description',
     price: 16.99,
     rating: 4.4,
     reviewCount: 702,
     image: shopImages.easyTest,
     imageStyle: 'studio',
-    fitNote: 'Useful when your water looks fine but something feels off.',
+    fitNoteKey: 'shop.items.easytest.fit',
     specs: [
-      { label: 'Strips per bottle', value: '50' },
-      { label: 'Readings', value: '9 in 1' },
-      { label: 'Best for', value: 'Pools and spas' },
+      { labelKey: 'shop.specs.strips', valueKey: 'shop.values.strips50' },
+      { labelKey: 'shop.specs.readings', valueKey: 'shop.values.nineInOne' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.poolsAndSpas' },
     ],
   },
 
@@ -230,82 +223,78 @@ export const PRODUCTS: Product[] = [
   {
     id: 'ph-decreaser',
     categoryId: 'balancers',
-    name: 'pH Decreaser, 5 lb',
+    nameKey: 'shop.items.phDecreaser.name',
     brand: 'PoolTonic',
-    tagline: 'Brings a high pH back down.',
-    description:
-      'Add small doses with the pump running, then retest after a few hours. Keeps chlorine working at full strength.',
+    taglineKey: 'shop.items.phDecreaser.tagline',
+    descriptionKey: 'shop.items.phDecreaser.description',
     price: 12.99,
     rating: 4.7,
     reviewCount: 1780,
     image: shopImages.ph,
     imageStyle: 'studio',
-    fitNote: 'Keeps your pH in the ideal range so your sanitizer does its job.',
-    forYou: 'Keeps your pH in range',
+    fitNoteKey: 'shop.items.phDecreaser.fit',
+    forYouKey: 'shop.items.phDecreaser.forYou',
     specs: [
-      { label: 'Size', value: '5 lb' },
-      { label: 'Form', value: 'Granular' },
-      { label: 'Retest after', value: '4 hours' },
+      { labelKey: 'shop.specs.size', valueKey: 'shop.values.fiveLb' },
+      { labelKey: 'shop.specs.form', valueKey: 'shop.values.granular' },
+      { labelKey: 'shop.specs.retestAfter', valueKey: 'shop.values.fourHours' },
     ],
   },
   {
     id: 'alkalinity-increaser',
     categoryId: 'balancers',
-    name: 'Alkalinity Increaser, 10 lb',
+    nameKey: 'shop.items.alkalinity.name',
     brand: 'PoolTonic',
-    tagline: 'Steadies wild pH swings.',
-    description:
-      'Raises total alkalinity so your pH stays put. The first fix to try when numbers keep bouncing around.',
+    taglineKey: 'shop.items.alkalinity.tagline',
+    descriptionKey: 'shop.items.alkalinity.description',
     price: 14.99,
     rating: 4.6,
     reviewCount: 1210,
     image: shopImages.alkalinity,
     imageStyle: 'studio',
-    fitNote: 'A pool basic, handy to keep on the shelf for after heavy rain.',
+    fitNoteKey: 'shop.items.alkalinity.fit',
     specs: [
-      { label: 'Size', value: '10 lb' },
-      { label: 'Form', value: 'Powder' },
-      { label: 'Retest after', value: '6 hours' },
+      { labelKey: 'shop.specs.size', valueKey: 'shop.values.tenLb' },
+      { labelKey: 'shop.specs.form', valueKey: 'shop.values.powder' },
+      { labelKey: 'shop.specs.retestAfter', valueKey: 'shop.values.sixHours' },
     ],
   },
   {
     id: 'calcium-increaser',
     categoryId: 'balancers',
-    name: 'Calcium Hardness Increaser, 10 lb',
+    nameKey: 'shop.items.calcium.name',
     brand: 'PoolTonic',
-    tagline: 'Protects surfaces and equipment.',
-    description:
-      'Brings soft water up to a healthy level so it stops pulling minerals from your plaster and heater.',
+    taglineKey: 'shop.items.calcium.tagline',
+    descriptionKey: 'shop.items.calcium.description',
     price: 16.99,
     rating: 4.5,
     reviewCount: 530,
     image: shopImages.hardness,
     imageStyle: 'studio',
-    fitNote: 'Helps protect your pool surface from etching and rough patches.',
+    fitNoteKey: 'shop.items.calcium.fit',
     specs: [
-      { label: 'Size', value: '10 lb' },
-      { label: 'Form', value: 'Flakes' },
-      { label: 'Retest after', value: '24 hours' },
+      { labelKey: 'shop.specs.size', valueKey: 'shop.values.tenLb' },
+      { labelKey: 'shop.specs.form', valueKey: 'shop.values.flakes' },
+      { labelKey: 'shop.specs.retestAfter', valueKey: 'shop.values.twentyFourHours' },
     ],
   },
   {
     id: 'phosphate-remover',
     categoryId: 'balancers',
-    name: 'Phosphate Remover, 32 oz',
+    nameKey: 'shop.items.phosphate.name',
     brand: 'PoolTonic',
-    tagline: 'Starves algae before it blooms.',
-    description:
-      'Removes the phosphates algae feed on, which makes green water far less likely during hot weeks.',
+    taglineKey: 'shop.items.phosphate.tagline',
+    descriptionKey: 'shop.items.phosphate.description',
     price: 19.99,
     rating: 4.3,
     reviewCount: 410,
     image: shopImages.phosphates,
     imageStyle: 'studio',
-    fitNote: 'Smart prevention if your pool sits in the sun or near trees.',
+    fitNoteKey: 'shop.items.phosphate.fit',
     specs: [
-      { label: 'Size', value: '32 oz' },
-      { label: 'Form', value: 'Liquid' },
-      { label: 'Treats', value: 'Up to 15,000 gal' },
+      { labelKey: 'shop.specs.size', valueKey: 'shop.values.thirtyTwoOz' },
+      { labelKey: 'shop.specs.form', valueKey: 'shop.values.liquid' },
+      { labelKey: 'shop.specs.treats', valueKey: 'shop.values.upToFifteenThousandGal' },
     ],
   },
 
@@ -313,82 +302,78 @@ export const PRODUCTS: Product[] = [
   {
     id: 'chlorine-tablets',
     categoryId: 'sanitizers',
-    name: '3-Inch Chlorine Tablets, 8 lb',
+    nameKey: 'shop.items.chlorineTablets.name',
     brand: 'PoolTonic',
-    tagline: 'Steady, slow-dissolving chlorine.',
-    description:
-      'Drop them into a floating dispenser or feeder and keep a steady chlorine level all week with almost no effort.',
+    taglineKey: 'shop.items.chlorineTablets.tagline',
+    descriptionKey: 'shop.items.chlorineTablets.description',
     price: 49.99,
     rating: 4.8,
     reviewCount: 2760,
     image: shopImages.chlorine,
     imageStyle: 'studio',
-    fitNote: 'The easiest way to keep chlorine steady between your weekly tests.',
+    fitNoteKey: 'shop.items.chlorineTablets.fit',
     specs: [
-      { label: 'Size', value: '8 lb bucket' },
-      { label: 'Form', value: '3-inch tablets' },
-      { label: 'Best for', value: 'Chlorine pools' },
+      { labelKey: 'shop.specs.size', valueKey: 'shop.values.eightLbBucket' },
+      { labelKey: 'shop.specs.form', valueKey: 'shop.values.threeInchTablets' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.chlorinePools' },
     ],
   },
   {
     id: 'pool-salt',
     categoryId: 'sanitizers',
-    name: 'Pool Salt, 40 lb',
+    nameKey: 'shop.items.poolSalt.name',
     brand: 'PoolTonic',
-    tagline: 'Pure salt for saltwater pools.',
-    description:
-      'High-purity salt that dissolves clean and keeps your salt system producing chlorine without cloudy residue.',
+    taglineKey: 'shop.items.poolSalt.tagline',
+    descriptionKey: 'shop.items.poolSalt.description',
     price: 8.99,
     rating: 4.9,
     reviewCount: 3480,
     image: shopImages.salt,
     imageStyle: 'studio',
-    fitNote: 'Made for salt systems. Top up whenever your salt reading dips.',
-    forYou: 'For saltwater pools',
+    fitNoteKey: 'shop.items.poolSalt.fit',
+    forYouKey: 'shop.items.poolSalt.forYou',
     specs: [
-      { label: 'Size', value: '40 lb bag' },
-      { label: 'Purity', value: '99.8% sodium chloride' },
-      { label: 'Best for', value: 'Saltwater pools' },
+      { labelKey: 'shop.specs.size', valueKey: 'shop.values.fortyLbBag' },
+      { labelKey: 'shop.specs.purity', valueKey: 'shop.values.sodiumChloride' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.saltwaterPools' },
     ],
   },
   {
     id: 'chlorine-stabilizer',
     categoryId: 'sanitizers',
-    name: 'Chlorine Stabilizer, 4 lb',
+    nameKey: 'shop.items.stabilizer.name',
     brand: 'PoolTonic',
-    tagline: 'Shields chlorine from the sun.',
-    description:
-      'Stops sunlight from burning off your chlorine so you use less of it and your water stays protected.',
+    taglineKey: 'shop.items.stabilizer.tagline',
+    descriptionKey: 'shop.items.stabilizer.description',
     price: 17.99,
     rating: 4.6,
     reviewCount: 980,
     image: shopImages.stabilizer,
     imageStyle: 'studio',
-    fitNote: 'Especially useful for outdoor pools that get full sun.',
+    fitNoteKey: 'shop.items.stabilizer.fit',
     specs: [
-      { label: 'Size', value: '4 lb' },
-      { label: 'Form', value: 'Granular' },
-      { label: 'Also called', value: 'Cyanuric acid' },
+      { labelKey: 'shop.specs.size', valueKey: 'shop.values.fourLb' },
+      { labelKey: 'shop.specs.form', valueKey: 'shop.values.granular' },
+      { labelKey: 'shop.specs.alsoCalled', valueKey: 'shop.values.cyanuricAcid' },
     ],
   },
   {
     id: 'bromine-tablets',
     categoryId: 'sanitizers',
-    name: 'Bromine Tablets, 4 lb',
+    nameKey: 'shop.items.bromine.name',
     brand: 'PoolTonic',
-    tagline: 'Gentle sanitizer for spas.',
-    description:
-      'Works well in warm water and has a softer smell than chlorine, which makes it a favorite for hot tubs.',
+    taglineKey: 'shop.items.bromine.tagline',
+    descriptionKey: 'shop.items.bromine.description',
     price: 34.99,
     rating: 4.5,
     reviewCount: 760,
     image: shopImages.bromine,
     imageStyle: 'studio',
-    fitNote: 'A good choice if you keep a spa or hot tub.',
+    fitNoteKey: 'shop.items.bromine.fit',
     specs: [
-      { label: 'Size', value: '4 lb' },
-      { label: 'Form', value: '1-inch tablets' },
-      { label: 'Best for', value: 'Spas and hot tubs' },
+      { labelKey: 'shop.specs.size', valueKey: 'shop.values.fourLb' },
+      { labelKey: 'shop.specs.form', valueKey: 'shop.values.oneInchTablets' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.spasAndHotTubs' },
     ],
   },
 
@@ -396,62 +381,59 @@ export const PRODUCTS: Product[] = [
   {
     id: 'variable-pump',
     categoryId: 'pumps',
-    name: 'Variable-Speed Pump',
+    nameKey: 'shop.items.variablePump.name',
     brand: 'PoolTonic',
-    tagline: 'Quiet, and far cheaper to run.',
-    description:
-      'Run it slow and long for a fraction of the energy of an old single-speed pump. Program it once and forget it.',
+    taglineKey: 'shop.items.variablePump.tagline',
+    descriptionKey: 'shop.items.variablePump.description',
     price: 899,
     rating: 4.8,
     reviewCount: 1560,
     image: shopImages.variablePump,
     imageStyle: 'studio',
-    fitNote: 'Cuts energy costs, and slower circulation is gentler on your filter.',
-    forYou: 'Cuts your energy costs',
+    fitNoteKey: 'shop.items.variablePump.fit',
+    forYouKey: 'shop.items.variablePump.forYou',
     specs: [
-      { label: 'Power', value: '1.5 HP' },
-      { label: 'Speeds', value: 'Variable, programmable' },
-      { label: 'Noise', value: 'Whisper quiet' },
+      { labelKey: 'shop.specs.power', valueKey: 'shop.values.onePointFiveHp' },
+      { labelKey: 'shop.specs.speeds', valueKey: 'shop.values.variableProgrammable' },
+      { labelKey: 'shop.specs.noise', valueKey: 'shop.values.whisperQuiet' },
     ],
   },
   {
     id: 'dual-pump',
     categoryId: 'pumps',
-    name: 'Dual-Speed Pump',
+    nameKey: 'shop.items.dualPump.name',
     brand: 'PoolTonic',
-    tagline: 'Two speeds, real savings.',
-    description:
-      'Switch to low speed for daily circulation and high speed for cleaning or heating. A solid middle ground.',
+    taglineKey: 'shop.items.dualPump.tagline',
+    descriptionKey: 'shop.items.dualPump.description',
     price: 549,
     rating: 4.5,
     reviewCount: 720,
     image: shopImages.dualPump,
     imageStyle: 'studio',
-    fitNote: 'A budget-friendly upgrade from an older single-speed pump.',
+    fitNoteKey: 'shop.items.dualPump.fit',
     specs: [
-      { label: 'Power', value: '1.5 HP' },
-      { label: 'Speeds', value: 'Low and high' },
-      { label: 'Noise', value: 'Moderate' },
+      { labelKey: 'shop.specs.power', valueKey: 'shop.values.onePointFiveHp' },
+      { labelKey: 'shop.specs.speeds', valueKey: 'shop.values.lowAndHigh' },
+      { labelKey: 'shop.specs.noise', valueKey: 'shop.values.moderate' },
     ],
   },
   {
     id: 'single-pump',
     categoryId: 'pumps',
-    name: 'Single-Speed Pump',
+    nameKey: 'shop.items.singlePump.name',
     brand: 'PoolTonic',
-    tagline: 'Reliable, simple, proven.',
-    description:
-      'A straightforward replacement pump that gets the job done. Easy to install and easy to find parts for.',
+    taglineKey: 'shop.items.singlePump.tagline',
+    descriptionKey: 'shop.items.singlePump.description',
     price: 349,
     rating: 4.3,
     reviewCount: 980,
     image: shopImages.singlePump,
     imageStyle: 'studio',
-    fitNote: 'The simplest like-for-like swap if your pump has stopped working.',
+    fitNoteKey: 'shop.items.singlePump.fit',
     specs: [
-      { label: 'Power', value: '1.5 HP' },
-      { label: 'Speeds', value: 'Single' },
-      { label: 'Noise', value: 'Standard' },
+      { labelKey: 'shop.specs.power', valueKey: 'shop.values.onePointFiveHp' },
+      { labelKey: 'shop.specs.speeds', valueKey: 'shop.values.singleSpeed' },
+      { labelKey: 'shop.specs.noise', valueKey: 'shop.values.standardNoise' },
     ],
   },
 
@@ -459,66 +441,63 @@ export const PRODUCTS: Product[] = [
   {
     id: 'cartridge-filter',
     categoryId: 'filters',
-    name: 'Cartridge Filter',
+    nameKey: 'shop.items.cartridgeFilter.name',
     brand: 'PoolTonic',
-    tagline: 'Fine filtering, easy rinse.',
-    description:
-      'Traps small particles and rinses clean with a garden hose. No backwashing and far less water wasted.',
+    taglineKey: 'shop.items.cartridgeFilter.tagline',
+    descriptionKey: 'shop.items.cartridgeFilter.description',
     price: 399,
     rating: 4.7,
     reviewCount: 1090,
     image: shopImages.cartridgeFilter,
     imageStyle: 'studio',
-    fitNote: 'Easy to maintain and gentle on your water bill.',
+    fitNoteKey: 'shop.items.cartridgeFilter.fit',
     specs: [
-      { label: 'Cleaning', value: 'Hose rinse' },
-      { label: 'Filters to', value: '10 microns' },
-      { label: 'Best for', value: 'Low upkeep' },
+      { labelKey: 'shop.specs.cleaning', valueKey: 'shop.values.hoseRinse' },
+      { labelKey: 'shop.specs.filtersTo', valueKey: 'shop.values.tenMicrons' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.lowUpkeep' },
     ],
   },
   {
     id: 'sand-filter',
     categoryId: 'filters',
-    name: 'Sand Filter',
+    nameKey: 'shop.items.sandFilter.name',
     brand: 'PoolTonic',
-    tagline: 'A low-maintenance workhorse.',
-    description:
-      'A familiar, forgiving design that keeps water clear for years. Backwash it when the pressure gauge climbs.',
+    taglineKey: 'shop.items.sandFilter.tagline',
+    descriptionKey: 'shop.items.sandFilter.description',
     price: 469,
     rating: 4.5,
     reviewCount: 830,
     image: shopImages.sandFilter,
     imageStyle: 'studio',
-    fitNote: 'Dependable if you like a simple filter you rarely have to think about.',
+    fitNoteKey: 'shop.items.sandFilter.fit',
     specs: [
-      { label: 'Cleaning', value: 'Backwash' },
-      { label: 'Filters to', value: '20 to 40 microns' },
-      { label: 'Best for', value: 'Everyday pools' },
+      { labelKey: 'shop.specs.cleaning', valueKey: 'shop.values.backwash' },
+      { labelKey: 'shop.specs.filtersTo', valueKey: 'shop.values.twentyToFortyMicrons' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.everydayPools' },
     ],
   },
   {
     id: 'de-filter',
     categoryId: 'filters',
-    name: 'DE Filter',
+    nameKey: 'shop.items.deFilter.name',
     brand: 'PoolTonic',
-    tagline: 'The finest filtration available.',
-    description:
-      'Catches the tiniest particles for sparkling water. Needs diatomaceous earth recharged after each backwash.',
+    taglineKey: 'shop.items.deFilter.tagline',
+    descriptionKey: 'shop.items.deFilter.description',
     price: 689,
     rating: 4.6,
     reviewCount: 410,
     image: shopImages.deFilter,
     imageStyle: 'studio',
-    fitNote: 'For the clearest water, if you do not mind a little extra upkeep.',
+    fitNoteKey: 'shop.items.deFilter.fit',
     specs: [
-      { label: 'Cleaning', value: 'Backwash and recharge' },
-      { label: 'Filters to', value: '2 to 5 microns' },
-      { label: 'Best for', value: 'Crystal-clear water' },
+      { labelKey: 'shop.specs.cleaning', valueKey: 'shop.values.backwashAndRecharge' },
+      { labelKey: 'shop.specs.filtersTo', valueKey: 'shop.values.twoToFiveMicrons' },
+      { labelKey: 'shop.specs.bestFor', valueKey: 'shop.values.crystalClearWater' },
     ],
   },
 ];
 
-export const FEATURED_PRODUCTS = PRODUCTS.filter((product) => product.forYou);
+export const FEATURED_PRODUCTS = PRODUCTS.filter((product) => product.forYouKey);
 
 export function getCategory(id: string | undefined): ShopCategory | undefined {
   return SHOP_CATEGORIES.find((category) => category.id === id);

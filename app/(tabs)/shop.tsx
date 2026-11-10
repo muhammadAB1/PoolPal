@@ -10,6 +10,7 @@ import {
 import { usePool } from '@/providers/PoolProvider';
 import { useShopList } from '@/providers/ShopListProvider';
 import { useRouter, type Href } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -19,6 +20,7 @@ const FEATURE_CARD_GAP = 12;
 
 export default function ShopScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { pools } = usePool();
   const { isSaved, toggleSaved } = useShopList();
 
@@ -35,16 +37,16 @@ export default function ShopScreen() {
       >
         <View className="px-5 flex-row items-start justify-between">
           <View className="flex-1 pr-3">
-            <Text className="text-h1 font-jakarta-extrabold text-brand-navy">Shop</Text>
-            <Text className="text-body font-jakarta text-sub mt-1">Everything your pool needs.</Text>
+            <Text className="text-h1 font-jakarta-extrabold text-brand-navy">{t('nav_shop')}</Text>
+            <Text className="text-body font-jakarta text-sub mt-1">{t('shop.subtitle')}</Text>
           </View>
           <ListButton />
         </View>
 
         <View className="px-5 mt-7">
-          <Text className="section__title">Customized for you</Text>
+          <Text className="section__title">{t('shop.forYouTitle')}</Text>
           <Text className="section__subtitle mt-0.5" numberOfLines={1}>
-            {poolName ? `Picked for ${poolName}` : 'Picked for your pool'}
+            {poolName ? t('shop.forYouPool', { name: poolName }) : t('shop.forYouGeneric')}
           </Text>
         </View>
 
@@ -60,7 +62,6 @@ export default function ShopScreen() {
             <View key={product.id} style={{ width: FEATURE_CARD_WIDTH }}>
               <ProductCard
                 product={product}
-                badge={product.forYou}
                 saved={isSaved(product.id)}
                 onPress={() => openProduct(product.id)}
                 onToggleSave={() => toggleSaved(product.id)}
@@ -70,10 +71,11 @@ export default function ShopScreen() {
         </ScrollView>
 
         <View className="px-5 mt-5">
-          <Text className="section__title">Shop by category</Text>
+          <Text className="section__title">{t('shop.categoriesTitle')}</Text>
           <View className="flex-row flex-wrap justify-between mt-3.5">
             {SHOP_CATEGORIES.map((category) => {
               const count = getProductsByCategory(category.id).length;
+              const name = t(category.nameKey);
               return (
                 <TouchableOpacity
                   key={category.id}
@@ -81,10 +83,10 @@ export default function ShopScreen() {
                   activeOpacity={0.85}
                   onPress={() => openCategory(category.id)}
                   accessibilityRole="button"
-                  accessibilityLabel={`${category.name}, ${count} products`}
+                  accessibilityLabel={t('shop.categoryA11y', { name, count })}
                 >
-                  <Text className="category-tile__name">{category.name}</Text>
-                  <Text className="category-tile__count">{count} products</Text>
+                  <Text className="category-tile__name">{name}</Text>
+                  <Text className="category-tile__count">{t('shop.productCount', { count })}</Text>
                   <View className="category-tile__bubble">
                     <ProductImage source={category.image} imageStyle={category.imageStyle} padding="14%" />
                   </View>

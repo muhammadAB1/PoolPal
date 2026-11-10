@@ -1,6 +1,7 @@
 import { colors, shadow } from '@/constants/theme';
 import { formatPrice, type Product } from '@/data/shop';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { Text, TouchableOpacity, View } from 'react-native';
 import ProductImage from './ProductImage';
 import Rating from './Rating';
@@ -11,15 +12,16 @@ type ProductCardProps = {
   saved: boolean;
   onPress: () => void;
   onToggleSave: () => void;
-  /** Small label on the image, e.g. why this product was picked. */
-  badge?: string;
 };
 
 /**
  * The one product card used on the shop home, category and "more like this" lists.
  * The parent decides the width.
  */
-export default function ProductCard({ product, saved, onPress, onToggleSave, badge }: ProductCardProps) {
+export default function ProductCard({ product, saved, onPress, onToggleSave }: ProductCardProps) {
+  const { t } = useTranslation();
+  const name = t(product.nameKey);
+
   return (
     <TouchableOpacity
       className="product-card"
@@ -27,16 +29,16 @@ export default function ProductCard({ product, saved, onPress, onToggleSave, bad
       activeOpacity={0.9}
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={product.name}
+      accessibilityLabel={name}
     >
       <View className="product-card__body">
         <View className="product-card__stage">
           <ProductImage source={product.image} imageStyle={product.imageStyle} />
-          {badge ? (
+          {product.forYouKey ? (
             <View className="product-card__badge">
               <MaterialCommunityIcons name="star-four-points" size={12} color={colors.brand.blueDark} />
               <Text className="product-card__badge-label" numberOfLines={1}>
-                {badge}
+                {t(product.forYouKey)}
               </Text>
             </View>
           ) : null}
@@ -44,14 +46,14 @@ export default function ProductCard({ product, saved, onPress, onToggleSave, bad
 
         <View className="product-card__info">
           <Text className="product-card__name" numberOfLines={2}>
-            {product.name}
+            {name}
           </Text>
           <View className="mt-1">
             <Rating rating={product.rating} reviewCount={product.reviewCount} />
           </View>
           <View className="flex-row items-center justify-between mt-2.5">
             <Text className="product-card__price">{formatPrice(product.price)}</Text>
-            <SaveButton saved={saved} productName={product.name} onPress={onToggleSave} />
+            <SaveButton saved={saved} productName={name} onPress={onToggleSave} />
           </View>
         </View>
       </View>

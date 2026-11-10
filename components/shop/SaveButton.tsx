@@ -1,6 +1,7 @@
 import { colors } from '@/constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Animated, TouchableOpacity } from 'react-native';
 
 type SaveButtonProps = {
@@ -13,6 +14,7 @@ type SaveButtonProps = {
  * Round add-to-list button. Pops once when a product gets added.
  */
 export default function SaveButton({ saved, productName, onPress }: SaveButtonProps) {
+  const { t } = useTranslation();
   const scale = useRef(new Animated.Value(1)).current;
   const wasSaved = useRef(saved);
 
@@ -33,7 +35,7 @@ export default function SaveButton({ saved, productName, onPress }: SaveButtonPr
         activeOpacity={0.75}
         onPress={onPress}
         accessibilityRole="button"
-        accessibilityLabel={saved ? `Remove ${productName} from my list` : `Add ${productName} to my list`}
+        accessibilityLabel={t(saved ? 'shop.saveRemoveA11y' : 'shop.saveAddA11y', { name: productName })}
       >
         <MaterialCommunityIcons
           name={saved ? 'check' : 'plus'}
