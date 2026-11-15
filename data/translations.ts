@@ -1178,14 +1178,18 @@ export const en = {
     details: 'Details',
     added: 'Added · View my list',
     add: 'Add to my list',
+    whatItDoes: 'What it does',
+    bestFor: 'Best for',
+    customersSay: 'What customers say',
+    readMore: 'Read more',
+    readLess: 'Show less',
+    viewOnAmazon: 'View on Amazon',
+    viewOnAmazonA11y: 'Open {{name}} on Amazon',
 
-    categories: {
-      testKits: 'Test Kits',
-      balancers: 'Balancers',
-      sanitizers: 'Sanitizers',
-      cleaners: 'Cleaners',
-      pumps: 'Pumps',
-      filters: 'Filters',
+    // Same text for every product until each one has its own.
+    shared: {
+      description: 'Product details are on the way. Check the full listing for sizes and options.',
+      fit: 'Matched to your pool profile. Always test your water before you add anything.',
     },
 
     specs: {
@@ -1268,168 +1272,6 @@ export const en = {
       backwashAndRecharge: 'Backwash and recharge',
       twoToFiveMicrons: '2 to 5 microns',
       crystalClearWater: 'Crystal-clear water',
-    },
-
-    items: {
-      roboticCleaner: {
-        name: 'Robotic Pool Cleaner',
-        tagline: 'Set it, forget it, swim.',
-        description:
-          'Scrubs the floor and walls on its own while your pump takes a break. Empty the easy-clean basket and you are done.',
-        fit: 'A great match if you want less weekly vacuuming and cleaner water between tests.',
-        forYou: 'Fits your cleaning setup',
-      },
-      pressureCleaner: {
-        name: 'Pressure-Side Cleaner',
-        tagline: 'Powered by your return line.',
-        description:
-          'Uses your pool’s own water pressure to sweep debris into a fine mesh bag, so your filter stays cleaner for longer.',
-        fit: 'Handles leaves and larger debris well, ideal for pools under trees.',
-      },
-      suctionCleaner: {
-        name: 'Suction-Side Cleaner',
-        tagline: 'Simple, affordable daily cleaning.',
-        description:
-          'Connects to your skimmer and glides across the pool floor, pulling dirt straight into your existing filter.',
-        fit: 'An easy upgrade if you vacuum by hand today and want to automate it.',
-      },
-      manualVacuum: {
-        name: 'Manual Vacuum Kit',
-        tagline: 'Full control for detail work.',
-        description:
-          'A head, pole and hose in one kit. Perfect for spot cleaning steps, corners and the spots automatic cleaners miss.',
-        fit: 'Keeps your weekly clean-up quick, whatever cleaner you already use.',
-      },
-      aquachek: {
-        name: 'AquaChek 7-Way Test Strips',
-        tagline: 'Seven readings in about 15 seconds.',
-        description:
-          'Dip, wait, and match the colors on the bottle. One strip checks the numbers that matter most for safe, clear water.',
-        fit: 'Your weekly water check. Results from these strips go straight into your PoolPal readings.',
-        forYou: 'Your weekly water test',
-      },
-      hth: {
-        name: 'HTH 6-Way Test Strips',
-        tagline: 'Six key readings, no guesswork.',
-        description:
-          'A budget-friendly strip for quick weekly checks. Covers chlorine, pH, alkalinity, hardness and stabilizer.',
-        fit: 'A simple, low-cost way to stay on top of your weekly checks.',
-      },
-      jnw: {
-        name: 'JNW 7-in-1 Pool & Spa Strips',
-        tagline: 'Big, clear color chart.',
-        description:
-          'Seven readings on every strip with a color chart that is easy to read in bright sun or in the shade.',
-        fit: 'Works for both your pool and a spa, so one bottle covers everything.',
-      },
-      easytest: {
-        name: 'EasyTest 9-in-1 Strips',
-        tagline: 'Nine readings, fuller picture.',
-        description:
-          'Goes beyond the basics with extra readings, so you can spot slow-building problems before they turn visible.',
-        fit: 'Useful when your water looks fine but something feels off.',
-      },
-      phDecreaser: {
-        name: 'pH Decreaser, 5 lb',
-        tagline: 'Brings a high pH back down.',
-        description:
-          'Add small doses with the pump running, then retest after a few hours. Keeps chlorine working at full strength.',
-        fit: 'Keeps your pH in the ideal range so your sanitizer does its job.',
-        forYou: 'Keeps your pH in range',
-      },
-      alkalinity: {
-        name: 'Alkalinity Increaser, 10 lb',
-        tagline: 'Steadies wild pH swings.',
-        description:
-          'Raises total alkalinity so your pH stays put. The first fix to try when numbers keep bouncing around.',
-        fit: 'A pool basic, handy to keep on the shelf for after heavy rain.',
-      },
-      calcium: {
-        name: 'Calcium Hardness Increaser, 10 lb',
-        tagline: 'Protects surfaces and equipment.',
-        description:
-          'Brings soft water up to a healthy level so it stops pulling minerals from your plaster and heater.',
-        fit: 'Helps protect your pool surface from etching and rough patches.',
-      },
-      phosphate: {
-        name: 'Phosphate Remover, 32 oz',
-        tagline: 'Starves algae before it blooms.',
-        description:
-          'Removes the phosphates algae feed on, which makes green water far less likely during hot weeks.',
-        fit: 'Smart prevention if your pool sits in the sun or near trees.',
-      },
-      chlorineTablets: {
-        name: '3-Inch Chlorine Tablets, 8 lb',
-        tagline: 'Steady, slow-dissolving chlorine.',
-        description:
-          'Drop them into a floating dispenser or feeder and keep a steady chlorine level all week with almost no effort.',
-        fit: 'The easiest way to keep chlorine steady between your weekly tests.',
-      },
-      poolSalt: {
-        name: 'Pool Salt, 40 lb',
-        tagline: 'Pure salt for saltwater pools.',
-        description:
-          'High-purity salt that dissolves clean and keeps your salt system producing chlorine without cloudy residue.',
-        fit: 'Made for salt systems. Top up whenever your salt reading dips.',
-        forYou: 'For saltwater pools',
-      },
-      stabilizer: {
-        name: 'Chlorine Stabilizer, 4 lb',
-        tagline: 'Shields chlorine from the sun.',
-        description:
-          'Stops sunlight from burning off your chlorine so you use less of it and your water stays protected.',
-        fit: 'Especially useful for outdoor pools that get full sun.',
-      },
-      bromine: {
-        name: 'Bromine Tablets, 4 lb',
-        tagline: 'Gentle sanitizer for spas.',
-        description:
-          'Works well in warm water and has a softer smell than chlorine, which makes it a favorite for hot tubs.',
-        fit: 'A good choice if you keep a spa or hot tub.',
-      },
-      variablePump: {
-        name: 'Variable-Speed Pump',
-        tagline: 'Quiet, and far cheaper to run.',
-        description:
-          'Run it slow and long for a fraction of the energy of an old single-speed pump. Program it once and forget it.',
-        fit: 'Cuts energy costs, and slower circulation is gentler on your filter.',
-        forYou: 'Cuts your energy costs',
-      },
-      dualPump: {
-        name: 'Dual-Speed Pump',
-        tagline: 'Two speeds, real savings.',
-        description:
-          'Switch to low speed for daily circulation and high speed for cleaning or heating. A solid middle ground.',
-        fit: 'A budget-friendly upgrade from an older single-speed pump.',
-      },
-      singlePump: {
-        name: 'Single-Speed Pump',
-        tagline: 'Reliable, simple, proven.',
-        description:
-          'A straightforward replacement pump that gets the job done. Easy to install and easy to find parts for.',
-        fit: 'The simplest like-for-like swap if your pump has stopped working.',
-      },
-      cartridgeFilter: {
-        name: 'Cartridge Filter',
-        tagline: 'Fine filtering, easy rinse.',
-        description:
-          'Traps small particles and rinses clean with a garden hose. No backwashing and far less water wasted.',
-        fit: 'Easy to maintain and gentle on your water bill.',
-      },
-      sandFilter: {
-        name: 'Sand Filter',
-        tagline: 'A low-maintenance workhorse.',
-        description:
-          'A familiar, forgiving design that keeps water clear for years. Backwash it when the pressure gauge climbs.',
-        fit: 'Dependable if you like a simple filter you rarely have to think about.',
-      },
-      deFilter: {
-        name: 'DE Filter',
-        tagline: 'The finest filtration available.',
-        description:
-          'Catches the tiniest particles for sparkling water. Needs diatomaceous earth recharged after each backwash.',
-        fit: 'For the clearest water, if you do not mind a little extra upkeep.',
-      },
     },
   },
 
@@ -2676,14 +2518,18 @@ export const es = {
     details: 'Detalles',
     added: 'Añadido · Ver mi lista',
     add: 'Añadir a mi lista',
+    whatItDoes: 'Qué hace',
+    bestFor: 'Ideal para',
+    customersSay: 'Qué dicen los clientes',
+    readMore: 'Leer más',
+    readLess: 'Ver menos',
+    viewOnAmazon: 'Ver en Amazon',
+    viewOnAmazonA11y: 'Abrir {{name}} en Amazon',
 
-    categories: {
-      testKits: 'Kits de prueba',
-      balancers: 'Equilibradores',
-      sanitizers: 'Desinfectantes',
-      cleaners: 'Limpiadores',
-      pumps: 'Bombas',
-      filters: 'Filtros',
+    // Mismo texto para todos los productos hasta que cada uno tenga el suyo.
+    shared: {
+      description: 'Los detalles del producto llegarán pronto. Consulta el anuncio completo para ver tamaños y opciones.',
+      fit: 'Adaptado al perfil de tu piscina. Prueba siempre el agua antes de añadir nada.',
     },
 
     specs: {
@@ -2766,168 +2612,6 @@ export const es = {
       backwashAndRecharge: 'Retrolavado y recarga',
       twoToFiveMicrons: '2 a 5 micras',
       crystalClearWater: 'Agua cristalina',
-    },
-
-    items: {
-      roboticCleaner: {
-        name: 'Limpiador robótico',
-        tagline: 'Enciéndelo, olvídate y nada.',
-        description:
-          'Cepilla el suelo y las paredes solo mientras la bomba descansa. Vacía la cesta de limpieza fácil y listo.',
-        fit: 'Encaja si quieres aspirar menos cada semana y mantener el agua más limpia entre análisis.',
-        forYou: 'Encaja con tu limpieza',
-      },
-      pressureCleaner: {
-        name: 'Limpiador de presión',
-        tagline: 'Funciona con tu línea de retorno.',
-        description:
-          'Usa la presión del agua de tu piscina para llevar los residuos a una bolsa de malla fina, así el filtro se mantiene limpio más tiempo.',
-        fit: 'Recoge bien hojas y residuos grandes. Ideal para piscinas bajo árboles.',
-      },
-      suctionCleaner: {
-        name: 'Limpiador de succión',
-        tagline: 'Limpieza diaria, simple y asequible.',
-        description:
-          'Se conecta al skimmer y recorre el fondo, llevando la suciedad directo a tu filtro.',
-        fit: 'Un cambio fácil si hoy aspiras a mano y quieres automatizarlo.',
-      },
-      manualVacuum: {
-        name: 'Kit de aspirado manual',
-        tagline: 'Control total para los detalles.',
-        description:
-          'Cabezal, mango y manguera en un solo kit. Perfecto para escalones, esquinas y los puntos que los limpiadores automáticos no alcanzan.',
-        fit: 'Mantiene rápida la limpieza semanal, uses el limpiador que uses.',
-      },
-      aquachek: {
-        name: 'Tiras AquaChek 7 vías',
-        tagline: 'Siete lecturas en unos 15 segundos.',
-        description:
-          'Sumerge, espera y compara los colores del bote. Una tira revisa los valores que más importan para un agua segura y clara.',
-        fit: 'Tu análisis semanal. Los resultados de estas tiras pasan directo a tus lecturas de PoolPal.',
-        forYou: 'Tu análisis semanal',
-      },
-      hth: {
-        name: 'Tiras HTH de 6 vías',
-        tagline: 'Seis lecturas clave, sin adivinar.',
-        description:
-          'Una tira económica para controles semanales rápidos. Cubre cloro, pH, alcalinidad, dureza y estabilizador.',
-        fit: 'Una forma simple y barata de seguir tus controles semanales.',
-      },
-      jnw: {
-        name: 'Tiras JNW 7 en 1 para piscina y spa',
-        tagline: 'Carta de colores grande y clara.',
-        description:
-          'Siete lecturas en cada tira, con una carta fácil de leer al sol o a la sombra.',
-        fit: 'Sirve para la piscina y el spa, así un solo bote cubre todo.',
-      },
-      easytest: {
-        name: 'Tiras EasyTest 9 en 1',
-        tagline: 'Nueve lecturas, una imagen más completa.',
-        description:
-          'Va más allá de lo básico con lecturas extra, para detectar problemas que crecen despacio antes de que se vean.',
-        fit: 'Útil cuando el agua se ve bien, pero algo no cuadra.',
-      },
-      phDecreaser: {
-        name: 'Reductor de pH, 5 lb',
-        tagline: 'Baja un pH alto.',
-        description:
-          'Añade dosis pequeñas con la bomba en marcha y vuelve a analizar unas horas después. Mantiene el cloro a pleno rendimiento.',
-        fit: 'Mantiene el pH en el rango ideal para que el desinfectante haga su trabajo.',
-        forYou: 'Mantiene tu pH en rango',
-      },
-      alkalinity: {
-        name: 'Incrementador de alcalinidad, 10 lb',
-        tagline: 'Estabiliza los cambios bruscos de pH.',
-        description:
-          'Sube la alcalinidad total para que el pH se quede quieto. El primer arreglo cuando los valores no paran de moverse.',
-        fit: 'Un básico de piscina, útil después de una lluvia fuerte.',
-      },
-      calcium: {
-        name: 'Incrementador de dureza cálcica, 10 lb',
-        tagline: 'Protege superficies y equipo.',
-        description:
-          'Lleva el agua blanda a un nivel sano para que deje de sacar minerales del revestimiento y del calentador.',
-        fit: 'Ayuda a proteger la superficie de la piscina frente a desgaste y zonas rugosas.',
-      },
-      phosphate: {
-        name: 'Eliminador de fosfatos, 32 oz',
-        tagline: 'Quita el alimento de las algas antes de que crezcan.',
-        description:
-          'Elimina los fosfatos de los que se alimentan las algas, así el agua verde es mucho menos probable en las semanas de calor.',
-        fit: 'Buena prevención si la piscina está al sol o cerca de árboles.',
-      },
-      chlorineTablets: {
-        name: 'Pastillas de cloro de 3 pulgadas, 8 lb',
-        tagline: 'Cloro constante que se disuelve despacio.',
-        description:
-          'Ponlas en un dosificador flotante o en el alimentador y mantén el cloro estable toda la semana casi sin esfuerzo.',
-        fit: 'La forma más fácil de mantener el cloro estable entre tus análisis semanales.',
-      },
-      poolSalt: {
-        name: 'Sal para piscina, 40 lb',
-        tagline: 'Sal pura para piscinas de agua salada.',
-        description:
-          'Sal de alta pureza que se disuelve limpia y deja que el sistema salino produzca cloro sin dejar residuo turbio.',
-        fit: 'Hecha para sistemas de sal. Repón cuando baje la lectura de sal.',
-        forYou: 'Para piscinas de agua salada',
-      },
-      stabilizer: {
-        name: 'Estabilizador de cloro, 4 lb',
-        tagline: 'Protege el cloro del sol.',
-        description:
-          'Evita que el sol consuma el cloro, así usas menos y el agua sigue protegida.',
-        fit: 'Especialmente útil en piscinas exteriores a pleno sol.',
-      },
-      bromine: {
-        name: 'Pastillas de bromo, 4 lb',
-        tagline: 'Desinfectante suave para spas.',
-        description:
-          'Funciona bien en agua caliente y huele menos que el cloro, por eso es un favorito en jacuzzis.',
-        fit: 'Una buena opción si tienes spa o jacuzzi.',
-      },
-      variablePump: {
-        name: 'Bomba de velocidad variable',
-        tagline: 'Silenciosa y mucho más barata de usar.',
-        description:
-          'Hazla funcionar lenta y durante más tiempo, con una fracción de la energía de una bomba de una sola velocidad. Prográmala una vez y olvídate.',
-        fit: 'Reduce el gasto de energía, y una circulación más lenta es más suave con el filtro.',
-        forYou: 'Reduce tu gasto de energía',
-      },
-      dualPump: {
-        name: 'Bomba de dos velocidades',
-        tagline: 'Dos velocidades, ahorro real.',
-        description:
-          'Usa la velocidad baja para circular cada día y la alta para limpiar o calentar. Un buen punto intermedio.',
-        fit: 'Una mejora asequible frente a una bomba antigua de una sola velocidad.',
-      },
-      singlePump: {
-        name: 'Bomba de una velocidad',
-        tagline: 'Fiable, simple y probada.',
-        description:
-          'Una bomba de recambio directa que cumple su función. Fácil de instalar y fácil de encontrar recambios.',
-        fit: 'El cambio más simple si tu bomba ha dejado de funcionar.',
-      },
-      cartridgeFilter: {
-        name: 'Filtro de cartucho',
-        tagline: 'Filtrado fino, enjuague fácil.',
-        description:
-          'Retiene partículas pequeñas y se enjuaga con la manguera. Sin retrolavado y con mucho menos agua desperdiciada.',
-        fit: 'Fácil de mantener y más suave con la factura del agua.',
-      },
-      sandFilter: {
-        name: 'Filtro de arena',
-        tagline: 'Un trabajador de poco mantenimiento.',
-        description:
-          'Un diseño conocido y tolerante que mantiene el agua clara durante años. Haz un retrolavado cuando suba el manómetro.',
-        fit: 'Fiable si quieres un filtro simple en el que casi no tienes que pensar.',
-      },
-      deFilter: {
-        name: 'Filtro de diatomeas',
-        tagline: 'La filtración más fina.',
-        description:
-          'Atrapa las partículas más pequeñas para un agua brillante. Hay que recargar tierra de diatomeas después de cada retrolavado.',
-        fit: 'Para el agua más clara, si no te importa un poco más de mantenimiento.',
-      },
     },
   },
 

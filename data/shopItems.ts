@@ -961,4 +961,6 @@ const shopItems = [
       "Review summary / Customers Say:": "Customers find the pool shock effective and easy to use, with one customer noting how it transformed their pool from a dark green swamp to a clear swimmable oasis in just 2 days. They consider it the best product on the market. However, opinions about value for money are mixed, with some saying it's worth the price while others find it overpriced. Additionally, several customers express concerns about the lack of chlorine in the product.",
       "What it does / owner need / problem solved": "Calcium-hypochlorite (cal-hypo) chlorine shock for a diagnosed need to raise sanitizer or perform an appropriate shock treatment, based on readings and product directions. Helps address low chlorine or contamination when the right treatment is confirmed. Raises calcium hardness; never mix chemicals, and retest before swimming."
     }
-  ]
+  ];
+
+export default shopItems;

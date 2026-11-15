@@ -75,7 +75,7 @@ export default function ShopScreen() {
           <View className="flex-row flex-wrap justify-between mt-3.5">
             {SHOP_CATEGORIES.map((category) => {
               const count = getProductsByCategory(category.id).length;
-              const name = t(category.nameKey);
+              const name = category.name;
               return (
                 <TouchableOpacity
                   key={category.id}

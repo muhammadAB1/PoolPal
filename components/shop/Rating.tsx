@@ -5,14 +5,17 @@ import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
 type RatingProps = {
-  rating: number;
-  reviewCount: number;
+  /** null when the product has no rating yet. Nothing is drawn then. */
+  rating: number | null;
+  reviewCount: number | null;
   /** Larger text for the product screen. */
   large?: boolean;
 };
 
 export default function Rating({ rating, reviewCount, large = false }: RatingProps) {
   const { t } = useTranslation();
+
+  if (rating === null || reviewCount === null) return null;
 
   return (
     <View

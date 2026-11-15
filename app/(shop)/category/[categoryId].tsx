@@ -10,7 +10,7 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 /** Rough width of one chip, used to bring the active chip into view. */
-const CHIP_SCROLL_STEP = 104;
+const CHIP_SCROLL_STEP = 124;
 
 export default function CategoryScreen() {
   const router = useRouter();
@@ -34,7 +34,7 @@ export default function CategoryScreen() {
         showsVerticalScrollIndicator={false}
       >
         <ShopHeader
-          title={t(category.nameKey)}
+          title={category.name}
           subtitle={t('shop.productCount', { count: products.length })}
           showList
         />
@@ -57,7 +57,7 @@ export default function CategoryScreen() {
                 accessibilityState={{ selected: active }}
               >
                 <Text className={`filter-chip__label ${active ? 'filter-chip__label--active' : ''}`}>
-                  {t(item.nameKey)}
+                  {item.name}
                 </Text>
               </TouchableOpacity>
             );

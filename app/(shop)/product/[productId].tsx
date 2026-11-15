@@ -13,13 +13,16 @@ import {
 import { useShopList } from '@/providers/ShopListProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter, type Href } from 'expo-router';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HERO_HEIGHT = 360;
 const RELATED_CARD_WIDTH = 220;
 const RELATED_CARD_GAP = 12;
+/** Customer summaries longer than this get a "Read more" toggle. */
+const LONG_REVIEW_LENGTH = 240;
 
 export default function ProductScreen() {
   const router = useRouter();
@@ -27,6 +30,7 @@ export default function ProductScreen() {
   const insets = useSafeAreaInsets();
   const { productId } = useLocalSearchParams<{ productId: string }>();
   const { isSaved, toggleSaved } = useShopList();
+  const [reviewsOpen, setReviewsOpen] = useState(false);
 
   const product = getProduct(productId);
 
@@ -49,8 +53,9 @@ export default function ProductScreen() {
   }
 
   const category = getCategory(product.categoryId);
-  const categoryName = category ? t(category.nameKey) : '';
-  const name = t(product.nameKey);
+  const categoryName = category?.name ?? '';
+  const name = product.name;
+  const hasLongReview = product.reviewSummary.length > LONG_REVIEW_LENGTH;
   const saved = isSaved(product.id);
   const related = getProductsByCategory(product.categoryId).filter((item) => item.id !== product.id);
 
@@ -82,10 +87,10 @@ export default function ProductScreen() {
               >
                 <Text className="text-small font-jakarta-bold text-brand-navy">{categoryName}</Text>
               </TouchableOpacity>
-              {product.forYouKey ? (
+              {product.label ? (
                 <View className="flex-row items-center rounded-full bg-surface-mint px-3 py-1.5">
                   <MaterialCommunityIcons name="star-four-points" size={12} color={colors.status.successText} />
-                  <Text className="text-small font-jakarta-bold text-success-text ml-1">{t(product.forYouKey)}</Text>
+                  <Text className="text-small font-jakarta-bold text-success-text ml-1">{product.label}</Text>
                 </View>
               ) : null}
             </View>
@@ -93,9 +98,11 @@ export default function ProductScreen() {
             <Text className="text-h1 font-jakarta-extrabold text-brand-navy mt-3">{name}</Text>
             <Text className="text-body font-jakarta text-sub mt-1">{t('shop.byBrand', { brand: product.brand })}</Text>
 
-            <View className="mt-3">
-              <Rating rating={product.rating} reviewCount={product.reviewCount} large />
-            </View>
+            {product.rating !== null ? (
+              <View className="mt-3">
+                <Rating rating={product.rating} reviewCount={product.reviewCount} large />
+              </View>
+            ) : null}
 
             <View className="flex-row items-center mt-4">
               <Text className="text-[30px] leading-9 font-jakarta-extrabold text-brand-navy">
@@ -107,6 +114,21 @@ export default function ProductScreen() {
               </View>
             </View>
 
+            {product.affiliateUrl ? (
+              <TouchableOpacity
+                className="btn btn--secondary mt-4"
+                activeOpacity={0.85}
+                onPress={() => {
+                  Linking.openURL(product.affiliateUrl).catch(() => undefined);
+                }}
+                accessibilityRole="link"
+                accessibilityLabel={t('shop.viewOnAmazonA11y', { name })}
+              >
+                <MaterialCommunityIcons name="open-in-new" size={20} color={colors.brand.navy} />
+                <Text className="btn__label btn__label--secondary ml-2">{t('shop.viewOnAmazon')}</Text>
+              </TouchableOpacity>
+            ) : null}
+
             <View className="card--info flex-row p-4 mt-5">
               <View className="w-10 h-10 rounded-full bg-surface-white items-center justify-center">
                 <MaterialCommunityIcons name="pool" size={22} color={colors.brand.blueDark} />
@@ -117,9 +139,48 @@ export default function ProductScreen() {
               </View>
             </View>
 
+            {product.whatItDoes ? (
+              <>
+                <Text className="section__title mt-7">{t('shop.whatItDoes')}</Text>
+                <Text className="text-body-lg font-jakarta text-charcoal mt-2">{product.whatItDoes}</Text>
+              </>
+            ) : null}
+
+            {product.use ? (
+              <>
+                <Text className="section__title mt-7">{t('shop.bestFor')}</Text>
+                <Text className="text-body-lg font-jakarta-semibold text-brand-navy mt-2">{product.use}</Text>
+              </>
+            ) : null}
+
+            {product.reviewSummary ? (
+              <>
+                <Text className="section__title mt-7">{t('shop.customersSay')}</Text>
+                <View className="card p-4 mt-3" style={shadow.card}>
+                  <Text
+                    className="text-body font-jakarta text-charcoal"
+                    numberOfLines={hasLongReview && !reviewsOpen ? 5 : undefined}
+                  >
+                    {product.reviewSummary}
+                  </Text>
+                  {hasLongReview ? (
+                    <TouchableOpacity
+                      className="mt-2 self-start py-1"
+                      activeOpacity={0.7}
+                      onPress={() => setReviewsOpen((open) => !open)}
+                      accessibilityRole="button"
+                    >
+                      <Text className="text-body font-jakarta-bold text-brand-blue-dark">
+                        {reviewsOpen ? t('shop.readLess') : t('shop.readMore')}
+                      </Text>
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+              </>
+            ) : null}
+
             <Text className="section__title mt-7">{t('shop.about')}</Text>
-            <Text className="text-body-lg font-jakarta-semibold text-brand-navy mt-2">{t(product.taglineKey)}</Text>
-            <Text className="text-body-lg font-jakarta text-sub mt-1">{t(product.descriptionKey)}</Text>
+            <Text className="text-body-lg font-jakarta text-sub mt-2">{t(product.descriptionKey)}</Text>
 
             <Text className="section__title mt-7">{t('shop.details')}</Text>
             <View className="card px-4 mt-3" style={shadow.card}>

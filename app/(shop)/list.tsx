@@ -61,7 +61,7 @@ export default function ShopListScreen() {
               <View className="px-4">
                 {items.map((product, index) => {
                   const category = getCategory(product.categoryId);
-                  const name = t(product.nameKey);
+                  const name = product.name;
                   return (
                   <TouchableOpacity
                     key={product.id}
@@ -80,7 +80,7 @@ export default function ShopListScreen() {
                         {name}
                       </Text>
                       <Text className="text-small font-jakarta text-sub mt-0.5">
-                        {category ? t(category.nameKey) : ''}
+                        {category?.name ?? ''}
                       </Text>
                       <Text className="text-body-lg font-jakarta-extrabold text-brand-navy mt-1.5">
                         {formatPrice(product.price)}

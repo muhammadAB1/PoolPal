@@ -585,6 +585,13 @@ export const shopImages = {
     cartridgeFilter: equipmentChoiceCartridge,
     sandFilter: equipmentChoiceSand,
     deFilter: equipmentChoiceDe,
+    // Category tiles that had no better match
+    totalChlorine: chemistryTotalChlorine,
+    tools: cleaningNoVacuum,
+    cover: poolEnvCovered,
+    outdoor: poolEnvOutdoor,
+    // Shared placeholder shown on every product until real photos exist
+    placeholder: poolConditionCrystalClear,
 } as const;
 
 /** Convenience alias — use `graphics` or `icons` directly for clarity */

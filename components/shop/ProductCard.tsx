@@ -1,7 +1,6 @@
 import { colors, shadow } from '@/constants/theme';
 import { formatPrice, type Product } from '@/data/shop';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTranslation } from 'react-i18next';
 import { Text, TouchableOpacity, View } from 'react-native';
 import ProductImage from './ProductImage';
 import Rating from './Rating';
@@ -19,8 +18,7 @@ type ProductCardProps = {
  * The parent decides the width.
  */
 export default function ProductCard({ product, saved, onPress, onToggleSave }: ProductCardProps) {
-  const { t } = useTranslation();
-  const name = t(product.nameKey);
+  const name = product.name;
 
   return (
     <TouchableOpacity
@@ -34,11 +32,11 @@ export default function ProductCard({ product, saved, onPress, onToggleSave }: P
       <View className="product-card__body">
         <View className="product-card__stage">
           <ProductImage source={product.image} imageStyle={product.imageStyle} />
-          {product.forYouKey ? (
+          {product.label ? (
             <View className="product-card__badge">
               <MaterialCommunityIcons name="star-four-points" size={12} color={colors.brand.blueDark} />
               <Text className="product-card__badge-label" numberOfLines={1}>
-                {t(product.forYouKey)}
+                {product.label}
               </Text>
             </View>
           ) : null}
@@ -48,7 +46,8 @@ export default function ProductCard({ product, saved, onPress, onToggleSave }: P
           <Text className="product-card__name" numberOfLines={2}>
             {name}
           </Text>
-          <View className="mt-1">
+          {/* Fixed height keeps cards in a row aligned when a product has no rating. */}
+          <View className="mt-1 h-5 justify-center">
             <Rating rating={product.rating} reviewCount={product.reviewCount} />
           </View>
           <View className="flex-row items-center justify-between mt-2.5">
