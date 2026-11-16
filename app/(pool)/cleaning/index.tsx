@@ -7,34 +7,36 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { POOL_CLEANING } from './_data';
 
-function GlanceCard({
-  icon,
-  label,
-  value,
-}: {
-  icon: keyof typeof MaterialCommunityIcons.glyphMap;
-  label: string;
-  value: string;
-}) {
-  return (
-    <TouchableOpacity
-      className="card flex-1 p-3.5"
-      style={shadow.card}
-      activeOpacity={0.8}
-    >
-      <View className="flex-row items-start justify-between">
-        <MaterialCommunityIcons name={icon} size={20} color={colors.brand.blue} />
-        <MaterialCommunityIcons name="chevron-right" size={18} color={colors.text.faint} />
-      </View>
-      <Text className="text-small font-jakarta text-sub mt-2">{label}</Text>
-      <Text className="text-body font-jakarta-bold text-brand-navy mt-0.5">{value}</Text>
-    </TouchableOpacity>
-  );
-}
+// Extra glance cards commented out for now — surface and other pool screens
+// only keep the care note and why-it-matters cards.
+// function GlanceCard({
+//   icon,
+//   label,
+//   value,
+// }: {
+//   icon: keyof typeof MaterialCommunityIcons.glyphMap;
+//   label: string;
+//   value: string;
+// }) {
+//   return (
+//     <TouchableOpacity
+//       className="card flex-1 p-3.5"
+//       style={shadow.card}
+//       activeOpacity={0.8}
+//     >
+//       <View className="flex-row items-start justify-between">
+//         <MaterialCommunityIcons name={icon} size={20} color={colors.brand.blue} />
+//         <MaterialCommunityIcons name="chevron-right" size={18} color={colors.text.faint} />
+//       </View>
+//       <Text className="text-small font-jakarta text-sub mt-2">{label}</Text>
+//       <Text className="text-body font-jakarta-bold text-brand-navy mt-0.5">{value}</Text>
+//     </TouchableOpacity>
+//   );
+// }
 
 export default function PoolCleaningScreen() {
   const { pools, refreshPools } = usePool();
@@ -99,6 +101,7 @@ export default function PoolCleaningScreen() {
                   <Text className="text-h3 font-jakarta-extrabold text-brand-navy mt-2">
                     {t(option.name)}
                   </Text>
+                  {/* Brand and model commented out for now.
                   <View className="flex-row items-center mt-4">
                     <View className="flex-1 mr-2">
                       <Text className="text-small font-jakarta text-sub">
@@ -125,6 +128,7 @@ export default function PoolCleaningScreen() {
                       </Text>
                     </TouchableOpacity>
                   </View>
+                  */}
                 </>
               ) : (
                 <View className="flex-row items-center self-start bg-warning-bg border border-warning rounded-full px-3 py-1">
@@ -135,6 +139,7 @@ export default function PoolCleaningScreen() {
             </View>
           </View>
 
+          {/* Extra glance cards commented out for now.
           <Text className="text-tiny font-jakarta-extrabold text-faint tracking-widest mt-5 mb-2 ml-1">
             {t(POOL_CLEANING.glanceTitle)}
           </Text>
@@ -159,6 +164,7 @@ export default function PoolCleaningScreen() {
               />
             ))}
           </View>
+          */}
 
           <View className="card--success mt-4 p-4 flex-row items-start">
             <MaterialCommunityIcons name="star-four-points" size={20} color={colors.brand.blue} />

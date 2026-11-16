@@ -5,7 +5,29 @@ import * as Notifications from 'expo-notifications';
 import { Linking, Platform } from 'react-native';
 
 const ID = 'weekly-reminder';
-const CHANNEL_ID = 'reminders';
+const CHANNEL_ID = 'reminders-test';
+
+function hour24(time: string) {
+  const match = /^(\d{1,2}):00\s*(AM|PM)$/i.exec(time.trim());
+  if (!match) return null;
+  const hour = Number(match[1]);
+  if (hour < 1 || hour > 12) return null;
+  const isPm = match[2].toUpperCase() === 'PM';
+  if (hour === 12) return isPm ? 12 : 0;
+  return isPm ? hour + 12 : hour;
+}
+
+function nextStoredReminderDate(day: Weekday, time: string) {
+  const hour = hour24(time);
+  const target = WEEKDAYS.indexOf(day);
+  if (hour == null || target < 0) return null;
+  const next = new Date();
+  let daysAhead = (target - next.getDay() + 7) % 7;
+  next.setHours(hour, 0, 0, 0);
+  if (daysAhead === 0 && next.getTime() <= Date.now()) daysAhead = 7;
+  next.setDate(next.getDate() + daysAhead);
+  return next;
+}
 
 if (Platform.OS !== 'web') {
   Notifications.setNotificationHandler({
@@ -16,16 +38,6 @@ if (Platform.OS !== 'web') {
       shouldSetBadge: false,
     }),
   });
-}
-
-function hour24(time: string) {
-  const match = /^(\d{1,2}):00\s*(AM|PM)$/i.exec(time.trim());
-  if (!match) return null;
-  const hour = Number(match[1]);
-  if (hour < 1 || hour > 12) return null;
-  const isPm = match[2].toUpperCase() === 'PM';
-  if (hour === 12) return isPm ? 12 : 0;
-  return isPm ? hour + 12 : hour;
 }
 
 function enabledKey(poolId: string) {
@@ -41,9 +53,7 @@ export async function setWeeklyReminderEnabled(poolId: string, enabled: boolean)
 }
 
 /**
- * Schedules the weekly local notification for the saved day/time.
- * Cancels it if no day/time is set, or if notification permission is denied
- * (and turns the reminder off in that case).
+ * Schedules one local notification for the pool's saved reminder day and time.
  */
 export async function syncWeeklyReminder(
   poolId: string,
@@ -53,10 +63,8 @@ export async function syncWeeklyReminder(
 ) {
   if (Platform.OS === 'web') return false;
 
-  const hour = day && time ? hour24(time) : null;
-  const weekday = day ? WEEKDAYS.indexOf(day) + 1 : 0;
-
-  if (hour == null || weekday < 1) {
+  const when = day && time ? nextStoredReminderDate(day, time) : null;
+  if (!when) {
     await Notifications.cancelScheduledNotificationAsync(ID);
     return false;
   }
@@ -75,8 +83,14 @@ export async function syncWeeklyReminder(
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
       name: 'Reminders',
-      importance: Notifications.AndroidImportance.DEFAULT,
+      importance: Notifications.AndroidImportance.HIGH,
     });
+  }
+
+  try {
+    await Notifications.cancelScheduledNotificationAsync(ID);
+  } catch {
+    // No previous reminder to replace.
   }
 
   await Notifications.scheduleNotificationAsync({
@@ -86,10 +100,8 @@ export async function syncWeeklyReminder(
       body: i18n.t('weekly_reminder_notification_body'),
     },
     trigger: {
-      type: Notifications.SchedulableTriggerInputTypes.WEEKLY,
-      weekday,
-      hour,
-      minute: 0,
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
+      date: when,
       channelId: CHANNEL_ID,
     },
   });
