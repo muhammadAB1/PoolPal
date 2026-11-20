@@ -1,7 +1,7 @@
 import ProductImage from '@/components/shop/ProductImage';
 import ShopHeader from '@/components/shop/ShopHeader';
 import { colors, shadow } from '@/constants/theme';
-import { formatPrice, getCategory, getProduct, type Product } from '@/data/shop';
+import { /* formatPrice, */ getCategory, getProduct, type Product } from '@/data/shop';
 import { useShopList } from '@/providers/ShopListProvider';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter, type Href } from 'expo-router';
@@ -17,7 +17,7 @@ export default function ShopListScreen() {
   const items = savedIds
     .map((id) => getProduct(id))
     .filter((product): product is Product => product !== undefined);
-  const total = items.reduce((sum, product) => sum + product.price, 0);
+  // const total = items.reduce((sum, product) => sum + product.price, 0);
 
   const browseShop = () => router.dismissTo('/(tabs)/shop' as Href);
 
@@ -82,9 +82,9 @@ export default function ShopListScreen() {
                       <Text className="text-small font-jakarta text-sub mt-0.5">
                         {category?.name ?? ''}
                       </Text>
-                      <Text className="text-body-lg font-jakarta-extrabold text-brand-navy mt-1.5">
+                      {/* <Text className="text-body-lg font-jakarta-extrabold text-brand-navy mt-1.5">
                         {formatPrice(product.price)}
-                      </Text>
+                      </Text> */}
                     </View>
 
                     <TouchableOpacity
@@ -103,7 +103,7 @@ export default function ShopListScreen() {
 
               <View className="flex-row items-center justify-between px-4 py-4 bg-surface-soft-aqua rounded-b-2xl">
                 <Text className="text-body font-jakarta-semibold text-brand-navy">{t('shop.listTotal')}</Text>
-                <Text className="text-h2 font-jakarta-extrabold text-brand-navy">{formatPrice(total)}</Text>
+                {/* <Text className="text-h2 font-jakarta-extrabold text-brand-navy">{formatPrice(total)}</Text> */}
               </View>
             </View>
 

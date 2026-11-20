@@ -5,9 +5,9 @@ import shopItems from '@/data/shopItems';
 /**
  * Shop catalog.
  *
- * Real fields come from data/shopItems.ts (name, brand, category, rating, label,
- * use, link, summaries). Fields that file does not have yet (price, image,
- * fit note, description, specs) share one placeholder for every product.
+ * Real fields come from data/shopItems.ts (name, brand, category, scenario, pick,
+ * rating, label, use, link, summaries). Fields that file does not have yet (price, image,
+ * specs) share one placeholder for every product.
  * Replace the placeholder per product when that data exists.
  */
 
@@ -40,6 +40,10 @@ export type Product = {
   // ─── From shopItems ───────────────────────────────────────────────────────
   name: string;
   brand: string;
+  /** Every "Scenario" this product is listed under, e.g. "Routine water testing". */
+  scenarios: string[];
+  /** "Pick #" column: best (lowest) rank across its scenarios. null when missing. */
+  pick: number | null;
   /** "Pool Tonic label": Best Value, Pool Tonic Pick, Essential... */
   label: string;
   /** null when the sheet has no rating. */
@@ -58,8 +62,6 @@ export type Product = {
   price: number;
   image: ImageSourcePropType;
   imageStyle: ProductImageStyle;
-  descriptionKey: string;
-  fitNoteKey: string;
   specs: ProductSpec[];
 };
 
@@ -67,8 +69,6 @@ const PLACEHOLDER = {
   price: 18.99,
   image: shopImages.placeholder,
   imageStyle: 'photo' as ProductImageStyle,
-  descriptionKey: 'shop.shared.description',
-  fitNoteKey: 'shop.shared.fit',
   specs: [
     { labelKey: 'shop.specs.size', valueKey: 'shop.values.fiveLb' },
     { labelKey: 'shop.specs.form', valueKey: 'shop.values.granular' },
@@ -103,11 +103,13 @@ function toNumber(value: string): number | null {
   return value.trim() === '' || Number.isNaN(parsed) ? null : parsed;
 }
 
-export const PRODUCTS: Product[] = shopItems.map((item): Product => ({
+const ALL_ROWS: Product[] = shopItems.map((item): Product => ({
   id: item.ASIN,
   categoryId: toSlug(item.Category),
   name: item['Product / Variant'],
   brand: item.Brand,
+  scenarios: item.Scenario.trim() ? [item.Scenario.trim()] : [],
+  pick: toNumber(item['Pick #']),
   label: item['Pool Tonic label'],
   rating: toNumber(item['Rating / 5']),
   reviewCount: toNumber(item['Reviews ~']),
@@ -117,6 +119,25 @@ export const PRODUCTS: Product[] = shopItems.map((item): Product => ({
   whatItDoes: item['What it does / owner need / problem solved'].trim(),
   ...PLACEHOLDER,
 }));
+
+/**
+ * shopItems has one row per product + scenario, so the same ASIN can appear
+ * several times. Show each product once: the first row wins for text and link,
+ * and every scenario is collected into `scenarios`.
+ */
+export const PRODUCTS: Product[] = [];
+for (const row of ALL_ROWS) {
+  const existing = PRODUCTS.find((product) => product.id === row.id);
+  if (!existing) {
+    PRODUCTS.push(row);
+    continue;
+  }
+  for (const scenario of row.scenarios) {
+    if (!existing.scenarios.includes(scenario)) existing.scenarios.push(scenario);
+  }
+  if (!existing.label) existing.label = row.label;
+  if (row.pick !== null && (existing.pick === null || row.pick < existing.pick)) existing.pick = row.pick;
+}
 
 /** Categories in the order they first appear in shopItems. */
 export const SHOP_CATEGORIES: ShopCategory[] = shopItems

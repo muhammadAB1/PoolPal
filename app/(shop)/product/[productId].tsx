@@ -5,7 +5,7 @@ import ProductImage from '@/components/shop/ProductImage';
 import Rating from '@/components/shop/Rating';
 import { colors, shadow } from '@/constants/theme';
 import {
-  formatPrice,
+  // formatPrice,
   getCategory,
   getProduct,
   getProductsByCategory,
@@ -105,9 +105,9 @@ export default function ProductScreen() {
             ) : null}
 
             <View className="flex-row items-center mt-4">
-              <Text className="text-[30px] leading-9 font-jakarta-extrabold text-brand-navy">
+              {/* <Text className="text-[30px] leading-9 font-jakarta-extrabold text-brand-navy">
                 {formatPrice(product.price)}
-              </Text>
+              </Text> */}
               <View className="flex-row items-center ml-3">
                 <View className="w-2 h-2 rounded-full bg-success" />
                 <Text className="text-small font-jakarta-semibold text-success-text ml-1.5">{t('shop.inStock')}</Text>
@@ -134,8 +134,13 @@ export default function ProductScreen() {
                 <MaterialCommunityIcons name="pool" size={22} color={colors.brand.blueDark} />
               </View>
               <View className="flex-1 ml-3">
-                <Text className="text-body-lg font-jakarta-bold text-brand-navy">{t('shop.fitTitle')}</Text>
-                <Text className="text-body font-jakarta text-charcoal mt-1">{t(product.fitNoteKey)}</Text>
+                <Text className="text-body-lg font-jakarta-bold text-brand-navy">{t('shop.scenarioTitle')}</Text>
+                {product.scenarios.map((scenario) => (
+                  <View key={scenario} className="flex-row items-start mt-1.5">
+                    <View className="w-1.5 h-1.5 rounded-full bg-brand-blue-dark mt-2 mr-2" />
+                    <Text className="flex-1 text-body font-jakarta text-charcoal">{scenario}</Text>
+                  </View>
+                ))}
               </View>
             </View>
 
@@ -179,9 +184,7 @@ export default function ProductScreen() {
               </>
             ) : null}
 
-            <Text className="section__title mt-7">{t('shop.about')}</Text>
-            <Text className="text-body-lg font-jakarta text-sub mt-2">{t(product.descriptionKey)}</Text>
-
+            {/*
             <Text className="section__title mt-7">{t('shop.details')}</Text>
             <View className="card px-4 mt-3" style={shadow.card}>
               {product.specs.map((spec, index) => (
@@ -196,6 +199,7 @@ export default function ProductScreen() {
                 </View>
               ))}
             </View>
+            */}
           </View>
 
           {related.length > 0 ? (

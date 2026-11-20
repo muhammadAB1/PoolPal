@@ -1,5 +1,5 @@
 import { colors, shadow } from '@/constants/theme';
-import { formatPrice, type Product } from '@/data/shop';
+import { /* formatPrice, */ type Product } from '@/data/shop';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text, TouchableOpacity, View } from 'react-native';
 import ProductImage from './ProductImage';
@@ -51,7 +51,7 @@ export default function ProductCard({ product, saved, onPress, onToggleSave }: P
             <Rating rating={product.rating} reviewCount={product.reviewCount} />
           </View>
           <View className="flex-row items-center justify-between mt-2.5">
-            <Text className="product-card__price">{formatPrice(product.price)}</Text>
+            {/* <Text className="product-card__price">{formatPrice(product.price)}</Text> */}
             <SaveButton saved={saved} productName={name} onPress={onToggleSave} />
           </View>
         </View>
