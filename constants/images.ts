@@ -8,6 +8,8 @@
  *   <Image source={icons.bell} />
  */
 
+import type { ImageSourcePropType } from 'react-native';
+
 // ─── Graphics ────────────────────────────────────────────────────────────────
 import checklistSuccess from '../assets/graphics/checklist_success.png';
 import completionRing from '../assets/graphics/completion_ring.png';
@@ -229,6 +231,112 @@ import poolTonicUserIcon from '../assets/pooltonic-ui/pooltonic-user-icon.png';
 
 // ─── Pool tab review screens ─────────────────────────────────────────────────
 import poolBasicsHero from '../assets/pool-tab/pool-tab-pool-basic-screen-bg.jpg';
+
+// ─── Shop product photos (file name = product name without "/") ──────────────
+import productImage001 from '../assets/Product Images/162-Piece 7-Way PoolSpa Test Strips.webp';
+import productImage002 from '../assets/Product Images/17-inch Nylon Pool Wall Brush.webp';
+import productImage003 from '../assets/Product Images/18-inch Curved-End Pool Brush (greenblack).webp';
+import productImage004 from '../assets/Product Images/AIPER EcoSurfer S2 Solar Surface Skimmer.webp';
+import productImage005 from '../assets/Product Images/Aqua Joe Pool _ Spa Salt, 40 lb.webp';
+import productImage006 from '../assets/Product Images/AquaChek Salt White Test Strip Titrators, 10 ct.webp';
+import productImage007 from '../assets/Product Images/AquaChek Silver 7-Way Test Strips (100).webp';
+import productImage008 from '../assets/Product Images/AquaChek Yellow 4-Way Test Strips (50).webp';
+import productImage009 from '../assets/Product Images/AquaDoc Phosphate Remover, 32 oz.webp';
+import productImage010 from '../assets/Product Images/AQUASALT Pool _ Spa Salt, 40 lb.webp';
+import productImage011 from '../assets/Product Images/ARM _ Hammer Clear Balance pH Maintenance Tabs (24).webp';
+import productImage012 from '../assets/Product Images/Betta SE Plus Dual-Charging Solar Surface Skimmer.webp';
+import productImage013 from '../assets/Product Images/Betta SE Solar Robotic Surface Skimmer.webp';
+import productImage014 from '../assets/Product Images/BioGuard Chem Out ChlorineBromine Neutralizer, 2 lb.webp';
+import productImage015 from '../assets/Product Images/Clorox Pool_Spa Algaecide and Clarifier (128 oz).webp';
+import productImage016 from '../assets/Product Images/Clorox Pool_Spa Alkalinity Increaser, 5 lb.webp';
+import productImage017 from '../assets/Product Images/Clorox Pool_Spa Calcium Hardness Increaser, 4 lb.webp';
+import productImage018 from '../assets/Product Images/Clorox Pool_Spa Chlorine Stabilizer (4 lb).webp';
+import productImage019 from '../assets/Product Images/Clorox Pool_Spa ClearPHOS, 1 quart.webp';
+import productImage020 from '../assets/Product Images/Clorox Pool_Spa Crazy Clarifier (128 oz).webp';
+import productImage021 from '../assets/Product Images/Clorox Pool_Spa My Pool Care Assistant Test Strips (50).webp';
+import productImage022 from '../assets/Product Images/Clorox Pool_Spa pH Down, 5 lb.webp';
+import productImage023 from '../assets/Product Images/Clorox Pool_Spa pH Up (4 lb).webp';
+import productImage024 from '../assets/Product Images/Clorox Pool_Spa Scale, Metal _ Stain Control, 32 oz.webp';
+import productImage025 from '../assets/Product Images/Clorox Pool_Spa Shock Clear (6 pack).webp';
+import productImage026 from '../assets/Product Images/Clorox Pool_Spa Shock XTRABLUE Plus (12 pack).webp';
+import productImage027 from '../assets/Product Images/Clorox Pool_Spa Shock XTRABLUE Plus (6 pack).webp';
+import productImage028 from '../assets/Product Images/Clorox Pool_Spa Sink to Clear Flocculant (1 qt).webp';
+import productImage029 from '../assets/Product Images/Clorox Pool_Spa Spa Bromine Tablets, 1.5 lb.webp';
+import productImage030 from '../assets/Product Images/Clorox Pool_Spa Super Water Clarifier (1 qt).webp';
+import productImage031 from '../assets/Product Images/Clorox Pool_Spa Swimming Pool Algaecide and Clarifier.webp';
+import productImage032 from '../assets/Product Images/Clorox Pool_Spa XTRABLUE 3-inch Chlorinating Tablets (25 lb).webp';
+import productImage033 from '../assets/Product Images/Clorox Pool_Spa XTRABLUE 3-inch Chlorinating Tablets (35 lb).webp';
+import productImage034 from '../assets/Product Images/Clorox Pool_Spa XTRABLUE 3-inch Chlorinating Tabs (5 lb).webp';
+import productImage035 from '../assets/Product Images/Coopache Skimmer Socks (30 pack).webp';
+import productImage036 from '../assets/Product Images/CuLator Metal Eliminator PowerPak 1.0.webp';
+import productImage037 from '../assets/Product Images/Dolphin Nautilus CC Plus (standard).webp';
+import productImage038 from '../assets/Product Images/Dolphin Nautilus CC Robotic Pool Cleaner.webp';
+import productImage039 from '../assets/Product Images/EASYTEST 7-Way Pool Test Strips (150).webp';
+import productImage040 from '../assets/Product Images/ENHULK PC15 Wide-Head Rechargeable Pool Vacuum.webp';
+import productImage041 from '../assets/Product Images/Floating Turtle Easy-Read Pool Thermometer.webp';
+import productImage042 from '../assets/Product Images/GLB Super Blue Clarifier (64 oz).webp';
+import productImage043 from '../assets/Product Images/Hofun 5-in-1 Salt, pH, TDS, EC and Temperature Meter.webp';
+import productImage044 from '../assets/Product Images/HTH 1-inch Chlorine Tabs with Clarifier (1.5 lb).webp';
+import productImage045 from '../assets/Product Images/HTH 3-inch Chlorine Tabs Advanced (5 lb).webp';
+import productImage046 from '../assets/Product Images/HTH 42047 Pool Care 1-inch Chlorine Tabs (5 lb).webp';
+import productImage047 from '../assets/Product Images/HTH 52025 Cal-Hypo Pool Shock (12 x 13.3 oz).webp';
+import productImage048 from '../assets/Product Images/HTH 52040B Pool Shock Ultra Cal-Hypo (6 pack).webp';
+import productImage049 from '../assets/Product Images/HTH Alkalinity Up, 5 lb.webp';
+import productImage050 from '../assets/Product Images/HTH Calcium Hardness Up, 4 lb.webp';
+import productImage051 from '../assets/Product Images/HTH Clarifier Advanced.webp';
+import productImage052 from '../assets/Product Images/HTH Metal, Stain _ Scale Control, 32 oz.webp';
+import productImage053 from '../assets/Product Images/HTH Pool Algaecide Super Algae Guard 60.webp';
+import productImage054 from '../assets/Product Images/HTH Pool Care pH Down, 5 lb.webp';
+import productImage055 from '../assets/Product Images/HTH Shock Advanced Cal-Hypo (12 x 1 lb).webp';
+import productImage056 from '../assets/Product Images/HTH Shock Advanced Cal-Hypo (6 pack).webp';
+import productImage057 from '../assets/Product Images/HTH Swimming Pool Care Algae Guard Ultra.webp';
+import productImage058 from '../assets/Product Images/In The Swim 1-Inch Bromine Plus Tablets, 3.5 lb.webp';
+import productImage059 from '../assets/Product Images/In The Swim 3-inch Chlorine Tablets 25 lb + Cal-Hypo Shock (12 x 1 lb).webp';
+import productImage060 from '../assets/Product Images/In The Swim 3-inch Chlorine Tablets 50 lb + 35,000-Gallon Opening Kit.webp';
+import productImage061 from '../assets/Product Images/In The Swim 3-inch Chlorine Tablets 50 lb + Cal-Hypo Shock (24 x 1 lb).webp';
+import productImage062 from '../assets/Product Images/In The Swim 3-inch Stabilized Chlorine Tabs (10 lb).webp';
+import productImage063 from '../assets/Product Images/In The Swim 3-inch Stabilized Chlorine Tabs (25 lb).webp';
+import productImage064 from '../assets/Product Images/In The Swim 3-inch Stabilized Chlorine Tabs (5 lb).webp';
+import productImage065 from '../assets/Product Images/In The Swim 3-inch Stabilized Chlorine Tabs (50 lb).webp';
+import productImage066 from '../assets/Product Images/In The Swim Alkalinity Increaser, 25 lb.webp';
+import productImage067 from '../assets/Product Images/In The Swim Cal-Hypo Pool Shock 68% (12 x 1 lb).webp';
+import productImage068 from '../assets/Product Images/In The Swim Calcium Hardness Increaser, 45 lb.webp';
+import productImage069 from '../assets/Product Images/In The Swim pH Reducer, 30 lb.webp';
+import productImage070 from '../assets/Product Images/INTEX 10 ft Round Easy Set Pool Cover.webp';
+import productImage071 from '../assets/Product Images/INTEX 2,100 GPH Krystal Clear Sand Filter Pump.webp';
+import productImage072 from '../assets/Product Images/INTEX 2,800 GPH Krystal Clear Sand Filter Pump.webp';
+import productImage073 from '../assets/Product Images/INTEX 28021E 10 ft Easy Set Pool Cover.webp';
+import productImage074 from '../assets/Product Images/INTEX 3,000 GPH Krystal Clear Sand Filter Pump.webp';
+import productImage075 from '../assets/Product Images/INTEX C1000 Cartridge Filter Pump (1000 GPH).webp';
+import productImage076 from '../assets/Product Images/JNW 7-in-1 Pool Test Strips (100).webp';
+import productImage077 from '../assets/Product Images/JNW 7-in-1 Pool Test Strips (150).webp';
+import productImage078 from '../assets/Product Images/KOKIDO Rechargeable Handheld Pool Vacuum + Pole.webp';
+import productImage079 from '../assets/Product Images/Leisure Time Spa Bromine Tablets, 2.2 lb.webp';
+import productImage080 from '../assets/Product Images/Lime Pool 7-Way PoolSpa Test Strips (100).webp';
+import productImage081 from "../assets/Product Images/Morton Professional's Choice Pool Salt, 40 lb.webp";
+import productImage082 from '../assets/Product Images/Natural Chemistry PHOSfree, 3 L.webp';
+import productImage083 from '../assets/Product Images/Pool Filter  Skimmer Socks (50 pack).webp';
+import productImage084 from '../assets/Product Images/Poolmaster 5-inch Stainless Steel Algae Detail Brush.webp';
+import productImage085 from '../assets/Product Images/PoolMr Rechargeable Handheld Pool Vacuum.webp';
+import productImage086 from '../assets/Product Images/PoolSpa Chlorine and pH 2-Way Test Kit.webp';
+import productImage087 from '../assets/Product Images/Poolvio Brush + Pole + Skimmer Kit.webp';
+import productImage088 from '../assets/Product Images/POOLWHALE Leaf Skimmer Net with Adjustable Pole.webp';
+import productImage089 from '../assets/Product Images/POOLWHALE Professional Deep Leaf Skimmer Net.webp';
+import productImage090 from '../assets/Product Images/Sepetrel 17.5-inch Reinforced Pool Brush.webp';
+import productImage091 from '../assets/Product Images/Sepetrel Deluxe Above-Ground Cleaning Kit.webp';
+import productImage092 from '../assets/Product Images/Sepetrel Heavy-Duty Flat Leaf Skimmer Net.webp';
+import productImage093 from '../assets/Product Images/Sepetrel Round Pool Brush with Aluminum Back.webp';
+import productImage094 from '../assets/Product Images/Sun2Solar Blue 24 ft Round Solar Cover (12 mil).webp';
+import productImage095 from '../assets/Product Images/Sunnyglade Heavy-Duty Fine Mesh Leaf Rake.webp';
+import productImage096 from '../assets/Product Images/Superior Pump 91250 14 HP Submersible Utility Pump.webp';
+import productImage097 from '../assets/Product Images/TABIT 3-inch Chlorinating Tabs (25 lb).webp';
+import productImage098 from '../assets/Product Images/Taylor K-1004 DPD PoolSpa Test Kit (includes bromine).webp';
+import productImage099 from '../assets/Product Images/Taylor K-1766 Saltwater Chloride Drop Test.webp';
+import productImage100 from '../assets/Product Images/Taylor K-2006 FAS-DPD Complete Pool Test Kit.webp';
+import productImage101 from '../assets/Product Images/TempPro Wireless Digital Floating Pool Thermometer.webp';
+import productImage102 from '../assets/Product Images/U.S. Pool Supply 5 ft Leaf Skimmer Net with Pole.webp';
+import productImage103 from '../assets/Product Images/Xtremeclear 3-inch Tri-Chlor Tabs (5 lb).webp';
+import productImage104 from '../assets/Product Images/XY-WQ Floating Turtle Pool Thermometer.webp';
 
 // ─── Exports ─────────────────────────────────────────────────────────────────
 
@@ -598,3 +706,114 @@ export const shopImages = {
 export const images = {
     ...graphics,
 } as const;
+
+/**
+ * Shop product photos, keyed by product name with "/" removed (same as the file name).
+ * Products without a photo are not listed here and use shopImages.placeholder.
+ */
+export const productImages: Record<string, ImageSourcePropType> = {
+    "162-Piece 7-Way PoolSpa Test Strips": productImage001,
+    "17-inch Nylon Pool Wall Brush": productImage002,
+    "18-inch Curved-End Pool Brush (greenblack)": productImage003,
+    "AIPER EcoSurfer S2 Solar Surface Skimmer": productImage004,
+    "Aqua Joe Pool & Spa Salt, 40 lb": productImage005,
+    "AquaChek Salt White Test Strip Titrators, 10 ct": productImage006,
+    "AquaChek Silver 7-Way Test Strips (100)": productImage007,
+    "AquaChek Yellow 4-Way Test Strips (50)": productImage008,
+    "AquaDoc Phosphate Remover, 32 oz": productImage009,
+    "AQUASALT Pool & Spa Salt, 40 lb": productImage010,
+    "ARM & Hammer Clear Balance pH Maintenance Tabs (24)": productImage011,
+    "Betta SE Plus Dual-Charging Solar Surface Skimmer": productImage012,
+    "Betta SE Solar Robotic Surface Skimmer": productImage013,
+    "BioGuard Chem Out ChlorineBromine Neutralizer, 2 lb": productImage014,
+    "Clorox Pool&Spa Algaecide and Clarifier (128 oz)": productImage015,
+    "Clorox Pool&Spa Alkalinity Increaser, 5 lb": productImage016,
+    "Clorox Pool&Spa Calcium Hardness Increaser, 4 lb": productImage017,
+    "Clorox Pool&Spa Chlorine Stabilizer (4 lb)": productImage018,
+    "Clorox Pool&Spa ClearPHOS, 1 quart": productImage019,
+    "Clorox Pool&Spa Crazy Clarifier (128 oz)": productImage020,
+    "Clorox Pool&Spa My Pool Care Assistant Test Strips (50)": productImage021,
+    "Clorox Pool&Spa pH Down, 5 lb": productImage022,
+    "Clorox Pool&Spa pH Up (4 lb)": productImage023,
+    "Clorox Pool&Spa Scale, Metal & Stain Control, 32 oz": productImage024,
+    "Clorox Pool&Spa Shock Clear (6 pack)": productImage025,
+    "Clorox Pool&Spa Shock XTRABLUE Plus (12 pack)": productImage026,
+    "Clorox Pool&Spa Shock XTRABLUE Plus (6 pack)": productImage027,
+    "Clorox Pool&Spa Sink to Clear Flocculant (1 qt)": productImage028,
+    "Clorox Pool&Spa Spa Bromine Tablets, 1.5 lb": productImage029,
+    "Clorox Pool&Spa Super Water Clarifier (1 qt)": productImage030,
+    "Clorox Pool&Spa Swimming Pool Algaecide and Clarifier": productImage031,
+    "Clorox Pool&Spa XTRABLUE 3-inch Chlorinating Tablets (25 lb)": productImage032,
+    "Clorox Pool&Spa XTRABLUE 3-inch Chlorinating Tablets (35 lb)": productImage033,
+    "Clorox Pool&Spa XTRABLUE 3-inch Chlorinating Tabs (5 lb)": productImage034,
+    "Coopache Skimmer Socks (30 pack)": productImage035,
+    "CuLator Metal Eliminator PowerPak 1.0": productImage036,
+    "Dolphin Nautilus CC Plus (standard)": productImage037,
+    "Dolphin Nautilus CC Robotic Pool Cleaner": productImage038,
+    "EASYTEST 7-Way Pool Test Strips (150)": productImage039,
+    "ENHULK PC15 Wide-Head Rechargeable Pool Vacuum": productImage040,
+    "Floating Turtle Easy-Read Pool Thermometer": productImage041,
+    "GLB Super Blue Clarifier (64 oz)": productImage042,
+    "Hofun 5-in-1 Salt, pH, TDS, EC and Temperature Meter": productImage043,
+    "HTH 1-inch Chlorine Tabs with Clarifier (1.5 lb)": productImage044,
+    "HTH 3-inch Chlorine Tabs Advanced (5 lb)": productImage045,
+    "HTH 42047 Pool Care 1-inch Chlorine Tabs (5 lb)": productImage046,
+    "HTH 52025 Cal-Hypo Pool Shock (12 x 13.3 oz)": productImage047,
+    "HTH 52040B Pool Shock Ultra Cal-Hypo (6 pack)": productImage048,
+    "HTH Alkalinity Up, 5 lb": productImage049,
+    "HTH Calcium Hardness Up, 4 lb": productImage050,
+    "HTH Clarifier Advanced": productImage051,
+    "HTH Metal, Stain & Scale Control, 32 oz": productImage052,
+    "HTH Pool Algaecide Super Algae Guard 60": productImage053,
+    "HTH Pool Care pH Down, 5 lb": productImage054,
+    "HTH Shock Advanced Cal-Hypo (12 x 1 lb)": productImage055,
+    "HTH Shock Advanced Cal-Hypo (6 pack)": productImage056,
+    "HTH Swimming Pool Care Algae Guard Ultra": productImage057,
+    "In The Swim 1-Inch Bromine Plus Tablets, 3.5 lb": productImage058,
+    "In The Swim 3-inch Chlorine Tablets 25 lb + Cal-Hypo Shock (12 x 1 lb)": productImage059,
+    "In The Swim 3-inch Chlorine Tablets 50 lb + 35,000-Gallon Opening Kit": productImage060,
+    "In The Swim 3-inch Chlorine Tablets 50 lb + Cal-Hypo Shock (24 x 1 lb)": productImage061,
+    "In The Swim 3-inch Stabilized Chlorine Tabs (10 lb)": productImage062,
+    "In The Swim 3-inch Stabilized Chlorine Tabs (25 lb)": productImage063,
+    "In The Swim 3-inch Stabilized Chlorine Tabs (5 lb)": productImage064,
+    "In The Swim 3-inch Stabilized Chlorine Tabs (50 lb)": productImage065,
+    "In The Swim Alkalinity Increaser, 25 lb": productImage066,
+    "In The Swim Cal-Hypo Pool Shock 68% (12 x 1 lb)": productImage067,
+    "In The Swim Calcium Hardness Increaser, 45 lb": productImage068,
+    "In The Swim pH Reducer, 30 lb": productImage069,
+    "INTEX 10 ft Round Easy Set Pool Cover": productImage070,
+    "INTEX 2,100 GPH Krystal Clear Sand Filter Pump": productImage071,
+    "INTEX 2,800 GPH Krystal Clear Sand Filter Pump": productImage072,
+    "INTEX 28021E 10 ft Easy Set Pool Cover": productImage073,
+    "INTEX 3,000 GPH Krystal Clear Sand Filter Pump": productImage074,
+    "INTEX C1000 Cartridge Filter Pump (1000 GPH)": productImage075,
+    "JNW 7-in-1 Pool Test Strips (100)": productImage076,
+    "JNW 7-in-1 Pool Test Strips (150)": productImage077,
+    "KOKIDO Rechargeable Handheld Pool Vacuum + Pole": productImage078,
+    "Leisure Time Spa Bromine Tablets, 2.2 lb": productImage079,
+    "Lime Pool 7-Way PoolSpa Test Strips (100)": productImage080,
+    "Morton Professional's Choice Pool Salt, 40 lb": productImage081,
+    "Natural Chemistry PHOSfree, 3 L": productImage082,
+    "Pool Filter  Skimmer Socks (50 pack)": productImage083,
+    "Poolmaster 5-inch Stainless Steel Algae Detail Brush": productImage084,
+    "PoolMr Rechargeable Handheld Pool Vacuum": productImage085,
+    "PoolSpa Chlorine and pH 2-Way Test Kit": productImage086,
+    "Poolvio Brush + Pole + Skimmer Kit": productImage087,
+    "POOLWHALE Leaf Skimmer Net with Adjustable Pole": productImage088,
+    "POOLWHALE Professional Deep Leaf Skimmer Net": productImage089,
+    "Sepetrel 17.5-inch Reinforced Pool Brush": productImage090,
+    "Sepetrel Deluxe Above-Ground Cleaning Kit": productImage091,
+    "Sepetrel Heavy-Duty Flat Leaf Skimmer Net": productImage092,
+    "Sepetrel Round Pool Brush with Aluminum Back": productImage093,
+    "Sun2Solar Blue 24 ft Round Solar Cover (12 mil)": productImage094,
+    "Sunnyglade Heavy-Duty Fine Mesh Leaf Rake": productImage095,
+    "Superior Pump 91250 14 HP Submersible Utility Pump": productImage096,
+    "TABIT 3-inch Chlorinating Tabs (25 lb)": productImage097,
+    "Taylor K-1004 DPD PoolSpa Test Kit (includes bromine)": productImage098,
+    "Taylor K-1766 Saltwater Chloride Drop Test": productImage099,
+    "Taylor K-2006 FAS-DPD Complete Pool Test Kit": productImage100,
+    "TempPro Wireless Digital Floating Pool Thermometer": productImage101,
+    "U.S. Pool Supply 5 ft Leaf Skimmer Net with Pole": productImage102,
+    "Xtremeclear 3-inch Tri-Chlor Tabs (5 lb)": productImage103,
+    "XY-WQ Floating Turtle Pool Thermometer": productImage104,
+};

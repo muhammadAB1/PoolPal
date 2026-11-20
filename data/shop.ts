@@ -1,4 +1,4 @@
-import { shopImages } from '@/constants/images';
+import { productImages, shopImages } from '@/constants/images';
 import type { ImageSourcePropType } from 'react-native';
 import shopItems from '@/data/shopItems';
 
@@ -6,8 +6,9 @@ import shopItems from '@/data/shopItems';
  * Shop catalog.
  *
  * Real fields come from data/shopItems.ts (name, brand, category, scenario, pick,
- * rating, label, use, link, summaries). Fields that file does not have yet (price, image,
- * specs) share one placeholder for every product.
+ * rating, label, use, link, summaries). Photos come from assets/Product Images
+ * (see productImages in constants/images.ts). Fields that file does not have yet
+ * (price, specs) share one placeholder for every product.
  * Replace the placeholder per product when that data exists.
  */
 
@@ -67,8 +68,6 @@ export type Product = {
 
 const PLACEHOLDER = {
   price: 18.99,
-  image: shopImages.placeholder,
-  imageStyle: 'photo' as ProductImageStyle,
   specs: [
     { labelKey: 'shop.specs.size', valueKey: 'shop.values.fiveLb' },
     { labelKey: 'shop.specs.form', valueKey: 'shop.values.granular' },
@@ -97,6 +96,17 @@ function toSlug(value: string): string {
   return value.trim().toLowerCase().replace(/\s+/g, '-');
 }
 
+/**
+ * Product photo: the file in assets/Product Images has the product name with "/" removed.
+ * Products without a photo fall back to the shared placeholder.
+ */
+function getProductImage(name: string): { image: ImageSourcePropType; imageStyle: ProductImageStyle } {
+  const photo = productImages[name.replace(/\//g, '')];
+  return photo
+    ? { image: photo, imageStyle: 'studio' }
+    : { image: shopImages.placeholder, imageStyle: 'photo' };
+}
+
 /** "25,300" -> 25300. Empty -> null. */
 function toNumber(value: string): number | null {
   const parsed = Number(value.replace(/,/g, ''));
@@ -117,6 +127,7 @@ const ALL_ROWS: Product[] = shopItems.map((item): Product => ({
   affiliateUrl: item['Affiliate Link URL*'].trim(),
   reviewSummary: item['Review summary / Customers Say:'].trim(),
   whatItDoes: item['What it does / owner need / problem solved'].trim(),
+  ...getProductImage(item['Product / Variant']),
   ...PLACEHOLDER,
 }));
 
