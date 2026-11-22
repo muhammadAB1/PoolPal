@@ -6,6 +6,9 @@ const priceEnv = {
   yearly: "STRIPE_PRICE_YEARLY",
 } as const
 
+// These open the portal, so nobody buys a second plan.
+const portalStatuses = ["active", "trialing", "past_due", "unpaid", "paused"]
+
 export default {
   fetch: withSupabase({ auth: "user" }, async (req, ctx) => {
     const userId = ctx.userClaims?.id
@@ -41,8 +44,56 @@ export default {
     }
 
     const email = ctx.userClaims?.email
-    const customerId = email ? await findActiveCustomer(secretKey, email) : null
-    if (customerId) {
+    const profiles = () => ctx.supabaseAdmin.from("profiles")
+    const { data: profile, error } = await profiles().select("stripe_customer_id").eq("id", userId).single()
+    if (error) {
+      console.log("create-checkout-session: stopped, profile error", error.message)
+      return Response.json({ error: "Could not load profile" }, { status: 500 })
+    }
+
+    let customerId: string | null = profile.stripe_customer_id
+    if (!customerId) {
+      const params = new URLSearchParams({ "metadata[supabase_user_id]": userId })
+      if (email) params.set("email", email)
+      const created = await stripePost(secretKey, "customers", params)
+      if (!created.ok) {
+        console.log("create-checkout-session: stopped, customer error", created.data.error?.message)
+        return Response.json({ error: "Could not create customer" }, { status: 500 })
+      }
+      // Save only if still empty, so a second click cannot replace the first customer.
+      const { data: saved } = await profiles()
+        .update({ stripe_customer_id: created.data.id })
+        .eq("id", userId)
+        .is("stripe_customer_id", null)
+        .select("stripe_customer_id")
+        .maybeSingle()
+      if (!saved) {
+        console.log("create-checkout-session: stopped, customer not saved")
+        return Response.json({ error: "Please try again" }, { status: 500 })
+      }
+      customerId = created.data.id as string
+    }
+
+    // Close older Checkout tabs, so only the newest one can be paid.
+    const openCheckouts = await stripeGet(secretKey, `checkout/sessions?customer=${customerId}&status=open&limit=100`)
+    if (!openCheckouts.data) {
+      console.log("create-checkout-session: stopped, open checkout error", openCheckouts.error?.message)
+      return Response.json({ error: "Please try again" }, { status: 500 })
+    }
+    for (const checkout of openCheckouts.data) {
+      const closed = await stripePost(secretKey, `checkout/sessions/${checkout.id}/expire`, new URLSearchParams())
+      if (!closed.ok) {
+        console.log("create-checkout-session: stopped, could not close checkout", closed.data.error?.message)
+        return Response.json({ error: "Please try again" }, { status: 500 })
+      }
+    }
+
+    const subscriptions = await stripeGet(secretKey, `subscriptions?customer=${customerId}&limit=100`)
+    if (!subscriptions.data) {
+      console.log("create-checkout-session: stopped, subscription error", subscriptions.error?.message)
+      return Response.json({ error: "Could not check subscription" }, { status: 500 })
+    }
+    if (subscriptions.data.some((item: { status: string }) => portalStatuses.includes(item.status))) {
       if (!portalId) {
         console.log("create-checkout-session: stopped, missing portal id")
         return Response.json({ error: "Missing configuration" }, { status: 500 })
@@ -67,10 +118,10 @@ export default {
       "line_items[0][quantity]": "1",
       success_url: successUrl,
       cancel_url: cancelUrl,
+      customer: customerId,
       client_reference_id: userId,
       allow_promotion_codes: "true",
     })
-    if (email) body.set("customer_email", email)
 
     const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
@@ -110,16 +161,4 @@ async function stripePost(secretKey: string, path: string, body: URLSearchParams
     body,
   })
   return { ok: response.ok, data: await response.json() }
-}
-
-async function findActiveCustomer(secretKey: string, email: string) {
-  const customers = await stripeGet(secretKey, `customers?email=${encodeURIComponent(email)}&limit=10`)
-  for (const customer of customers.data ?? []) {
-    const subscriptions = await stripeGet(
-      secretKey,
-      `subscriptions?customer=${customer.id}&status=active&limit=1`,
-    )
-    if (subscriptions.data?.[0]) return customer.id as string
-  }
-  return null
 }
