@@ -233,6 +233,8 @@ import poolTonicUserIcon from '../assets/pooltonic-ui/pooltonic-user-icon.png';
 import poolBasicsHero from '../assets/pool-tab/pool-tab-pool-basic-screen-bg.jpg';
 
 // ─── Shop product photos (file name = product name without "/") ──────────────
+// "&", "+" and "%" are written as "_" in file names: Expo's dev server reads
+// asset paths from a query string, where those characters break the lookup.
 import productImage001 from '../assets/Product Images/162-Piece 7-Way PoolSpa Test Strips.webp';
 import productImage002 from '../assets/Product Images/17-inch Nylon Pool Wall Brush.webp';
 import productImage003 from '../assets/Product Images/18-inch Curved-End Pool Brush (greenblack).webp';
@@ -291,15 +293,15 @@ import productImage055 from '../assets/Product Images/HTH Shock Advanced Cal-Hyp
 import productImage056 from '../assets/Product Images/HTH Shock Advanced Cal-Hypo (6 pack).webp';
 import productImage057 from '../assets/Product Images/HTH Swimming Pool Care Algae Guard Ultra.webp';
 import productImage058 from '../assets/Product Images/In The Swim 1-Inch Bromine Plus Tablets, 3.5 lb.webp';
-import productImage059 from '../assets/Product Images/In The Swim 3-inch Chlorine Tablets 25 lb + Cal-Hypo Shock (12 x 1 lb).webp';
-import productImage060 from '../assets/Product Images/In The Swim 3-inch Chlorine Tablets 50 lb + 35,000-Gallon Opening Kit.webp';
-import productImage061 from '../assets/Product Images/In The Swim 3-inch Chlorine Tablets 50 lb + Cal-Hypo Shock (24 x 1 lb).webp';
+import productImage059 from '../assets/Product Images/In The Swim 3-inch Chlorine Tablets 25 lb _ Cal-Hypo Shock (12 x 1 lb).webp';
+import productImage060 from '../assets/Product Images/In The Swim 3-inch Chlorine Tablets 50 lb _ 35,000-Gallon Opening Kit.webp';
+import productImage061 from '../assets/Product Images/In The Swim 3-inch Chlorine Tablets 50 lb _ Cal-Hypo Shock (24 x 1 lb).webp';
 import productImage062 from '../assets/Product Images/In The Swim 3-inch Stabilized Chlorine Tabs (10 lb).webp';
 import productImage063 from '../assets/Product Images/In The Swim 3-inch Stabilized Chlorine Tabs (25 lb).webp';
 import productImage064 from '../assets/Product Images/In The Swim 3-inch Stabilized Chlorine Tabs (5 lb).webp';
 import productImage065 from '../assets/Product Images/In The Swim 3-inch Stabilized Chlorine Tabs (50 lb).webp';
 import productImage066 from '../assets/Product Images/In The Swim Alkalinity Increaser, 25 lb.webp';
-import productImage067 from '../assets/Product Images/In The Swim Cal-Hypo Pool Shock 68% (12 x 1 lb).webp';
+import productImage067 from '../assets/Product Images/In The Swim Cal-Hypo Pool Shock 68_ (12 x 1 lb).webp';
 import productImage068 from '../assets/Product Images/In The Swim Calcium Hardness Increaser, 45 lb.webp';
 import productImage069 from '../assets/Product Images/In The Swim pH Reducer, 30 lb.webp';
 import productImage070 from '../assets/Product Images/INTEX 10 ft Round Easy Set Pool Cover.webp';
@@ -310,7 +312,7 @@ import productImage074 from '../assets/Product Images/INTEX 3,000 GPH Krystal Cl
 import productImage075 from '../assets/Product Images/INTEX C1000 Cartridge Filter Pump (1000 GPH).webp';
 import productImage076 from '../assets/Product Images/JNW 7-in-1 Pool Test Strips (100).webp';
 import productImage077 from '../assets/Product Images/JNW 7-in-1 Pool Test Strips (150).webp';
-import productImage078 from '../assets/Product Images/KOKIDO Rechargeable Handheld Pool Vacuum + Pole.webp';
+import productImage078 from '../assets/Product Images/KOKIDO Rechargeable Handheld Pool Vacuum _ Pole.webp';
 import productImage079 from '../assets/Product Images/Leisure Time Spa Bromine Tablets, 2.2 lb.webp';
 import productImage080 from '../assets/Product Images/Lime Pool 7-Way PoolSpa Test Strips (100).webp';
 import productImage081 from "../assets/Product Images/Morton Professional's Choice Pool Salt, 40 lb.webp";
@@ -319,7 +321,7 @@ import productImage083 from '../assets/Product Images/Pool Filter  Skimmer Socks
 import productImage084 from '../assets/Product Images/Poolmaster 5-inch Stainless Steel Algae Detail Brush.webp';
 import productImage085 from '../assets/Product Images/PoolMr Rechargeable Handheld Pool Vacuum.webp';
 import productImage086 from '../assets/Product Images/PoolSpa Chlorine and pH 2-Way Test Kit.webp';
-import productImage087 from '../assets/Product Images/Poolvio Brush + Pole + Skimmer Kit.webp';
+import productImage087 from '../assets/Product Images/Poolvio Brush _ Pole _ Skimmer Kit.webp';
 import productImage088 from '../assets/Product Images/POOLWHALE Leaf Skimmer Net with Adjustable Pole.webp';
 import productImage089 from '../assets/Product Images/POOLWHALE Professional Deep Leaf Skimmer Net.webp';
 import productImage090 from '../assets/Product Images/Sepetrel 17.5-inch Reinforced Pool Brush.webp';

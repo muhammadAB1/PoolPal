@@ -75,21 +75,29 @@ const PLACEHOLDER = {
   ],
 };
 
-/** Picture for each category tile, picked from images the app already has. */
+/** Picture for each category tile: the photo of the first product in that category. */
 const CATEGORY_LOOK: Record<string, { image: ImageSourcePropType; imageStyle: ProductImageStyle }> = {
-  'water-testing': { image: shopImages.aquachek, imageStyle: 'studio' },
-  sanitizers: { image: shopImages.chlorine, imageStyle: 'studio' },
-  'shock-treatments': { image: shopImages.totalChlorine, imageStyle: 'studio' },
-  'water-balance': { image: shopImages.ph, imageStyle: 'studio' },
-  'water-treatment': { image: shopImages.phosphates, imageStyle: 'studio' },
-  'manual-cleaning': { image: shopImages.manualVacuum, imageStyle: 'photo' },
-  'pool-brushes': { image: shopImages.tools, imageStyle: 'photo' },
-  'handheld-vacuums': { image: shopImages.suctionSide, imageStyle: 'photo' },
-  'robotic-cleaners': { image: shopImages.robotic, imageStyle: 'photo' },
-  'pumps-and-filtration': { image: shopImages.variablePump, imageStyle: 'studio' },
-  thermometers: { image: shopImages.placeholder, imageStyle: 'photo' },
-  'pool-covers': { image: shopImages.cover, imageStyle: 'studio' },
-  'opening-kits': { image: shopImages.outdoor, imageStyle: 'studio' },
+  'water-testing': { image: productImages['EASYTEST 7-Way Pool Test Strips (150)'], imageStyle: 'studio' },
+  sanitizers: { image: productImages['HTH 1-inch Chlorine Tabs with Clarifier (1.5 lb)'], imageStyle: 'studio' },
+  'shock-treatments': { image: productImages['HTH Shock Advanced Cal-Hypo (12 x 1 lb)'], imageStyle: 'studio' },
+  'water-balance': { image: productImages['Clorox Pool&Spa pH Up (4 lb)'], imageStyle: 'studio' },
+  'water-treatment': { image: productImages['Clorox Pool&Spa Algaecide and Clarifier (128 oz)'], imageStyle: 'studio' },
+  'manual-cleaning': { image: productImages['Sunnyglade Heavy-Duty Fine Mesh Leaf Rake'], imageStyle: 'studio' },
+  'pool-brushes': { image: productImages['Sepetrel 17.5-inch Reinforced Pool Brush'], imageStyle: 'studio' },
+  'handheld-vacuums': { image: productImages['PoolMr Rechargeable Handheld Pool Vacuum'], imageStyle: 'studio' },
+  'robotic-cleaners': { image: productImages['Betta SE Solar Robotic Surface Skimmer'], imageStyle: 'studio' },
+  'pumps-and-filtration': { image: productImages['INTEX C1000 Cartridge Filter Pump (1000 GPH)'], imageStyle: 'studio' },
+  thermometers: { image: productImages['XY-WQ Floating Turtle Pool Thermometer'], imageStyle: 'studio' },
+  'pool-covers': { image: productImages['INTEX 28021E 10 ft Easy Set Pool Cover'], imageStyle: 'studio' },
+  'opening-kits': { image: productImages['In The Swim 3-inch Chlorine Tablets 50 lb + 35,000-Gallon Opening Kit'], imageStyle: 'studio' },
+  'sanitizer-control': { image: productImages['BioGuard Chem Out ChlorineBromine Neutralizer, 2 lb'], imageStyle: 'studio' },
+  testing: { image: productImages['Taylor K-2006 FAS-DPD Complete Pool Test Kit'], imageStyle: 'studio' },
+  'water-replacement': { image: productImages['Superior Pump 91250 14 HP Submersible Utility Pump'], imageStyle: 'studio' },
+  'metals-&-stain-control': { image: productImages['Clorox Pool&Spa Scale, Metal & Stain Control, 32 oz'], imageStyle: 'studio' },
+  'salt-systems': { image: productImages["Morton Professional's Choice Pool Salt, 40 lb"], imageStyle: 'studio' },
+  algae: { image: productImages['HTH Swimming Pool Care Algae Guard Ultra'], imageStyle: 'studio' },
+  'phosphates-(advanced)': { image: productImages['Natural Chemistry PHOSfree, 3 L'], imageStyle: 'studio' },
+  'bromine-spas': { image: productImages['Clorox Pool&Spa Spa Bromine Tablets, 1.5 lb'], imageStyle: 'studio' },
 };
 
 function toSlug(value: string): string {
@@ -180,6 +188,23 @@ export function getProduct(id: string | undefined): Product | undefined {
 
 export function getProductsByCategory(categoryId: ShopCategoryId): Product[] {
   return PRODUCTS.filter((product) => product.categoryId === categoryId);
+}
+
+/**
+ * Products that contain every word of the query in their name, brand, category,
+ * use or scenarios. So "hth shock" and "cloudy water" both work.
+ */
+export function searchProducts(query: string): Product[] {
+  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return [];
+
+  return PRODUCTS.filter((product) => {
+    const categoryName = getCategory(product.categoryId)?.name ?? '';
+    const text = [product.name, product.brand, categoryName, product.use, ...product.scenarios]
+      .join(' ')
+      .toLowerCase();
+    return words.every((word) => text.includes(word));
+  });
 }
 
 export function formatPrice(price: number): string {

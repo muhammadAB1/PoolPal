@@ -415,4 +415,30 @@
     @apply text-surface-white;
   }
 
+  /* ─── Shop: search ───────────────────────────────────────────────────── */
+
+  .search-field {
+    @apply h-12 flex-row items-center gap-2.5 rounded-full bg-surface-white border border-border-default pl-4 pr-3;
+  }
+
+  .search-field__input {
+    @apply flex-1 h-full p-0 text-body font-jakarta text-charcoal;
+  }
+
+  .search-empty {
+    @apply items-center px-6 pt-12;
+  }
+
+  .search-empty__icon {
+    @apply w-16 h-16 rounded-full bg-surface-soft-aqua items-center justify-center;
+  }
+
+  .search-empty__title {
+    @apply text-body-lg font-jakarta-extrabold text-brand-navy text-center mt-4;
+  }
+
+  .search-empty__body {
+    @apply text-body font-jakarta text-sub text-center mt-1.5;
+  }
+
 }
